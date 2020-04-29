@@ -1,9 +1,9 @@
 import java.io.File;
 import java.util.Scanner;
 
-public class ValidadorContraseña {
+public class ValidadorContrasenia {
     public static void main(String[] args) throws Exception {
-        ValidadorContraseña validador =  new ValidadorContraseña();
+        ValidadorContrasenia validador =  new ValidadorContrasenia();
         validador.esContraseniaValida("F@rd1coSports");
 
     }
