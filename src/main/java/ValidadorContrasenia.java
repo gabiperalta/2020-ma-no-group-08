@@ -1,15 +1,11 @@
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ValidadorContrasenia {
-    public static void main(String[] args) throws Exception {
-        ValidadorContrasenia validador =  new ValidadorContrasenia();
-        validador.esContraseniaValida("F@rd1coSports");
 
-    }
-
-    public boolean esContraseniaValida (String contrasenia) throws Exception {
-        return this.noEstaEntrePeoresContrasenias(contrasenia) & this.cumpleRequisitosRegEx(contrasenia);
+    public boolean esContraseniaValida (String contrasenia, ArrayList<String> contrasenias) throws Exception {
+        return this.noEstaEntrePeoresContrasenias(contrasenia) & this.cumpleRequisitosRegEx(contrasenia) & this.esNuevaContrasenia(contrasenia,contrasenias);
     }
 
     private boolean noEstaEntrePeoresContrasenias(String contrasenia) throws Exception {
@@ -21,15 +17,17 @@ public class ValidadorContrasenia {
                 return false;
             }
         }
-
         return true;
     }
 
     private boolean cumpleRequisitosRegEx(String contrasenia) {
-        String strRegEx = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*](?=\\S+$).{8,15}$";
+        String strRegEx = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$";
 
         return contrasenia.matches(strRegEx);
     }
 
+    private boolean esNuevaContrasenia(String contrasenia, ArrayList<String> contrasenias) {
+        return !contrasenias.contains(contrasenia);
+    }
 
 } 
