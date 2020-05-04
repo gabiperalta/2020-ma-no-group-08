@@ -2,16 +2,20 @@ package seguridad.usuario;
 
 import java.util.ArrayList;
 
+import seguridad.HashPassword;
+
 public abstract class Usuario {
 	
 	protected String userName;
 	protected String passwordHash;
+	protected String passwordPlana; // TODO. este atributo sera usado unicamente para testeo, posteriormente sera eliminado para quedar solo el hash
 	protected ArrayList<String> contraseniasPrevias;
 	protected Integer intentosPendientes;
 
 	public Usuario(String unUserName, String unaPassword) {
 		userName = unUserName;
-		passwordHash = this.calcularHash(unaPassword);
+		passwordHash = HashPassword.calcular(unaPassword);
+		passwordPlana = unaPassword;
 		contraseniasPrevias = new ArrayList<String>();
 		intentosPendientes = 3;
 	}
@@ -42,6 +46,12 @@ public abstract class Usuario {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+	
+	public void cambiarContraseña(String nuevaContrasenia) {
+		passwordHash = HashPassword.calcular(nuevaContrasenia);
+		passwordPlana = nuevaContrasenia;
+		contraseniasPrevias.add(passwordPlana);
 	}
 
 	public abstract boolean esAdministrador() ;

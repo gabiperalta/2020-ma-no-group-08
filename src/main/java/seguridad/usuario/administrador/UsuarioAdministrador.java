@@ -5,9 +5,11 @@ import seguridad.usuario.estandar.UsuarioEstandar;
 import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;
 import temporal.seguridad.repositorioUsuarios.exceptions.CredencialesNoValidasException;
 
+import java.security.SecureRandom;
+
 public class UsuarioAdministrador extends Usuario{
 
-	public UsuarioAdministrador(String unUserName, String unaPassword) {
+	public UsuarioAdministrador(String unUserName, String unaPassword)  {
 		super(unUserName, unaPassword);
 	}
 	
@@ -28,12 +30,17 @@ public class UsuarioAdministrador extends Usuario{
 		// TODO
 	}
 
-	public void restaurarContraseña( /* Organizacion */ ) {
-		// TODO
+	public void restaurarContraseña( String unNombreUsuario ) {
+		// TODO		
+		RepositorioUsuarios.getInstance().cambiarContraseña(unNombreUsuario, this.generarContrasenia());
+		
 	}
 	
-	public void altaUsuarioColaborador(String unNombreUsuario, String unaContraseña) {
-		UsuarioEstandar nuevoUsuario = new UsuarioEstandar(unNombreUsuario, unaContraseña);
+	public void altaUsuarioColaborador(String unNombreUsuario) {
+		
+		String unaContrasenia = this.generarContrasenia();
+		
+		UsuarioEstandar nuevoUsuario = new UsuarioEstandar(unNombreUsuario, unaContrasenia);
 		RepositorioUsuarios.getInstance().agregarUsuarioEstandar(nuevoUsuario);
 	}
 	
@@ -44,4 +51,21 @@ public class UsuarioAdministrador extends Usuario{
 	public void modificacionUsuarioColaborador(String unNombreUsuario, String unaContraseña) {
 		// TODO
 	}
+	
+	public String generarContrasenia() {
+		
+		int longitudContrasenia = 14;
+		byte[] arrayAux = new byte[longitudContrasenia];
+		
+		SecureRandom secureRandom = new SecureRandom();
+		
+		secureRandom.nextBytes(arrayAux);
+		
+		String generatedString = new String(arrayAux);
+
+		// Esta contraseña autogenerada deberia ser enviada al usuario final de forma segura
+		
+		return generatedString;
+	}
+	
 }

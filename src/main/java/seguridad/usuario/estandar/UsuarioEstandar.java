@@ -1,6 +1,8 @@
 package seguridad.usuario.estandar;
 
+
 import seguridad.usuario.Usuario;
+
 
 public class UsuarioEstandar extends Usuario {
 	

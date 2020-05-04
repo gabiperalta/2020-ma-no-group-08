@@ -32,6 +32,8 @@ public class RepositorioUsuarios {
 		usuarios.add(administrador3); // Por defecto se crea con estos 3 admins
 	}
 
+	
+	
 	public void agregarUsuarioEstandar(UsuarioEstandar unUsuarioEstandar) {
 		usuarios.add(unUsuarioEstandar);
 	}
@@ -50,6 +52,11 @@ public class RepositorioUsuarios {
 		Usuario unUsuario = usuarios.stream().filter((Usuario usuario) -> usuario.getUserName().equals(unUsername)).findFirst().get();
 		// TODO si el usuario no existe, debemos tirar la excepcion UsuarioNoExisteException? o la con que tira directamente el get ya alcanza?
 		return unUsuario;				
+	}
+	
+	public void cambiarContraseña(String unUsername, String nuevaContrasenia) {
+		Usuario unUsuario = buscarUsuario(unUsername);
+		unUsuario.cambiarContraseña(nuevaContrasenia);
 	}
 	
 }
