@@ -1,7 +1,9 @@
 package seguridad.sesion;
 
+import seguridad.HashPassword;
 import seguridad.sesion.exceptions.CredencialesNoValidasException;
 import seguridad.usuario.Usuario;
+import seguridad.ValidadorContrasenia;
 import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;
 
 public class Sesion {
@@ -22,6 +24,15 @@ public class Sesion {
 	
 	public void logOut() {
 		cuentaDeUsuario = null;
+	}
+
+	public void resetPassword(String contrasenia) throws Exception{
+		ValidadorContrasenia validador = new ValidadorContrasenia();
+		if (validador.esContraseniaValida(contrasenia,cuentaDeUsuario.getContraseniasPrevias())) {
+			RepositorioUsuarios.getInstance().cambiarContrasenia(cuentaDeUsuario.getUserName(), HashPassword.calcular(contrasenia));
+		} else {
+			throw new temporal.seguridad.repositorioUsuarios.exceptions.CredencialesNoValidasException("la contrasenia no es valida");
+		}
 	}
 	
 	
