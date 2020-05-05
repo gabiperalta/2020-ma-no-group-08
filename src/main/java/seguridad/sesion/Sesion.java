@@ -26,10 +26,10 @@ public class Sesion {
 		cuentaDeUsuario = null;
 	}
 
-	public void resetPassword(String contrasenia) throws Exception{
+	public void cambiarContrasenia(String contrasenia) throws Exception{
 		ValidadorContrasenia validador = new ValidadorContrasenia();
 		if (validador.esContraseniaValida(contrasenia,cuentaDeUsuario.getContraseniasPrevias())) {
-			RepositorioUsuarios.getInstance().cambiarContrasenia(cuentaDeUsuario.getUserName(), HashPassword.calcular(contrasenia));
+			cuentaDeUsuario.actualizarContrasenia(contrasenia,HashPassword.calcular(contrasenia));
 		} else {
 			throw new temporal.seguridad.repositorioUsuarios.exceptions.CredencialesNoValidasException("la contrasenia no es valida");
 		}

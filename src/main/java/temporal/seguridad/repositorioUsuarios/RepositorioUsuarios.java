@@ -53,10 +53,5 @@ public class RepositorioUsuarios {
 		// TODO si el usuario no existe, debemos tirar la excepcion UsuarioNoExisteException? o la con que tira directamente el get ya alcanza?
 		return unUsuario;
 	}
-	
-	public void cambiarContrasenia(String unUsername, String nuevaContrasenia) {
-		Usuario unUsuario = buscarUsuario(unUsername);
-		unUsuario.cambiarContrasenia(nuevaContrasenia);
-	}
-	
+
 }

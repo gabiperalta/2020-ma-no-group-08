@@ -1,5 +1,6 @@
 package seguridad.usuario.administrador;
 
+import seguridad.HashPassword;
 import seguridad.usuario.Usuario;
 import seguridad.usuario.estandar.UsuarioEstandar;
 import seguridad.ValidadorContrasenia;
@@ -38,9 +39,9 @@ public class UsuarioAdministrador extends Usuario{
 		String contrasenia = this.generarContrasenia();
 
 		if(validador.esContraseniaValida(contrasenia, usuario.getContraseniasPrevias())) {
-			RepositorioUsuarios.getInstance().cambiarContrasenia(unNombreUsuario, this.generarContrasenia());
-		}
-		else {
+			Usuario unUsuario = RepositorioUsuarios.getInstance().buscarUsuario(unNombreUsuario);
+			unUsuario.actualizarContrasenia(contrasenia, HashPassword.calcular(contrasenia));
+		} else {
 			throw new CredencialesNoValidasException("la contrasenia no es valida");
 		}
 

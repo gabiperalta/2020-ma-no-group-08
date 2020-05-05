@@ -52,12 +52,11 @@ public abstract class Usuario {
 		return contraseniasPrevias;
 	}
 
-	public void cambiarContrasenia(String nuevaContrasenia) {
-		passwordHash = HashPassword.calcular(nuevaContrasenia);
-		passwordPlana = nuevaContrasenia;
-		contraseniasPrevias.add(passwordPlana);
-	}
-
 	public abstract boolean esAdministrador() ;
-	
+
+	public void actualizarContrasenia(String contraseniaPlanaNueva, String contraseniaHasheadaNueva) {
+		passwordPlana = contraseniaPlanaNueva;
+		passwordHash = contraseniaHasheadaNueva;
+		contraseniasPrevias.add(contraseniaPlanaNueva);
+	}
 }
