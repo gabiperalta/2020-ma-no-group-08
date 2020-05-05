@@ -6,8 +6,8 @@ import seguridad.usuario.Usuario;
 
 public class UsuarioEstandar extends Usuario {
 	
-	public UsuarioEstandar(String unNombreOrganizacion, String unaContrasenia) {
-		super(unNombreOrganizacion, unaContrasenia);
+	public UsuarioEstandar(String nombreDeUsuario, String unaContrasenia) {
+		super(nombreDeUsuario, unaContrasenia);
 	}
 
 	@Override
