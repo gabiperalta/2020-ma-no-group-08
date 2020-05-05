@@ -25,7 +25,7 @@ public class RepositorioUsuarios {
 		UsuarioAdministrador administrador1 = new UsuarioAdministrador("admin1", "1234");
 		UsuarioAdministrador administrador2 = new UsuarioAdministrador("admin2", "1234");
 		UsuarioAdministrador administrador3 = new UsuarioAdministrador("admin3", "1234");
-		usuarios = new ArrayList<>();
+		usuarios = new ArrayList<Usuario>();
 		
 		usuarios.add(administrador1);
 		usuarios.add(administrador2);
@@ -49,14 +49,14 @@ public class RepositorioUsuarios {
 	}
 	
 	public Usuario buscarUsuario(String unUsername) {
-		Usuario unUsuario = usuarios.stream().filter((Usuario usuario) -> usuario.getUserName().equals(unUsername)).findFirst().get();
+		Usuario unUsuario = usuarios.stream().filter(usuario -> usuario.getUserName().equals(unUsername)).findFirst().get();
 		// TODO si el usuario no existe, debemos tirar la excepcion UsuarioNoExisteException? o la con que tira directamente el get ya alcanza?
-		return unUsuario;				
+		return unUsuario;
 	}
 	
-	public void cambiarContraseña(String unUsername, String nuevaContrasenia) {
+	public void cambiarContrasenia(String unUsername, String nuevaContrasenia) {
 		Usuario unUsuario = buscarUsuario(unUsername);
-		unUsuario.cambiarContraseña(nuevaContrasenia);
+		unUsuario.cambiarContrasenia(nuevaContrasenia);
 	}
 	
 }

@@ -47,8 +47,12 @@ public abstract class Usuario {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-	
-	public void cambiarContraseña(String nuevaContrasenia) {
+
+	public ArrayList<String> getContraseniasPrevias() {
+		return contraseniasPrevias;
+	}
+
+	public void cambiarContrasenia(String nuevaContrasenia) {
 		passwordHash = HashPassword.calcular(nuevaContrasenia);
 		passwordPlana = nuevaContrasenia;
 		contraseniasPrevias.add(passwordPlana);

@@ -2,9 +2,9 @@ package seguridad.usuario.administrador;
 
 import seguridad.usuario.Usuario;
 import seguridad.usuario.estandar.UsuarioEstandar;
+import seguridad.ValidadorContrasenia;
 import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;
 import temporal.seguridad.repositorioUsuarios.exceptions.CredencialesNoValidasException;
-
 import java.security.SecureRandom;
 
 public class UsuarioAdministrador extends Usuario{
@@ -30,10 +30,20 @@ public class UsuarioAdministrador extends Usuario{
 		// TODO
 	}
 
-	public void restaurarContraseña( String unNombreUsuario ) {
-		// TODO		
-		RepositorioUsuarios.getInstance().cambiarContraseña(unNombreUsuario, this.generarContrasenia());
-		
+	public void blanquearContrasenia( String unNombreUsuario ) throws Exception {
+		// TODO
+
+		Usuario usuario = RepositorioUsuarios.getInstance().buscarUsuario(userName);
+		ValidadorContrasenia validador = new ValidadorContrasenia();
+		String contrasenia = this.generarContrasenia();
+
+		if(validador.esContraseniaValida(contrasenia, usuario.getContraseniasPrevias())) {
+			RepositorioUsuarios.getInstance().cambiarContrasenia(unNombreUsuario, this.generarContrasenia());
+		}
+		else {
+			throw new CredencialesNoValidasException("la contrasenia no es valida");
+		}
+
 	}
 	
 	public void altaUsuarioColaborador(String unNombreUsuario) {
@@ -44,11 +54,11 @@ public class UsuarioAdministrador extends Usuario{
 		RepositorioUsuarios.getInstance().agregarUsuarioEstandar(nuevoUsuario);
 	}
 	
-	public void bajaUsuarioColaborador(String unNombreUsuario, String unaContraseña) throws CredencialesNoValidasException {
-		RepositorioUsuarios.getInstance().eliminarUsuarioEstandar(unNombreUsuario, unaContraseña); // Para boorar un usuario, debo saber sus credenciales
+	public void bajaUsuarioColaborador(String unNombreUsuario, String unaContrasenia) throws CredencialesNoValidasException {
+		RepositorioUsuarios.getInstance().eliminarUsuarioEstandar(unNombreUsuario, unaContrasenia); // Para boorar un usuario, debo saber sus credenciales
 	}
 
-	public void modificacionUsuarioColaborador(String unNombreUsuario, String unaContraseña) {
+	public void modificacionUsuarioColaborador(String unNombreUsuario, String unaContrasenia) {
 		// TODO
 	}
 	

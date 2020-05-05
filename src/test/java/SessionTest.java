@@ -1,4 +1,5 @@
 import junit.framework.TestCase;
+import seguridad.ValidadorContrasenia;
 
 import java.util.ArrayList;
 
