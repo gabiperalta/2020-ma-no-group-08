@@ -23,7 +23,7 @@ public class ValidadorContrasenia {
     }
 
     private boolean cumpleRequisitosRegEx(String contrasenia) {
-        String strRegEx = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$";
+        String strRegEx = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*](?=\\S+$).{8,15}$";
 
         return contrasenia.matches(strRegEx);
     }
