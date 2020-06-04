@@ -1,3 +1,5 @@
+import static org.junit.Assert.assertNotNull;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -52,7 +54,7 @@ public class OperacionDeEgresoTest {
 		builder.setMedioDePago(pesos);
 		builder.setValorOperacion(valorOp);
 		
-		builder.build();
+		assertNotNull(builder.build());
 	}
 	
 }
