@@ -6,6 +6,8 @@ public class Item {
 	private String descripcion;
 	
 	
+	public Item(int i, ETipoItem articulo, String string) {
+	}
 	public double getValor() {
 		return valor;
 	}

@@ -13,16 +13,16 @@ public class OperacionEgresoBuilder {
 	 private EntidadOperacion entidadDestino; 
 	  
 	  
-	 public OperacionEgresoBuilder(ArrayList<Item>items, MedioDePago medioPago, DocumentoComercial doc,
-			 					   Date fecha, double valorOperacion, EntidadOperacion origen, EntidadOperacion destino) {
-		 this.setItems(items);
-		 this.setMedioDePago(medioPago);
-		 this.setDocumento(doc);
-		 this.setFecha(fecha);
-		 this.setValorOperacion(valorOperacion);
-		 this.setEntidadOrigen(origen);
-		 this.setEntidadDestino(destino);
-	 }
+	// public OperacionEgresoBuilder(ArrayList<Item>items, MedioDePago medioPago, DocumentoComercial doc,
+	//		 					   Date fecha, double valorOperacion, EntidadOperacion origen, EntidadOperacion destino) {
+	//	 this.setItems(items);
+	//	 this.setMedioDePago(medioPago);
+	//	 this.setDocumento(doc);
+	//	 this.setFecha(fecha);
+	//	 this.setValorOperacion(valorOperacion);
+	//	 this.setEntidadOrigen(origen);
+	//	 this.setEntidadDestino(destino);
+	// }
 
 
 	public ArrayList<Item> getItems() {

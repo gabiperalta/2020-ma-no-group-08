@@ -9,7 +9,10 @@ public class Efectivo implements MedioDePago{
         this.puntoDePago = puntoDePago;
     }
 
-    public void informacionARegistrar() {
+    public Efectivo() {
+	}
+
+	public void informacionARegistrar() {
 
     }
 }
