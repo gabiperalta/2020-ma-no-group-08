@@ -2,6 +2,11 @@ package seguridad.sesion.exceptions;
 
 public class CredencialesNoValidasException extends Exception {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public CredencialesNoValidasException() {
 	}
 

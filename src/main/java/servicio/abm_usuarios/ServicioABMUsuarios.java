@@ -1,45 +1,24 @@
-package seguridad.usuario.administrador;
+package servicio.abm_usuarios;
 
+import java.security.SecureRandom;
+
+import dominio.cuentasUsuarios.CuentaUsuario;
+import dominio.cuentasUsuarios.Organizacion;
+import dominio.cuentasUsuarios.perfil.PerfilEstandar;
 import seguridad.HashPassword;
-import seguridad.usuario.Usuario;
-import seguridad.usuario.estandar.UsuarioEstandar;
 import seguridad.ValidadorContrasenia;
 import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;
 import temporal.seguridad.repositorioUsuarios.exceptions.CredencialesNoValidasException;
-import java.security.SecureRandom;
 
-public class UsuarioAdministrador extends Usuario{
-
-	public UsuarioAdministrador(String unUserName, String unaPassword)  {
-		super(unUserName, unaPassword);
-	}
-	
-	@Override
-	public boolean esAdministrador() {
-		return true;
-	}
-	
-	public void altaOrganizacion() {
-		// TODO
-	}
-	
-	public void bajaOrganizavion() {
-		// TODO
-	}
-	
-	public void modificacionOrganizavion() {
-		// TODO
-	}
-
+public class ServicioABMUsuarios {
 	public void blanquearContrasenia( String unNombreUsuario ) throws Exception {
 		// TODO
 
-		Usuario usuario = RepositorioUsuarios.getInstance().buscarUsuario(userName);
+		CuentaUsuario unUsuario = RepositorioUsuarios.getInstance().buscarUsuario(unNombreUsuario);
 		ValidadorContrasenia validador = new ValidadorContrasenia();
 		String contrasenia = this.generarContrasenia();
 
-		if(validador.esContraseniaValida(contrasenia, usuario.getContraseniasPrevias())) {
-			Usuario unUsuario = RepositorioUsuarios.getInstance().buscarUsuario(unNombreUsuario);
+		if(validador.esContraseniaValida(contrasenia, unUsuario.getContraseniasPrevias())) {
 			unUsuario.actualizarContrasenia(contrasenia, HashPassword.calcular(contrasenia));
 		} else {
 			throw new CredencialesNoValidasException("la contrasenia no es valida");
@@ -47,11 +26,12 @@ public class UsuarioAdministrador extends Usuario{
 
 	}
 	
-	public void altaUsuarioColaborador(String unNombreUsuario) {
+	public void altaUsuarioColaborador(String unNombreUsuario, Organizacion organizacion) {
 		
-		String unaContrasenia = this.generarContrasenia();
+		String unaContrasenia = this.generarContrasenia(); // TODO, Debo ver donde verifico que la organizacion exista
 		
-		UsuarioEstandar nuevoUsuario = new UsuarioEstandar(unNombreUsuario, unaContrasenia);
+		PerfilEstandar nuevoPerfil = new PerfilEstandar(unNombreUsuario, organizacion);
+		CuentaUsuario nuevoUsuario = new CuentaUsuario( nuevoPerfil, unaContrasenia);
 		RepositorioUsuarios.getInstance().agregarUsuarioEstandar(nuevoUsuario);
 	}
 	
@@ -63,7 +43,7 @@ public class UsuarioAdministrador extends Usuario{
 		// TODO
 	}
 	
-	public String generarContrasenia() {
+	private String generarContrasenia() {
 		
 		int longitudContrasenia = 14;
 		byte[] arrayAux = new byte[longitudContrasenia];
@@ -78,5 +58,4 @@ public class UsuarioAdministrador extends Usuario{
 		
 		return generatedString;
 	}
-	
 }

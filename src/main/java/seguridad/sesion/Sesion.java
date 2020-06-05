@@ -1,42 +1,15 @@
 package seguridad.sesion;
 
-import seguridad.HashPassword;
-import seguridad.sesion.exceptions.CredencialesNoValidasException;
-import seguridad.usuario.Usuario;
-import seguridad.ValidadorContrasenia;
-import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;
+import seguridad.sesion.exceptions.PermisoDenegadoException;
+import servicio.abm_usuarios.ServicioABMUsuarios;
 
-public class Sesion {
-
-	private Usuario cuentaDeUsuario;
-	
-	public Sesion() {
-	}
-
-	public void logIn(String nombreUsuario, String contrasenia) throws CredencialesNoValidasException {
-		cuentaDeUsuario = RepositorioUsuarios.getInstance().buscarUsuario(nombreUsuario);
-		
-		if(!cuentaDeUsuario.verificarContrasenia(contrasenia)) { // la cuenta de usuario determina si la contraseña esta bien, y si no lo
-			cuentaDeUsuario = null; 							 // esta, disminuye la cantidad de intentnos pendientes
-			throw new CredencialesNoValidasException();
-		}
-	}
-	
-	public void logOut() {
-		cuentaDeUsuario = null;
-	}
-
-	public void cambiarContrasenia(String contrasenia) throws Exception{
-		ValidadorContrasenia validador = new ValidadorContrasenia();
-		if (validador.esContraseniaValida(contrasenia,cuentaDeUsuario.getContraseniasPrevias())) {
-			cuentaDeUsuario.actualizarContrasenia(contrasenia,HashPassword.calcular(contrasenia));
-		} else {
-			throw new temporal.seguridad.repositorioUsuarios.exceptions.CredencialesNoValidasException("la contrasenia no es valida");
-		}
-	}
-	
-	
+public interface Sesion {
+	public String getNombre();
+	// OPERACIONES USUARIOS ADMINISTRADORES
+	public ServicioABMUsuarios abmUsuarios() throws PermisoDenegadoException;
+	public void abOrganizaciones() throws PermisoDenegadoException;
+	// OPERACIONES USUARIOS ESTANDAR
+	public void abmEntidadesJuridicas() throws PermisoDenegadoException;
+	public void abmEntidadesBase() throws PermisoDenegadoException;
+	public void abOperacion() throws PermisoDenegadoException;
 }
-
-
-

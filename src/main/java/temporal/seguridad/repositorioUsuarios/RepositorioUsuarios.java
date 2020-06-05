@@ -2,15 +2,14 @@ package temporal.seguridad.repositorioUsuarios;
 
 import java.util.ArrayList;
 
-import seguridad.usuario.Usuario;
-import seguridad.usuario.administrador.UsuarioAdministrador;
-import seguridad.usuario.estandar.UsuarioEstandar;
+import dominio.cuentasUsuarios.CuentaUsuario;
+import dominio.cuentasUsuarios.perfil.PerfilAdministrador;
 import temporal.seguridad.repositorioUsuarios.exceptions.CredencialesNoValidasException;
 
 // SINGLETON
 public class RepositorioUsuarios {
 	
-	private ArrayList<Usuario> usuarios;
+	private ArrayList<CuentaUsuario> usuarios;
 	
 	
 	private static class RepositorioUsuariosHolder {		
@@ -22,24 +21,29 @@ public class RepositorioUsuarios {
     }
 	
 	public RepositorioUsuarios() {
-		UsuarioAdministrador administrador1 = new UsuarioAdministrador("admin1", "1234");
-		UsuarioAdministrador administrador2 = new UsuarioAdministrador("admin2", "1234");
-		UsuarioAdministrador administrador3 = new UsuarioAdministrador("admin3", "1234");
-		usuarios = new ArrayList<Usuario>();
+		
+		PerfilAdministrador perfilAdmin1 = new PerfilAdministrador("admin1");
+		PerfilAdministrador perfilAdmin2 = new PerfilAdministrador("admin2");
+		PerfilAdministrador perfilAdmin3 = new PerfilAdministrador("admin3");
+		CuentaUsuario administrador1 = new CuentaUsuario(perfilAdmin1, "1234");
+		CuentaUsuario administrador2 = new CuentaUsuario(perfilAdmin2, "1234");
+		CuentaUsuario administrador3 = new CuentaUsuario(perfilAdmin3, "1234");
+		usuarios = new ArrayList<CuentaUsuario>();
 		
 		usuarios.add(administrador1);
 		usuarios.add(administrador2);
 		usuarios.add(administrador3); // Por defecto se crea con estos 3 admins
+		
 	}
 
 	
 	
-	public void agregarUsuarioEstandar(UsuarioEstandar unUsuarioEstandar) {
+	public void agregarUsuarioEstandar(CuentaUsuario unUsuarioEstandar) {
 		usuarios.add(unUsuarioEstandar);
 	}
 	
 	public void eliminarUsuarioEstandar(String unNombreUsuario, String unaContrasenia) throws CredencialesNoValidasException{
-		Usuario usuarioABorrar = this.buscarUsuario(unNombreUsuario);
+		CuentaUsuario usuarioABorrar = this.buscarUsuario(unNombreUsuario);
 		if(usuarioABorrar.verificarContrasenia(unaContrasenia)) {
 			usuarios.remove(usuarioABorrar);
 		}
@@ -48,8 +52,8 @@ public class RepositorioUsuarios {
 		}
 	}
 	
-	public Usuario buscarUsuario(String unUsername) {
-		Usuario unUsuario = usuarios.stream().filter(usuario -> usuario.getUserName().equals(unUsername)).findFirst().get();
+	public CuentaUsuario buscarUsuario(String unUsername) {
+		CuentaUsuario unUsuario = usuarios.stream().filter(usuario -> usuario.getUserName().equals(unUsername)).findFirst().get();
 		// TODO si el usuario no existe, debemos tirar la excepcion UsuarioNoExisteException? o la con que tira directamente el get ya alcanza?
 		return unUsuario;
 	}

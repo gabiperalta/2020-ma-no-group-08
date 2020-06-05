@@ -1,28 +1,24 @@
-package seguridad.usuario;
+package dominio.cuentasUsuarios;
 
 import java.util.ArrayList;
 
+import dominio.cuentasUsuarios.perfil.Perfil;
 import seguridad.HashPassword;
 
-public abstract class Usuario {
-	
-	protected String userName;
+public class CuentaUsuario {
+
+	protected Perfil perfil;
 	protected String passwordHash;
 	protected String passwordPlana; // TODO. este atributo sera usado unicamente para testeo, posteriormente sera eliminado para quedar solo el hash
 	protected ArrayList<String> contraseniasPrevias;
 	protected Integer intentosPendientes;
 
-	public Usuario(String unUserName, String unaPassword) {
-		userName = unUserName;
+	public CuentaUsuario(Perfil unPerfil, String unaPassword) {
+		perfil = unPerfil;
 		passwordHash = HashPassword.calcular(unaPassword);
 		passwordPlana = unaPassword;
 		contraseniasPrevias = new ArrayList<String>();
 		intentosPendientes = 3;
-	}
-	
-	protected String calcularHash(String Password) {
-		return Password; // TODO ahora veo como es que se calcula el hash de una password
-		// TODO posiblemente delegue esta funicon a una clase maestra de logueos
 	}
 	
 	public boolean verificarContrasenia(String contrasenia) {
@@ -41,22 +37,25 @@ public abstract class Usuario {
 	}
 	
 	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
+		return perfil.getNombre();
 	}
 
 	public ArrayList<String> getContraseniasPrevias() {
 		return contraseniasPrevias;
 	}
 
-	public abstract boolean esAdministrador() ;
+	public boolean esAdministrador() {
+		return perfil.esUsuarioAdministrador();
+	}
+	
+	public Organizacion getOrganizacion() {
+		return perfil.getOrganizacion();
+	}
 
 	public void actualizarContrasenia(String contraseniaPlanaNueva, String contraseniaHasheadaNueva) {
 		passwordPlana = contraseniaPlanaNueva;
 		passwordHash = contraseniaHasheadaNueva;
+		intentosPendientes = 3;
 		contraseniasPrevias.add(contraseniaPlanaNueva);
 	}
 }
