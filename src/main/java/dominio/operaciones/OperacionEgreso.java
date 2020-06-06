@@ -4,16 +4,23 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class OperacionEgreso {
-	 private ArrayList<Item> items;
-	 private MedioDePago medioDePago;
-	 private DocumentoComercial documento;
-	 private Date fecha; 
-	 private double valorOperacion; 
-	 private EntidadOperacion entidadOrigen;
-	 private EntidadOperacion entidadDestino;
-	 
-	 public OperacionEgreso(ArrayList<Item> items2, MedioDePago medioDePago2, DocumentoComercial documento2, Date fecha2,
-			double valorOperacion2, EntidadOperacion entidadOrigen2, EntidadOperacion entidadDestino2) {
+	private ArrayList<Item> items;
+	private MedioDePago medioDePago;
+	private DocumentoComercial documento;
+	private Date fecha;
+	private double valorOperacion;
+	private EntidadOperacion entidadOrigen;
+	private EntidadOperacion entidadDestino;
+
+	public OperacionEgreso(ArrayList<Item> items2, MedioDePago medioDePago2, DocumentoComercial documento2, Date fecha2,
+						   double valorOperacion2, EntidadOperacion entidadOrigen2, EntidadOperacion entidadDestino2) {
+		this.items = items2;
+		this.medioDePago = medioDePago2;
+		this.documento = documento2;
+		this.fecha = fecha2;
+		this.valorOperacion = valorOperacion2;
+		this.entidadOrigen = entidadOrigen2;
+		this.entidadDestino = entidadDestino2;
 	}
 
 	public ArrayList<Item> getItems() {
@@ -71,5 +78,5 @@ public class OperacionEgreso {
 	public void setEntidadDestino(EntidadOperacion entidadDestino) {
 		this.entidadDestino = entidadDestino;
 	}
-	
+
 }

@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class OperacionEgresoBuilder {
-	 private ArrayList<Item> items;
-	 private MedioDePago medioDePago;
-	 private DocumentoComercial documento;
-	 private Date fecha; 
-	 private double valorOperacion; 
-	 private EntidadOperacion entidadOrigen;
-	 private EntidadOperacion entidadDestino; 
+	private ArrayList<Item> items;
+	private MedioDePago medioDePago;
+	private DocumentoComercial documento;
+	private Date fecha;
+	private double valorOperacion;
+	private EntidadOperacion entidadOrigen;
+	private EntidadOperacion entidadDestino;
 	  
 	  
 	// public OperacionEgresoBuilder(ArrayList<Item>items, MedioDePago medioPago, DocumentoComercial doc,
@@ -94,9 +94,9 @@ public class OperacionEgresoBuilder {
 		this.entidadDestino = entidadDestino;
 	}
 	 
-	 public OperacionEgreso build() {
-		 return new OperacionEgreso(items,medioDePago,documento,fecha,valorOperacion,entidadOrigen,entidadDestino);
-	 }
-	 
-	 
+	public OperacionEgreso build() {
+		return new OperacionEgreso(items,medioDePago,documento,fecha,valorOperacion,entidadOrigen,entidadDestino);
+	}
+
+
 }
