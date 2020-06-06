@@ -3,6 +3,7 @@ package dominio.cuentasUsuarios;
 import java.util.ArrayList;
 
 import dominio.cuentasUsuarios.perfil.Perfil;
+import dominio.entidades.Organizacion;
 import seguridad.HashPassword;
 
 public class CuentaUsuario {

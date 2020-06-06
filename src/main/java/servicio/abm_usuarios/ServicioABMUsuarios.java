@@ -3,8 +3,8 @@ package servicio.abm_usuarios;
 import java.security.SecureRandom;
 
 import dominio.cuentasUsuarios.CuentaUsuario;
-import dominio.cuentasUsuarios.Organizacion;
 import dominio.cuentasUsuarios.perfil.PerfilEstandar;
+import dominio.entidades.Organizacion;
 import seguridad.HashPassword;
 import seguridad.ValidadorContrasenia;
 import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;

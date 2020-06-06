@@ -1,5 +1,6 @@
 package seguridad.sesion;
 
+import dominio.entidades.Organizacion;
 import seguridad.sesion.exceptions.PermisoDenegadoException;
 import servicio.abm_usuarios.ServicioABMUsuarios;
 

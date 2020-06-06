@@ -1,5 +1,7 @@
 package dominio.cuentasUsuarios.perfil;
 
+import dominio.entidades.Organizacion;
+
 public class PerfilAdministrador implements Perfil {
 
 	private String nombre;
