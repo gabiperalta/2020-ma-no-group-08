@@ -1,9 +1,5 @@
 package dominio.entidades;
 
-import dominio.cuentasUsuarios.CuentaUsuario;
-import dominio.cuentasUsuarios.perfil.PerfilAdministrador;
-import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;
-import temporal.seguridad.repositorioUsuarios.exceptions.CredencialesNoValidasException;
 
 import java.util.ArrayList;
 
@@ -22,7 +18,7 @@ public class RepoEntidadesJuridicas {
     public RepoEntidadesJuridicas() {
 
         EntidadJuridica entidad1 = new Empresa(ETipoEmpresa.MEDIANA_T1, 3, "comercio", 2000.54, "0001", "ficticia1", "23453456", "200", "caba 322");
-        EntidadJuridica entidad2 = new OSC();
+        EntidadJuridica entidad2 = new OSC("0002", "ficticia3", "23131", "111", "obligado 11");
         EntidadJuridica entidad3 = new Empresa(ETipoEmpresa.MICRO, 1, "comercio", 100.00, "0001", "ficticia2", "4453456", "200", "silveyra 4343");
 
         entidadesJuridicas = new ArrayList<EntidadJuridica>();
