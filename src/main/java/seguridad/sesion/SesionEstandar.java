@@ -3,6 +3,8 @@ package seguridad.sesion;
 import dominio.entidades.Organizacion;
 import seguridad.sesion.exceptions.PermisoDenegadoException;
 import servicio.abm_usuarios.ServicioABMUsuarios;
+import servicio.abm_usuarios.ServicioABMEntidadesJuridicas;
+
 
 public class SesionEstandar implements Sesion {
 	private String nombre;
@@ -14,7 +16,9 @@ public class SesionEstandar implements Sesion {
 	}
 	
 	@Override
-	public void abmEntidadesJuridicas() {
+	public ServicioABMEntidadesJuridicas abmEntidadesJuridicas() throws PermisoDenegadoException{
+
+
 		// TODO
 	}
 	

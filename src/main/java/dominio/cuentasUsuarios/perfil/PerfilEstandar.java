@@ -18,6 +18,11 @@ public class PerfilEstandar implements Perfil{
 	}
 
 	@Override
+	public void setNombre(String unNombre) {
+		nombre = unNombre;
+	}
+	
+	@Override
 	public String getNombre() {
 		return nombre;
 	}

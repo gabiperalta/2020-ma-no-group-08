@@ -11,7 +11,6 @@ import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;
 
 public class AdministradorDeSesion {
 	private Sesion sesion;
-	
 	public AdministradorDeSesion() {
 	}
 
@@ -19,7 +18,7 @@ public class AdministradorDeSesion {
 		CuentaUsuario cuentaDeUsuario = RepositorioUsuarios.getInstance().buscarUsuario(nombreUsuario);
 		
 		
-		if(cuentaDeUsuario.verificarContrasenia(contrasenia)) { // la cuenta de usuario determina si la contraseña esta bien, y si no lo
+		if(cuentaDeUsuario.verificarContrasenia(contrasenia)) { // la cuenta de usuario determina si la contraseï¿½a esta bien, y si no lo
 			if(cuentaDeUsuario.esAdministrador()) {				// esta, disminuye la cantidad de intentnos pendientes
 				sesion = new SesionAdministrador(cuentaDeUsuario.getUserName());
 			}
