@@ -32,8 +32,11 @@ public class RepoOrganizaciones {
         organizaciones.add(organizacion3);
     }
 
-    public void agregarOrganizacion(Organizacion organizacion) {
-        organizaciones.add(organizacion);
+    public void agregarOrganizacion(String nombreOrganizacion) {
+        if (this.buscarOrganizacion(nombreOrganizacion) == null) {
+            Organizacion organizacion = new Organizacion(nombreOrganizacion);
+            organizaciones.add(organizacion);
+        }
     }
 
     public void eliminarOrganizacion(String nombreOrganizacion) {
