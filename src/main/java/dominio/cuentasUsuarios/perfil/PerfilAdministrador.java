@@ -14,6 +14,11 @@ public class PerfilAdministrador implements Perfil {
 	public boolean esUsuarioAdministrador() {
 		return true;
 	}
+	
+	@Override
+	public void setNombre(String unNombre) {
+		nombre = unNombre;
+	}
 
 	@Override
 	public String getNombre() {

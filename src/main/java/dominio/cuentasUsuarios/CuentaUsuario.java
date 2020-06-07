@@ -37,6 +37,10 @@ public class CuentaUsuario {
 		return intentosPendientes > 0;
 	}
 	
+	public void setUserName(String unNombreUsuario) {
+		perfil.setNombre(unNombreUsuario);
+	}
+	
 	public String getUserName() {
 		return perfil.getNombre();
 	}
