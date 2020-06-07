@@ -3,7 +3,7 @@ package seguridad.sesion;
 import dominio.entidades.Organizacion;
 import seguridad.sesion.exceptions.PermisoDenegadoException;
 import servicio.abm_usuarios.ServicioABMUsuarios;
-import servicio.abm_usuarios.ServicioABMEntidadesJuridicas;
+import servicio.abm_entidades.ServicioABMEntidadesJuridicas;
 
 
 public class SesionEstandar implements Sesion {

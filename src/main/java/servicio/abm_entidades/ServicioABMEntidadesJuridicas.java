@@ -1,10 +1,7 @@
-package servicio.abm_usuarios;
+package servicio.abm_entidades;
 
-import dominio.entidades.EActividad;
 import dominio.entidades.ETipoEmpresa;
 import dominio.entidades.Organizacion;
-import dominio.entidades.Empresa;
-import dominio.entidades.OSC;
 
 
 //TODO
@@ -24,7 +21,9 @@ public class ServicioABMEntidadesJuridicas {
 
     public void eliminarEntidadJuridica(Object empresa) throws Exception {
 
-
+        if (this.buscarOrganizacion(nombreOrganizacion) == null) {
+            RepoOrganizaciones.getInstance().eliminarOrganizacion(nombreOrganizacion);
+        }
     }
 
     public void editarEntidadJuridica(Object empresa) throws Exception {
