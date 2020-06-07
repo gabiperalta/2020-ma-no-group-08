@@ -1,40 +1,50 @@
 package servicio.abm_entidades;
 
-import dominio.entidades.ETipoEmpresa;
-import dominio.entidades.Organizacion;
+import dominio.entidades.*;
 
 
 //TODO
 
 public class ServicioABMEntidadesJuridicas {
 
-    public void crearEmpresa(Organizacion organizacion, Integer cantidadPersonal, ETipoEmpresa tipo, EActividad actividad, Double promedioVentas, String razonSocial, String nombreFicticio, String cuit, String codigoIGJ, String direccionPostal) throws Exception {
+    public void crearEmpresa(Integer cantidadPersonal, ETipoEmpresa tipo, String actividad, Double promedioVentas, String razonSocial, String nombreFicticio, String cuit, String codigoIGJ, String direccionPostal) throws Exception {
 
-
-    }
-
-    public void crearOSC(Organizacion organizacion, String razonSocial, String nombreFicticio, String cuit, String codigoIGJ, String direccionPostal) throws Exception {
-
+        if (this.buscarEntidadJuridica(razonSocial) == null) {
+            RepoEntidadesJuridicas.getInstance().agregarEntidadEmpresa( tipo, cantidadPersonal,  actividad,  promedioVentas,  razonSocial,  nombreFicticio,  cuit,  codigoIGJ,  direccionPostal);
+        }
 
     }
 
+    public void crearOSC( String razonSocial, String nombreFicticio, String cuit, String codigoIGJ, String direccionPostal) throws Exception {
 
-    public void eliminarEntidadJuridica(Object empresa) throws Exception {
+        if (this.buscarEntidadJuridica(razonSocial) == null) {
+            RepoEntidadesJuridicas.getInstance().agregarEntidadOSC(razonSocial,  nombreFicticio,  cuit,  codigoIGJ,  direccionPostal);
+        }
 
-        if (this.buscarOrganizacion(nombreOrganizacion) == null) {
-            RepoOrganizaciones.getInstance().eliminarOrganizacion(nombreOrganizacion);
+    }
+
+
+    public void eliminarEntidadJuridica(String razonSocial) throws Exception {
+
+        if (this.buscarEntidadJuridica(razonSocial) == null) {
+            RepoEntidadesJuridicas.getInstance().eliminarEntidadJuridica(razonSocial);
         }
     }
 
+    //TODO: como se que dato modificar?
     public void editarEntidadJuridica(Object empresa) throws Exception {
 
 
     }
 
+    public Object buscarEntidadJuridica (String razonSocial) {
+        return RepoEntidadesJuridicas.getInstance().buscarEntidadJuridica(razonSocial);
+    }
 
-    public void listarEntidadJuridica(Organizacion organizacion) throws Exception {
 
-        organizacion.getEntidades();
+    public void  listarEntidadJuridica(String organizacion) throws Exception {
+        Organizacion org = RepoOrganizaciones.buscarOrganizacion(organizacion);
+        org.getEntidades();
     }
 
 }

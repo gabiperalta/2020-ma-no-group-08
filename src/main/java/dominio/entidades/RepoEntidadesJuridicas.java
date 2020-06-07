@@ -41,6 +41,15 @@ public class RepoEntidadesJuridicas {
         }
     }
 
+    public void agregarEntidadOSC(String razonSocial,
+                                      String nombreFicticio, String cuit, String codigoIGJ, String direccionPostal) {
+        if (this.buscarEntidadJuridica(razonSocial) == null) {
+            EntidadJuridica entidadJuridica = new OSC(razonSocial, nombreFicticio,  cuit,  codigoIGJ,  direccionPostal);
+            entidadesJuridicas.add(entidadJuridica);
+        }
+    }
+
+
     public void eliminarEntidadJuridica(String razonSocial) {
         EntidadJuridica entidadABorrar = this.buscarEntidadJuridica(razonSocial);
         if (entidadABorrar != null) {

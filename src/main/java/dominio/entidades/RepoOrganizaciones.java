@@ -8,7 +8,7 @@ import temporal.seguridad.repositorioUsuarios.exceptions.CredencialesNoValidasEx
 import java.util.ArrayList;
 
 public class RepoOrganizaciones {
-    private ArrayList<Organizacion> organizaciones;
+    private static ArrayList<Organizacion> organizaciones;
 
 
     private static class RepositorioOrganizacionesHolder {
@@ -46,7 +46,7 @@ public class RepoOrganizaciones {
         }
     }
 
-    public Organizacion buscarOrganizacion(String nombreOrganizacion) {
+    public static Organizacion buscarOrganizacion(String nombreOrganizacion) {
         return organizaciones.stream().filter(org -> org.getNombre().equals(nombreOrganizacion)).findFirst().get();
     }
 }
