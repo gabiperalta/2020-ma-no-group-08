@@ -33,8 +33,6 @@ public class RepoEntidadesBase {
         }
     }
 
-    }
-
 
     public void eliminarEntidadBase(String nombreFicticio) {
         EntidadBase entidadABorrar = this.buscarEntidadBase(nombreFicticio);
