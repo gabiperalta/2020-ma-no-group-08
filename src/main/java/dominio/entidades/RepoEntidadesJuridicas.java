@@ -4,7 +4,7 @@ package dominio.entidades;
 import java.util.ArrayList;
 
 public class RepoEntidadesJuridicas {
-    private ArrayList<EntidadJuridica> entidadesJuridicas;
+    private static ArrayList<EntidadJuridica> entidadesJuridicas;
 
 
     private static class RepositorioEntidadesJuridicasHolder {
@@ -53,7 +53,7 @@ public class RepoEntidadesJuridicas {
         }
     }
 
-    public EntidadJuridica buscarEntidadJuridica(String razonSocial) {
+    public static EntidadJuridica buscarEntidadJuridica(String razonSocial) {
         return entidadesJuridicas.stream().filter(entidad -> entidad.getRazonSocial().equals(razonSocial)).findFirst().get();
     }
 }
