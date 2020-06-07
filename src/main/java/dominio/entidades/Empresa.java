@@ -5,7 +5,7 @@ public class Empresa extends EntidadJuridica{
     protected ETipoEmpresa tipo;
     protected Integer cantidadPersonal;
     protected EActividad actividad;
-    protected double promedioVentas;
+    protected Double promedioVentas;
 
 
     public void categorizar() {

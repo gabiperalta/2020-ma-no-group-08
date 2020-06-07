@@ -14,7 +14,6 @@ abstract class EntidadJuridica {
 
 
 
-
     public String getRazonSocial() {
         return razonSocial;
     }
