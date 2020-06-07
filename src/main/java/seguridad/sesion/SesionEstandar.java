@@ -16,7 +16,7 @@ public class SesionEstandar implements Sesion {
 	}
 	
 	@Override
-	public ServicioABMEntidadesJuridicas abmEntidadesJuridicas() throws PermisoDenegadoException{
+	public void abmEntidadesJuridicas() throws PermisoDenegadoException{
 
 
 		// TODO
