@@ -19,12 +19,12 @@ public class SesionEstandar implements Sesion {
 	public void abmEntidadesJuridicas() throws PermisoDenegadoException{
 
 
-		// TODO
+		throw new PermisoDenegadoException("No tienes los permisos necesarios para realizar esta operacion");
 	}
 	
 	@Override
-	public void abmEntidadesBase() {
-		// TODO
+	public void abmEntidadesBase() throws PermisoDenegadoException{
+		throw new PermisoDenegadoException("No tienes los permisos necesarios para realizar esta operacion");
 	}
 	
 	@Override
