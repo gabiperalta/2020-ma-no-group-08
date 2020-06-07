@@ -28,20 +28,15 @@ public class RepoEntidadesJuridicas {
         entidadesJuridicas.add(entidad3);
     }
 
-    public void agregarEntidadEmpresa(ETipoEmpresa tipo, Integer cantidadPersonal, String actividad, Double promedioVentas, String razonSocial,
-                                      String nombreFicticio, String cuit, String codigoIGJ, String direccionPostal) {
-        if (this.buscarEntidadJuridica(razonSocial) == null) {
-            EntidadJuridica entidadJuridica = new Empresa( tipo, cantidadPersonal,  actividad,  promedioVentas,  razonSocial,
-                     nombreFicticio,  cuit,  codigoIGJ,  direccionPostal);
-            entidadesJuridicas.add(entidadJuridica);
+    public void agregarEntidadEmpresa(Empresa empresa) {
+        if (this.buscarEntidadJuridica(empresa.getRazonSocial()) == null) {
+            entidadesJuridicas.add(empresa);
         }
     }
 
-    public void agregarEntidadOSC(String razonSocial,
-                                      String nombreFicticio, String cuit, String codigoIGJ, String direccionPostal) {
-        if (this.buscarEntidadJuridica(razonSocial) == null) {
-            EntidadJuridica entidadJuridica = new OSC(razonSocial, nombreFicticio,  cuit,  codigoIGJ,  direccionPostal);
-            entidadesJuridicas.add(entidadJuridica);
+    public void agregarEntidadOSC(OSC osc) {
+        if (this.buscarEntidadJuridica(osc.getRazonSocial()) == null) {
+            entidadesJuridicas.add(osc);
         }
     }
 

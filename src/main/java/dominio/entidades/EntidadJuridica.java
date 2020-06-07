@@ -1,6 +1,6 @@
 package dominio.entidades;
 
-abstract class EntidadJuridica {
+public abstract class EntidadJuridica {
 
     protected String razonSocial;
     protected String nombreFicticio;

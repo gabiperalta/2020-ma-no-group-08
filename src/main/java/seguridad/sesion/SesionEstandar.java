@@ -2,6 +2,7 @@ package seguridad.sesion;
 
 import dominio.entidades.Organizacion;
 import seguridad.sesion.exceptions.PermisoDenegadoException;
+import servicio.abm_entidades.ServicioABMEntidadesBase;
 import servicio.abm_usuarios.ServicioABMUsuarios;
 import servicio.abm_entidades.ServicioABMEntidadesJuridicas;
 
@@ -16,15 +17,13 @@ public class SesionEstandar implements Sesion {
 	}
 	
 	@Override
-	public void abmEntidadesJuridicas() throws PermisoDenegadoException{
-
-
-		throw new PermisoDenegadoException("No tienes los permisos necesarios para realizar esta operacion");
+	public ServicioABMEntidadesJuridicas abmEntidadesJuridicas(){
+		return new ServicioABMEntidadesJuridicas();
 	}
 	
 	@Override
-	public void abmEntidadesBase() throws PermisoDenegadoException{
-		throw new PermisoDenegadoException("No tienes los permisos necesarios para realizar esta operacion");
+	public ServicioABMEntidadesBase abmEntidadesBase() {
+		return new ServicioABMEntidadesBase();
 	}
 	
 	@Override
