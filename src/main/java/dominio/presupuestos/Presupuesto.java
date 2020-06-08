@@ -5,18 +5,20 @@ import java.util.ArrayList;
 import dominio.operaciones.EntidadOperacion;
 import dominio.operaciones.Item;
 
-public class Presupuesto {
+public class Presupuesto{
 	private EntidadOperacion proveedor;
 	private ArrayList<Item> items;
-	private int precioTotal;
+	private int montoTotal;
 	
 	
-	public int getPrecioTotal() {
-		return precioTotal;
+	public double getMontoTotal() {
+		return this.items.stream()
+	      			.mapToInt(item -> item.getValor())
+	      			.sum();
 	}
 
-	public void setPrecioTotal(int precioTotal) {
-		this.precioTotal = precioTotal;
+	public void setmontoTotal(int montoTotal) {
+		this.montoTotal = montoTotal;
 	}
 
 	public void agregarItem(Item item) {
@@ -34,12 +36,13 @@ public class Presupuesto {
 		this.proveedor = proveedor;
 	}
 
-	public Presupuesto compareTo(Presupuesto p2) {
-		if(this.precioTotal < p2.precioTotal) {
-			return this;
+	public int compareTo(Presupuesto p2) {
+		if(this.montoTotal < p2.montoTotal) {
+			return this.montoTotal;
 		}
 		else {
-			return p2;
+			return p2.montoTotal;
 		}
 	}
+
 }

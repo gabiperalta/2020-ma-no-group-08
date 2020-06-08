@@ -2,16 +2,21 @@ package dominio.presupuestos;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+import java.util.Comparator;
 
 import dominio.operaciones.OperacionEgreso;
 
 public class CriterioMenorPrecio implements CriterioLicitacion{
 
 	@Override
-	public Presupuesto validar(OperacionEgreso operacion, ArrayList<Presupuesto> presupuestos) {
-		List<Presupuesto> presupuestosOrdenados = Collections.sort(presupuestos, (p1,p2)->p1.compareTo(p2));
-		return presupuestosOrdenados.get(0);
+	public int validar(OperacionEgreso operacion, ArrayList<Presupuesto> presupuestos) {
+		Collections.sort(presupuestos, new Comparator()){
+			@Override
+			public int compare(Presupuesto p1, Presupuesto p2) {
+				return new Integer(p1.getMontoTotal().compareTo(new Integer(p2.getMontoTotal()));
+			}
+		}
+		
 	}
-	
+		
 }
