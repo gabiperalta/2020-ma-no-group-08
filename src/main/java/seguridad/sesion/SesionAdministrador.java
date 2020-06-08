@@ -1,6 +1,9 @@
 package seguridad.sesion;
 
 import seguridad.sesion.exceptions.PermisoDenegadoException;
+import servicio.abOperaciones.ServicioABOperaciones;
+import servicio.abm_entidades.ServicioABMEntidadesBase;
+import servicio.abm_entidades.ServicioABMEntidadesJuridicas;
 import servicio.abm_usuarios.ServicioABMUsuarios;
 
 public class SesionAdministrador implements Sesion {
@@ -25,21 +28,19 @@ public class SesionAdministrador implements Sesion {
 		return nombre;
 	}
 
-	
 
-	
 	@Override
-	public void abmEntidadesJuridicas() throws PermisoDenegadoException{
+	public ServicioABMEntidadesJuridicas abmEntidadesJuridicas() throws PermisoDenegadoException{
 		throw new PermisoDenegadoException("No tienes los permisos necesarios para realizar esta operacion");		
 	}
 
 	@Override
-	public void abmEntidadesBase() throws PermisoDenegadoException{
+	public ServicioABMEntidadesBase abmEntidadesBase() throws PermisoDenegadoException{
 		throw new PermisoDenegadoException("No tienes los permisos necesarios para realizar esta operacion");		
 	}
 
 	@Override
-	public void abOperacion() throws PermisoDenegadoException{
-		throw new PermisoDenegadoException("No tienes los permisos necesarios para realizar esta operacion");		
+	public ServicioABOperaciones abOperacion() throws PermisoDenegadoException{
+		throw new PermisoDenegadoException("No tienes los permisos necesarios para realizar esta operacion");
 	}
 }

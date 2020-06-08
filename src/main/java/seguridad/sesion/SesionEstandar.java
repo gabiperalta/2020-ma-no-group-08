@@ -2,6 +2,7 @@ package seguridad.sesion;
 
 import dominio.entidades.Organizacion;
 import seguridad.sesion.exceptions.PermisoDenegadoException;
+import servicio.abOperaciones.ServicioABOperaciones;
 import servicio.abm_entidades.ServicioABMEntidadesBase;
 import servicio.abm_usuarios.ServicioABMUsuarios;
 import servicio.abm_entidades.ServicioABMEntidadesJuridicas;
@@ -27,8 +28,8 @@ public class SesionEstandar implements Sesion {
 	}
 	
 	@Override
-	public void abOperacion(){
-		// TODO
+	public ServicioABOperaciones abOperacion(){
+		return new ServicioABOperaciones();
 	}
 	
 	@Override
