@@ -15,20 +15,26 @@ public class AdministradorDeSesion {
 	}
 
 	public void logIn(String nombreUsuario, String contrasenia) throws CredencialesNoValidasException {
+		
 		CuentaUsuario cuentaDeUsuario = RepositorioUsuarios.getInstance().buscarUsuario(nombreUsuario);
 		
-		
-		if(cuentaDeUsuario.verificarContrasenia(contrasenia)) { // la cuenta de usuario determina si la contrase�a esta bien, y si no lo
-			if(cuentaDeUsuario.esAdministrador()) {				// esta, disminuye la cantidad de intentnos pendientes
-				sesion = new SesionAdministrador(cuentaDeUsuario.getUserName());
+		if(!cuentaDeUsuario.estaBloqueada()) {
+			if(cuentaDeUsuario.verificarContrasenia(contrasenia)) { // la cuenta de usuario determina si la contrasenia esta bien, y si no lo
+				if(cuentaDeUsuario.esAdministrador()) {				// esta, disminuye la cantidad de intentnos pendientes
+					sesion = new SesionAdministrador(cuentaDeUsuario.getUserName());
+				}
+				else {
+					sesion = new SesionEstandar(cuentaDeUsuario.getUserName(), cuentaDeUsuario.getOrganizacion()); // TODO Modelar organizacion
+				}
 			}
 			else {
-				sesion = new SesionEstandar(cuentaDeUsuario.getUserName(), cuentaDeUsuario.getOrganizacion()); // TODO Modelar organizacion
+				throw new CredencialesNoValidasException();
 			}
 		}
 		else {
-			throw new CredencialesNoValidasException();
+			// TODO, Tirar error cuenta bloqueada
 		}
+		
 	}
 	
 	public void logOut() {

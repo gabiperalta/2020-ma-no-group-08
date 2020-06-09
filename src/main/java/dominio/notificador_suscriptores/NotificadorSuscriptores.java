@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import dominio.cuentasUsuarios.CuentaUsuario;
 import dominio.operaciones.OperacionEgreso;
 import dominio.presupuestos.ResultadoLicitacion;
-import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;
 
 public class NotificadorSuscriptores {
 	ArrayList<SuscripcionesAOperacion> suscripciones;

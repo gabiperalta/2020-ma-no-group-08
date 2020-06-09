@@ -27,7 +27,8 @@ public class CuentaUsuario {
 	}
 	
 	public boolean verificarContrasenia(String contrasenia) {
-		if(passwordHash.equals(contrasenia)) {
+		
+		if(passwordHash.equals(HashPassword.calcular(contrasenia))) {
 			intentosPendientes = 3; // Reinicio el contador de intentos pendientes 
 			return true;
 		}
@@ -38,7 +39,7 @@ public class CuentaUsuario {
 	}
 	
 	public boolean estaBloqueada() {
-		return intentosPendientes > 0;
+		return intentosPendientes == 0; //return intentosPendientes > 0;
 	}
 	
 	public void setUserName(String unNombreUsuario) {
@@ -70,5 +71,9 @@ public class CuentaUsuario {
 		passwordHash = contraseniaHasheadaNueva;
 		intentosPendientes = 3;
 		contraseniasPrevias.add(contraseniaPlanaNueva);
+	}
+	
+	public String getPasswordPlana() {
+		return passwordPlana;
 	}
 }

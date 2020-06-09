@@ -28,17 +28,22 @@ public class ServicioABMUsuarios {
 	}
 	
 	public void altaUsuarioColaborador(String unNombreUsuario, Organizacion organizacion) throws UsuarioYaExistenteException{
+		boolean existiaElUsuario = false;
 		try {
 			RepositorioUsuarios.getInstance().buscarUsuario(unNombreUsuario);
-			throw new UsuarioYaExistenteException("Este nombre de usuario ya esta en uso.");
+			existiaElUsuario = true;
 		}
-		catch (Exception CredencialesNoValidasException){
+		catch (Exception NoSuchElementException){
 			String unaContrasenia = this.generarContrasenia(); 
 			
 			PerfilEstandar nuevoPerfil = new PerfilEstandar(unNombreUsuario, organizacion);
 			CuentaUsuario nuevoUsuario = new CuentaUsuario( nuevoPerfil, unaContrasenia);
 			RepositorioUsuarios.getInstance().agregarUsuarioEstandar(nuevoUsuario);
 		}
+		if(existiaElUsuario) {
+			throw new UsuarioYaExistenteException("Este nombre de usuario ya esta en uso.");
+		}
+		
 		
 	}
 	
