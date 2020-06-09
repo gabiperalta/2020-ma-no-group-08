@@ -9,7 +9,7 @@ import dominio.presupuestos.Presupuesto;
 public class CriterioCantidadPresupCargada implements CriterioLicitacion{
 
 	@Override
-	public Boolean validar(OperacionEgreso operacion, ArrayList<Presupuesto> presupuestos) {
+	public boolean validar(OperacionEgreso operacion, ArrayList<Presupuesto> presupuestos) {
 		if(operacion.getPresupuestosNecesarios() != 0) {      //Verifico que la compra requiera presupuestos 
 			return operacion.getPresupuestosNecesarios() !=0; //Verifico que este cargada la cantidad de presupuestos
 		}
