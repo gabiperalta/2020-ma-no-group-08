@@ -1,16 +1,17 @@
 package servicio.abm_entidades;
 
 import dominio.entidades.*;
+import dominio.entidades.calculadorFiscal.ETipoActividad;
 
 
 //TODO
 
 public class ServicioABMEntidadesJuridicas {
 
-    public void crearEmpresa(Integer cantidadPersonal, ETipoEmpresa tipo, String actividad, Double promedioVentas, String razonSocial, String nombreFicticio, String cuit, String codigoIGJ, String direccionPostal) throws Exception {
+    public void crearEmpresa(Integer cantidadPersonal, ETipoEmpresa tipo, ETipoActividad actividad, Double promedioVentas, String razonSocial, String nombreFicticio, String cuit, String codigoIGJ, String direccionPostal, boolean esComisionista) throws Exception {
 
         if (this.buscarEntidadJuridica(razonSocial) == null) {
-            RepoEntidadesJuridicas.getInstance().agregarEntidadEmpresa( tipo, cantidadPersonal,  actividad,  promedioVentas,  razonSocial,  nombreFicticio,  cuit,  codigoIGJ,  direccionPostal);
+            RepoEntidadesJuridicas.getInstance().agregarEntidadEmpresa( tipo, cantidadPersonal,  actividad,  promedioVentas,  razonSocial,  nombreFicticio,  cuit,  codigoIGJ,  direccionPostal, esComisionista);
         }
 
     }

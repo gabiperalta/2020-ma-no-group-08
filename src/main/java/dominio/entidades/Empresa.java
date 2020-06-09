@@ -1,15 +1,19 @@
 package dominio.entidades;
 
+import dominio.entidades.calculadorFiscal.CategorizadorFiscal;
+import dominio.entidades.calculadorFiscal.ETipoActividad;
+
 public class Empresa extends EntidadJuridica{
 
     protected ETipoEmpresa tipo;
     protected Integer cantidadPersonal;
-    protected String actividad;
+    protected ETipoActividad actividad;
     protected Double promedioVentas;
+    protected boolean esComisionista;
 
 
-    public Empresa(ETipoEmpresa tipo, Integer cantidadPersonal, String actividad, Double promedioVentas, String razonSocial,
-                   String nombreFicticio, String cuit, String codigoIGJ, String direccionPostal
+    public Empresa(ETipoEmpresa tipo, Integer cantidadPersonal, ETipoActividad actividad, Double promedioVentas, String razonSocial,
+                   String nombreFicticio, String cuit, String codigoIGJ, String direccionPostal, boolean esComisionista
     ){
         this.tipo = tipo;
         this.cantidadPersonal = cantidadPersonal;
@@ -20,13 +24,13 @@ public class Empresa extends EntidadJuridica{
         this.cuit = cuit;
         this.codigoIGJ = codigoIGJ;
         this.direccionPostal = direccionPostal;
-
+        this.esComisionista = esComisionista;
 
     }
 
     public void categorizar() {
-
-
+        CategorizadorFiscal categorizadorFiscal = new CategorizadorFiscal();
+        this.setTipo(categorizadorFiscal.categorizar(this));
     }
 
     public ETipoEmpresa getTipo() {
@@ -45,11 +49,11 @@ public class Empresa extends EntidadJuridica{
         this.cantidadPersonal = cantidadPersonal;
     }
 
-    public String getActividad() {
+    public ETipoActividad getActividad() {
         return actividad;
     }
 
-    public void setActividad(String actividad) {
+    public void setActividad(ETipoActividad actividad) {
         this.actividad = actividad;
     }
 
@@ -59,5 +63,13 @@ public class Empresa extends EntidadJuridica{
 
     public void setPromedioVentas(double promedioVentas) {
         this.promedioVentas = promedioVentas;
+    }
+
+    public boolean isEsComisionista() {
+        return esComisionista;
+    }
+
+    public void setEsComisionista(boolean esComisionista) {
+        this.esComisionista = esComisionista;
     }
 }
