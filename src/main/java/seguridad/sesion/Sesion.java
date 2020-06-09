@@ -1,6 +1,9 @@
 package seguridad.sesion;
 
 import seguridad.sesion.exceptions.PermisoDenegadoException;
+import servicio.abOperaciones.ServicioABOperaciones;
+import servicio.abm_entidades.ServicioABMEntidadesJuridicas;
+import servicio.abm_entidades.ServicioABMEntidadesBase;
 import servicio.abm_usuarios.ServicioABMUsuarios;
 
 public interface Sesion {
@@ -9,7 +12,7 @@ public interface Sesion {
 	public ServicioABMUsuarios abmUsuarios() throws PermisoDenegadoException;
 	public void abOrganizaciones() throws PermisoDenegadoException;
 	// OPERACIONES USUARIOS ESTANDAR
-	public void abmEntidadesJuridicas() throws PermisoDenegadoException;
-	public void abmEntidadesBase() throws PermisoDenegadoException;
-	public void abOperacion() throws PermisoDenegadoException;
+	public ServicioABMEntidadesJuridicas abmEntidadesJuridicas() throws PermisoDenegadoException;
+	public ServicioABMEntidadesBase abmEntidadesBase() throws PermisoDenegadoException;
+	public ServicioABOperaciones abOperacion() throws PermisoDenegadoException;
 }

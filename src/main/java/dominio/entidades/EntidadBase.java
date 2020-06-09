@@ -6,6 +6,14 @@ public class EntidadBase {
     protected String nombreFicticio;
     protected EntidadJuridica entidadJuridica;
 
+
+    public EntidadBase( String descripcion, String nombreFicticio, EntidadJuridica entidadJuridica
+    ){
+        this.entidadJuridica = entidadJuridica;
+        this.descripcion = descripcion;
+        this.nombreFicticio = nombreFicticio;
+    }
+
     public String getDescripcion() {
         return descripcion;
     }

@@ -1,4 +1,3 @@
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
 
 import org.junit.Before;
@@ -25,8 +24,6 @@ public class CreacionUsuariosTest {
 		abmUsuarios = administradorSesion.getSesion().abmUsuarios();
 
 		organizacion = new Organizacion("Organizacion 1");
-		
-		abmUsuarios.altaUsuarioColaborador("usuarioRepetido", organizacion);
 	}
 	
 	@Test
@@ -35,7 +32,8 @@ public class CreacionUsuariosTest {
 	}
 	
 	@Test
-	public void testCreacionUsuarioNombreUsuarioYaUtilizado() throws UsuarioYaExistenteException {
+	public void testCreacionUsuarioNombreYaUtilizado() throws UsuarioYaExistenteException  {
+		abmUsuarios.altaUsuarioColaborador("usuarioRepetido", organizacion);
 		assertThrows(UsuarioYaExistenteException.class, ()->{abmUsuarios.altaUsuarioColaborador("usuarioRepetido", organizacion);});
 	}
 	

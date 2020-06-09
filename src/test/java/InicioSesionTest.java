@@ -1,5 +1,8 @@
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
+
+import java.util.NoSuchElementException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,15 +21,16 @@ public class InicioSesionTest {
 	@Test
 	public void testInicioDeSesionExitosa() throws CredencialesNoValidasException {
 		administradorSesion.logIn("admin1", "1234");
+		assertTrue(true);
 	}
 	
 	@Test
-	public void testInicioDeSesionCuentaInexistente() throws CredencialesNoValidasException {
-		assertThrows(CredencialesNoValidasException.class, ()->{administradorSesion.logIn("admin1", "1234");});
+	public void testInicioDeSesionCuentaInexistente() throws NoSuchElementException {
+		assertThrows(NoSuchElementException.class, ()->{administradorSesion.logIn("admin12", "1234");});
 	}
 	
 	@Test
 	public void testInicioDeSesionContraseniaIncorrecta() throws CredencialesNoValidasException {
-		assertThrows(CredencialesNoValidasException.class, ()->{administradorSesion.logIn("admin1", "1234");});
+		assertThrows(CredencialesNoValidasException.class, ()->{administradorSesion.logIn("admin1", "12345");});
 	}
 }

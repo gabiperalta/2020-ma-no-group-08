@@ -11,6 +11,7 @@ public class OperacionEgreso {
 	private double valorOperacion;
 	private EntidadOperacion entidadOrigen;
 	private EntidadOperacion entidadDestino;
+	private int presupuestosNecesarios;
 
 	public OperacionEgreso(ArrayList<Item> items2, MedioDePago medioDePago2, DocumentoComercial documento2, Date fecha2,
 						   double valorOperacion2, EntidadOperacion entidadOrigen2, EntidadOperacion entidadDestino2) {
@@ -56,7 +57,9 @@ public class OperacionEgreso {
 	}
 
 	public double getValorOperacion() {
-		return valorOperacion;
+		return this.items.stream()
+      			   .mapToInt(item -> item.getValor())
+      			   .sum();
 	}
 
 	public void setValorOperacion(double valorOperacion) {
@@ -77,6 +80,14 @@ public class OperacionEgreso {
 
 	public void setEntidadDestino(EntidadOperacion entidadDestino) {
 		this.entidadDestino = entidadDestino;
+	}
+
+	public int getPresupuestosNecesarios() {
+		return presupuestosNecesarios;
+	}
+
+	public void setPresupuestosNecesarios(int presupuestosNecesarios) {
+		this.presupuestosNecesarios = presupuestosNecesarios;
 	}
 
 }

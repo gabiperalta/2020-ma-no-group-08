@@ -6,10 +6,11 @@ import dominio.entidades.calculadorFiscal.ETipoActividad;
 import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;
 import temporal.seguridad.repositorioUsuarios.exceptions.CredencialesNoValidasException;
 
+
 import java.util.ArrayList;
 
 public class RepoEntidadesJuridicas {
-    private ArrayList<EntidadJuridica> entidadesJuridicas;
+    private static ArrayList<EntidadJuridica> entidadesJuridicas;
 
 
     private static class RepositorioEntidadesJuridicasHolder {
@@ -23,7 +24,7 @@ public class RepoEntidadesJuridicas {
     public RepoEntidadesJuridicas() {
 
         EntidadJuridica entidad1 = new Empresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "0001", "ficticia1", "23453456", "200", "caba 322",false);
-        EntidadJuridica entidad2 = new OSC("DDS SA","pesi","27975312460","200","Cordoba 111");
+        EntidadJuridica entidad2 = new OSC("0002", "ficticia3", "23131", "111", "obligado 11");
         EntidadJuridica entidad3 = new Empresa(ETipoEmpresa.MICRO, 1, ETipoActividad.COMERCIO, 100.00, "0001", "ficticia2", "4453456", "200", "silveyra 4343",true);
 
         entidadesJuridicas = new ArrayList<EntidadJuridica>();
@@ -33,20 +34,16 @@ public class RepoEntidadesJuridicas {
         entidadesJuridicas.add(entidad3);
     }
 
-    public void agregarEntidadEmpresa(ETipoEmpresa tipo, Integer cantidadPersonal, ETipoActividad actividad, Double promedioVentas, String razonSocial,
-                                      String nombreFicticio, String cuit, String codigoIGJ, String direccionPostal, boolean esComisionista) {
-        if (this.buscarEntidadJuridica(razonSocial) == null) {
-            EntidadJuridica entidadJuridica = new Empresa( tipo, cantidadPersonal,  actividad,  promedioVentas,  razonSocial,
-                     nombreFicticio,  cuit,  codigoIGJ,  direccionPostal, esComisionista);
-            entidadesJuridicas.add(entidadJuridica);
+
+    public void agregarEntidadEmpresa(Empresa empresa) {
+        if (this.buscarEntidadJuridica(empresa.getRazonSocial()) == null) {
+            entidadesJuridicas.add(empresa);
         }
     }
 
-    public void agregarEntidadOSC(String razonSocial,
-                                      String nombreFicticio, String cuit, String codigoIGJ, String direccionPostal) {
-        if (this.buscarEntidadJuridica(razonSocial) == null) {
-            EntidadJuridica entidadJuridica = new OSC(razonSocial, nombreFicticio,  cuit,  codigoIGJ,  direccionPostal);
-            entidadesJuridicas.add(entidadJuridica);
+    public void agregarEntidadOSC(OSC osc) {
+        if (this.buscarEntidadJuridica(osc.getRazonSocial()) == null) {
+            entidadesJuridicas.add(osc);
         }
     }
 
@@ -58,7 +55,7 @@ public class RepoEntidadesJuridicas {
         }
     }
 
-    public EntidadJuridica buscarEntidadJuridica(String razonSocial) {
+    public static EntidadJuridica buscarEntidadJuridica(String razonSocial) {
         return entidadesJuridicas.stream().filter(entidad -> entidad.getRazonSocial().equals(razonSocial)).findFirst().get();
     }
 }

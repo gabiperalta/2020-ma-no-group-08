@@ -1,7 +1,7 @@
 package dominio.operaciones;
 
 public class Item {
-	private double valor; 
+	private int valor; 
 	private ETipoItem tipo;
 	private String descripcion;
 	
@@ -10,10 +10,10 @@ public class Item {
 		this.tipo = articulo;
 		this.descripcion = string;
 	}
-	public double getValor() {
+	public int getValor() {
 		return valor;
 	}
-	public void setValor(double valor) {
+	public void setValor(int valor) {
 		this.valor = valor;
 	}
 	public ETipoItem getTipo() {
