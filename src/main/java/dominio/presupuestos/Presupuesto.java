@@ -5,11 +5,15 @@ import java.util.ArrayList;
 import dominio.operaciones.EntidadOperacion;
 import dominio.operaciones.Item;
 
-public class Presupuesto{
+public class Presupuesto implements Comparable{
 	private EntidadOperacion proveedor;
-	private ArrayList<Item> items;
+	private final ArrayList<Item> items;
 	private int montoTotal;
-	
+
+	public Presupuesto(EntidadOperacion proveedor){
+		this.proveedor = proveedor;
+		items = new ArrayList<Item>();
+	}
 	
 	public double getMontoTotal() {
 		return this.items.stream()
@@ -36,13 +40,14 @@ public class Presupuesto{
 		this.proveedor = proveedor;
 	}
 
-	public int compareTo(Presupuesto p2) {
-		if(this.montoTotal < p2.montoTotal) {
-			return this.montoTotal;
-		}
-		else {
-			return p2.montoTotal;
-		}
+	@Override
+	public int compareTo(Object presupuesto) {
+		double compararMontoTotal=((Presupuesto)presupuesto).getMontoTotal();
+		return (int)(this.getMontoTotal()-compararMontoTotal);
 	}
 
+	@Override
+	public String toString() {
+		return "[ montoTotal=" + getMontoTotal() + "]";
+	}
 }

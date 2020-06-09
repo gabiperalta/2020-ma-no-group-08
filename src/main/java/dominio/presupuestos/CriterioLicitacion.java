@@ -5,5 +5,5 @@ import java.util.ArrayList;
 import dominio.operaciones.OperacionEgreso;
 
 public interface CriterioLicitacion {
-	public Boolean validar(OperacionEgreso operacion, ArrayList<Presupuesto> presupuestos);
+	public boolean validar(OperacionEgreso operacion, ArrayList<Presupuesto> presupuestos);
 }
