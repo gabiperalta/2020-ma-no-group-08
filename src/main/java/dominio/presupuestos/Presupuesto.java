@@ -9,10 +9,11 @@ public class Presupuesto implements Comparable{
 	private EntidadOperacion proveedor;
 	private final ArrayList<Item> items;
 	private int montoTotal;
-
-	public Presupuesto(EntidadOperacion proveedor){
+	
+	public Presupuesto(EntidadOperacion proveedor, ArrayList<Item> items, int monto){
 		this.proveedor = proveedor;
-		items = new ArrayList<Item>();
+		this.items = items;
+		this.montoTotal = monto;
 	}
 	
 	public double getMontoTotal() {
