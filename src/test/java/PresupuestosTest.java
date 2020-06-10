@@ -2,19 +2,14 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
+import dominio.presupuestos.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import dominio.operaciones.CriterioCantidadPresupCargada;
 import dominio.operaciones.ETipoItem;
 import dominio.operaciones.EntidadOperacion;
 import dominio.operaciones.Item;
 import dominio.operaciones.OperacionEgreso;
-import dominio.presupuestos.CriterioCantidadDePresupuestos;
-import dominio.presupuestos.CriterioLicitacion;
-import dominio.presupuestos.CriterioMenorPrecio;
-import dominio.presupuestos.Licitacion;
-import dominio.presupuestos.Presupuesto;
 
 public class PresupuestosTest {
 
