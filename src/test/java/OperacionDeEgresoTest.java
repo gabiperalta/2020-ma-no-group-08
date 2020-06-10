@@ -1,18 +1,12 @@
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.util.ArrayList;
 import java.util.Date;
 
+import dominio.operaciones.*;
 import org.junit.Before;
 import org.junit.Test;
-
-import dominio.operaciones.DocumentoComercial;
-import dominio.operaciones.ETipoDoc;
-import dominio.operaciones.ETipoItem;
-import dominio.operaciones.Efectivo;
-import dominio.operaciones.EntidadOperacion;
-import dominio.operaciones.Item;
-import dominio.operaciones.OperacionEgresoBuilder;
 
 public class OperacionDeEgresoTest {
 
@@ -56,5 +50,17 @@ public class OperacionDeEgresoTest {
 		
 		assertNotNull(builder.build());
 	}
-	
+
+	@Test
+	public void crearOperacionEgresoSinDocumento() {
+		builder.setItems(items);
+		builder.setEntidadDestino(destino);
+		builder.setEntidadOrigen(origen);
+		builder.setFecha(fecha);
+		builder.setMedioDePago(pesos);
+		builder.setValorOperacion(valorOp);
+		OperacionEgreso operacionEgreso = builder.build();
+
+		assertNull(operacionEgreso.getDocumento());
+	}
 }
