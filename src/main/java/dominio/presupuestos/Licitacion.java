@@ -24,7 +24,7 @@ public class Licitacion {
 		
 		boolean resultado = criterios.stream().allMatch( criterio -> criterio.validar(compra, presupuestos) );
 		
-		String descripcionCriterios = criterios.stream().map((criterio -> criterio.descripcion(compra, presupuestos))).collect(Collectors.joining("\n"));
+		String descripcionCriterios = criterios.stream().map(criterio -> criterio.descripcion()).collect(Collectors.joining("\n"));
 		
 		ResultadoLicitacion resultadoLicitacion = new ResultadoLicitacion(compra, presupuestos, resultado, descripcionCriterios);
 		

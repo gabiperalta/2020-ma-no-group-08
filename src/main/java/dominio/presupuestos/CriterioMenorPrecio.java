@@ -19,15 +19,7 @@ public class CriterioMenorPrecio implements CriterioLicitacion{
 	
 	@Override
 	public String descripcion() {
-		String descripcion;
-		if(resultado) {
-			descripcion = "Criterio de menor precio: Valido";
-		}
-		else {
-			descripcion = "Criterio de menor precio: Invalido";
-		}
-		
-		return descripcion;
+		return resultado?"Criterio de menor precio: Valido":"Criterio de menor precio: Invalido";
 	}
 		
 }
