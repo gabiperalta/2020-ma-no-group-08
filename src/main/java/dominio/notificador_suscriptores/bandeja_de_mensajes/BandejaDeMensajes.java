@@ -2,24 +2,26 @@ package dominio.notificador_suscriptores.bandeja_de_mensajes;
 
 import java.util.ArrayList;
 
-import dominio.presupuestos.ResultadoLicitacion;
+import dominio.cuentasUsuarios.CuentaUsuario;
+import dominio.presupuestos.Mensaje;
 
 public class BandejaDeMensajes {
-	ArrayList<ResultadoLicitacion> mensajes;
+	ArrayList<Mensaje> mensajes;
+	CuentaUsuario usuario;
 	
 	public BandejaDeMensajes() {
-		mensajes = new ArrayList<ResultadoLicitacion>();
+		mensajes = new ArrayList<Mensaje>();
 	}
 	
-	public void nuevoMensaje(ResultadoLicitacion nuevoResultadoLicitacion){
-		mensajes.add(nuevoResultadoLicitacion);
+	public void nuevoMensaje(Mensaje nuevoMensaje){
+		mensajes.add(nuevoMensaje);
 	}
 	
-	public ArrayList<ResultadoLicitacion> getMensajes() {
+	public ArrayList<Mensaje> getMensajes() {
 		return mensajes;
 	}
 	
-	public ResultadoLicitacion obtenerMensajePorIndice(int i) {
+	public Mensaje obtenerMensajePorIndice(int i) {
 		return mensajes.get(i);
 	}
 	

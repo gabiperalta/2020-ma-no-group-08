@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import dominio.cuentasUsuarios.perfil.Perfil;
 import dominio.entidades.Organizacion;
 import dominio.notificador_suscriptores.bandeja_de_mensajes.BandejaDeMensajes;
+import dominio.presupuestos.Mensaje;
 import seguridad.HashPassword;
 
 public class CuentaUsuario {
@@ -75,5 +76,9 @@ public class CuentaUsuario {
 	
 	public String getPasswordPlana() {
 		return passwordPlana;
+	}
+	public void leerMensajes() {
+		ArrayList<Mensaje> mensajes = this.getBandejaDeMensajes().getMensajes();
+		mensajes.forEach(mensaje->mensaje.marcarComoLeido());
 	}
 }

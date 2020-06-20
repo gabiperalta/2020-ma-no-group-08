@@ -4,18 +4,15 @@ import java.util.ArrayList;
 
 import dominio.cuentasUsuarios.CuentaUsuario;
 import dominio.operaciones.OperacionEgreso;
+import dominio.presupuestos.Licitacion;
 
 public class SuscripcionesAOperacion {
-	OperacionEgreso operacion_egreso;
+	Licitacion licitacion;
 	ArrayList<CuentaUsuario> usuarios;
 	
-	public SuscripcionesAOperacion(OperacionEgreso unaOperacionEgreso) {
-		operacion_egreso = unaOperacionEgreso;
+	public SuscripcionesAOperacion(Licitacion lic) {
+		this.licitacion = lic;
 		usuarios = new ArrayList<CuentaUsuario>();
-	}
-	
-	public OperacionEgreso getOperacionEgreso(){
-		return operacion_egreso;
 	}
 	
 	public ArrayList<CuentaUsuario> getUsuarios(){

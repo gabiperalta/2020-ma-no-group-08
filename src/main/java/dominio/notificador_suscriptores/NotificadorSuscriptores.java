@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import dominio.cuentasUsuarios.CuentaUsuario;
 import dominio.operaciones.OperacionEgreso;
-import dominio.presupuestos.ResultadoLicitacion;
+import dominio.presupuestos.Mensaje;
 
 public class NotificadorSuscriptores {
 	ArrayList<SuscripcionesAOperacion> suscripciones;
@@ -31,18 +31,19 @@ public class NotificadorSuscriptores {
 		suscripcion.desuscribir(unaCuentaUsuario);
 	}
 	
-	public void notificar(ResultadoLicitacion resultadoLicitacion) {
-		SuscripcionesAOperacion suscripcion = buscarSuscripcionesOperacion(resultadoLicitacion.getOperacion());
-		suscripcion.getUsuarios().forEach( cuentaUsuario -> cuentaUsuario.getBandejaDeMensajes().nuevoMensaje(resultadoLicitacion));
+	public void notificar(Mensaje mensaje) {
+		SuscripcionesAOperacion suscripcion = buscarSuscripcionesOperacion(Mensaje.getOperacion());
+		suscripcion.getUsuarios().forEach( cuentaUsuario -> cuentaUsuario.getBandejaDeMensajes().nuevoMensaje(mensaje));
+		suscripcion.getUsuarios().forEach(usuario->usuario.leerMensajes());
 	}
 	
-	public void altaSuscripcionOperaciones(OperacionEgreso operacion) {
-		SuscripcionesAOperacion suscripcionesAOperacion = new SuscripcionesAOperacion(operacion);
-		suscripciones.add(suscripcionesAOperacion); // TODO, Deberiamos cambiar el constructor de las operaciones de egreso, para que
-	}												// al ser creadas, se den de alta directamente en el NotificadorSuscriptores
+	//public void altaSuscripcionOperaciones(OperacionEgreso operacion) {
+	//	SuscripcionesAOperacion suscripcionesAOperacion = new SuscripcionesAOperacion(operacion);
+	//	suscripciones.add(suscripcionesAOperacion); // TODO, Deberiamos cambiar el constructor de las operaciones de egreso, para que
+	//}												// al ser creadas, se den de alta directamente en el NotificadorSuscriptores
 	
-	private SuscripcionesAOperacion buscarSuscripcionesOperacion( OperacionEgreso operacionEgreso) {
-		return suscripciones.stream().filter(suscripcion -> suscripcion.getOperacionEgreso().equals(operacionEgreso)).findFirst().get();
-	}
+	//private SuscripcionesAOperacion buscarSuscripcionesOperacion( OperacionEgreso operacionEgreso) {
+	// return suscripciones.stream().filter(suscripcion -> suscripcion.getOperacionEgreso().equals(operacionEgreso)).findFirst().get();
+	//}
 	
 }

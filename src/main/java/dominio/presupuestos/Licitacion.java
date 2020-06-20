@@ -20,14 +20,14 @@ public class Licitacion {
 	
 	public void generarResultado() {
 		
-		// suscripcion.getUsuarios().forEach( cuentaUsuario -> cuentaUsuario.getBandejaDeMensajes().nuevoMensaje(resultadoLicitacion));
+		// suscripcion.getUsuarios().forEach( cuentaUsuario -> cuentaUsuario.getBandejaDeMensajes().nuevoMensaje(Mensaje));
 		
 		boolean resultado = criterios.stream().allMatch( criterio -> criterio.validar(compra, presupuestos) );
 		
 		String descripcionCriterios = criterios.stream().map(criterio -> criterio.descripcion()).collect(Collectors.joining("\n"));
 		
-		ResultadoLicitacion resultadoLicitacion = new ResultadoLicitacion(compra, presupuestos, resultado, descripcionCriterios);
+		Mensaje Mensaje = new Mensaje(descripcionCriterios,false);
 		
-		NotificadorSuscriptores.getInstance().notificar(resultadoLicitacion);
+		NotificadorSuscriptores.getInstance().notificar(Mensaje);
 	}
 }
