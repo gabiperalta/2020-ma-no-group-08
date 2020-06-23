@@ -4,8 +4,9 @@ import java.util.ArrayList;
 
 import dominio.operaciones.EntidadOperacion;
 import dominio.operaciones.Item;
+import dominio.operaciones.OperacionEgreso;
 
-public class Presupuesto implements Comparable{
+public class Presupuesto {
 	private EntidadOperacion proveedor;
 	private final ArrayList<Item> items;
 	private int montoTotal;
@@ -16,6 +17,10 @@ public class Presupuesto implements Comparable{
 		this.montoTotal = monto;
 	}
 	
+	public ArrayList<Item> getItems() {
+		return items;
+	}
+
 	public double getMontoTotal() {
 		return this.items.stream()
 	      			.mapToInt(item -> item.getValor())
@@ -42,13 +47,11 @@ public class Presupuesto implements Comparable{
 	}
 
 	@Override
-	public int compareTo(Object presupuesto) {
-		double compararMontoTotal=((Presupuesto)presupuesto).getMontoTotal();
-		return (int)(this.getMontoTotal()-compararMontoTotal);
-	}
-
-	@Override
 	public String toString() {
 		return "[ montoTotal=" + getMontoTotal() + "]";
+	}
+
+	public boolean esValido(OperacionEgreso operacion) {
+		return operacion.getItems().containsAll(this.getItems());
 	}
 }
