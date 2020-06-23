@@ -22,19 +22,19 @@ public class NotificadorSuscriptores {
 	}
 	
 	public void suscribir(CuentaUsuario unaCuentaUsuario, OperacionEgreso operacionEgreso){
-		SuscripcionesAOperacion suscripcion = buscarSuscripcionesOperacion(operacionEgreso);
-		suscripcion.suscribir(unaCuentaUsuario);
+		//SuscripcionesAOperacion suscripcion = buscarSuscripcionesOperacion(operacionEgreso);
+		//suscripcion.suscribir(unaCuentaUsuario);
 	}
 	
 	public void desuscribir(CuentaUsuario unaCuentaUsuario, OperacionEgreso operacionEgreso) {
-		SuscripcionesAOperacion suscripcion = buscarSuscripcionesOperacion(operacionEgreso);
-		suscripcion.desuscribir(unaCuentaUsuario);
+		//SuscripcionesAOperacion suscripcion = buscarSuscripcionesOperacion(operacionEgreso);
+		//suscripcion.desuscribir(unaCuentaUsuario);
 	}
 	
 	public void notificar(Mensaje mensaje) {
-		SuscripcionesAOperacion suscripcion = buscarSuscripcionesOperacion(Mensaje.getOperacion());
-		suscripcion.getUsuarios().forEach( cuentaUsuario -> cuentaUsuario.getBandejaDeMensajes().nuevoMensaje(mensaje));
-		suscripcion.getUsuarios().forEach(usuario->usuario.leerMensajes());
+		//SuscripcionesAOperacion suscripcion = buscarSuscripcionesOperacion(Mensaje.getOperacion());
+		//suscripcion.getUsuarios().forEach( cuentaUsuario -> cuentaUsuario.getBandejaDeMensajes().nuevoMensaje(mensaje));
+		//suscripcion.getUsuarios().forEach(usuario->usuario.leerMensajes());
 	}
 	
 	//public void altaSuscripcionOperaciones(OperacionEgreso operacion) {

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import dominio.operaciones.*;
+import dominio.operaciones.medioDePago.Efectivo;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -1,5 +1,7 @@
 package dominio.operaciones;
 
+import dominio.operaciones.medioDePago.MedioDePago;
+
 import java.util.ArrayList;
 import java.util.Date;
 

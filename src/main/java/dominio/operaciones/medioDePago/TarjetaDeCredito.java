@@ -1,6 +1,8 @@
-package dominio.operaciones;
+package dominio.operaciones.medioDePago;
 
-public class TarjetaDeCredito implements MedioDePago{
+import dominio.operaciones.medioDePago.MedioDePago;
+
+public class TarjetaDeCredito implements MedioDePago {
     int cuotas;
     String nombre;
     String numero;

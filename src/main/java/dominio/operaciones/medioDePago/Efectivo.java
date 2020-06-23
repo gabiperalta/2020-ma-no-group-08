@@ -1,6 +1,6 @@
-package dominio.operaciones;
+package dominio.operaciones.medioDePago;
 
-public class Efectivo implements MedioDePago{
+public class Efectivo implements MedioDePago {
     double monto;
     String puntoDePago;
 
