@@ -10,93 +10,51 @@ public class OperacionEgresoBuilder {
 	private MedioDePago medioDePago;
 	private DocumentoComercial documento;
 	private Date fecha;
-	private double valorOperacion;
+	private Double valorOperacion;
 	private EntidadOperacion entidadOrigen;
 	private EntidadOperacion entidadDestino;
 	  
-	  
-	// public OperacionEgresoBuilder(ArrayList<Item>items, MedioDePago medioPago, DocumentoComercial doc,
-	//		 					   Date fecha, double valorOperacion, EntidadOperacion origen, EntidadOperacion destino) {
-	//	 this.setItems(items);
-	//	 this.setMedioDePago(medioPago);
-	//	 this.setDocumento(doc);
-	//	 this.setFecha(fecha);
-	//	 this.setValorOperacion(valorOperacion);
-	//	 this.setEntidadOrigen(origen);
-	//	 this.setEntidadDestino(destino);
-	// }
-
-
-	public ArrayList<Item> getItems() {
-		return items;
-	}
-
-
-	public void setItems(ArrayList<Item> items) {
+	public OperacionEgresoBuilder agregarItems(ArrayList<Item> items) {
 		this.items = items;
+		return this;
 	}
 
-
-	public MedioDePago getMedioDePago() {
-		return medioDePago;
+	public OperacionEgresoBuilder agregarMedioDePago(MedioDePago medio) {
+		this.medioDePago = medio;
+		return this;
 	}
 
-
-	public void setMedioDePago(MedioDePago medioDePago) {
-		this.medioDePago = medioDePago;
+	public OperacionEgresoBuilder agregarDocComercial(DocumentoComercial doc) {
+		this.documento = doc;
+		return this;
 	}
 
-
-	public DocumentoComercial getDocumento() {
-		return documento;
-	}
-
-
-	public void setDocumento(DocumentoComercial documento) {
-		this.documento = documento;
-	}
-
-
-	public Date getFecha() {
-		return fecha;
-	}
-
-
-	public void setFecha(Date fecha) {
+	public OperacionEgresoBuilder agregarFecha(Date fecha) {
 		this.fecha = fecha;
+		return this;
 	}
 
-
-	public double getValorOperacion() {
-		return valorOperacion;
+	public OperacionEgresoBuilder agregarValorOperacion(Double valor) {
+		this.valorOperacion = valor;
+		return this;
 	}
 
-
-	public void setValorOperacion(double valorOperacion) {
-		this.valorOperacion = valorOperacion;
+	public OperacionEgresoBuilder agregarEntidadOrigen(EntidadOperacion entidad) {
+		this.entidadOrigen = entidad;
+		return this;
 	}
 
-
-	public EntidadOperacion getEntidadOrigen() {
-		return entidadOrigen;
+	public OperacionEgresoBuilder agregarEntidadDestino(EntidadOperacion entidad) {
+		this.entidadDestino = entidad;
+		return this;
 	}
 
-
-	public void setEntidadOrigen(EntidadOperacion entidadOrigen) {
-		this.entidadOrigen = entidadOrigen;
-	}
-
-
-	public EntidadOperacion getEntidadDestino() {
-		return entidadDestino;
-	}
-
-
-	public void setEntidadDestino(EntidadOperacion entidadDestino) {
-		this.entidadDestino = entidadDestino;
-	}
-	 
 	public OperacionEgreso build() {
+		if (items == null || medioDePago == null || documento == null || fecha == null || valorOperacion == null ||
+				valorOperacion <= 0 || entidadOrigen == null || entidadDestino == null) {
+			return null;
+		}
+
 		return new OperacionEgreso(items,medioDePago,documento,fecha,valorOperacion,entidadOrigen,entidadDestino);
 	}
 
