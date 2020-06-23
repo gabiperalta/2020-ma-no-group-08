@@ -1,16 +1,19 @@
-import junit.framework.TestCase;
-import seguridad.ValidadorContrasenia;
+package seguridad;
+
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.ArrayList;
 
-public class ValidadorTest extends TestCase {
+import static org.junit.Assert.*;
+
+public class ValidadorContraseniaTest {
+
     private ArrayList<String> contrasenias;
     private ValidadorContrasenia target;
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-
+    @Before
+    public void init() throws Exception {
         target =  new ValidadorContrasenia();
 
         contrasenias = new ArrayList<String>();
@@ -19,33 +22,39 @@ public class ValidadorTest extends TestCase {
         contrasenias.add("Contrasenia3/");
     }
 
-    public void testContraseniaValida() throws Exception {
+    @Test
+    public void esContraseniaValida() throws Exception {
         assertTrue(target.esContraseniaValida("Contrasenia4*", contrasenias));
     }
 
-    public void testContraseniaInvalidaPorSerDeLasPeores() throws Exception {
+    @Test
+    public void esContraseniaInvalidaPorSerDeLasPeores() throws Exception {
         assertFalse(target.esContraseniaValida("danielle", contrasenias));
     }
 
-    public void testContraseniaInvalidaPorNoRespetarExpresionRegularPorCaracterEspecial() throws Exception {
+    @Test
+    public void esContraseniaInvalidaPorNoRespetarExpresionRegularPorCaracterEspecial() throws Exception {
         assertFalse(target.esContraseniaValida("Contrasenia1", contrasenias));
     }
 
-    public void testContraseniaInvalidaPorNoRespetarExpresionRegularPorNumeros() throws Exception {
+    @Test
+    public void esContraseniaInvalidaPorNoRespetarExpresionRegularPorNumeros() throws Exception {
         assertFalse(target.esContraseniaValida("Contrasenia+", contrasenias));
     }
 
-    public void testContraseniaInvalidaPorNoRespetarExpresionRegularPorMayusculas() throws Exception {
+    @Test
+    public void esContraseniaInvalidaPorNoRespetarExpresionRegularPorMayusculas() throws Exception {
         assertFalse(target.esContraseniaValida("contrasenia1+", contrasenias));
     }
 
-    public void testContraseniaInvalidaPorNoRespetarExpresionRegularPorEspacio() throws Exception {
+    @Test
+    public void esContraseniaInvalidaPorNoRespetarExpresionRegularPorEspacio() throws Exception {
         assertFalse(target.esContraseniaValida("Contrasenia1+ ", contrasenias));
     }
 
-    public void testContraseniaInvalidaPorSerRepetida() throws Exception {
+    @Test
+    public void esContraseniaInvalidaPorSerRepetida() throws Exception {
         assertFalse(target.esContraseniaValida("Contrasenia3/", contrasenias));
     }
-
 
 }

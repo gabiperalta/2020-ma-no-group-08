@@ -19,7 +19,7 @@ public class OperacionEgresoBuilderTest {
     EntidadOperacion origen;
     EntidadOperacion destino;
     ArrayList<Item> items;
-    OperacionEgresoBuilder builder;
+    OperacionEgresoBuilder target;
 
     @Before
     public void init() {
@@ -34,95 +34,95 @@ public class OperacionEgresoBuilderTest {
         valorOp = 100500d;
         origen = new EntidadOperacion("Operacion compra 1","20-40678950-4","Av.Libertador 800");
         destino = new EntidadOperacion("Operacion compra 1", "20-40678950-4", "Av.Corrientes 550");
-        builder = new OperacionEgresoBuilder();
+        target = new OperacionEgresoBuilder();
     }
 
     @Test
     public void crearOperacionValida () {
-        builder.agregarItems(items)
+        target.agregarItems(items)
                 .agregarMedioDePago(pesos)
                 .agregarDocComercial(documento)
                 .agregarFecha(fecha)
                 .agregarValorOperacion(valorOp)
                 .agregarEntidadOrigen(origen)
                 .agregarEntidadDestino(destino);
-        assertNotNull(builder.build());
+        assertNotNull(target.build());
     }
 
     @Test
     public void fallaCrearOperacionInValidaSinItems () {
-        builder.agregarMedioDePago(pesos)
+        target.agregarMedioDePago(pesos)
                 .agregarDocComercial(documento)
                 .agregarFecha(fecha)
                 .agregarValorOperacion(valorOp)
                 .agregarEntidadOrigen(origen)
                 .agregarEntidadDestino(destino);
-        assertNull(builder.build());
+        assertNull(target.build());
     }
 
     @Test
     public void fallaCrearOperacionInValidaSinMedioDePago () {
-        builder.agregarItems(items)
+        target.agregarItems(items)
                 .agregarDocComercial(documento)
                 .agregarFecha(fecha)
                 .agregarValorOperacion(valorOp)
                 .agregarEntidadOrigen(origen)
                 .agregarEntidadDestino(destino);
-        assertNull(builder.build());
+        assertNull(target.build());
     }
 
     @Test
     public void fallaCrearOperacionInValidaSinDocComercial () {
-        builder.agregarItems(items)
+        target.agregarItems(items)
                 .agregarMedioDePago(pesos)
                 .agregarFecha(fecha)
                 .agregarValorOperacion(valorOp)
                 .agregarEntidadOrigen(origen)
                 .agregarEntidadDestino(destino);
-        assertNull(builder.build());
+        assertNull(target.build());
     }
 
     @Test
     public void fallaCrearOperacionInValidaSinFecha () {
-        builder.agregarItems(items)
+        target.agregarItems(items)
                 .agregarMedioDePago(pesos)
                 .agregarDocComercial(documento)
                 .agregarValorOperacion(valorOp)
                 .agregarEntidadOrigen(origen)
                 .agregarEntidadDestino(destino);
-        assertNull(builder.build());
+        assertNull(target.build());
     }
 
     @Test
     public void fallaCrearOperacionInValidaSinValorDeOperacion () {
-        builder.agregarItems(items)
+        target.agregarItems(items)
                 .agregarMedioDePago(pesos)
                 .agregarDocComercial(documento)
                 .agregarFecha(fecha)
                 .agregarEntidadOrigen(origen)
                 .agregarEntidadDestino(destino);
-        assertNull(builder.build());
+        assertNull(target.build());
     }
 
     @Test
     public void fallaCrearOperacionInValidaSinEntidadDeOrigen () {
-        builder.agregarItems(items)
+        target.agregarItems(items)
                 .agregarMedioDePago(pesos)
                 .agregarDocComercial(documento)
                 .agregarFecha(fecha)
                 .agregarValorOperacion(valorOp)
                 .agregarEntidadDestino(destino);
-        assertNull(builder.build());
+        assertNull(target.build());
     }
 
     @Test
     public void fallaCrearOperacionInValidaSinEntidadDeDestino () {
-        builder.agregarItems(items)
+        target.agregarItems(items)
                 .agregarMedioDePago(pesos)
                 .agregarDocComercial(documento)
                 .agregarFecha(fecha)
                 .agregarValorOperacion(valorOp)
                 .agregarEntidadOrigen(origen);
-        assertNull(builder.build());
+        assertNull(target.build());
     }
 }
