@@ -1,13 +1,14 @@
 package dominio.notificador_suscriptores;
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 import dominio.cuentasUsuarios.CuentaUsuario;
-import dominio.operaciones.OperacionEgreso;
+import dominio.presupuestos.Licitacion;
 import dominio.presupuestos.Mensaje;
 
 public class NotificadorSuscriptores {
-	ArrayList<SuscripcionesAOperacion> suscripciones;
+	Suscripciones suscripciones;
 	
 	private static class NotificadorSuscriptoresHolder {		
         static final NotificadorSuscriptores singleInstanceNotificadorSuscriptores = new NotificadorSuscriptores();
@@ -18,18 +19,24 @@ public class NotificadorSuscriptores {
 	}
 	
 	public NotificadorSuscriptores() {
-		suscripciones = new ArrayList<SuscripcionesAOperacion>();
+
 	}
 	
-	public void suscribir(CuentaUsuario unaCuentaUsuario, OperacionEgreso operacionEgreso){
-		//SuscripcionesAOperacion suscripcion = buscarSuscripcionesOperacion(operacionEgreso);
-		//suscripcion.suscribir(unaCuentaUsuario);
+	public void suscribir(CuentaUsuario unaCuentaUsuario, Licitacion licitacion){
+		try{
+			suscripciones.suscribirse(unaCuentaUsuario);
+		}catch (NoSuchElementException e){
+			suscripciones = new Suscripciones(licitacion);
+			suscripciones.suscribirse(unaCuentaUsuario);
+		}
 	}
-	
+
+	/*
 	public void desuscribir(CuentaUsuario unaCuentaUsuario, OperacionEgreso operacionEgreso) {
-		//SuscripcionesAOperacion suscripcion = buscarSuscripcionesOperacion(operacionEgreso);
-		//suscripcion.desuscribir(unaCuentaUsuario);
+		SuscripcionesAOperacion suscripcion = buscarSuscripcionesOperacion(operacionEgreso);
+		suscripcion.desuscribir(unaCuentaUsuario);
 	}
+	*/
 	
 	public void notificar(Mensaje mensaje) {
 		//SuscripcionesAOperacion suscripcion = buscarSuscripcionesOperacion(Mensaje.getOperacion());

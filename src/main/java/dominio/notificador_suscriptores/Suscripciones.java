@@ -6,25 +6,17 @@ import dominio.cuentasUsuarios.CuentaUsuario;
 import dominio.operaciones.OperacionEgreso;
 import dominio.presupuestos.Licitacion;
 
-public class SuscripcionesAOperacion {
+public class Suscripciones {
 	Licitacion licitacion;
 	ArrayList<CuentaUsuario> usuarios;
 	
-	public SuscripcionesAOperacion(Licitacion lic) {
+	public Suscripciones(Licitacion lic) {
 		this.licitacion = lic;
 		usuarios = new ArrayList<CuentaUsuario>();
 	}
 	
-	public ArrayList<CuentaUsuario> getUsuarios(){
-		return usuarios;
-	}
-	
-	public void suscribir(CuentaUsuario usuario) {
+	public void suscribirse(CuentaUsuario usuario) {
 		usuarios.add(usuario);
-	}
-	
-	public void desuscribir(CuentaUsuario usuario) {
-		usuarios.remove(usuario);
 	}
 	
 }
