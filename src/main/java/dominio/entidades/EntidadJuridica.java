@@ -53,4 +53,7 @@ public abstract class EntidadJuridica {
     public void setDireccionPostal(String direccionPostal) {
         this.direccionPostal = direccionPostal;
     }
+
+    public void recategorizar(double cantidadPersonalNuevo, double ventasPromedioNuevo) {}
+
 }

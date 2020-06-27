@@ -2,8 +2,6 @@ package dominio.entidades.calculadorFiscal;
 
 import com.google.gson.Gson;
 import dominio.entidades.ETipoEmpresa;
-import dominio.entidades.Empresa;
-
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -16,12 +14,12 @@ public class CategorizadorFiscal {
         this.cargarActividades();
     }
 
-    public ETipoEmpresa categorizar(Empresa empresa){
-        Actividad actividad = this.buscarActividad(empresa.getActividad());
-        if (empresa.isEsComisionista()){
-            return actividad.obtenerTamanioEmpresaXPersonas(empresa.getCantidadPersonal());
+    public ETipoEmpresa recategorizar( ETipoActividad tipoActividad, boolean esComisionista, double cantidadPersonal, double ventasPromedio){
+        Actividad actividad = this.buscarActividad(tipoActividad);
+        if (esComisionista){
+            return actividad.obtenerTamanioEmpresaXPersonas(cantidadPersonal);
         } else {
-            return actividad.obtenerTamanioEmpresaXVentas(empresa.getPromedioVentas());
+            return actividad.obtenerTamanioEmpresaXVentas(ventasPromedio);
         }
     }
 

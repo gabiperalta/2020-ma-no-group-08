@@ -81,4 +81,9 @@ public class CuentaUsuario {
 		ArrayList<Mensaje> mensajes = this.getBandejaDeMensajes().getMensajes();
 		mensajes.forEach(mensaje->mensaje.marcarComoLeido());
 	}
+
+	public boolean puedeRecategorizar() {
+//		TODO: definir roles
+		return true;
+	}
 }

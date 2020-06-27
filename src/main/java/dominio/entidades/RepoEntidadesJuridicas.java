@@ -58,4 +58,14 @@ public class RepoEntidadesJuridicas {
     public static EntidadJuridica buscarEntidadJuridica(String razonSocial) {
         return entidadesJuridicas.stream().filter(entidad -> entidad.getRazonSocial().equals(razonSocial)).findFirst().get();
     }
+
+    public void recategorizar (String nombreUsuario,String razonSocial, double cantidadPersonal, double ventasPromedio) {
+        CuentaUsuario cuentaUsuario = RepositorioUsuarios.getInstance().buscarUsuario(nombreUsuario);
+
+        EntidadJuridica entidadJuridica = buscarEntidadJuridica(razonSocial);
+
+        if (entidadJuridica != null && cuentaUsuario.puedeRecategorizar()) {
+            entidadJuridica.recategorizar(cantidadPersonal, ventasPromedio);
+        }
+    }
 }
