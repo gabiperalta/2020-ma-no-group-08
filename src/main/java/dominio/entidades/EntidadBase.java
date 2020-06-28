@@ -14,24 +14,8 @@ public class EntidadBase {
         this.nombreFicticio = nombreFicticio;
     }
 
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
     public String getNombreFicticio() {
         return nombreFicticio;
-    }
-
-    public void setNombreFicticio(String nombreFicticio) {
-        this.nombreFicticio = nombreFicticio;
-    }
-
-    public EntidadJuridica getEntidadJuridica() {
-        return entidadJuridica;
     }
 
     public void setEntidadJuridica(EntidadJuridica entidadJuridica) {

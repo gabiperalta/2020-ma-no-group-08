@@ -15,14 +15,6 @@ public class Actividad {
         return tipo;
     }
 
-    public ArrayList<Integer> getVentas() {
-        return ventas;
-    }
-
-    public ArrayList<Integer> getPersonal() {
-        return personal;
-    }
-
     public ETipoEmpresa obtenerTamanioEmpresaXVentas(double ventasPromedio) {
         return obtenerPosicionQueCumpla(ventasPromedio, ventas);
     }
@@ -33,7 +25,7 @@ public class Actividad {
 
     private ETipoEmpresa obtenerPosicionQueCumpla(double valorAEvaluar, ArrayList<Integer> arrayList) {
         for (int i = 0; i < arrayList.size()-1; ++i) {
-            if (arrayList.get(i) < valorAEvaluar) {
+            if (arrayList.get(i) > valorAEvaluar) {
                 return tipos.get(i);
             }
         }

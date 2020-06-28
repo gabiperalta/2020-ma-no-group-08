@@ -12,45 +12,10 @@ public abstract class EntidadJuridica {
         entidadBase.setEntidadJuridica(this);
     }
 
-
-
     public String getRazonSocial() {
         return razonSocial;
     }
 
-    public void setRazonSocial(String razonSocial) {
-        this.razonSocial = razonSocial;
-    }
+    public void recategorizar(double cantidadPersonalNuevo, double ventasPromedioNuevo) {}
 
-    public String getNombreFicticio() {
-        return nombreFicticio;
-    }
-
-    public void setNombreFicticio(String nombreFicticio) {
-        this.nombreFicticio = nombreFicticio;
-    }
-
-    public String getCuit() {
-        return cuit;
-    }
-
-    public void setCuit(String cuit) {
-        this.cuit = cuit;
-    }
-
-    public String getCodigoIGJ() {
-        return codigoIGJ;
-    }
-
-    public void setCodigoIGJ(String codigoIGJ) {
-        this.codigoIGJ = codigoIGJ;
-    }
-
-    public String getDireccionPostal() {
-        return direccionPostal;
-    }
-
-    public void setDireccionPostal(String direccionPostal) {
-        this.direccionPostal = direccionPostal;
-    }
 }

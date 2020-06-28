@@ -6,9 +6,9 @@ import dominio.entidades.calculadorFiscal.ETipoActividad;
 public class Empresa extends EntidadJuridica{
 
     protected ETipoEmpresa tipo;
-    protected Integer cantidadPersonal;
+    protected double cantidadPersonal;
     protected ETipoActividad actividad;
-    protected Double promedioVentas;
+    protected double promedioVentas;
     protected boolean esComisionista;
 
 
@@ -25,51 +25,13 @@ public class Empresa extends EntidadJuridica{
         this.codigoIGJ = codigoIGJ;
         this.direccionPostal = direccionPostal;
         this.esComisionista = esComisionista;
-
     }
 
-    public void categorizar() {
+    public void recategorizar(double cantidadPersonalNuevo, double ventasPromedioNuevo) {
         CategorizadorFiscal categorizadorFiscal = new CategorizadorFiscal();
-        this.setTipo(categorizadorFiscal.categorizar(this));
+        tipo = categorizadorFiscal.recategorizar(actividad, esComisionista, cantidadPersonalNuevo, ventasPromedioNuevo);
+        cantidadPersonal = cantidadPersonalNuevo;
+        promedioVentas = ventasPromedioNuevo;
     }
 
-    public ETipoEmpresa getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(ETipoEmpresa tipo) {
-        this.tipo = tipo;
-    }
-
-    public Integer getCantidadPersonal() {
-        return cantidadPersonal;
-    }
-
-    public void setCantidadPersonal(Integer cantidadPersonal) {
-        this.cantidadPersonal = cantidadPersonal;
-    }
-
-    public ETipoActividad getActividad() {
-        return actividad;
-    }
-
-    public void setActividad(ETipoActividad actividad) {
-        this.actividad = actividad;
-    }
-
-    public double getPromedioVentas() {
-        return promedioVentas;
-    }
-
-    public void setPromedioVentas(double promedioVentas) {
-        this.promedioVentas = promedioVentas;
-    }
-
-    public boolean isEsComisionista() {
-        return esComisionista;
-    }
-
-    public void setEsComisionista(boolean esComisionista) {
-        this.esComisionista = esComisionista;
-    }
 }

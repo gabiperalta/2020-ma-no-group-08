@@ -63,6 +63,10 @@ public class Licitacion {
 	public boolean cantidadItemsValida(OperacionEgreso operacion) {
 		return this.getPresupuestos().stream().allMatch(p->p.esValido(operacion));
 	}
+
+	public void licitar () {
+
+	}
 	
 //	public void generarResultado() {
 //		

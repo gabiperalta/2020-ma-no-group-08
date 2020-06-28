@@ -49,7 +49,7 @@ public class RepoEntidadesJuridicas {
 
 
     public void eliminarEntidadJuridica(String razonSocial) {
-        EntidadJuridica entidadABorrar = this.buscarEntidadJuridica(razonSocial);
+        EntidadJuridica entidadABorrar = buscarEntidadJuridica(razonSocial);
         if (entidadABorrar != null) {
             entidadesJuridicas.remove(entidadABorrar);
         }
@@ -57,5 +57,15 @@ public class RepoEntidadesJuridicas {
 
     public static EntidadJuridica buscarEntidadJuridica(String razonSocial) {
         return entidadesJuridicas.stream().filter(entidad -> entidad.getRazonSocial().equals(razonSocial)).findFirst().get();
+    }
+
+    public void recategorizar (String nombreUsuario,String razonSocial, double cantidadPersonal, double ventasPromedio) {
+        CuentaUsuario cuentaUsuario = RepositorioUsuarios.getInstance().buscarUsuario(nombreUsuario);
+
+        EntidadJuridica entidadJuridica = buscarEntidadJuridica(razonSocial);
+
+        if (entidadJuridica != null && cuentaUsuario.puedeRecategorizar()) {
+            entidadJuridica.recategorizar(cantidadPersonal, ventasPromedio);
+        }
     }
 }

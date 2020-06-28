@@ -16,7 +16,7 @@ public class OperacionEgreso {
 	private int presupuestosNecesarios;
 
 	public OperacionEgreso(ArrayList<Item> items2, MedioDePago medioDePago2, DocumentoComercial documento2, Date fecha2,
-						   double valorOperacion2, EntidadOperacion entidadOrigen2, EntidadOperacion entidadDestino2) {
+						   double valorOperacion2, EntidadOperacion entidadOrigen2, EntidadOperacion entidadDestino2, int presupuestosNecesarios) {
 		this.items = items2;
 		this.medioDePago = medioDePago2;
 		this.documento = documento2;
@@ -24,72 +24,21 @@ public class OperacionEgreso {
 		this.valorOperacion = valorOperacion2;
 		this.entidadOrigen = entidadOrigen2;
 		this.entidadDestino = entidadDestino2;
+		this.presupuestosNecesarios = presupuestosNecesarios;
 	}
 
 	public ArrayList<Item> getItems() {
 		return items;
 	}
 
-	public void setItems(ArrayList<Item> items) {
-		this.items = items;
-	}
-
-	public MedioDePago getMedioDePago() {
-		return medioDePago;
-	}
-
-	public void setMedioDePago(MedioDePago medioDePago) {
-		this.medioDePago = medioDePago;
-	}
-
-	public DocumentoComercial getDocumento() {
-		return documento;
-	}
-
-	public void setDocumento(DocumentoComercial documento) {
-		this.documento = documento;
-	}
-
-	public Date getFecha() {
-		return fecha;
-	}
-
-	public void setFecha(Date fecha) {
-		this.fecha = fecha;
-	}
-
-	public double getValorOperacion() {
+		public double getValorOperacion() {
 		return this.items.stream()
       			   .mapToInt(item -> item.getValor())
       			   .sum();
 	}
 
-	public void setValorOperacion(double valorOperacion) {
-		this.valorOperacion = valorOperacion;
-	}
-
-	public EntidadOperacion getEntidadOrigen() {
-		return entidadOrigen;
-	}
-
-	public void setEntidadOrigen(EntidadOperacion entidadOrigen) {
-		this.entidadOrigen = entidadOrigen;
-	}
-
-	public EntidadOperacion getEntidadDestino() {
-		return entidadDestino;
-	}
-
-	public void setEntidadDestino(EntidadOperacion entidadDestino) {
-		this.entidadDestino = entidadDestino;
-	}
-
 	public int getPresupuestosNecesarios() {
 		return presupuestosNecesarios;
-	}
-
-	public void setPresupuestosNecesarios(int presupuestosNecesarios) {
-		this.presupuestosNecesarios = presupuestosNecesarios;
 	}
 
 }
