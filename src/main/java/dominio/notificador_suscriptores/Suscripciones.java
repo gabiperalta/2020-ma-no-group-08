@@ -3,8 +3,8 @@ package dominio.notificador_suscriptores;
 import java.util.ArrayList;
 
 import dominio.cuentasUsuarios.CuentaUsuario;
+import dominio.licitacion.Licitacion;
 import dominio.operaciones.OperacionEgreso;
-import dominio.presupuestos.Licitacion;
 
 public class Suscripciones {
 	Licitacion licitacion;

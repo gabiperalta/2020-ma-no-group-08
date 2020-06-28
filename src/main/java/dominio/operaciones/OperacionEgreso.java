@@ -14,7 +14,8 @@ public class OperacionEgreso {
 	private EntidadOperacion entidadOrigen;
 	private EntidadOperacion entidadDestino;
 	private int presupuestosNecesarios;
-
+	
+	public OperacionEgreso() {}
 	public OperacionEgreso(ArrayList<Item> items2, MedioDePago medioDePago2, DocumentoComercial documento2, Date fecha2,
 						   double valorOperacion2, EntidadOperacion entidadOrigen2, EntidadOperacion entidadDestino2, int presupuestosNecesarios) {
 		this.items = items2;
@@ -39,6 +40,10 @@ public class OperacionEgreso {
 
 	public int getPresupuestosNecesarios() {
 		return presupuestosNecesarios;
+	}
+
+	public void setPresupuestosNecesarios(int presupuestosNecesarios) {
+		this.presupuestosNecesarios = presupuestosNecesarios;
 	}
 
 }

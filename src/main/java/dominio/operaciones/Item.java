@@ -5,6 +5,8 @@ public class Item {
 	private ETipoItem tipo;
 	private String descripcion;
 	
+	
+	public Item() {}
 	public Item(int i, ETipoItem articulo, String string) {
 		this.valor = i;
 		this.tipo = articulo;
@@ -12,5 +14,8 @@ public class Item {
 	}
 	public int getValor() {
 		return valor;
+	}
+	public void setValor(int valor) {
+		this.valor = valor;
 	}
 }

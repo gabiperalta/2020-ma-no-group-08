@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 import dominio.cuentasUsuarios.CuentaUsuario;
-import dominio.presupuestos.Licitacion;
-import dominio.presupuestos.Mensaje;
+import dominio.licitacion.Licitacion;
+import dominio.licitacion.Mensaje;
 
 public class NotificadorSuscriptores {
 	Suscripciones suscripciones;

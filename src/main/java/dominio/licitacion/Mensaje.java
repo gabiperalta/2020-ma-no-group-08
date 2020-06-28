@@ -1,4 +1,4 @@
-package dominio.presupuestos;
+package dominio.licitacion;
 
 
 public class Mensaje {

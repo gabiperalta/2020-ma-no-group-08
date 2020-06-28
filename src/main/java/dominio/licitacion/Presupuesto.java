@@ -1,4 +1,4 @@
-package dominio.presupuestos;
+package dominio.licitacion;
 
 import java.util.ArrayList;
 
@@ -9,9 +9,9 @@ import dominio.operaciones.OperacionEgreso;
 public class Presupuesto {
 	private EntidadOperacion proveedor;
 	private final ArrayList<Item> items;
-	private int montoTotal;
+	private double montoTotal;
 	
-	public Presupuesto(EntidadOperacion proveedor, ArrayList<Item> items, int monto){
+	public Presupuesto(EntidadOperacion proveedor, ArrayList<Item> items, double monto){
 		this.proveedor = proveedor;
 		this.items = items;
 		this.montoTotal = monto;
