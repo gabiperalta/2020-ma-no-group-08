@@ -52,6 +52,7 @@ public class Presupuesto {
 	}
 
 	public boolean esValido(OperacionEgreso operacion) {
-		return operacion.getItems().containsAll(this.getItems());
+		return this.items.parallelStream().allMatch(i->i.esValido(operacion));
+		//return this.items == operacion.getItems();
 	}
 }

@@ -27,6 +27,9 @@ public class Licitacion {
 		return presupuestos;
 	}
 
+	public void setPresupuestos(ArrayList<Presupuesto> presupuestos) {
+		this.presupuestos = presupuestos;
+	}
 	public int getPresupuestosNecesarios() {
 		return presupuestosNecesarios;
 	}
@@ -35,7 +38,7 @@ public class Licitacion {
 		this.presupuestosNecesarios = presupuestosNecesarios;
 	}
 	public void agregarPresupuesto(Presupuesto presup) {
-		if(presupuestos.stream().allMatch(p->p.esValido(compra))) {
+		if(presup.esValido(compra)) {
 			this.presupuestos.add(presup);
 		}
 	}

@@ -33,7 +33,9 @@ public class LicitacionTest {
 	@Before
 	public void init() {
 		compra = new OperacionEgreso();
-		licitacion = new Licitacion();
+		presupuestos = new ArrayList<Presupuesto>();
+		licitacion = new Licitacion(compra,50);
+		licitacion.setPresupuestos(presupuestos);
 		item1 = new Item();
 		item1.setValor(50);
 		item2 = new Item();
@@ -51,7 +53,6 @@ public class LicitacionTest {
 		proveedor = new EntidadOperacion();
 		presup1 = new Presupuesto(proveedor,listaItems1,150.0);
 		presup2 = new Presupuesto(proveedor,listaItems2,350.0);
-		presupuestos = new ArrayList<Presupuesto>();
 	}
 	
 	@Test
@@ -88,6 +89,19 @@ public class LicitacionTest {
 		assertTrue(licitacion.cumpleCriterioMenorPrecio(presupuestos));
 	}
 	
+	@Test
+	public void agregarPresupuestoValido() {
+		compra.setItems(listaItems1);
+		licitacion.agregarPresupuesto(presup1);
+		assertTrue(licitacion.getPresupuestos().contains(presup1));
+	}
+	
+	@Test
+	public void agregarPresupuestoInvalido() {
+		compra.setItems(listaItems2);
+		licitacion.agregarPresupuesto(presup1);
+		assertFalse(licitacion.getPresupuestos().contains(presup1));
+	}
 //    @Test
 //    public void licitar() {
 //    

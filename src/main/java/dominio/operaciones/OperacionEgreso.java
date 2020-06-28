@@ -27,11 +27,17 @@ public class OperacionEgreso {
 		this.entidadDestino = entidadDestino2;
 		this.presupuestosNecesarios = presupuestosNecesarios;
 	}
-
+	
+	public void agregarItem(Item item) {
+		this.items.add(item);
+	}
 	public ArrayList<Item> getItems() {
 		return items;
 	}
 
+		public void setItems(ArrayList<Item> items) {
+		this.items = items;
+	}
 		public double getValorOperacion() {
 		return this.items.stream()
       			   .mapToInt(item -> item.getValor())

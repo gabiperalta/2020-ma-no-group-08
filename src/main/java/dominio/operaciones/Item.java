@@ -18,4 +18,7 @@ public class Item {
 	public void setValor(int valor) {
 		this.valor = valor;
 	}
+	public boolean esValido(OperacionEgreso operacion) {
+		return operacion.getItems().contains(this);
+	}
 }
