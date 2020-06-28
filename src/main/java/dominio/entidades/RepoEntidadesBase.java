@@ -35,7 +35,7 @@ public class RepoEntidadesBase {
 
 
     public void eliminarEntidadBase(String nombreFicticio) {
-        EntidadBase entidadABorrar = this.buscarEntidadBase(nombreFicticio);
+        EntidadBase entidadABorrar = buscarEntidadBase(nombreFicticio);
         if (entidadABorrar != null) {
             entidadesBase.remove(entidadABorrar);
         }

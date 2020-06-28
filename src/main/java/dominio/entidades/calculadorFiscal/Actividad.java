@@ -15,14 +15,6 @@ public class Actividad {
         return tipo;
     }
 
-    public ArrayList<Integer> getVentas() {
-        return ventas;
-    }
-
-    public ArrayList<Integer> getPersonal() {
-        return personal;
-    }
-
     public ETipoEmpresa obtenerTamanioEmpresaXVentas(double ventasPromedio) {
         return obtenerPosicionQueCumpla(ventasPromedio, ventas);
     }

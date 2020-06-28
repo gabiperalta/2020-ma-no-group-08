@@ -49,7 +49,7 @@ public class RepoEntidadesJuridicas {
 
 
     public void eliminarEntidadJuridica(String razonSocial) {
-        EntidadJuridica entidadABorrar = this.buscarEntidadJuridica(razonSocial);
+        EntidadJuridica entidadABorrar = buscarEntidadJuridica(razonSocial);
         if (entidadABorrar != null) {
             entidadesJuridicas.remove(entidadABorrar);
         }

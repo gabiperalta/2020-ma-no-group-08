@@ -19,6 +19,7 @@ public class OperacionEgresoBuilderTest {
     EntidadOperacion origen;
     EntidadOperacion destino;
     ArrayList<Item> items;
+    int presupuestosNecesarios;
     OperacionEgresoBuilder target;
 
     @Before
@@ -34,6 +35,7 @@ public class OperacionEgresoBuilderTest {
         valorOp = 100500d;
         origen = new EntidadOperacion("Operacion compra 1","20-40678950-4","Av.Libertador 800");
         destino = new EntidadOperacion("Operacion compra 1", "20-40678950-4", "Av.Corrientes 550");
+        presupuestosNecesarios = 2;
         target = new OperacionEgresoBuilder();
     }
 
@@ -45,7 +47,8 @@ public class OperacionEgresoBuilderTest {
                 .agregarFecha(fecha)
                 .agregarValorOperacion(valorOp)
                 .agregarEntidadOrigen(origen)
-                .agregarEntidadDestino(destino);
+                .agregarEntidadDestino(destino)
+                .agregarPresupuestosNecesarios(presupuestosNecesarios);
         assertNotNull(target.build());
     }
 
@@ -56,7 +59,8 @@ public class OperacionEgresoBuilderTest {
                 .agregarFecha(fecha)
                 .agregarValorOperacion(valorOp)
                 .agregarEntidadOrigen(origen)
-                .agregarEntidadDestino(destino);
+                .agregarEntidadDestino(destino)
+                .agregarPresupuestosNecesarios(presupuestosNecesarios);
         assertNull(target.build());
     }
 
@@ -67,7 +71,8 @@ public class OperacionEgresoBuilderTest {
                 .agregarFecha(fecha)
                 .agregarValorOperacion(valorOp)
                 .agregarEntidadOrigen(origen)
-                .agregarEntidadDestino(destino);
+                .agregarEntidadDestino(destino)
+                .agregarPresupuestosNecesarios(presupuestosNecesarios);
         assertNull(target.build());
     }
 
@@ -78,7 +83,8 @@ public class OperacionEgresoBuilderTest {
                 .agregarFecha(fecha)
                 .agregarValorOperacion(valorOp)
                 .agregarEntidadOrigen(origen)
-                .agregarEntidadDestino(destino);
+                .agregarEntidadDestino(destino)
+                .agregarPresupuestosNecesarios(presupuestosNecesarios);
         assertNull(target.build());
     }
 
@@ -89,7 +95,8 @@ public class OperacionEgresoBuilderTest {
                 .agregarDocComercial(documento)
                 .agregarValorOperacion(valorOp)
                 .agregarEntidadOrigen(origen)
-                .agregarEntidadDestino(destino);
+                .agregarEntidadDestino(destino)
+                .agregarPresupuestosNecesarios(presupuestosNecesarios);
         assertNull(target.build());
     }
 
@@ -100,7 +107,8 @@ public class OperacionEgresoBuilderTest {
                 .agregarDocComercial(documento)
                 .agregarFecha(fecha)
                 .agregarEntidadOrigen(origen)
-                .agregarEntidadDestino(destino);
+                .agregarEntidadDestino(destino)
+                .agregarPresupuestosNecesarios(presupuestosNecesarios);
         assertNull(target.build());
     }
 
@@ -111,12 +119,25 @@ public class OperacionEgresoBuilderTest {
                 .agregarDocComercial(documento)
                 .agregarFecha(fecha)
                 .agregarValorOperacion(valorOp)
-                .agregarEntidadDestino(destino);
+                .agregarEntidadDestino(destino)
+                .agregarPresupuestosNecesarios(presupuestosNecesarios);
         assertNull(target.build());
     }
 
     @Test
     public void fallaCrearOperacionInValidaSinEntidadDeDestino () {
+        target.agregarItems(items)
+                .agregarMedioDePago(pesos)
+                .agregarDocComercial(documento)
+                .agregarFecha(fecha)
+                .agregarValorOperacion(valorOp)
+                .agregarEntidadOrigen(origen)
+                .agregarPresupuestosNecesarios(presupuestosNecesarios);
+        assertNull(target.build());
+    }
+
+    @Test
+    public void fallaCrearOperacionInValidaSinCantidadPresupuestosNecesarios () {
         target.agregarItems(items)
                 .agregarMedioDePago(pesos)
                 .agregarDocComercial(documento)

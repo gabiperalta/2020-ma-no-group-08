@@ -40,7 +40,7 @@ public class RepoOrganizaciones {
     }
 
     public void eliminarOrganizacion(String nombreOrganizacion) {
-        Organizacion organizacionABorrar = this.buscarOrganizacion(nombreOrganizacion);
+        Organizacion organizacionABorrar = buscarOrganizacion(nombreOrganizacion);
         if (organizacionABorrar != null) {
             organizaciones.remove(organizacionABorrar);
         }

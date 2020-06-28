@@ -23,7 +23,7 @@ public class RepoOperacionesEgreso {
     }
 
     public void eliminarOperacionEgreso(OperacionEgreso operacionEgreso) {
-        OperacionEgreso operacionABorrar = this.buscarOperacionEgreso(operacionEgreso);
+        OperacionEgreso operacionABorrar = buscarOperacionEgreso(operacionEgreso);
         operacionesEgreso.remove(operacionEgreso);
     }
 

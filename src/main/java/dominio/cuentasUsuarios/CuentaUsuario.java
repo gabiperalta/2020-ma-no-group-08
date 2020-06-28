@@ -73,10 +73,7 @@ public class CuentaUsuario {
 		intentosPendientes = 3;
 		contraseniasPrevias.add(contraseniaPlanaNueva);
 	}
-	
-	public String getPasswordPlana() {
-		return passwordPlana;
-	}
+
 	public void leerMensajes() {
 		ArrayList<Mensaje> mensajes = this.getBandejaDeMensajes().getMensajes();
 		mensajes.forEach(mensaje->mensaje.marcarComoLeido());
