@@ -11,7 +11,7 @@ public class ValidadorContrasenia {
     }
 
     private boolean noEstaEntrePeoresContrasenias(String contrasenia) throws Exception {
-        File file = new File("src/main/resources/worstPasswords");
+        File file = new File("src/main/resources/ValidadorContrasenias/worstPasswords");
         Scanner sc = new Scanner(file);
 
         while (sc.hasNextLine()){
