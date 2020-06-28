@@ -1,5 +1,4 @@
-package dominio.licitacion;
-
+package dominio.notificador_suscriptores;
 
 public class Mensaje {
 	String cuerpo;
