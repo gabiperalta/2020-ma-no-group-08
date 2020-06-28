@@ -1,12 +1,18 @@
 package dominio.cuentasUsuarios;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 
 import dominio.cuentasUsuarios.perfil.Perfil;
+import dominio.cuentasUsuarios.perfil.PerfilAdministrador;
+import dominio.cuentasUsuarios.perfil.PerfilEstandar;
 import dominio.entidades.Organizacion;
-import dominio.notificador_suscriptores.bandeja_de_mensajes.BandejaDeMensajes;
-import dominio.presupuestos.Mensaje;
 import seguridad.HashPassword;
+import seguridad.ValidadorContrasenia;
+import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;
+import temporal.seguridad.repositorioUsuarios.exceptions.CredencialesNoValidasException;
+import temporal.seguridad.repositorioUsuarios.exceptions.UsuarioYaExistenteException;
+
 
 public class CuentaUsuario {
 
@@ -15,22 +21,33 @@ public class CuentaUsuario {
 	private String passwordPlana; // TODO. este atributo sera usado unicamente para testeo, posteriormente sera eliminado para quedar solo el hash
 	private ArrayList<String> contraseniasPrevias;
 	private Integer intentosPendientes;
-	private BandejaDeMensajes bandejaDeMensajes;
 	
 
-	public CuentaUsuario(Perfil unPerfil, String unaPassword) {
-		perfil = unPerfil;
+	public CuentaUsuario(String unNombreUsuario, String unaPassword) { // CONSTRUCTOR USUARIOS ADMINISTRADOR
+		perfil = new PerfilAdministrador(unNombreUsuario);
 		passwordHash = HashPassword.calcular(unaPassword);
 		passwordPlana = unaPassword;
 		contraseniasPrevias = new ArrayList<String>();
 		intentosPendientes = 3;
-		bandejaDeMensajes = new BandejaDeMensajes();
+	}
+	
+	public CuentaUsuario(String unNombreUsuario, Organizacion unaOrganizacion) { // CONSTRUCTOR USUARIOS ESTANDAR
+		perfil = new PerfilEstandar(unNombreUsuario, unaOrganizacion);
+		
+		String unaPassword = this.generarContrasenia();
+		passwordPlana = unaPassword;
+		
+		passwordHash = HashPassword.calcular(passwordPlana);
+		contraseniasPrevias = new ArrayList<String>();
+		intentosPendientes = 3;
+		
+		RepositorioUsuarios.getInstance().agregarUsuarioEstandar(this);
 	}
 	
 	public boolean verificarContrasenia(String contrasenia) {
 		
 		if(passwordHash.equals(HashPassword.calcular(contrasenia))) {
-			intentosPendientes = 3; // Reinicio el contador de intentos pendientes 
+			intentosPendientes = 3;
 			return true;
 		}
 		else {
@@ -43,8 +60,13 @@ public class CuentaUsuario {
 		return intentosPendientes == 0; //return intentosPendientes > 0;
 	}
 	
-	public void setUserName(String unNombreUsuario) {
-		perfil.setNombre(unNombreUsuario);
+	public void cambiarNombre(String unNombreUsuario) throws UsuarioYaExistenteException {
+		if(!RepositorioUsuarios.getInstance().existeElUsuario(unNombreUsuario)) {
+			perfil.setNombre(unNombreUsuario);
+		}
+		else {
+			throw new UsuarioYaExistenteException("Este nombre de usuario ya esta en uso.");
+		}
 	}
 	
 	public String getUserName() {
@@ -63,8 +85,16 @@ public class CuentaUsuario {
 		return perfil.getOrganizacion();
 	}
 	
-	public BandejaDeMensajes getBandejaDeMensajes() {
-		return bandejaDeMensajes;
+	public void blanquearContrasenia() throws Exception{
+		
+		ValidadorContrasenia validador = new ValidadorContrasenia();
+		String contrasenia = this.generarContrasenia();
+
+		if(validador.esContraseniaValida(contrasenia, this.getContraseniasPrevias())) {
+			this.actualizarContrasenia(contrasenia, HashPassword.calcular(contrasenia));
+		} else {
+			throw new CredencialesNoValidasException("la contrasenia no es valida");
+		}
 	}
 
 	public void actualizarContrasenia(String contraseniaPlanaNueva, String contraseniaHasheadaNueva) {
@@ -74,13 +104,25 @@ public class CuentaUsuario {
 		contraseniasPrevias.add(contraseniaPlanaNueva);
 	}
 
-	public void leerMensajes() {
-		ArrayList<Mensaje> mensajes = this.getBandejaDeMensajes().getMensajes();
-		mensajes.forEach(mensaje->mensaje.marcarComoLeido());
-	}
-
 	public boolean puedeRecategorizar() {
-//		TODO: definir roles
+		//		TODO: definir roles
 		return true;
 	}
+	
+	private String generarContrasenia() {
+		
+		int longitudContrasenia = 14;
+		byte[] arrayAux = new byte[longitudContrasenia];
+		
+		SecureRandom secureRandom = new SecureRandom();
+		
+		secureRandom.nextBytes(arrayAux);
+		
+		String generatedString = new String(arrayAux);
+
+		// Esta contraseña autogenerada deberia ser enviada al usuario final de forma segura
+		
+		return generatedString;
+	}
+	
 }
