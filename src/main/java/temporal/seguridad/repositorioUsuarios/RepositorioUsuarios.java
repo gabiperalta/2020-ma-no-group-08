@@ -3,7 +3,6 @@ package temporal.seguridad.repositorioUsuarios;
 import java.util.ArrayList;
 
 import dominio.cuentasUsuarios.CuentaUsuario;
-import dominio.cuentasUsuarios.perfil.PerfilAdministrador;
 import temporal.seguridad.repositorioUsuarios.exceptions.CredencialesNoValidasException;
 
 // SINGLETON
@@ -22,12 +21,9 @@ public class RepositorioUsuarios {
 	
 	public RepositorioUsuarios() {
 		
-		PerfilAdministrador perfilAdmin1 = new PerfilAdministrador("admin1");
-		PerfilAdministrador perfilAdmin2 = new PerfilAdministrador("admin2");
-		PerfilAdministrador perfilAdmin3 = new PerfilAdministrador("admin3");
-		CuentaUsuario administrador1 = new CuentaUsuario(perfilAdmin1, "1234");
-		CuentaUsuario administrador2 = new CuentaUsuario(perfilAdmin2, "1234");
-		CuentaUsuario administrador3 = new CuentaUsuario(perfilAdmin3, "1234");
+		CuentaUsuario administrador1 = new CuentaUsuario("admin1", "1234");
+		CuentaUsuario administrador2 = new CuentaUsuario("admin2", "1234");
+		CuentaUsuario administrador3 = new CuentaUsuario("admin3", "1234");
 		usuarios = new ArrayList<CuentaUsuario>();
 		
 		usuarios.add(administrador1);
@@ -36,7 +32,17 @@ public class RepositorioUsuarios {
 		
 	}
 
-	
+	public boolean existeElUsuario(String unNombreUsuario) {
+		boolean existiaElUsuario;
+		try {
+			this.buscarUsuario(unNombreUsuario);
+			existiaElUsuario = true;
+		}
+		catch (Exception NoSuchElementException){
+			existiaElUsuario = false;
+		}
+		return existiaElUsuario;
+	}
 	
 	public void agregarUsuarioEstandar(CuentaUsuario unUsuarioEstandar) {
 		usuarios.add(unUsuarioEstandar);

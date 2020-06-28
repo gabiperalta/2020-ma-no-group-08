@@ -1,38 +1,35 @@
-import static org.junit.Assert.assertThrows;
+package servicio.abm_usuarios;
+
+import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import dominio.entidades.Organizacion;
-import seguridad.administradorDeSesion.AdministradorDeSesion;
 import seguridad.sesion.exceptions.CredencialesNoValidasException;
 import seguridad.sesion.exceptions.PermisoDenegadoException;
-import servicio.abm_usuarios.ServicioABMUsuarios;
 import temporal.seguridad.repositorioUsuarios.exceptions.UsuarioYaExistenteException;
 
-public class CreacionUsuariosTest {
-	AdministradorDeSesion administradorSesion;
+public class ServicioABMUsuariosTest {
+
 	ServicioABMUsuarios abmUsuarios;
 	Organizacion organizacion;
 	
 	@Before
 	public void init() throws CredencialesNoValidasException, PermisoDenegadoException, UsuarioYaExistenteException {
-		administradorSesion = new AdministradorDeSesion();
 		
-		administradorSesion.logIn("admin1", "1234");
-		
-		abmUsuarios = administradorSesion.getSesion().abmUsuarios();
+		abmUsuarios = new ServicioABMUsuarios();
 
 		organizacion = new Organizacion("Organizacion 1");
 	}
 	
 	@Test
-	public void testCreacionUsuarioValida() throws UsuarioYaExistenteException {
+	public void testAltaUsuarioColaboradorOK() throws UsuarioYaExistenteException {
 		abmUsuarios.altaUsuarioColaborador("usuario1", organizacion);
 	}
 	
 	@Test
-	public void testCreacionUsuarioNombreYaUtilizado() throws UsuarioYaExistenteException  {
+	public void testAltaUsuarioColaboradorNombreYaUtilizado() throws UsuarioYaExistenteException  {
 		abmUsuarios.altaUsuarioColaborador("usuarioRepetido", organizacion);
 		assertThrows(UsuarioYaExistenteException.class, ()->{abmUsuarios.altaUsuarioColaborador("usuarioRepetido", organizacion);});
 	}
