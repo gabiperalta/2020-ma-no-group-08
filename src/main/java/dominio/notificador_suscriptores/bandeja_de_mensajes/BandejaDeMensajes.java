@@ -3,7 +3,7 @@ package dominio.notificador_suscriptores.bandeja_de_mensajes;
 import java.util.ArrayList;
 
 import dominio.cuentasUsuarios.CuentaUsuario;
-import dominio.licitacion.Mensaje;
+import dominio.notificador_suscriptores.Mensaje;
 
 public class BandejaDeMensajes {
 	ArrayList<Mensaje> mensajes;

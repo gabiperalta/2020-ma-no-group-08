@@ -1,10 +1,10 @@
 package dominio.licitacion;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import dominio.cuentasUsuarios.CuentaUsuario;
 import dominio.excepciones.LaCompraNoRequierePresupuestosException;
+import dominio.notificador_suscriptores.Mensaje;
 import dominio.notificador_suscriptores.NotificadorSuscriptores;
 import dominio.operaciones.OperacionEgreso;
 
@@ -47,7 +47,7 @@ public class Licitacion {
 		this.presupuestos.remove(presup);
 	}
 	
-	public boolean cumpleCriterioCantidadPresupuestos(OperacionEgreso operacion) {
+	private boolean cumpleCriterioCantidadPresupuestos(OperacionEgreso operacion) {
 		if(operacion.getPresupuestosNecesarios() != 0) { //Verifico que la compra requiera presupuestos 
 			this.resultadoCantPresupCargada = this.getPresupuestosNecesarios() !=0; //Verifico que este cargada la cantidad de presupuestos
 			return resultadoCantPresupCargada; 
@@ -57,9 +57,12 @@ public class Licitacion {
 		}
 	}
 	
-	public boolean cumpleCriterioMenorPrecio(ArrayList<Presupuesto> presupuestos) {
-		Collections.sort(presupuestos, new OrdenarPorPrecio());
-		if(presupuestos.get(0).getMontoTotal() < presupuestos.get(1).getMontoTotal()) {
+	private boolean cumpleCriterioMenorPrecio(ArrayList<Presupuesto> presupuestos) {
+		//Collections.sort(presupuestos, new OrdenarPorPrecio());
+		 Presupuesto presupuestoElegido = presupuestos.stream()
+										 .min(new OrdenarPorPrecio())
+										 .get();
+		if(presupuestoElegido.getMontoTotal() < presupuestos.get(1).getMontoTotal()) {
 			resultadoMenorPrecio = true;
 			return resultadoMenorPrecio;
 		}
@@ -70,7 +73,7 @@ public class Licitacion {
 		// TODO, ACA HAY QUE ARREGLAR CALCULAR EL RESULTADO Y SETEARLO
 	}
 	
-	public boolean cumpleCriterioPresupuestosCorrespondientes(OperacionEgreso operacion) {
+	private boolean cumpleCriterioPresupuestosCorrespondientes(OperacionEgreso operacion) {
 		resultadoPresupCorresp =  this.presupuestosNecesarios == operacion.getPresupuestosNecesarios();
 		return resultadoPresupCorresp;
 	}
@@ -118,7 +121,12 @@ public class Licitacion {
 		NotificadorSuscriptores notificador = NotificadorSuscriptores.getInstance();
 		notificador.notificar(this.mensajeTexto());
 	}
-
+	
+	public boolean puedeLicitar() {
+		return this.cumpleCriterioCantidadPresupuestos(compra) && 
+			   this.cumpleCriterioMenorPrecio(presupuestos) &&
+			   this.cumpleCriterioPresupuestosCorrespondientes(compra);
+	}
 	public void suscribir(CuentaUsuario cuenta) {
 		NotificadorSuscriptores notificador = NotificadorSuscriptores.getInstance();
 		notificador.suscribir(cuenta, this);

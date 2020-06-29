@@ -56,40 +56,6 @@ public class LicitacionTest {
 	}
 	
 	@Test
-	public void noCumpleCriterioPresupuestosCorrespondientes() {
-		compra.setPresupuestosNecesarios(5);
-		licitacion.setPresupuestosNecesarios(10);
-		assertFalse(licitacion.cumpleCriterioPresupuestosCorrespondientes(compra));
-	}
-	
-	@Test
-	public void cumpleCriterioPresupuestosCorrespondientes() {
-		licitacion.setPresupuestosNecesarios(5);
-		compra.setPresupuestosNecesarios(5);
-		assertTrue(licitacion.cumpleCriterioPresupuestosCorrespondientes(compra));
-	}
-	
-	@Test(expected = LaCompraNoRequierePresupuestosException.class)
-	public void noCumpleCriterioCantidadPresupuestos() {
-		compra.setPresupuestosNecesarios(0);
-		assertFalse(licitacion.cumpleCriterioCantidadPresupuestos(compra));
-	}
-	
-	@Test
-	public void cumpleCriterioCantidadPresupuestos() {
-		compra.setPresupuestosNecesarios(10);
-		licitacion.setPresupuestosNecesarios(10);
-		assertTrue(licitacion.cumpleCriterioCantidadPresupuestos(compra));
-	}
-	
-	@Test
-	public void cumpleCriterioMenorPrecio() {
-		presupuestos.add(presup2);
-		presupuestos.add(presup1);
-		assertTrue(licitacion.cumpleCriterioMenorPrecio(presupuestos));
-	}
-	
-	@Test
 	public void agregarPresupuestoValido() {
 		compra.setItems(listaItems1);
 		licitacion.agregarPresupuesto(presup1);
@@ -102,8 +68,37 @@ public class LicitacionTest {
 		licitacion.agregarPresupuesto(presup1);
 		assertFalse(licitacion.getPresupuestos().contains(presup1));
 	}
-//    @Test
-//    public void licitar() {
-//    
-//    }
+	
+    @Test
+    public void licitarExitoso() {
+    	licitacion.setPresupuestosNecesarios(5);
+		compra.setPresupuestosNecesarios(5);
+		presupuestos.add(presup1);
+		presupuestos.add(presup2);
+		assertTrue(licitacion.puedeLicitar());
+    }
+    
+    @Test
+    public void licitarNoExitosoPorqueNoCumpleCriterio1() {
+		compra.setPresupuestosNecesarios(5);
+		licitacion.setPresupuestosNecesarios(10);
+		presupuestos.add(presup2);
+		presupuestos.add(presup1);
+		assertFalse(licitacion.puedeLicitar());
+    }
+    
+    @Test(expected = LaCompraNoRequierePresupuestosException.class)
+    public void licitarNoExitosoPorqueNoCumpleCriterio2() {
+    	compra.setPresupuestosNecesarios(0);
+    	assertFalse(licitacion.puedeLicitar());
+    }
+    
+    @Test
+    public void licitarNoExitosoPorqueNoCumpleCriterio3() {
+    	licitacion.setPresupuestosNecesarios(5);
+		compra.setPresupuestosNecesarios(5);
+    	presupuestos.add(presup2);
+		presupuestos.add(presup1);
+		assertFalse(licitacion.puedeLicitar());
+    }
 }

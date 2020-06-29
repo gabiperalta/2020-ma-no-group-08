@@ -5,7 +5,6 @@ import java.util.NoSuchElementException;
 
 import dominio.cuentasUsuarios.CuentaUsuario;
 import dominio.licitacion.Licitacion;
-import dominio.licitacion.Mensaje;
 
 public class NotificadorSuscriptores {
 	Suscripciones suscripciones;
