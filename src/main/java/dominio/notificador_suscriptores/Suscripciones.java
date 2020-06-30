@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import dominio.cuentasUsuarios.CuentaUsuario;
 import dominio.licitacion.Licitacion;
-import dominio.operaciones.OperacionEgreso;
 
 public class Suscripciones {
 	Licitacion licitacion;
@@ -12,11 +11,18 @@ public class Suscripciones {
 	
 	public Suscripciones(Licitacion lic) {
 		this.licitacion = lic;
-		usuarios = new ArrayList<CuentaUsuario>();
+		usuarios = new ArrayList<>();
 	}
 	
-	public void suscribirse(CuentaUsuario usuario) {
+	public void agregarSuscriptor(CuentaUsuario usuario) {
 		usuarios.add(usuario);
 	}
-	
+
+	public Licitacion getLicitacion(){
+		return this.licitacion;
+	}
+
+	public ArrayList<CuentaUsuario> getUsuarios(){
+		return this.usuarios;
+	}
 }

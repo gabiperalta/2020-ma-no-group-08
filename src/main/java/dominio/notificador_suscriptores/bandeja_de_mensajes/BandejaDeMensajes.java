@@ -10,7 +10,7 @@ public class BandejaDeMensajes {
 	CuentaUsuario usuario;
 	
 	public BandejaDeMensajes() {
-		mensajes = new ArrayList<Mensaje>();
+		mensajes = new ArrayList<>();
 	}
 	
 	public void nuevoMensaje(Mensaje nuevoMensaje){
@@ -19,6 +19,10 @@ public class BandejaDeMensajes {
 	
 	public ArrayList<Mensaje> getMensajes() {
 		return mensajes;
+	}
+
+	public CuentaUsuario getUsuario(){
+		return usuario;
 	}
 	
 	public Mensaje obtenerMensajePorIndice(int i) {

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import dominio.cuentasUsuarios.CuentaUsuario;
 import dominio.excepciones.LaCompraNoRequierePresupuestosException;
-import dominio.notificador_suscriptores.Mensaje;
 import dominio.notificador_suscriptores.NotificadorSuscriptores;
 import dominio.operaciones.OperacionEgreso;
 
@@ -16,8 +15,7 @@ public class Licitacion {
 	private boolean resultadoCantPresupCargada;
 	private boolean resultadoMenorPrecio;
 	private boolean resultadoPresupCorresp;
-	
-	public Licitacion() {}
+
 	public Licitacion(OperacionEgreso compra,int presupNec){
 		this.compra = compra;
 		this.presupuestosNecesarios = presupNec;
@@ -82,36 +80,19 @@ public class Licitacion {
 		return this.getPresupuestos().stream().allMatch(p->p.esValido(operacion));
 	}
 	public String descripcionCantPresupuestos() {
-		String descripcion;
-		if(resultadoCantPresupCargada) {
-			descripcion = "Criterio de cantidad de presupuestos: Valido";
-		}
-		else {
-			descripcion = "Criterio de cantidad de presupuestos: Invalido";
-		}
-		
-		return descripcion;
+		return resultadoCantPresupCargada?"Criterio de cantidad de presupuestos: Valido":"Criterio de cantidad de presupuestos: Invalido";
 	}
 	
 	public String descripcionPresupCorresp() {
-		String descripcion;
-		if(resultadoPresupCorresp) {
-			descripcion = "Criterio de cantidad de presupuestos: Valido";
-		}
-		else {
-			descripcion = "Criterio de cantidad de presupuestos: Invalido";
-		}
-		
-		return descripcion;
+		return resultadoPresupCorresp?"Criterio presupuesto correspondiente: Valido":"Criterio presupuesto correspondiente: Invalido";
 	}
 	
 	public String descripcionMenorPrecio() {
 		return resultadoMenorPrecio?"Criterio de menor precio: Valido":"Criterio de menor precio: Invalido";
 	}
 	
-	public Mensaje mensajeTexto() {
-		String cuerpo = this.descripcionCantPresupuestos() + ";" + this.descripcionMenorPrecio() + ";" + this.descripcionPresupCorresp();
-		return new Mensaje(cuerpo, false);
+	public String mensajeTexto() {
+		return this.descripcionCantPresupuestos() + ";" + this.descripcionMenorPrecio() + ";" + this.descripcionPresupCorresp();
 	}	
 	
 	public void licitar () {
@@ -119,7 +100,7 @@ public class Licitacion {
 		this.cumpleCriterioMenorPrecio(presupuestos);
 		this.cumpleCriterioCantidadPresupuestos(compra);
 		NotificadorSuscriptores notificador = NotificadorSuscriptores.getInstance();
-		notificador.notificar(this.mensajeTexto());
+		notificador.notificar(this.mensajeTexto(),this);
 	}
 	
 	public boolean puedeLicitar() {
