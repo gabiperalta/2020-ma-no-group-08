@@ -18,7 +18,14 @@ public class Item {
 	public void setValor(int valor) {
 		this.valor = valor;
 	}
+	
+	public String getDescripcion() {
+		return descripcion;
+	}
 	public boolean esValido(OperacionEgreso operacion) {
-		return operacion.getItems().contains(this);
+		return operacion.getItems().stream().anyMatch(i->i.getDescripcion() == this.getDescripcion());
+	}
+	public boolean esCorrespondiente(OperacionEgreso operacion) {
+		return operacion.getItems().stream().anyMatch(i->i.getDescripcion() == this.getDescripcion() && i.getValor() == this.getValor());
 	}
 }

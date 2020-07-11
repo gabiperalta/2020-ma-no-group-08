@@ -51,5 +51,8 @@ public class OperacionEgreso {
 	public void setPresupuestosNecesarios(int presupuestosNecesarios) {
 		this.presupuestosNecesarios = presupuestosNecesarios;
 	}
-
+	public EntidadOperacion getEntidadOrigen() {
+		return entidadOrigen;
+	}
+	
 }

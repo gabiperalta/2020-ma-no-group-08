@@ -11,4 +11,18 @@ public class EntidadOperacion {
 		this.cuil = cuil;
 		this.direccion = direccion;
 	}
+	
+	
+	public String getNombre() {
+		return nombre;
+	}
+	public String getCuil() {
+		return cuil;
+	}
+	public String getDireccion() {
+		return direccion;
+	}
+	public boolean correspondeEntidad(EntidadOperacion entidad) {
+		return this.nombre == entidad.getNombre() && this.cuil == entidad.getCuil() && this.direccion == entidad.getDireccion();
+	}
 }
