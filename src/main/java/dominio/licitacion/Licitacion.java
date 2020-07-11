@@ -79,6 +79,21 @@ public class Licitacion {
 	public boolean cantidadItemsValida(OperacionEgreso operacion) {
 		return this.getPresupuestos().stream().allMatch(p->p.esValido(operacion));
 	}
+	
+	private boolean cumpleCriterioCorrespondienteYMenorPrecio(OperacionEgreso operacion) {
+		Presupuesto presupuestoElegidoMenorPrecio = presupuestos.stream()
+				 									.min(new OrdenarPorPrecio())
+				 									.get();
+										 
+//if(presupuestoElegido.getMontoTotal() < presupuestos.get(1).getMontoTotal()) {
+//resultadoMenorPrecio = true;
+//return resultadoMenorPrecio;
+//}
+//else {
+//resultadoMenorPrecio = false;
+//return resultadoMenorPrecio;
+}
+	
 	public String descripcionCantPresupuestos() {
 		return resultadoCantPresupCargada?"Criterio de cantidad de presupuestos: Valido":"Criterio de cantidad de presupuestos: Invalido";
 	}
