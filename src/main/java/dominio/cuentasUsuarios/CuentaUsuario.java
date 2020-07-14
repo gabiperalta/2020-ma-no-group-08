@@ -7,6 +7,7 @@ import dominio.cuentasUsuarios.perfil.Perfil;
 import dominio.cuentasUsuarios.perfil.PerfilAdministrador;
 import dominio.cuentasUsuarios.perfil.PerfilEstandar;
 import dominio.entidades.Organizacion;
+import dominio.operaciones.EntidadOperacion;
 import seguridad.HashPassword;
 import seguridad.ValidadorContrasenia;
 import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;
@@ -81,7 +82,7 @@ public class CuentaUsuario {
 		return perfil.esUsuarioAdministrador();
 	}
 	
-	public Organizacion getOrganizacion() {
+	public EntidadOperacion getOrganizacion() {
 		return perfil.getOrganizacion();
 	}
 	

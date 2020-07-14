@@ -54,5 +54,8 @@ public class OperacionEgreso {
 	public EntidadOperacion getEntidadOrigen() {
 		return entidadOrigen;
 	}
+	public EntidadOperacion getEntidadDestino() {
+		return entidadDestino;
+	}
 	
 }

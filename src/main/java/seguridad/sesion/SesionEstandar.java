@@ -1,6 +1,7 @@
 package seguridad.sesion;
 
 import dominio.entidades.Organizacion;
+import dominio.operaciones.EntidadOperacion;
 import seguridad.sesion.exceptions.PermisoDenegadoException;
 import servicio.abOperaciones.ServicioABOperaciones;
 import servicio.abm_entidades.ServicioABMEntidadesBase;
@@ -10,9 +11,9 @@ import servicio.abm_entidades.ServicioABMEntidadesJuridicas;
 
 public class SesionEstandar implements Sesion {
 	private String nombre;
-	private Organizacion organizacion;
+	private EntidadOperacion organizacion;
 	
-	public SesionEstandar(String unNombre, Organizacion unaOrganizacion){
+	public SesionEstandar(String unNombre, EntidadOperacion unaOrganizacion){
 		nombre = unNombre;
 		organizacion = unaOrganizacion;
 	}
@@ -49,4 +50,10 @@ public class SesionEstandar implements Sesion {
 	public void abOrganizaciones() throws PermisoDenegadoException{
 		throw new PermisoDenegadoException("No tienes los permisos necesarios para realizar esta operacion");		
 	}
+
+	public EntidadOperacion getOrganizacion() {
+		return organizacion;
+	}
+	
+	
 }

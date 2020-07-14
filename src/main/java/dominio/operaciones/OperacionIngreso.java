@@ -11,6 +11,13 @@ public class OperacionIngreso {
 	private EntidadOperacion entidadDestino;
 	
 	
+	
+	public EntidadOperacion getEntidadOrigen() {
+		return entidadOrigen;
+	}
+
+
+
 	public boolean puedenVincularse(List <OperacionEgreso> egresos) {
 		
 	}
