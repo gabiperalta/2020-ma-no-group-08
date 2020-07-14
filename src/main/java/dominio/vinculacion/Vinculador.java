@@ -7,6 +7,7 @@ import dominio.operaciones.OperacionEgreso;
 import dominio.operaciones.OperacionIngreso;
 import dominio.operaciones.RepoOperacionesEgreso;
 import dominio.operaciones.RepoOperacionesIngreso;
+import dominio.vinculacion.criterio.CriterioEjecucion;
 import seguridad.sesion.SesionEstandar;
 
 
