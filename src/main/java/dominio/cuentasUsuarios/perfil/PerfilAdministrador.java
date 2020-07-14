@@ -1,6 +1,7 @@
 package dominio.cuentasUsuarios.perfil;
 
 import dominio.entidades.Organizacion;
+import dominio.operaciones.EntidadOperacion;
 
 public class PerfilAdministrador implements Perfil {
 
@@ -26,7 +27,7 @@ public class PerfilAdministrador implements Perfil {
 	}
 
 	@Override
-	public Organizacion getOrganizacion() {
+	public EntidadOperacion getOrganizacion() {
 		return null;
 	}
 
