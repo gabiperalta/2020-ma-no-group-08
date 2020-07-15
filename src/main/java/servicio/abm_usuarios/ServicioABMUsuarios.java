@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import dominio.cuentasUsuarios.CuentaUsuario;
 import dominio.entidades.Organizacion;
+import dominio.operaciones.EntidadOperacion;
 import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;
 import temporal.seguridad.repositorioUsuarios.exceptions.CredencialesNoValidasException;
 import temporal.seguridad.repositorioUsuarios.exceptions.RolInvalidoException;
@@ -20,7 +21,7 @@ public class ServicioABMUsuarios {
 
 	}
 	
-	public void altaUsuarioColaborador(String unNombreUsuario, Organizacion organizacion, ArrayList<String> rolesAsignados) throws UsuarioYaExistenteException, RolInvalidoException{
+	public void altaUsuarioColaborador(String unNombreUsuario, EntidadOperacion organizacion, ArrayList<String> rolesAsignados) throws UsuarioYaExistenteException, RolInvalidoException{
 		
 		if(!RepositorioUsuarios.getInstance().existeElUsuario(unNombreUsuario)) {
 			if(!rolesAsignados.stream().anyMatch(nombreRol -> nombreRol.equals("ROL_ADMINISTRADOR_SISTEMA"))) {

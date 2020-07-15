@@ -87,7 +87,7 @@ public class CuentaUsuario {
 		return perfil.esUsuarioAdministrador();
 	}
 	
-	public EntidadOperacion  getOrganizacion() {
+	public EntidadOperacion getOrganizacion() {
 		return perfil.getOrganizacion();
 	}
 	
