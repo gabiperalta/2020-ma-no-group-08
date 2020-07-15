@@ -3,10 +3,12 @@ package dominio.cuentasUsuarios;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 
+import dominio.cuentasUsuarios.Roles.Rol;
 import dominio.cuentasUsuarios.perfil.Perfil;
 import dominio.cuentasUsuarios.perfil.PerfilAdministrador;
 import dominio.cuentasUsuarios.perfil.PerfilEstandar;
 import dominio.entidades.Organizacion;
+import dominio.operaciones.EntidadOperacion;
 import seguridad.HashPassword;
 import seguridad.ValidadorContrasenia;
 import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;
@@ -21,7 +23,7 @@ public class CuentaUsuario {
 	private String passwordPlana; // TODO. este atributo sera usado unicamente para testeo, posteriormente sera eliminado para quedar solo el hash
 	private ArrayList<String> contraseniasPrevias;
 	private Integer intentosPendientes;
-	
+	private ArrayList<Rol> roles;
 
 	public CuentaUsuario(String unNombreUsuario, String unaPassword) { // CONSTRUCTOR USUARIOS ADMINISTRADOR
 		perfil = new PerfilAdministrador(unNombreUsuario);
@@ -29,9 +31,11 @@ public class CuentaUsuario {
 		passwordPlana = unaPassword;
 		contraseniasPrevias = new ArrayList<String>();
 		intentosPendientes = 3;
+		roles = new ArrayList<Rol>();
+		roles.add(RepositorioUsuarios.getInstance().buscarRol("ROL_ADMINISTRADOR_SISTEMA"));
 	}
 	
-	public CuentaUsuario(String unNombreUsuario, Organizacion unaOrganizacion) { // CONSTRUCTOR USUARIOS ESTANDAR
+	public CuentaUsuario(String unNombreUsuario, EntidadOperacion unaOrganizacion, ArrayList<String> nombresRoles) { // CONSTRUCTOR USUARIOS ESTANDAR
 		perfil = new PerfilEstandar(unNombreUsuario, unaOrganizacion);
 		
 		String unaPassword = this.generarContrasenia();
@@ -40,6 +44,8 @@ public class CuentaUsuario {
 		passwordHash = HashPassword.calcular(passwordPlana);
 		contraseniasPrevias = new ArrayList<String>();
 		intentosPendientes = 3;
+		
+		nombresRoles.forEach(nombreRol -> this.addRol(RepositorioUsuarios.getInstance().buscarRol(nombreRol)));
 		
 		RepositorioUsuarios.getInstance().agregarUsuarioEstandar(this);
 	}
@@ -81,7 +87,7 @@ public class CuentaUsuario {
 		return perfil.esUsuarioAdministrador();
 	}
 	
-	public Organizacion getOrganizacion() {
+	public EntidadOperacion  getOrganizacion() {
 		return perfil.getOrganizacion();
 	}
 	
@@ -109,6 +115,14 @@ public class CuentaUsuario {
 		return true;
 	}
 	
+	public ArrayList<Rol> getRoles(){
+		return this.roles;
+	}
+	
+	public boolean tieneElPrivilegio(String nombrePrivilegio) {
+		return roles.stream().anyMatch(rol -> rol.tieneElPrivilegio(nombrePrivilegio));
+	}
+	
 	private String generarContrasenia() {
 		
 		int longitudContrasenia = 14;
@@ -123,6 +137,10 @@ public class CuentaUsuario {
 		// Esta contraseña autogenerada deberia ser enviada al usuario final de forma segura
 		
 		return generatedString;
+	}
+	
+	private void addRol(Rol unRol) {
+		this.roles.add(unRol);
 	}
 	
 }

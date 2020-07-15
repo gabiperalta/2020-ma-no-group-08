@@ -2,6 +2,8 @@ package temporal.seguridad.repositorioUsuarios.exceptions;
 
 public class CredencialesNoValidasException extends Exception {
 
+	private static final long serialVersionUID = 1L;
+
 	public CredencialesNoValidasException() {
 	}
 

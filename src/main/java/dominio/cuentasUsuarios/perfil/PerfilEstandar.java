@@ -1,13 +1,14 @@
 package dominio.cuentasUsuarios.perfil;
 
 import dominio.entidades.Organizacion;
+import dominio.operaciones.EntidadOperacion;
 
 public class PerfilEstandar implements Perfil{
 	
 	private String nombre;
-	private Organizacion organizacion;
+	private EntidadOperacion organizacion;
 
-	public PerfilEstandar(String unNombre, Organizacion unaOrganizacion) {
+	public PerfilEstandar(String unNombre, EntidadOperacion unaOrganizacion) {
 		nombre = unNombre;
 		organizacion = unaOrganizacion;
 	}
@@ -28,7 +29,7 @@ public class PerfilEstandar implements Perfil{
 	}
 
 	@Override
-	public Organizacion getOrganizacion() {
+	public EntidadOperacion getOrganizacion() {
 		return organizacion;
 	}
 	

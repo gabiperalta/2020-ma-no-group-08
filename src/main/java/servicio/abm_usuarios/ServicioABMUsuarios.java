@@ -1,10 +1,13 @@
 package servicio.abm_usuarios;
 
 
+import java.util.ArrayList;
+
 import dominio.cuentasUsuarios.CuentaUsuario;
 import dominio.entidades.Organizacion;
 import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;
 import temporal.seguridad.repositorioUsuarios.exceptions.CredencialesNoValidasException;
+import temporal.seguridad.repositorioUsuarios.exceptions.RolInvalidoException;
 import temporal.seguridad.repositorioUsuarios.exceptions.UsuarioYaExistenteException;
 
 public class ServicioABMUsuarios {
@@ -17,10 +20,15 @@ public class ServicioABMUsuarios {
 
 	}
 	
-	public void altaUsuarioColaborador(String unNombreUsuario, Organizacion organizacion) throws UsuarioYaExistenteException{
+	public void altaUsuarioColaborador(String unNombreUsuario, Organizacion organizacion, ArrayList<String> rolesAsignados) throws UsuarioYaExistenteException, RolInvalidoException{
 		
 		if(!RepositorioUsuarios.getInstance().existeElUsuario(unNombreUsuario)) {
-			new CuentaUsuario( unNombreUsuario, organizacion ); // el usuario se agrega a si mismo al repo de usuarios
+			if(!rolesAsignados.stream().anyMatch(nombreRol -> nombreRol.equals("ROL_ADMINISTRADOR_SISTEMA"))) {
+				new CuentaUsuario( unNombreUsuario, organizacion, rolesAsignados); // el usuario se agrega a si mismo al repo de usuarios
+			}
+			else {
+				throw new RolInvalidoException("Rol asignado no valido");
+			}
 		}
 		else {
 			throw new UsuarioYaExistenteException("Este nombre de usuario ya esta en uso.");

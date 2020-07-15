@@ -3,12 +3,15 @@ package temporal.seguridad.repositorioUsuarios;
 import java.util.ArrayList;
 
 import dominio.cuentasUsuarios.CuentaUsuario;
+import dominio.cuentasUsuarios.Roles.Privilegio;
+import dominio.cuentasUsuarios.Roles.Rol;
 import temporal.seguridad.repositorioUsuarios.exceptions.CredencialesNoValidasException;
 
 // SINGLETON
 public class RepositorioUsuarios {
 	
 	private ArrayList<CuentaUsuario> usuarios;
+	private ArrayList<Rol> roles;
 	
 	
 	private static class RepositorioUsuariosHolder {		
@@ -21,6 +24,8 @@ public class RepositorioUsuarios {
 	
 	public RepositorioUsuarios() {
 		
+		// Inicializacion USUARIOS ADMINISTRADORES DE SISTEMA (Por defecto se crea con estos 3 admins)
+		
 		CuentaUsuario administrador1 = new CuentaUsuario("admin1", "1234");
 		CuentaUsuario administrador2 = new CuentaUsuario("admin2", "1234");
 		CuentaUsuario administrador3 = new CuentaUsuario("admin3", "1234");
@@ -28,7 +33,42 @@ public class RepositorioUsuarios {
 		
 		usuarios.add(administrador1);
 		usuarios.add(administrador2);
-		usuarios.add(administrador3); // Por defecto se crea con estos 3 admins
+		usuarios.add(administrador3);
+		
+		
+		// Inicializacion Roles->Privilegios
+		
+		Privilegio privilegioABOrganizacion = new Privilegio("PRIVILEGIO_AB_ORGANIZACIONES");
+		Privilegio privilegioABMUsuarios = new Privilegio("PRIVILEGIO_ABM_USUARIOS");
+		Privilegio privilegioABMEntidadesJuridicas = new Privilegio("PRIVILEGIO_ABM_ENTIDADES_JURIDICAS");
+		Privilegio privilegioABMEntidadesBase = new Privilegio("PRIVILEGIO_ABM_ENTIDADES_BASE");
+		Privilegio privilegioABOperacion = new Privilegio("PRIVILEGIO_AB_OPERACIONES");
+		Privilegio privilegioABLicitaciones = new Privilegio("PRIVILEGIO_AB_LICITACIONES");
+		Privilegio privilegioRevisor = new Privilegio("PRIVILEGIO_REVISOR");
+		
+		ArrayList<Privilegio> privilegiosRolAdministradorSistema = new ArrayList<Privilegio>();
+		ArrayList<Privilegio> privilegiosRolAdministradorOrganizacion = new ArrayList<Privilegio>();
+		ArrayList<Privilegio> privilegiosRolEstandar = new ArrayList<Privilegio>();
+		ArrayList<Privilegio> privilegiosRolRevisor = new ArrayList<Privilegio>();
+		
+		privilegiosRolAdministradorSistema.add(privilegioABOrganizacion);
+		privilegiosRolAdministradorSistema.add(privilegioABMUsuarios);
+		privilegiosRolAdministradorOrganizacion.add(privilegioABMEntidadesJuridicas);
+		privilegiosRolAdministradorOrganizacion.add(privilegioABMEntidadesBase);
+		privilegiosRolEstandar.add(privilegioABOperacion);
+		privilegiosRolEstandar.add(privilegioABLicitaciones);
+		privilegiosRolRevisor.add(privilegioRevisor);
+		
+		Rol rolAdministradorSistema = new Rol("ROL_ADMINISTRADOR_SISTEMA", privilegiosRolAdministradorSistema);
+		Rol rolAdministradorOrganizacion = new Rol("ROL_ADMINISTRADOR_ORGANIZACION", privilegiosRolAdministradorOrganizacion);
+		Rol rolEstandar = new Rol("ROL_ESTANDAR", privilegiosRolEstandar);
+		Rol rolRevisor = new Rol("ROL_REVISOR", privilegiosRolRevisor);
+		this.roles = new ArrayList<Rol>();
+		
+		this.roles.add(rolAdministradorSistema);
+		this.roles.add(rolAdministradorOrganizacion);
+		this.roles.add(rolEstandar);
+		this.roles.add(rolRevisor);
 		
 	}
 
@@ -60,8 +100,12 @@ public class RepositorioUsuarios {
 	
 	public CuentaUsuario buscarUsuario(String unUsername) {
 		CuentaUsuario unUsuario = usuarios.stream().filter(usuario -> usuario.getUserName().equals(unUsername)).findFirst().get();
-		// TODO si el usuario no existe, debemos tirar la excepcion UsuarioNoExisteException? o la con que tira directamente el get ya alcanza?
 		return unUsuario;
+	}
+	
+	public Rol buscarRol(String nombreRol) {
+		Rol unRol = roles.stream().filter(rol -> rol.esElRol(nombreRol)).findFirst().get();
+		return unRol;
 	}
 
 }
