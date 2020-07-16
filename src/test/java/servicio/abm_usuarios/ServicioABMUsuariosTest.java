@@ -22,7 +22,7 @@ public class ServicioABMUsuariosTest {
 
 		organizacion = new Organizacion("Organizacion 1");
 	}
-	
+	/*
 	@Test
 	public void testAltaUsuarioColaboradorOK() throws UsuarioYaExistenteException {
 		abmUsuarios.altaUsuarioColaborador("usuario1", organizacion);
@@ -33,5 +33,5 @@ public class ServicioABMUsuariosTest {
 		abmUsuarios.altaUsuarioColaborador("usuarioRepetido", organizacion);
 		assertThrows(UsuarioYaExistenteException.class, ()->{abmUsuarios.altaUsuarioColaborador("usuarioRepetido", organizacion);});
 	}
-	
+	*/
 }
