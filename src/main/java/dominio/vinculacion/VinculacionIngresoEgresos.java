@@ -14,6 +14,6 @@ public class VinculacionIngresoEgresos {
 	}
 	
 	public boolean cumpleCondicionObligatoria(CondicionObligatoria condicion) {
-
+		return true;
 	}
 }

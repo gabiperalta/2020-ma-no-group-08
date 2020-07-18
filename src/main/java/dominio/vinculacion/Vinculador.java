@@ -3,19 +3,19 @@ package dominio.vinculacion;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import dominio.cuentasUsuarios.CuentaUsuario;
 import dominio.operaciones.OperacionEgreso;
 import dominio.operaciones.OperacionIngreso;
 import dominio.operaciones.RepoOperacionesEgreso;
 import dominio.operaciones.RepoOperacionesIngreso;
 import dominio.vinculacion.criterio.CriterioEjecucion;
-import seguridad.sesion.SesionEstandar;
 
 
 public class Vinculador {
 	List<CondicionObligatoria> condicionesObligatorias;
 	CriterioEjecucion criterio;
-	SesionEstandar usuario;
-	
+	CuentaUsuario usuario;
+
 	public void vincular() {
 		RepoOperacionesEgreso repoEgreso = RepoOperacionesEgreso.getInstance();
 		RepoOperacionesIngreso repoIngreso = RepoOperacionesIngreso.getInstance();

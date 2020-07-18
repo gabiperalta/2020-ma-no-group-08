@@ -44,10 +44,9 @@ public class ServicioABMUsuariosTest {
 	
 	@Test
 	public void testAltaUsuarioColaboradorNombreYaUtilizado() throws UsuarioYaExistenteException, RolInvalidoException  {
-		// abmUsuarios.altaUsuarioColaborador("usuarioRepetido", organizacion, listaDeRoles);
 		abmUsuarios.altaUsuarioColaborador("usuarioRepetido", entidadOperacion, listaDeRoles);
 		assertThrows(UsuarioYaExistenteException.class, ()->{abmUsuarios.altaUsuarioColaborador("usuarioRepetido", entidadOperacion, listaDeRoles);});
+		// abmUsuarios.altaUsuarioColaborador("usuarioRepetido", organizacion, listaDeRoles);
 		// assertThrows(UsuarioYaExistenteException.class, ()->{abmUsuarios.altaUsuarioColaborador("usuarioRepetido", organizacion, listaDeRoles);});
 	}
-	
 }

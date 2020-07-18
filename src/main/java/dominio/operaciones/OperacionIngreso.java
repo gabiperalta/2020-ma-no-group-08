@@ -19,6 +19,6 @@ public class OperacionIngreso {
 
 
 	public boolean puedenVincularse(List <OperacionEgreso> egresos) {
-		
+		return true;
 	}
 }
