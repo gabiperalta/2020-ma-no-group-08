@@ -17,7 +17,7 @@ import temporal.dominio.repositorioSesiones.RepositorioSesiones;
 import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;
 
 public class ServicioSesiones {
-	
+
 	private UUID identificadorSesion;
 	
 	
@@ -33,7 +33,7 @@ public class ServicioSesiones {
 			}
 		}
 		else {
-			// TODO, Tirar error cuenta bloqueada
+			throw new CredencialesNoValidasException("Esta cuenta esta bloqueada");
 		}
 	}
 	
@@ -70,7 +70,4 @@ public class ServicioSesiones {
 	public ServicioABLicitaciones abLicitaciones() throws PermisoDenegadoException {
 		return RepositorioSesiones.getInstance().buscarSesion(identificadorSesion).abLicitaciones();
 	}
-	
-	
-	
 }

@@ -25,14 +25,14 @@ public class CuentaUsuario {
 	private Integer intentosPendientes;
 	private ArrayList<Rol> roles;
 
-	public CuentaUsuario(String unNombreUsuario, String unaPassword) { // CONSTRUCTOR USUARIOS ADMINISTRADOR
+	public CuentaUsuario(String unNombreUsuario, String unaPassword, Rol rolAdmin) { // CONSTRUCTOR USUARIOS ADMINISTRADOR
 		perfil = new PerfilAdministrador(unNombreUsuario);
 		passwordHash = HashPassword.calcular(unaPassword);
 		passwordPlana = unaPassword;
 		contraseniasPrevias = new ArrayList<String>();
 		intentosPendientes = 3;
 		roles = new ArrayList<Rol>();
-		roles.add(RepositorioUsuarios.getInstance().buscarRol("ROL_ADMINISTRADOR_SISTEMA"));
+		roles.add(rolAdmin);
 	}
 	
 	public CuentaUsuario(String unNombreUsuario, EntidadOperacion unaOrganizacion, ArrayList<String> nombresRoles) { // CONSTRUCTOR USUARIOS ESTANDAR
@@ -40,10 +40,10 @@ public class CuentaUsuario {
 		
 		String unaPassword = this.generarContrasenia();
 		passwordPlana = unaPassword;
-		
 		passwordHash = HashPassword.calcular(passwordPlana);
 		contraseniasPrevias = new ArrayList<String>();
 		intentosPendientes = 3;
+		roles = new ArrayList<Rol>();
 		
 		nombresRoles.forEach(nombreRol -> this.addRol(RepositorioUsuarios.getInstance().buscarRol(nombreRol)));
 		

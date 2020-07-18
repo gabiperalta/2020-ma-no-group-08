@@ -22,19 +22,7 @@ public class RepositorioUsuarios {
         return RepositorioUsuariosHolder.singleInstanceRepositorioUsuarios;
     }
 	
-	public RepositorioUsuarios() {
-		
-		// Inicializacion USUARIOS ADMINISTRADORES DE SISTEMA (Por defecto se crea con estos 3 admins)
-		
-		CuentaUsuario administrador1 = new CuentaUsuario("admin1", "1234");
-		CuentaUsuario administrador2 = new CuentaUsuario("admin2", "1234");
-		CuentaUsuario administrador3 = new CuentaUsuario("admin3", "1234");
-		usuarios = new ArrayList<CuentaUsuario>();
-		
-		usuarios.add(administrador1);
-		usuarios.add(administrador2);
-		usuarios.add(administrador3);
-		
+	public RepositorioUsuarios() {		
 		
 		// Inicializacion Roles->Privilegios
 		
@@ -69,6 +57,17 @@ public class RepositorioUsuarios {
 		this.roles.add(rolAdministradorOrganizacion);
 		this.roles.add(rolEstandar);
 		this.roles.add(rolRevisor);
+		
+		// Inicializacion USUARIOS ADMINISTRADORES DE SISTEMA (Por defecto se crea con estos 3 admins)
+		
+				CuentaUsuario administrador1 = new CuentaUsuario("admin1", "1234", rolAdministradorSistema);
+				CuentaUsuario administrador2 = new CuentaUsuario("admin2", "1234", rolAdministradorSistema);
+				CuentaUsuario administrador3 = new CuentaUsuario("admin3", "1234", rolAdministradorSistema);
+				usuarios = new ArrayList<CuentaUsuario>();
+				
+				usuarios.add(administrador1);
+				usuarios.add(administrador2);
+				usuarios.add(administrador3);
 		
 	}
 
