@@ -19,19 +19,19 @@ public class Fecha implements CriterioEjecucion {
 
 	}
 
-	@Override
-	public void ordenarIngresos(ArrayList<OperacionIngreso> ingresos) {
+    @Override
+    public void ordenarIngresos(List<OperacionIngreso> ingresos) {
 
-	}
+    }
 
-	@Override
-	public void ordenarEgresos(ArrayList<OperacionEgreso> egresos) {
+    @Override
+    public void ordenarEgresos(List<OperacionEgreso> egresos) {
 
-	}
+    }
 
-	@Override
-	public void realizarVinculaciones() {
+    @Override
+    public void realizarVinculaciones(List<OperacionIngreso> ingresos, List<OperacionEgreso> egresos) {
 
-	}
+    }
 
 }
