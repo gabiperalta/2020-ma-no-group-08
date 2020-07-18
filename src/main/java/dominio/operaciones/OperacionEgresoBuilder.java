@@ -10,7 +10,6 @@ public class OperacionEgresoBuilder {
 	private MedioDePago medioDePago;
 	private DocumentoComercial documento;
 	private Date fecha;
-	private Double valorOperacion;
 	private EntidadOperacion entidadOrigen;
 	private EntidadOperacion entidadDestino;
 	private int presupuestosNecesarios;
@@ -35,11 +34,6 @@ public class OperacionEgresoBuilder {
 		return this;
 	}
 
-	public OperacionEgresoBuilder agregarValorOperacion(Double valor) {
-		this.valorOperacion = valor;
-		return this;
-	}
-
 	public OperacionEgresoBuilder agregarEntidadOrigen(EntidadOperacion entidad) {
 		this.entidadOrigen = entidad;
 		return this;
@@ -56,12 +50,12 @@ public class OperacionEgresoBuilder {
 	}
 
 	public OperacionEgreso build() {
-		if (items == null || medioDePago == null || documento == null || fecha == null || valorOperacion == null ||
-				valorOperacion <= 0 || entidadOrigen == null || entidadDestino == null || presupuestosNecesarios <= 0) {
+		if (items == null || medioDePago == null || documento == null || fecha == null || 
+				entidadOrigen == null || entidadDestino == null || presupuestosNecesarios <= 0) {
 			return null;
 		}
 
-		return new OperacionEgreso(items,medioDePago,documento,fecha,valorOperacion,entidadOrigen,entidadDestino,presupuestosNecesarios);
+		return new OperacionEgreso(items,medioDePago,documento,fecha,entidadOrigen,entidadDestino,presupuestosNecesarios);
 	}
 
 

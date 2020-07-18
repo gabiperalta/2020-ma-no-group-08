@@ -3,38 +3,28 @@ package dominio.licitacion;
 import java.util.ArrayList;
 
 import dominio.cuentasUsuarios.CuentaUsuario;
-import dominio.excepciones.LaCompraNoRequierePresupuestosException;
 import dominio.notificador_suscriptores.NotificadorSuscriptores;
 import dominio.operaciones.OperacionEgreso;
 
 public class Licitacion {
 	private OperacionEgreso compra; 
 	private ArrayList<Presupuesto> presupuestos;
-	private int presupuestosNecesarios;
 	private boolean finalizada;
 	private boolean resultadoCantPresupCargada;
 	private boolean resultadoMenorPrecio;
 	private boolean resultadoPresupCorresp;
 
-	public Licitacion(OperacionEgreso compra,int presupNec){
+	public Licitacion(OperacionEgreso compra){
 		this.compra = compra;
-		this.presupuestosNecesarios = presupNec;
+		this.presupuestos = new ArrayList<Presupuesto>();
+		this.finalizada = false;
 	}
 	
 	public ArrayList<Presupuesto> getPresupuestos() {
 		return presupuestos;
 	}
 
-	public void setPresupuestos(ArrayList<Presupuesto> presupuestos) {
-		this.presupuestos = presupuestos;
-	}
-	public int getPresupuestosNecesarios() {
-		return presupuestosNecesarios;
-	}
-
-	public void setPresupuestosNecesarios(int presupuestosNecesarios) {
-		this.presupuestosNecesarios = presupuestosNecesarios;
-	}
+	
 	public void agregarPresupuesto(Presupuesto presup) {
 		if(presup.esValido(compra)) {
 			this.presupuestos.add(presup);
@@ -46,13 +36,8 @@ public class Licitacion {
 	}
 	
 	private boolean cumpleCriterioCantidadPresupuestos(OperacionEgreso operacion) {
-		if(operacion.getPresupuestosNecesarios() != 0) { //Verifico que la compra requiera presupuestos 
-			this.resultadoCantPresupCargada = this.getPresupuestosNecesarios() !=0; //Verifico que este cargada la cantidad de presupuestos
-			return resultadoCantPresupCargada; 
-		}
-		else {
-			throw new LaCompraNoRequierePresupuestosException("La compra no requiere presupuestos");
-		}
+		resultadoCantPresupCargada = operacion.getPresupuestosNecesarios() == this.presupuestos.size();
+		return resultadoCantPresupCargada;
 	}
 	
 //	private boolean cumpleCriterioMenorPrecio(ArrayList<Presupuesto> presupuestos) {
@@ -84,17 +69,16 @@ public class Licitacion {
 		Presupuesto presupuestoElegidoMenorPrecio = presupuestos.stream()
 				 									.min(new OrdenarPorPrecio())
 				 									.get();
+		
 		Presupuesto presupuestoCorrespondiente = presupuestos.stream().filter(p->p.esCorrespondiente(operacion))
 																	  .findFirst()
 																	  .get();
-		return presupuestoElegidoMenorPrecio == presupuestoCorrespondiente;
-//if(presupuestoElegido.getMontoTotal() < presupuestos.get(1).getMontoTotal()) {
-//resultadoMenorPrecio = true;
-//return resultadoMenorPrecio;
-//}
-//else {
-//resultadoMenorPrecio = false;
-//return resultadoMenorPrecio;
+		
+		resultadoPresupCorresp = presupuestoCorrespondiente!=null;
+		
+		resultadoMenorPrecio = presupuestoElegidoMenorPrecio == presupuestoCorrespondiente;
+		
+		return resultadoPresupCorresp && resultadoMenorPrecio;
 }
 	
 	public String descripcionCantPresupuestos() {
@@ -110,12 +94,13 @@ public class Licitacion {
 	}
 	
 	public String mensajeTexto() {
-		return this.descripcionCantPresupuestos() + ";" + this.descripcionMenorPrecio() + ";" + this.descripcionPresupCorresp();
-	}	
+		return this.descripcionCantPresupuestos() + "\n" + this.descripcionMenorPrecio() + "\n" + this.descripcionPresupCorresp();
+	}
 	
 	public void licitar () {
 		this.cumpleCriterioCorrespondeYEsMenorPrecio(compra);
 		this.cumpleCriterioCantidadPresupuestos(compra);
+		this.finalizada = true;
 		NotificadorSuscriptores notificador = NotificadorSuscriptores.getInstance();
 		notificador.notificar(this.mensajeTexto(),this);
 	}
@@ -124,24 +109,14 @@ public class Licitacion {
 		return this.cumpleCriterioCantidadPresupuestos(compra) && 
 			   this.cumpleCriterioCorrespondeYEsMenorPrecio(compra);
 	}
-	public void suscribir(CuentaUsuario cuenta) {
-		NotificadorSuscriptores notificador = NotificadorSuscriptores.getInstance();
-		notificador.suscribir(cuenta, this);
+	
+	public void suscribir(CuentaUsuario cuenta) throws Exception {
+		if(this.finalizada) {
+			NotificadorSuscriptores.getInstance().suscribir(cuenta, this);
+		}
+		else {
+			throw new Exception("Licitacion cerrada, no puede suscribir.");
+		}
 	}
-	
-//	public void generarResultado() {
-//		
-//		// suscripcion.getUsuarios().forEach( cuentaUsuario -> cuentaUsuario.getBandejaDeMensajes().nuevoMensaje(Mensaje));
-//		
-//		boolean resultado = criterios.stream().allMatch( criterio -> criterio.validar(compra, presupuestos) );
-//		
-//		String descripcionCriterios = criterios.stream().map(criterio -> criterio.descripcion()).collect(Collectors.joining("\n"));
-//		
-//		Mensaje Mensaje = new Mensaje(descripcionCriterios,false);
-//		
-//		NotificadorSuscriptores.getInstance().notificar(Mensaje);
-//	}
-
-	
 	
 }

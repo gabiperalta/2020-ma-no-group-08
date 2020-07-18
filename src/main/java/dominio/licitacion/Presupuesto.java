@@ -12,11 +12,11 @@ public class Presupuesto {
 	private double montoTotal;
 	private boolean esValido;
 	
-	public Presupuesto(EntidadOperacion proveedor, ArrayList<Item> unosItems, double monto){
+	public Presupuesto(EntidadOperacion proveedor, ArrayList<Item> unosItems){
 		this.proveedor = proveedor;
-		this.montoTotal = monto;
 		items = new ArrayList<Item>();
 		this.esValido = true;
+		
 		unosItems.forEach(i->{
 			try {
 				this.agregarItem(i);
@@ -25,6 +25,9 @@ public class Presupuesto {
 				this.esValido = false;
 			}
 		});
+		
+		montoTotal = items.stream().map(item -> item.getValor()).reduce(0, (a, b) -> a + b);
+		
 	}
 	
 	public ArrayList<Item> getItems() {
@@ -38,9 +41,7 @@ public class Presupuesto {
 		this.items.add(item);
 	}
 	public double getMontoTotal() {
-		return this.items.stream()
-	      			.mapToInt(item -> item.getValor())
-	      			.sum();
+		return this.montoTotal;
 	}
 
 	public void setmontoTotal(int montoTotal) {

@@ -15,7 +15,6 @@ public class OperacionEgresoBuilderTest {
     Efectivo pesos;
     DocumentoComercial documento;
     Date fecha;
-    Double valorOp;
     EntidadOperacion origen;
     EntidadOperacion destino;
     ArrayList<Item> items;
@@ -32,7 +31,6 @@ public class OperacionEgresoBuilderTest {
         pesos = new Efectivo(200000,"Rapipago");
         documento = new DocumentoComercial(ETipoDoc.FACTURA, 2000);
         fecha = new Date();
-        valorOp = 100500d;
         origen = new EntidadOperacion("Operacion compra 1","20-40678950-4","Av.Libertador 800");
         destino = new EntidadOperacion("Operacion compra 1", "20-40678950-4", "Av.Corrientes 550");
         presupuestosNecesarios = 2;
@@ -45,7 +43,6 @@ public class OperacionEgresoBuilderTest {
                 .agregarMedioDePago(pesos)
                 .agregarDocComercial(documento)
                 .agregarFecha(fecha)
-                .agregarValorOperacion(valorOp)
                 .agregarEntidadOrigen(origen)
                 .agregarEntidadDestino(destino)
                 .agregarPresupuestosNecesarios(presupuestosNecesarios);
@@ -57,7 +54,6 @@ public class OperacionEgresoBuilderTest {
         target.agregarMedioDePago(pesos)
                 .agregarDocComercial(documento)
                 .agregarFecha(fecha)
-                .agregarValorOperacion(valorOp)
                 .agregarEntidadOrigen(origen)
                 .agregarEntidadDestino(destino)
                 .agregarPresupuestosNecesarios(presupuestosNecesarios);
@@ -69,7 +65,6 @@ public class OperacionEgresoBuilderTest {
         target.agregarItems(items)
                 .agregarDocComercial(documento)
                 .agregarFecha(fecha)
-                .agregarValorOperacion(valorOp)
                 .agregarEntidadOrigen(origen)
                 .agregarEntidadDestino(destino)
                 .agregarPresupuestosNecesarios(presupuestosNecesarios);
@@ -81,7 +76,6 @@ public class OperacionEgresoBuilderTest {
         target.agregarItems(items)
                 .agregarMedioDePago(pesos)
                 .agregarFecha(fecha)
-                .agregarValorOperacion(valorOp)
                 .agregarEntidadOrigen(origen)
                 .agregarEntidadDestino(destino)
                 .agregarPresupuestosNecesarios(presupuestosNecesarios);
@@ -93,19 +87,6 @@ public class OperacionEgresoBuilderTest {
         target.agregarItems(items)
                 .agregarMedioDePago(pesos)
                 .agregarDocComercial(documento)
-                .agregarValorOperacion(valorOp)
-                .agregarEntidadOrigen(origen)
-                .agregarEntidadDestino(destino)
-                .agregarPresupuestosNecesarios(presupuestosNecesarios);
-        assertNull(target.build());
-    }
-
-    @Test
-    public void fallaCrearOperacionInValidaSinValorDeOperacion () {
-        target.agregarItems(items)
-                .agregarMedioDePago(pesos)
-                .agregarDocComercial(documento)
-                .agregarFecha(fecha)
                 .agregarEntidadOrigen(origen)
                 .agregarEntidadDestino(destino)
                 .agregarPresupuestosNecesarios(presupuestosNecesarios);
@@ -118,7 +99,6 @@ public class OperacionEgresoBuilderTest {
                 .agregarMedioDePago(pesos)
                 .agregarDocComercial(documento)
                 .agregarFecha(fecha)
-                .agregarValorOperacion(valorOp)
                 .agregarEntidadDestino(destino)
                 .agregarPresupuestosNecesarios(presupuestosNecesarios);
         assertNull(target.build());
@@ -130,7 +110,6 @@ public class OperacionEgresoBuilderTest {
                 .agregarMedioDePago(pesos)
                 .agregarDocComercial(documento)
                 .agregarFecha(fecha)
-                .agregarValorOperacion(valorOp)
                 .agregarEntidadOrigen(origen)
                 .agregarPresupuestosNecesarios(presupuestosNecesarios);
         assertNull(target.build());
@@ -142,7 +121,6 @@ public class OperacionEgresoBuilderTest {
                 .agregarMedioDePago(pesos)
                 .agregarDocComercial(documento)
                 .agregarFecha(fecha)
-                .agregarValorOperacion(valorOp)
                 .agregarEntidadOrigen(origen);
         assertNull(target.build());
     }
