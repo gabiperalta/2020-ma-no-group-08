@@ -9,14 +9,14 @@ public class OperacionIngreso {
 	private Date fecha;
 	private EntidadOperacion entidadOrigen;
 	private EntidadOperacion entidadDestino;
-	
-	
-	
+
 	public EntidadOperacion getEntidadOrigen() {
 		return entidadOrigen;
 	}
 
-
+	public double getMontoTotal(){
+		return montoTotal;
+	}
 
 	public boolean puedenVincularse(List <OperacionEgreso> egresos) {
 		return true;

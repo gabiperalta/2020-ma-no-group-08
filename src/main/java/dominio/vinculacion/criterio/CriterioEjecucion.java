@@ -11,7 +11,7 @@ public interface CriterioEjecucion {
 	
 	public Mensaje getResultadosDeVinculacion();
 	public void ejecutar(List<OperacionIngreso> ingresos, List<OperacionEgreso> egresos);
-	public void ordenarIngresos(ArrayList<OperacionIngreso> ingresos);
-	public void ordenarEgresos(ArrayList<OperacionEgreso> egresos);
-	public void realizarVinculaciones();
+	public void ordenarIngresos(List<OperacionIngreso> ingresos);
+	public void ordenarEgresos(List<OperacionEgreso> egresos);
+	public void realizarVinculaciones(List<OperacionIngreso> ingresos, List<OperacionEgreso> egresos);
 }
