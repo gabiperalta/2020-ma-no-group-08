@@ -10,8 +10,8 @@ public class ServicioABLicitaciones {
 	
 	Licitacion licitacion;
 	
-	public Licitacion altaLicitacion(OperacionEgreso operacion, int presupuestosNecesarios) {
-		licitacion = new Licitacion(operacion, presupuestosNecesarios);
+	public Licitacion altaLicitacion(OperacionEgreso operacion) {
+		licitacion = new Licitacion(operacion);
 		return licitacion;
 	}
 	
@@ -23,7 +23,7 @@ public class ServicioABLicitaciones {
 		licitacion.sacarPresupuesto(presupuesto);
 	}
 	
-	public void suscribir(CuentaUsuario cuentaUsuario) throws PermisoDenegadoException {
+	public void suscribir(CuentaUsuario cuentaUsuario) throws Exception {
 		if(cuentaUsuario.tieneElPrivilegio("PRIVILEGIO_REVISOR")) {
 			licitacion.suscribir(cuentaUsuario);
 		}

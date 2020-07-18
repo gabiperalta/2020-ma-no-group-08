@@ -14,7 +14,6 @@ public class ServicioABOperaciones {
                             .agregarMedioDePago(medioDePago)
                             .agregarDocComercial(documento)
                             .agregarFecha(fecha)
-                            .agregarValorOperacion(valorOperacion)
                             .agregarEntidadOrigen(entidadOrigen)
                             .agregarEntidadDestino(entidadDestino);
 
