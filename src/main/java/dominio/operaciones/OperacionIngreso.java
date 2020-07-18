@@ -3,7 +3,9 @@ package dominio.operaciones;
 import java.util.Date;
 import java.util.List;
 
-public class OperacionIngreso {
+import dominio.categorizacion.EntidadCategorizable;
+
+public class OperacionIngreso implements EntidadCategorizable{
 	private String descripcion;
 	private double montoTotal;
 	private Date fecha;

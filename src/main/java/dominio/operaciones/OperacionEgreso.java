@@ -1,11 +1,12 @@
 package dominio.operaciones;
 
+import dominio.categorizacion.EntidadCategorizable;
 import dominio.operaciones.medioDePago.MedioDePago;
 
 import java.util.ArrayList;
 import java.util.Date;
 
-public class OperacionEgreso {
+public class OperacionEgreso implements EntidadCategorizable{
 	private ArrayList<Item> items;
 	private MedioDePago medioDePago;
 	private DocumentoComercial documento;
