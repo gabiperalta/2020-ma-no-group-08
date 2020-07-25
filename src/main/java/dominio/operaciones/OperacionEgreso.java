@@ -1,12 +1,12 @@
 package dominio.operaciones;
 
-import dominio.categorizacion.EntidadCategorizable;
 import dominio.operaciones.medioDePago.MedioDePago;
 
 import java.util.ArrayList;
 import java.util.Date;
 
-public class OperacionEgreso implements EntidadCategorizable{
+public class OperacionEgreso {
+	private String identificadorOperacion;
 	private ArrayList<Item> items;
 	private MedioDePago medioDePago;
 	private DocumentoComercial documento;
@@ -24,6 +24,7 @@ public class OperacionEgreso implements EntidadCategorizable{
 		this.entidadOrigen = entidadOrigen2;
 		this.entidadDestino = entidadDestino2;
 		this.presupuestosNecesarios = presupuestosNecesarios;
+		this.identificadorOperacion = null;
 	}
 	
 	public void agregarItem(Item item) {
@@ -55,6 +56,35 @@ public class OperacionEgreso implements EntidadCategorizable{
 	}
 	public EntidadOperacion getEntidadDestino() {
 		return entidadDestino;
+	}
+	
+	public void setIdentificador(String identificadorOperacionEgreso) throws Exception {
+		if(this.identificadorOperacion == null) {
+			this.identificadorOperacion = identificadorOperacionEgreso;
+		}
+		else {
+			throw new Exception("Esta operacion ya tiene un identificador.");
+		}
+	}
+	
+	public String getIdentificador() {
+		return this.identificadorOperacion;
+	}
+
+	public boolean esLaOperacion(String identificadorOperacionEgreso) {
+		return this.identificadorOperacion.contentEquals(identificadorOperacionEgreso);
+	}
+	
+	public MedioDePago getMedioDePago() {
+		return medioDePago;
+	}
+
+	public DocumentoComercial getDocumento() {
+		return documento;
+	}
+
+	public Date getFecha() {
+		return fecha;
 	}
 	
 }

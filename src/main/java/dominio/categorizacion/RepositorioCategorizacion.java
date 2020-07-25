@@ -62,7 +62,7 @@ public class RepositorioCategorizacion {
 	}
 	
 	// Entidades Categorizables
-	public EntidadCategorizable buscarEntidadCategorizable(String identificadorEntidadCategorizable) {
+	public EntidadCategorizable buscarEntidadCategorizable(String identificadorEntidadCategorizable) throws CategorizacionException {
 		EntidadCategorizable unaEntidadCategorizable = entidadesCategorizables.stream().filter(entidad -> entidad.getIdentificador().
 				equals(identificadorEntidadCategorizable)).findFirst().get();
 		if(unaEntidadCategorizable == null) {
