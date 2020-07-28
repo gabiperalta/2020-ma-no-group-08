@@ -8,7 +8,7 @@ import java.util.Date;
 
 public class ServicioABOperaciones {
 
-    public void altaOperacion(ArrayList<Item> items, MedioDePago medioDePago, DocumentoComercial documento, Date fecha, double valorOperacion, EntidadOperacion entidadOrigen, EntidadOperacion entidadDestino){
+    public void altaOperacion(ArrayList<Item> items, MedioDePago medioDePago, DocumentoComercial documento, Date fecha, double valorOperacion, EntidadOperacion entidadOrigen, EntidadOperacion entidadDestino) throws Exception {
         OperacionEgresoBuilder operacionEgresoBuilder = new OperacionEgresoBuilder();
         operacionEgresoBuilder.agregarItems(items)
                             .agregarMedioDePago(medioDePago)
