@@ -21,4 +21,9 @@ public class OperacionVinculable implements Vinculable {
     public Date getFecha() {
         return fecha;
     }
+
+    @Override
+    public boolean sePuedeVincularA(Vinculable vinculable) {
+        return getMonto() > vinculable.getMonto();
+    }
 }
