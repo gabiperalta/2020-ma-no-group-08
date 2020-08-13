@@ -4,17 +4,15 @@ import componenteVinculador.criterio.ResultadoVinculado.ResultadoVinculado;
 import componenteVinculador.vinculable.ETipoOperacionVinculable;
 import componenteVinculador.vinculable.OperacionVinculable;
 import componenteVinculador.vinculable.utils.FechaUtils;
-import dominio.entidades.calculadorFiscal.CategorizadorFiscal;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class OrdenValorPrimerEgresoTest {
+public class OrdenFechaPrimerEgresoTest {
     private OrdenValorPrimerEgreso target;
     private OperacionVinculable ingreso1;
     private OperacionVinculable ingreso2;
