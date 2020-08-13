@@ -23,6 +23,8 @@ public class OrdenValorPrimerEgresoTest {
 
 //        INGRESOS
         ingreso1 = new OperacionVinculable(1000,new Date(), ETipoOperacionVinculable.INGRESO);
+        ingreso1 = new OperacionVinculable(1000,new Date(), ETipoOperacionVinculable.INGRESO);
+        ingreso1 = new OperacionVinculable(1000,new Date(), ETipoOperacionVinculable.INGRESO);
 //        EGRESOS
     }
     @Test

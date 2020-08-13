@@ -7,7 +7,7 @@ import java.util.Date;
 
 public class FechaUtils {
 
-    public Date obtenerFechaDiasAtras(int diasAtras) {
+    public static Date obtenerFechaDiasAtras(int diasAtras) {
         ZoneId defaultZoneId = ZoneId.systemDefault();
 
         LocalDate localDate = LocalDate.now().minusDays(diasAtras);
