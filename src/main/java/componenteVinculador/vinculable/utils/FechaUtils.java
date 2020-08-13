@@ -1,5 +1,6 @@
 package componenteVinculador.vinculable.utils;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -7,9 +8,10 @@ import java.util.Date;
 public class FechaUtils {
 
     public Date obtenerFechaDiasAtras(int diasAtras) {
-        Date dt = new Date();
-        LocalDateTime localTime = LocalDateTime.from(dt.toInstant()).minusDays(diasAtras);
+        ZoneId defaultZoneId = ZoneId.systemDefault();
 
-        return  Date.from(localTime.atZone(ZoneId.systemDefault()).toInstant());
+        LocalDate localDate = LocalDate.now().minusDays(diasAtras);
+
+        return  Date.from(localDate.atStartOfDay(defaultZoneId).toInstant());
     }
 }
