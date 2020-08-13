@@ -18,7 +18,7 @@ public class CriterioOrdenFechaTest {
     private OperacionVinculable ingreso1;
     private OperacionVinculable ingreso2;
     private OperacionVinculable ingreso3;
-    private List<OperacionVinculable> ingresos;
+    private ArrayList<OperacionVinculable> ingresos;
     @Before
     public void setUp() {
         target = new CriterioOrdenFecha();

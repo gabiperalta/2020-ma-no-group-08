@@ -4,6 +4,7 @@ import componenteVinculador.vinculable.ETipoOperacionVinculable;
 import componenteVinculador.vinculable.OperacionVinculable;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ResultadoVinculado {
     private OperacionVinculable ingreso;
@@ -11,7 +12,7 @@ public class ResultadoVinculado {
 
     public ResultadoVinculado (OperacionVinculable unIngreso){
         ingreso = unIngreso;
-        ArrayList<OperacionVinculable> egresos = new ArrayList<OperacionVinculable>();
+        egresos = new ArrayList();
     }
 
     public void vincularNuevoEgreso(OperacionVinculable egreso) {
@@ -29,7 +30,7 @@ public class ResultadoVinculado {
     }
 
     public boolean sePuedeVincularEgreso(OperacionVinculable egreso) {
-        return ingreso.sePuedeVincularA(egreso.getTipoOperacion(),getMontoAcumulado());
+        return ingreso.sePuedeVincularA(egreso.getTipoOperacion(),getMontoAcumulado() + egreso.getMonto());
     }
 
     public ArrayList<OperacionVinculable> getEgresos() {
@@ -42,4 +43,14 @@ public class ResultadoVinculado {
         }
         return egresos.stream().mapToDouble(OperacionVinculable::getMonto).sum();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ResultadoVinculado that = (ResultadoVinculado) o;
+        return Objects.equals(ingreso, that.ingreso) &&
+                Objects.equals(egresos, that.egresos);
+    }
+
 }
