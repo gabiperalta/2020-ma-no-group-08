@@ -1,6 +1,7 @@
 package componenteVinculador.vinculable;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class OperacionVinculable implements Vinculable {
 
@@ -33,10 +34,13 @@ public class OperacionVinculable implements Vinculable {
         return (monto > montoAcumulado) && (tipoOperacion != unTipoOperacion) && (tipoOperacion == ETipoOperacionVinculable.INGRESO);
     }
 
-    public boolean esIgualA(OperacionVinculable operacionVinculable) {
-        return monto == operacionVinculable.getMonto() &&
-                fecha == operacionVinculable.getFecha() &&
-                tipoOperacion == operacionVinculable.getTipoOperacion();
-
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OperacionVinculable that = (OperacionVinculable) o;
+        return Double.compare(that.monto, monto) == 0 &&
+                Objects.equals(fecha, that.fecha) &&
+                tipoOperacion == that.tipoOperacion;
     }
 }
