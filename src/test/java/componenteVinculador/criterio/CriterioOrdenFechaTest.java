@@ -1,5 +1,6 @@
 package componenteVinculador.criterio;
 
+import componenteVinculador.criterio.orden.CriterioOrdenFecha;
 import componenteVinculador.vinculable.ETipoOperacionVinculable;
 import componenteVinculador.vinculable.OperacionVinculable;
 import componenteVinculador.vinculable.utils.FechaUtils;
@@ -8,7 +9,6 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import static org.junit.Assert.*;
 

@@ -1,9 +1,8 @@
-package componenteVinculador.criterio;
+package componenteVinculador.criterio.orden;
 
 import componenteVinculador.vinculable.OperacionVinculable;
-import java.util.Comparator;
 
-public class CriterioOrdenFecha implements Comparator<OperacionVinculable> {
+public class CriterioOrdenFecha implements CriterioOrden {
 
     @Override
     public int compare(OperacionVinculable op1, OperacionVinculable op2) {

@@ -1,17 +1,16 @@
 package componenteVinculador.criterio;
 
 import componenteVinculador.criterio.ResultadoVinculado.ResultadoVinculado;
+import componenteVinculador.criterio.orden.CriterioOrdenValor;
 import componenteVinculador.vinculable.OperacionVinculable;
 import java.util.ArrayList;
 
-public class OrdenValorPrimerIngreso implements CriterioVinculacion {
-
-    private ArrayList<ResultadoVinculado> resultados;
+public class OrdenValorPrimerIngreso extends CriterioVinculacion {
 
     @Override
     public void ejecutar(ArrayList<OperacionVinculable> ingresos, ArrayList<OperacionVinculable> egresos) {
-        this.ordenar(ingresos,egresos);
-        resultados = new ArrayList<>();
+        CriterioOrdenValor criterio = new CriterioOrdenValor();
+        this.ordenar(ingresos,egresos, criterio);
 
         for (OperacionVinculable ingreso : ingresos) {
             for (OperacionVinculable egreso : egresos) {
@@ -40,13 +39,6 @@ public class OrdenValorPrimerIngreso implements CriterioVinculacion {
             }
         }
         return new ResultadoVinculado(ingreso);
-    }
-
-    @Override
-    public void ordenar(ArrayList<OperacionVinculable> ingresos, ArrayList<OperacionVinculable> egresos) {
-        CriterioOrdenValor criterio = new CriterioOrdenValor();
-        ingresos.sort(criterio);
-        egresos.sort(criterio);
     }
 
     @Override

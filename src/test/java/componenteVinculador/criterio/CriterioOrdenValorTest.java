@@ -1,9 +1,8 @@
 package componenteVinculador.criterio;
 
+import componenteVinculador.criterio.orden.CriterioOrdenValor;
 import componenteVinculador.vinculable.ETipoOperacionVinculable;
 import componenteVinculador.vinculable.OperacionVinculable;
-import dominio.operaciones.OperacionIngreso;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 

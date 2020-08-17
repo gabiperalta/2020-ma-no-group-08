@@ -26,7 +26,7 @@ public class ResultadoVinculado {
     }
 
     public boolean contieneAlIngreso(OperacionVinculable unIngreso){
-        return ingreso.esIgualA(unIngreso);
+        return ingreso.equals(unIngreso);
     }
 
     public boolean sePuedeVincularEgreso(OperacionVinculable egreso) {
