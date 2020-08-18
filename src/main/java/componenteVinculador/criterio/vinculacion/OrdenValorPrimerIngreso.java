@@ -1,4 +1,4 @@
-package componenteVinculador.criterio;
+package componenteVinculador.criterio.vinculacion;
 
 import componenteVinculador.criterio.orden.CriterioOrden;
 import componenteVinculador.criterio.orden.CriterioOrdenValor;
@@ -16,5 +16,10 @@ public class OrdenValorPrimerIngreso extends CriterioVinculacion {
     @Override
     protected CriterioOrden getCriterioOrden() {
         return new CriterioOrdenValor();
+    }
+
+    @Override
+    public ETipoCriterioVinculacion getTipoCriterio() {
+        return ETipoCriterioVinculacion.VALOR_INGRESO;
     }
 }

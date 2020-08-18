@@ -1,4 +1,4 @@
-package componenteVinculador.criterio;
+package componenteVinculador.criterio.vinculacion;
 
 import componenteVinculador.criterio.ResultadoVinculado.ResultadoVinculado;
 import componenteVinculador.criterio.orden.CriterioOrden;
@@ -59,5 +59,9 @@ public class CriterioVinculacion {
         if(resultadoVinculado.getEgresos().size() == 1){
             resultados.add(resultadoVinculado);
         }
+    }
+
+    public ETipoCriterioVinculacion getTipoCriterio() {
+        return null;
     }
 }

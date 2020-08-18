@@ -1,6 +1,7 @@
 package componenteVinculador.criterio;
 
 import componenteVinculador.criterio.ResultadoVinculado.ResultadoVinculado;
+import componenteVinculador.criterio.vinculacion.OrdenValorPrimerEgreso;
 import componenteVinculador.vinculable.ETipoOperacionVinculable;
 import componenteVinculador.vinculable.OperacionVinculable;
 import componenteVinculador.vinculable.utils.FechaUtils;
