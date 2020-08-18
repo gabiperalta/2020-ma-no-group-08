@@ -6,7 +6,6 @@ import componenteVinculador.vinculable.OperacionVinculable;
 import java.util.ArrayList;
 
 public class CriterioVinculacion {
-//    TODO: agregar metodo que devuelva el tipo
     private ArrayList<ResultadoVinculado> resultados;
 
     public CriterioVinculacion() {
