@@ -6,7 +6,6 @@ import componenteVinculador.vinculable.OperacionVinculable;
 import java.util.ArrayList;
 
 public class CriterioVinculacion {
-//    TODO: agregar rango de fecha
 //    TODO: agregar metodo que devuelva el tipo
     private ArrayList<ResultadoVinculado> resultados;
 
@@ -14,17 +13,17 @@ public class CriterioVinculacion {
         resultados = new ArrayList<>();
     }
 
-    public void ejecutar(ArrayList<OperacionVinculable> ingresos,ArrayList<OperacionVinculable> egresos) {
+    public void ejecutar(ArrayList<OperacionVinculable> ingresos,ArrayList<OperacionVinculable> egresos, int rangoDias) {
         ordenar(ingresos,egresos, getCriterioOrden());
-        vincular(ingresos,egresos);
+        vincular(ingresos,egresos, rangoDias);
     }
 
-    protected void vincular(ArrayList<OperacionVinculable> ingresos, ArrayList<OperacionVinculable> egresos) {
+    protected void vincular(ArrayList<OperacionVinculable> ingresos, ArrayList<OperacionVinculable> egresos, int rangoDias) {
         for (OperacionVinculable egreso : egresos) {
             for (OperacionVinculable ingreso : ingresos) {
                 ResultadoVinculado resultado = this.buscaOCreaResultadoNuevo(ingreso);
 
-                if(resultado.sePuedeVincularEgreso(egreso)){
+                if(resultado.sePuedeVincularEgreso(egreso, rangoDias)){
                     resultado.vincularNuevoEgreso(egreso);
 
                     agregarResultadoSiEsNecesario(resultado);

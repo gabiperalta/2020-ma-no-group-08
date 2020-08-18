@@ -19,13 +19,14 @@ public class CriterioOrdenFechaTest {
     private OperacionVinculable ingreso2;
     private OperacionVinculable ingreso3;
     private ArrayList<OperacionVinculable> ingresos;
+
     @Before
     public void setUp() {
         target = new CriterioOrdenFecha();
 //        INGRESOS
         ingreso1 = new OperacionVinculable(1000,new Date(), ETipoOperacionVinculable.INGRESO);
-        ingreso2 = new OperacionVinculable(150,FechaUtils.obtenerFechaDiasAtras(1), ETipoOperacionVinculable.INGRESO);
-        ingreso3 = new OperacionVinculable(1900,FechaUtils.obtenerFechaDiasAtras(2), ETipoOperacionVinculable.INGRESO);
+        ingreso2 = new OperacionVinculable(150,FechaUtils.obtenerFechaDiasAtras(new Date(),1), ETipoOperacionVinculable.INGRESO);
+        ingreso3 = new OperacionVinculable(1900,FechaUtils.obtenerFechaDiasAtras(new Date(), 2), ETipoOperacionVinculable.INGRESO);
 
         ingresos = new ArrayList<>();
         ingresos.add(ingreso1);

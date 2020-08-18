@@ -1,5 +1,7 @@
 package componenteVinculador.vinculable;
 
+import componenteVinculador.vinculable.utils.FechaUtils;
+
 import java.util.Date;
 import java.util.Objects;
 
@@ -30,8 +32,10 @@ public class OperacionVinculable implements Vinculable {
     }
 
     @Override
-    public boolean sePuedeVincularA(ETipoOperacionVinculable unTipoOperacion, double montoAcumulado) {
-        return (monto > montoAcumulado) && (tipoOperacion != unTipoOperacion) && (tipoOperacion == ETipoOperacionVinculable.INGRESO);
+    public boolean sePuedeVincularA(ETipoOperacionVinculable unTipoOperacion, double montoAcumulado, int rangoDias, Date fechaEgreso) {
+        return (monto > montoAcumulado) && (tipoOperacion != unTipoOperacion) &&
+                (tipoOperacion == ETipoOperacionVinculable.INGRESO) &&
+                FechaUtils.estaDentroDelRango(getFecha(),fechaEgreso,rangoDias);
     }
 
     @Override

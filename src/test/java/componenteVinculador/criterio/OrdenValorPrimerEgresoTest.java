@@ -34,9 +34,9 @@ public class OrdenValorPrimerEgresoTest {
         ingreso1 = new OperacionVinculable(1000,new Date(), ETipoOperacionVinculable.INGRESO);
         ingreso2 = new OperacionVinculable(2000,new Date(), ETipoOperacionVinculable.INGRESO);
 
-        egreso1 = new OperacionVinculable(500, FechaUtils.obtenerFechaDiasAtras(1), ETipoOperacionVinculable.EGRESO);
-        egreso2 = new OperacionVinculable(300, FechaUtils.obtenerFechaDiasAtras(5), ETipoOperacionVinculable.EGRESO);
-        egreso3 = new OperacionVinculable(350, FechaUtils.obtenerFechaDiasAtras(3), ETipoOperacionVinculable.EGRESO);
+        egreso1 = new OperacionVinculable(500, FechaUtils.obtenerFechaDiasAtras(new Date(),1), ETipoOperacionVinculable.EGRESO);
+        egreso2 = new OperacionVinculable(300, FechaUtils.obtenerFechaDiasAtras(new Date(),4), ETipoOperacionVinculable.EGRESO);
+        egreso3 = new OperacionVinculable(350, FechaUtils.obtenerFechaDiasAtras(new Date(),3), ETipoOperacionVinculable.EGRESO);
         egreso4 = new OperacionVinculable(2100,new Date(), ETipoOperacionVinculable.EGRESO);
     }
     @Test
@@ -48,7 +48,7 @@ public class OrdenValorPrimerEgresoTest {
         egresos.add(egreso2);
         egresos.add(egreso3);
 
-        target.ejecutar(ingresos,egresos);
+        target.ejecutar(ingresos,egresos, 5);
 
         ResultadoVinculado resultado1 = new ResultadoVinculado(ingreso1);
         resultado1.vincularNuevoEgreso(egreso2);
@@ -67,7 +67,7 @@ public class OrdenValorPrimerEgresoTest {
 
         egresos.add(egreso4);
 
-        target.ejecutar(ingresos,egresos);
+        target.ejecutar(ingresos,egresos, 5);
         assertEquals(target.getResultadosVinculados().size(),0);
     }
 
@@ -77,7 +77,7 @@ public class OrdenValorPrimerEgresoTest {
         egresos.add(egreso2);
         egresos.add(egreso3);
 
-        target.ejecutar(ingresos,egresos);
+        target.ejecutar(ingresos,egresos, 5);
         assertEquals(target.getResultadosVinculados().size(),0);
     }
 
@@ -86,7 +86,7 @@ public class OrdenValorPrimerEgresoTest {
         ingresos.add(ingreso1);
         ingresos.add(ingreso2);
 
-        target.ejecutar(ingresos,egresos);
+        target.ejecutar(ingresos,egresos, 5);
         assertEquals(target.getResultadosVinculados().size(),0);
     }
 }

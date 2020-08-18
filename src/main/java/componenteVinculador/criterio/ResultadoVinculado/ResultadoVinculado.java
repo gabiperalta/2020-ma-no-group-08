@@ -29,8 +29,8 @@ public class ResultadoVinculado {
         return ingreso.equals(unIngreso);
     }
 
-    public boolean sePuedeVincularEgreso(OperacionVinculable egreso) {
-        return ingreso.sePuedeVincularA(egreso.getTipoOperacion(),getMontoAcumulado() + egreso.getMonto());
+    public boolean sePuedeVincularEgreso(OperacionVinculable egreso, int rangoDias) {
+        return ingreso.sePuedeVincularA(egreso.getTipoOperacion(),getMontoAcumulado() + egreso.getMonto(), rangoDias, egreso.getFecha());
     }
 
     public ArrayList<OperacionVinculable> getEgresos() {
