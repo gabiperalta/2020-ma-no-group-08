@@ -38,7 +38,7 @@ public class Categoria {
 	}
 	
 	public Categoria agregarSubCategoria(String nombreSubCriterio) throws CategorizacionException {
-		if(this.existeELaCategoria(nombreSubCriterio)) {
+		if(!this.existeLaCategoria(nombreSubCriterio)) {
 			Categoria unaCategoria = new Categoria(nombreSubCriterio, this, this.criterioDeCategorizacion);
 			this.subCategorias.add(unaCategoria);
 			return unaCategoria;
@@ -53,7 +53,7 @@ public class Categoria {
 		this.subCategorias.remove(categoriaAEliminar);
 	}
 	
-	public boolean existeELaCategoria(String nombreCategoria) {
+	public boolean existeLaCategoria(String nombreCategoria) {
 		boolean existiaLaCategoria;
 		try {
 			this.buscarSubCategoria(nombreCategoria);

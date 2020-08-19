@@ -10,6 +10,7 @@ public class EntidadCategorizable {
 	
 	EntidadCategorizable(String identificador){
 		this.identificador = identificador;
+		categoriasAsociadas = new ArrayList<Categoria>();
 	}
 	
 	public String getIdentificador() {
@@ -20,11 +21,11 @@ public class EntidadCategorizable {
 		return this.identificador.contentEquals(identificadorEntidadCategorizable);
 	}
 	
-	public boolean esLaCategoria(Categoria unaCategoria) {
+	public boolean esDeLaCategoria(Categoria unaCategoria) {
 		return this.categoriasAsociadas.contains(unaCategoria);
 	}
 	
-	public void vincularseACategoria(Categoria unaCategoria) throws CategorizacionException {
+	public void asociarseACategoria(Categoria unaCategoria) throws CategorizacionException {
 		if(this.puedeVincularseA(unaCategoria)) {
 			this.categoriasAsociadas.add(unaCategoria);
 		}
@@ -33,8 +34,8 @@ public class EntidadCategorizable {
 		}
 	}
 	
-	public void desvincularseDeCategoria(Categoria unaCategoria) throws CategorizacionException {
-		if(this.esLaCategoria(unaCategoria)) {
+	public void desasociarseDeCategoria(Categoria unaCategoria) throws CategorizacionException {
+		if(this.esDeLaCategoria(unaCategoria)) {
 			this.categoriasAsociadas.remove(unaCategoria);
 		}
 		else {
@@ -43,7 +44,7 @@ public class EntidadCategorizable {
 	}
 	
 	private boolean puedeVincularseA(Categoria unaCategoria) {
-		return !categoriasAsociadas.contains(unaCategoria) && 
+		return !this.categoriasAsociadas.contains(unaCategoria) && 
 				this.categoriasAsociadas.stream().allMatch(categoria -> categoria.getCategoriaPadre() != unaCategoria.getCategoriaPadre()
 				|| (categoria.getCategoriaPadre() == null && unaCategoria.getCategoriaPadre() == null &&
 					categoria.getCriterioDeCategorizacion() == unaCategoria.getCriterioDeCategorizacion())); 
