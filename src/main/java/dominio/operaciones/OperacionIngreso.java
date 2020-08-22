@@ -3,7 +3,7 @@ package dominio.operaciones;
 import java.util.Date;
 import java.util.List;
 
-public class OperacionIngreso{
+public class OperacionIngreso implements Operacion {
 	private String identificadorOperacion;
 	private String descripcion;
 	private double montoTotal;
@@ -46,6 +46,11 @@ public class OperacionIngreso{
 
 	public Date getFecha() {
 		return fecha;
+	}
+
+	@Override
+	public boolean esIngreso() {
+		return true;
 	}
 
 	public EntidadOperacion getEntidadDestino() {
