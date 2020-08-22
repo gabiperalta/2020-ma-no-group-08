@@ -49,7 +49,7 @@ public class RepositorioCategorizacion {
 		this.criteriosDeCategorizacion.remove(criterioABorrar);
 	}
 	
-	public boolean existeElCriterio(CriterioDeCategorizacion criterioDeCategorizacion) {
+	private boolean existeElCriterio(CriterioDeCategorizacion criterioDeCategorizacion) {
 		boolean existiaElCriterio;
 		try {
 			this.buscarCriterioDeCategorizacion(criterioDeCategorizacion.getNombre());
@@ -81,9 +81,12 @@ public class RepositorioCategorizacion {
 		return unaEntidadCategorizable;
 	}
 	
-	public void vincularCriterioAEntidadCategorizable(String identificadorEntidadCategorizable, Categoria unaCategoria) throws CategorizacionException {
-		EntidadCategorizable unaEntidadCategorizable = this.buscarEntidadCategorizable(identificadorEntidadCategorizable);
-		unaEntidadCategorizable.vincularseACategoria(unaCategoria);
+	public void asociarCriterioAEntidadCategorizable(String identificadorEntidadCategorizable, Categoria unaCategoria) throws CategorizacionException {
+		this.buscarEntidadCategorizable(identificadorEntidadCategorizable).asociarseACategoria(unaCategoria);
+	}
+	
+	public void desasociarCriterioAEntidadCategorizable(String identificadorEntidadCategorizable, Categoria unaCategoria) throws CategorizacionException {
+		this.buscarEntidadCategorizable(identificadorEntidadCategorizable).desasociarseDeCategoria(unaCategoria);
 	}
 	
 }

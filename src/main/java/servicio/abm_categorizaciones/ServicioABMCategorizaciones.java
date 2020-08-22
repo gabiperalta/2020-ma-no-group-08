@@ -5,7 +5,7 @@ import dominio.categorizacion.CriterioDeCategorizacion;
 import dominio.categorizacion.RepositorioCategorizacion;
 import dominio.categorizacion.exceptions.CategorizacionException;
 
-public class ABMCategorizaciones {
+public class ServicioABMCategorizaciones {
 	private Categoria categoriaActual;
 	private CriterioDeCategorizacion criterioDeCategorizacionActual;
 	
@@ -14,15 +14,21 @@ public class ABMCategorizaciones {
 	}
 	
 	public void bajaCriterioCategorizacion(String nombreCriterioDeCategorizacion) {
+		this.criterioDeCategorizacionActual = null;
 		RepositorioCategorizacion.getInstance().quitarCriterioDeCategorizacion(nombreCriterioDeCategorizacion);
 	}
 	
 	public void buscarCriterioDeCategorizacion(String nombreCriterioDeCategorizacion) {
 		this.criterioDeCategorizacionActual = RepositorioCategorizacion.getInstance().buscarCriterioDeCategorizacion(nombreCriterioDeCategorizacion);
+		this.categoriaActual = null;
 	}
 	
-	public void asociarCategoriaAEntidadCategorizable(String nombreEntidadCategorizable) {
-		
+	public void asociarCategoriaAEntidadCategorizable(String identificadorEntidadCategorizable) throws CategorizacionException {
+		RepositorioCategorizacion.getInstance().asociarCriterioAEntidadCategorizable(identificadorEntidadCategorizable, this.categoriaActual);
+	}
+	
+	public void desasociarCategoriaAEntidadCategorizable(String identificadorEntidadCategorizable) throws CategorizacionException {
+		RepositorioCategorizacion.getInstance().desasociarCriterioAEntidadCategorizable(identificadorEntidadCategorizable, this.categoriaActual);
 	}
 	
 	public void agregarCategoria(String nombreCategoria) throws CategorizacionException {
@@ -53,12 +59,18 @@ public class ABMCategorizaciones {
 			throw new CategorizacionException("No hay ninguna Categoria referenciada, debes buscar una");
 	}
 	
-	public void eliminarCategoria(String nombreCategoria) {
-		this.criterioDeCategorizacionActual.quitarCategoria(nombreCategoria);
+	public void eliminarCategoria(String nombreCategoria) throws CategorizacionException {
+		if(this.criterioDeCategorizacionActual != null)
+			this.criterioDeCategorizacionActual.quitarCategoria(nombreCategoria);
+		else
+			throw new CategorizacionException("No hay ninguna Categoria referenciada, debes buscar una");
 	}
 	
-	public void eliminarSubCategoria(String nombreCategoria) {
-		this.categoriaActual.quitarSubCategoria(nombreCategoria);
+	public void eliminarSubCategoria(String nombreCategoria) throws CategorizacionException {
+		if(this.categoriaActual != null)
+			this.categoriaActual.quitarSubCategoria(nombreCategoria);
+		else
+			throw new CategorizacionException("No hay ninguna Categoria referenciada, debes buscar una");
 	}
 	
 	public Categoria getCategoriaActual() {

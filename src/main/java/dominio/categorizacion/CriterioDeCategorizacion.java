@@ -16,8 +16,8 @@ public class CriterioDeCategorizacion {
 	}
 	
 	public Categoria agregarCategoria(String nombreCategoria) throws CategorizacionException {
-		if(!this.existeELaCategoria(nombreCategoria)) {
-			Categoria unaCategoria = new Categoria(nombreCategoria, null, this);
+		if(!this.existeLaCategoria(nombreCategoria)) {
+			Categoria unaCategoria = new Categoria(nombreCategoria, this);
 			this.categorias.add(unaCategoria);
 			return unaCategoria;
 		}
@@ -36,7 +36,7 @@ public class CriterioDeCategorizacion {
 		return nombre;
 	}
 	
-	public boolean existeELaCategoria(String nombreCategoria) {
+	public boolean existeLaCategoria(String nombreCategoria) {
 		boolean existiaLaCategoria;
 		try {
 			this.buscarCategoria(nombreCategoria);
@@ -52,6 +52,5 @@ public class CriterioDeCategorizacion {
 		Categoria unaCategoria = this.categorias.stream().filter(categoria -> categoria.getNombre().equals(nombreCategoria)).findFirst().get();
 		return unaCategoria;
 	}
-	
 	
 }
