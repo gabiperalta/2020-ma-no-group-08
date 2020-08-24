@@ -71,17 +71,6 @@ public class Config {
         return output;
     }
 
-    public static Set<String> getValues(String keyPrefix) {
-        Set<String> output = new HashSet<>();
-        Iterator<String> it = config.getKeys();
-        while (it.hasNext()) {
-            String k = it.next();
-            if (k.startsWith(keyPrefix)) {
-                output.addAll(config.getList(k).stream().map(Object::toString).collect(Collectors.toList()));
-            }
-        }
-        return output;
-    }
 
     public static int getInt(String key) {
         return getConfig(key,config::getInt);
@@ -91,29 +80,15 @@ public class Config {
         return getConfig(key,config::getString);
     }
 
-    public static List<Object> getList (String key){
-        return getConfig(key,config::getList);
-    }
 
     public static long getLong(String key) {
         return getConfig(key,config::getLong);
     }
 
-    public static boolean getBoolean(String key) {
-        return getConfig(key,config::getBoolean);
-    }
 
     private static String getScope() {
         return System.getenv("SCOPE") != null ? System.getenv("SCOPE") : "";
     }
 
-    public static String getFromMap(String configKey, String mapKey) {
-        List<Object> values = getConfig(configKey,config::getList);
-        return values != null ? values.stream().map(pair -> pair.toString().split(":", 2)).filter(kv -> kv[0].startsWith(mapKey)).findFirst().map(kv -> kv[1]).orElse(null) : null;
-    }
-
-    public static Boolean has(String key){
-        return config.containsKey(key);
-    }
 
 }
