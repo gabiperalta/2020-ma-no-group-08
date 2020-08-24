@@ -52,38 +52,10 @@ public enum RestClientML {
     }
 
 
-    public JSONObject get(String endpoint, JSONObject params) throws Exception {
-        Response response = restClient.withPool(RESOURCE_NAME)
-                .get(endpoint, getJsonToHeader(params));
-
-        return responseRequest(response);
-    }
-
     public JSONObject get(String endpoint, Headers headers) throws Exception {
 
         Response response = restClient.withPool(RESOURCE_NAME)
                 .get(endpoint, headers);
-
-
-        return responseRequest(response);
-    }
-
-    public JSONObject post(String endpoint, Headers headers, JSONObject body) throws Exception {
-        byte[] body2 = body.toString().getBytes();
-
-        Response response = restClient.withPool(RESOURCE_NAME)
-                .post(endpoint,headers,body2);
-
-
-        return responseRequest(response);
-    }
-
-    public JSONObject put(String endpoint, Headers headers, JSONObject body) throws Exception {
-        byte[] body2 = body.toString().getBytes();
-
-
-        Response response = restClient.withPool(RESOURCE_NAME)
-                .put(endpoint,headers,body2);
 
         return responseRequest(response);
     }
@@ -97,19 +69,5 @@ public enum RestClientML {
         return resp;
     }
 
-
-    public static Headers getJsonToHeader(JSONObject headerParam){
-        Headers headers = new Headers();
-
-        Iterator<?> keys = headerParam.keys();
-        while (keys.hasNext()) {
-            String key = (String) keys.next();
-            String value = headerParam.getString(key);
-
-            headers.add(new Header(key, value));
-        }
-
-        return headers;
-    }
 }
 

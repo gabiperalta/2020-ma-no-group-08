@@ -51,6 +51,14 @@ public enum serviceMercadoLibre {
         return JsonUtils.getLinkedHashMapToJson(restClient.get(url, new Headers()));
     }
 
+    public JSONObject getCountryWithZipCode(String country, String zipCode) throws Exception {
+        String url = "https://api.mercadolibre.com/countries/"+country+"/zip_codes/"+zipCode;
+        return JsonUtils.getLinkedHashMapToJson(restClient.get(url, new Headers()));
+    }
 
-    //TODO: agregar las dos que faltan
+    public JSONObject getCountryWithZipCode(String country, String zipCodeInit, String zipCodeFinal) throws Exception {
+        String url = "https://api.mercadolibre.com//country/"+country+"/zip_codes/search_between?zip_code_from="+zipCodeInit+"&zip_code_to="+zipCodeFinal;
+        return JsonUtils.getLinkedHashMapToJson(restClient.get(url, new Headers()));
+    }
+
 }
