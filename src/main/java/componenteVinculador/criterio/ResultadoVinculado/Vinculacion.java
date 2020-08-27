@@ -6,11 +6,11 @@ import componenteVinculador.vinculable.OperacionVinculable;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class ResultadoVinculado {
+public class Vinculacion {
     private OperacionVinculable ingreso;
     private ArrayList<OperacionVinculable> egresos;
 
-    public ResultadoVinculado (OperacionVinculable unIngreso){
+    public Vinculacion(OperacionVinculable unIngreso){
         ingreso = unIngreso;
         egresos = new ArrayList();
     }
@@ -48,7 +48,7 @@ public class ResultadoVinculado {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ResultadoVinculado that = (ResultadoVinculado) o;
+        Vinculacion that = (Vinculacion) o;
         return Objects.equals(ingreso, that.ingreso) &&
                 Objects.equals(egresos, that.egresos);
     }

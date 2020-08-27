@@ -1,6 +1,6 @@
 package componenteVinculador.vinculador;
 
-import componenteVinculador.criterio.ResultadoVinculado.ResultadoVinculado;
+import componenteVinculador.criterio.ResultadoVinculado.Vinculacion;
 import componenteVinculador.criterio.vinculacion.CriterioVinculacion;
 import componenteVinculador.criterio.vinculacion.ETipoCriterioVinculacion;
 import componenteVinculador.vinculable.OperacionVinculable;
@@ -33,7 +33,7 @@ public class Vinculador {
         }
     }
 
-    public ArrayList<ResultadoVinculado> getVinculacionesPorCriterio(ETipoCriterioVinculacion tipoCriterio){
+    public ArrayList<Vinculacion> getVinculacionesPorCriterio(ETipoCriterioVinculacion tipoCriterio){
         for (CriterioVinculacion criterioVinculacion:criterios) {
             if (criterioVinculacion.getTipoCriterio() == tipoCriterio) {
                 return criterioVinculacion.getResultadosVinculados();

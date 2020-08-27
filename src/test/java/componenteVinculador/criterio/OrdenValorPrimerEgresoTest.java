@@ -1,6 +1,6 @@
 package componenteVinculador.criterio;
 
-import componenteVinculador.criterio.ResultadoVinculado.ResultadoVinculado;
+import componenteVinculador.criterio.ResultadoVinculado.Vinculacion;
 import componenteVinculador.criterio.vinculacion.OrdenValorPrimerEgreso;
 import componenteVinculador.vinculable.ETipoOperacionVinculable;
 import componenteVinculador.vinculable.OperacionVinculable;
@@ -49,11 +49,11 @@ public class OrdenValorPrimerEgresoTest {
 
         target.ejecutar(ingresos,egresos);
 
-        ResultadoVinculado resultado1 = new ResultadoVinculado(ingreso1);
+        Vinculacion resultado1 = new Vinculacion(ingreso1);
         resultado1.vincularNuevoEgreso(egreso2);
         resultado1.vincularNuevoEgreso(egreso3);
 
-        ResultadoVinculado resultado2 = new ResultadoVinculado(ingreso2);
+        Vinculacion resultado2 = new Vinculacion(ingreso2);
         resultado2.vincularNuevoEgreso(egreso1);
 
         assertTrue(resultado1.equals(target.getResultadosVinculados().get(0)) && resultado2.equals(target.getResultadosVinculados().get(1)));

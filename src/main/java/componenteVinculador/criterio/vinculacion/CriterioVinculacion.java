@@ -1,6 +1,6 @@
 package componenteVinculador.criterio.vinculacion;
 
-import componenteVinculador.criterio.ResultadoVinculado.ResultadoVinculado;
+import componenteVinculador.criterio.ResultadoVinculado.Vinculacion;
 import componenteVinculador.criterio.orden.CriterioOrden;
 import componenteVinculador.vinculable.OperacionVinculable;
 import componenteVinculador.vinculable.utils.FechaUtils;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class CriterioVinculacion {
-    private ArrayList<ResultadoVinculado> resultados;
+    private ArrayList<Vinculacion> resultados;
     private Object parametro;
 
     public CriterioVinculacion(Object parametroCondicion) {
@@ -26,7 +26,7 @@ public class CriterioVinculacion {
     protected void vincular(ArrayList<OperacionVinculable> ingresos, ArrayList<OperacionVinculable> egresos) {
         for (OperacionVinculable egreso : egresos) {
             for (OperacionVinculable ingreso : ingresos) {
-                ResultadoVinculado resultado = this.buscaOCreaResultadoNuevo(ingreso);
+                Vinculacion resultado = this.buscaOCreaResultadoNuevo(ingreso);
 
                 if(resultado.sePuedeVincularEgreso(egreso) && cumpleCondicion(ingreso.getFecha(), egreso.getFecha()) ){
                     resultado.vincularNuevoEgreso(egreso);
@@ -47,26 +47,26 @@ public class CriterioVinculacion {
         egresos.sort(criterioOrden);
     }
 
-    public ArrayList<ResultadoVinculado> getResultadosVinculados(){
+    public ArrayList<Vinculacion> getResultadosVinculados(){
         return resultados;
     }
 
-    private ResultadoVinculado buscaOCreaResultadoNuevo(OperacionVinculable ingreso) {
-        for (ResultadoVinculado resultado:resultados) {
+    private Vinculacion buscaOCreaResultadoNuevo(OperacionVinculable ingreso) {
+        for (Vinculacion resultado:resultados) {
             if (resultado.contieneAlIngreso(ingreso)) {
                 return resultado;
             }
         }
-        return new ResultadoVinculado(ingreso);
+        return new Vinculacion(ingreso);
     }
 
     protected CriterioOrden getCriterioOrden() {
        return null;
     }
 
-    private void agregarResultadoSiEsNecesario(ResultadoVinculado resultadoVinculado) {
-        if(resultadoVinculado.getEgresos().size() == 1){
-            resultados.add(resultadoVinculado);
+    private void agregarResultadoSiEsNecesario(Vinculacion vinculacion) {
+        if(vinculacion.getEgresos().size() == 1){
+            resultados.add(vinculacion);
         }
     }
 
