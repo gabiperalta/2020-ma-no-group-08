@@ -7,10 +7,14 @@ import java.util.ArrayList;
 
 public class OrdenValorPrimerIngreso extends CriterioVinculacion {
 
+    public OrdenValorPrimerIngreso(Object parametroCondicion) {
+        super(parametroCondicion);
+    }
+
     @Override
-    public void ejecutar(ArrayList<OperacionVinculable> ingresos,ArrayList<OperacionVinculable> egresos, int rangoDias) {
+    public void ejecutar(ArrayList<OperacionVinculable> ingresos,ArrayList<OperacionVinculable> egresos) {
         ordenar(ingresos,egresos, getCriterioOrden());
-        vincular(egresos,ingresos, rangoDias);
+        vincular(egresos,ingresos);
     }
 
     @Override

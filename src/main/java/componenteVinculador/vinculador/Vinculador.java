@@ -25,11 +25,11 @@ public class Vinculador {
     }
 
     public void vincular(ArrayList<OperacionVinculable> unosIngresos, ArrayList<OperacionVinculable> unosEgresos,
-                         ArrayList<CriterioVinculacion> unosCriterios, int rangoDias) {
+                         ArrayList<CriterioVinculacion> unosCriterios) {
         criterios = unosCriterios;
 
         for (CriterioVinculacion criterioVinculacion:criterios) {
-            criterioVinculacion.ejecutar(unosIngresos, unosEgresos, rangoDias);
+            criterioVinculacion.ejecutar(unosIngresos, unosEgresos);
         }
     }
 

@@ -32,10 +32,9 @@ public class OperacionVinculable implements Vinculable {
     }
 
     @Override
-    public boolean sePuedeVincularA(ETipoOperacionVinculable unTipoOperacion, double montoAcumulado, int rangoDias, Date fechaEgreso) {
+    public boolean sePuedeVincularA(ETipoOperacionVinculable unTipoOperacion, double montoAcumulado) {
         return (monto > montoAcumulado) && (tipoOperacion != unTipoOperacion) &&
-                (tipoOperacion == ETipoOperacionVinculable.INGRESO) &&
-                FechaUtils.estaDentroDelRango(getFecha(),fechaEgreso,rangoDias);
+                (tipoOperacion == ETipoOperacionVinculable.INGRESO);
     }
 
     @Override

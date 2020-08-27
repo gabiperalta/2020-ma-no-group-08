@@ -3,26 +3,32 @@ package componenteVinculador.criterio.vinculacion;
 import componenteVinculador.criterio.ResultadoVinculado.ResultadoVinculado;
 import componenteVinculador.criterio.orden.CriterioOrden;
 import componenteVinculador.vinculable.OperacionVinculable;
+import componenteVinculador.vinculable.utils.FechaUtils;
+
 import java.util.ArrayList;
+import java.util.Date;
 
 public class CriterioVinculacion {
     private ArrayList<ResultadoVinculado> resultados;
+    private Object parametro;
 
-    public CriterioVinculacion() {
+    public CriterioVinculacion(Object parametroCondicion) {
+
         resultados = new ArrayList<>();
+        parametro = parametroCondicion;
     }
 
-    public void ejecutar(ArrayList<OperacionVinculable> ingresos,ArrayList<OperacionVinculable> egresos, int rangoDias) {
+    public void ejecutar(ArrayList<OperacionVinculable> ingresos,ArrayList<OperacionVinculable> egresos) {
         ordenar(ingresos,egresos, getCriterioOrden());
-        vincular(ingresos,egresos, rangoDias);
+        vincular(ingresos,egresos);
     }
 
-    protected void vincular(ArrayList<OperacionVinculable> ingresos, ArrayList<OperacionVinculable> egresos, int rangoDias) {
+    protected void vincular(ArrayList<OperacionVinculable> ingresos, ArrayList<OperacionVinculable> egresos) {
         for (OperacionVinculable egreso : egresos) {
             for (OperacionVinculable ingreso : ingresos) {
                 ResultadoVinculado resultado = this.buscaOCreaResultadoNuevo(ingreso);
 
-                if(resultado.sePuedeVincularEgreso(egreso, rangoDias)){
+                if(resultado.sePuedeVincularEgreso(egreso) && cumpleCondicion(ingreso.getFecha(), egreso.getFecha()) ){
                     resultado.vincularNuevoEgreso(egreso);
 
                     agregarResultadoSiEsNecesario(resultado);
@@ -30,6 +36,10 @@ public class CriterioVinculacion {
                 }
             }
         }
+    }
+
+    private boolean cumpleCondicion(Object parametro1, Object parametro2) {
+        return  FechaUtils.estaDentroDelRango((Date) parametro1,(Date) parametro2,(int)parametro);
     }
 
     void ordenar(ArrayList<OperacionVinculable> ingresos, ArrayList<OperacionVinculable> egresos, CriterioOrden criterioOrden) {

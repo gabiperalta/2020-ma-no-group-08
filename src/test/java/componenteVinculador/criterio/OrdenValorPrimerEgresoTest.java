@@ -26,7 +26,7 @@ public class OrdenValorPrimerEgresoTest {
 
     @Before
     public void setUp() {
-        target = new OrdenValorPrimerEgreso();
+        target = new OrdenValorPrimerEgreso(5);
         ingresos = new ArrayList<>();
         egresos = new ArrayList<>();
 
@@ -47,7 +47,7 @@ public class OrdenValorPrimerEgresoTest {
         egresos.add(egreso2);
         egresos.add(egreso3);
 
-        target.ejecutar(ingresos,egresos, 5);
+        target.ejecutar(ingresos,egresos);
 
         ResultadoVinculado resultado1 = new ResultadoVinculado(ingreso1);
         resultado1.vincularNuevoEgreso(egreso2);
@@ -66,7 +66,7 @@ public class OrdenValorPrimerEgresoTest {
 
         egresos.add(egreso4);
 
-        target.ejecutar(ingresos,egresos, 5);
+        target.ejecutar(ingresos,egresos);
         assertEquals(target.getResultadosVinculados().size(),0);
     }
 
@@ -76,7 +76,7 @@ public class OrdenValorPrimerEgresoTest {
         egresos.add(egreso2);
         egresos.add(egreso3);
 
-        target.ejecutar(ingresos,egresos, 5);
+        target.ejecutar(ingresos,egresos);
         assertEquals(target.getResultadosVinculados().size(),0);
     }
 
@@ -85,7 +85,7 @@ public class OrdenValorPrimerEgresoTest {
         ingresos.add(ingreso1);
         ingresos.add(ingreso2);
 
-        target.ejecutar(ingresos,egresos, 5);
+        target.ejecutar(ingresos,egresos);
         assertEquals(target.getResultadosVinculados().size(),0);
     }
 }

@@ -5,6 +5,10 @@ import componenteVinculador.criterio.orden.CriterioOrdenValor;
 
 public class OrdenValorPrimerEgreso extends CriterioVinculacion {
 
+    public OrdenValorPrimerEgreso(Object parametroCondicion) {
+        super(parametroCondicion);
+    }
+
     @Override
     protected CriterioOrden getCriterioOrden() {
         return new CriterioOrdenValor();

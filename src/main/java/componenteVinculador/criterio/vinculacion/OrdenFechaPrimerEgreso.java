@@ -6,6 +6,10 @@ import componenteVinculador.criterio.orden.CriterioOrdenFecha;
 public class OrdenFechaPrimerEgreso extends CriterioVinculacion {
 
 
+    public OrdenFechaPrimerEgreso(Object parametroCondicion) {
+        super(parametroCondicion);
+    }
+
     @Override
     protected CriterioOrden getCriterioOrden() {
         return new CriterioOrdenFecha();

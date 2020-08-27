@@ -6,5 +6,5 @@ interface Vinculable {
     double getMonto();
     Date getFecha();
     ETipoOperacionVinculable getTipoOperacion();
-    boolean sePuedeVincularA(ETipoOperacionVinculable vinculable, double montoAcumulado, int rangoDias, Date fechaEgreso);
+    boolean sePuedeVincularA(ETipoOperacionVinculable vinculable, double montoAcumulado);
 }
