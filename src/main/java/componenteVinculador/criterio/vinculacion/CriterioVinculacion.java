@@ -9,33 +9,35 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class CriterioVinculacion {
-    private ArrayList<Vinculacion> resultados;
     private Object parametro;
 
     public CriterioVinculacion(Object parametroCondicion) {
 
-        resultados = new ArrayList<>();
         parametro = parametroCondicion;
     }
 
-    public void ejecutar(ArrayList<OperacionVinculable> ingresos,ArrayList<OperacionVinculable> egresos) {
+    public ArrayList<Vinculacion> ejecutar(ArrayList<OperacionVinculable> ingresos,ArrayList<OperacionVinculable> egresos) {
         ordenar(ingresos,egresos, getCriterioOrden());
-        vincular(ingresos,egresos);
+        return vincular(ingresos,egresos);
     }
 
-    protected void vincular(ArrayList<OperacionVinculable> ingresos, ArrayList<OperacionVinculable> egresos) {
+    protected ArrayList<Vinculacion> vincular(ArrayList<OperacionVinculable> ingresos, ArrayList<OperacionVinculable> egresos) {
+        ArrayList<Vinculacion> vinculaciones = new ArrayList<>();
+
         for (OperacionVinculable egreso : egresos) {
             for (OperacionVinculable ingreso : ingresos) {
-                Vinculacion resultado = this.buscaOCreaResultadoNuevo(ingreso);
+                Vinculacion resultado = this.buscaOCreaResultadoNuevo(ingreso,vinculaciones);
 
                 if(resultado.sePuedeVincularEgreso(egreso) && cumpleCondicion(ingreso.getFecha(), egreso.getFecha()) ){
                     resultado.vincularNuevoEgreso(egreso);
 
-                    agregarResultadoSiEsNecesario(resultado);
+                    agregarResultadoSiEsNecesario(resultado, vinculaciones);
                     break;
                 }
             }
         }
+
+        return vinculaciones;
     }
 
     private boolean cumpleCondicion(Object parametro1, Object parametro2) {
@@ -47,14 +49,12 @@ public class CriterioVinculacion {
         egresos.sort(criterioOrden);
     }
 
-    public ArrayList<Vinculacion> getResultadosVinculados(){
-        return resultados;
-    }
 
-    private Vinculacion buscaOCreaResultadoNuevo(OperacionVinculable ingreso) {
-        for (Vinculacion resultado:resultados) {
-            if (resultado.contieneAlIngreso(ingreso)) {
-                return resultado;
+
+    private Vinculacion buscaOCreaResultadoNuevo(OperacionVinculable ingreso, ArrayList<Vinculacion> vinculaciones) {
+        for (Vinculacion vinculacion : vinculaciones) {
+            if (vinculacion.contieneAlIngreso(ingreso)) {
+                return vinculacion;
             }
         }
         return new Vinculacion(ingreso);
@@ -64,9 +64,9 @@ public class CriterioVinculacion {
        return null;
     }
 
-    private void agregarResultadoSiEsNecesario(Vinculacion vinculacion) {
+    private void agregarResultadoSiEsNecesario(Vinculacion vinculacion, ArrayList<Vinculacion> vinculaciones) {
         if(vinculacion.getEgresos().size() == 1){
-            resultados.add(vinculacion);
+            vinculaciones.add(vinculacion);
         }
     }
 

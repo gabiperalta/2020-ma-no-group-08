@@ -1,5 +1,6 @@
 package componenteVinculador.criterio.vinculacion;
 
+import componenteVinculador.criterio.ResultadoVinculado.Vinculacion;
 import componenteVinculador.criterio.orden.CriterioOrden;
 import componenteVinculador.criterio.orden.CriterioOrdenValor;
 import componenteVinculador.vinculable.OperacionVinculable;
@@ -12,9 +13,9 @@ public class OrdenValorPrimerIngreso extends CriterioVinculacion {
     }
 
     @Override
-    public void ejecutar(ArrayList<OperacionVinculable> ingresos,ArrayList<OperacionVinculable> egresos) {
+    public ArrayList<Vinculacion> ejecutar(ArrayList<OperacionVinculable> ingresos, ArrayList<OperacionVinculable> egresos) {
         ordenar(ingresos,egresos, getCriterioOrden());
-        vincular(egresos,ingresos);
+        return vincular(egresos,ingresos);
     }
 
     @Override

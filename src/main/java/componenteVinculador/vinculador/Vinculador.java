@@ -1,14 +1,13 @@
 package componenteVinculador.vinculador;
 
+import componenteVinculador.criterio.ResultadoVinculado.ResultadoVinculado;
 import componenteVinculador.criterio.ResultadoVinculado.Vinculacion;
 import componenteVinculador.criterio.vinculacion.CriterioVinculacion;
-import componenteVinculador.criterio.vinculacion.ETipoCriterioVinculacion;
 import componenteVinculador.vinculable.OperacionVinculable;
 
 import java.util.ArrayList;
 
 public class Vinculador {
-    private ArrayList<CriterioVinculacion> criterios;
     private static Vinculador shared;
 
     public  static Vinculador getInstance() {
@@ -20,26 +19,19 @@ public class Vinculador {
         return shared;
     }
 
-    private Vinculador(){
-        criterios = new ArrayList<>();
-    }
+    private Vinculador(){}
 
-    public void vincular(ArrayList<OperacionVinculable> unosIngresos, ArrayList<OperacionVinculable> unosEgresos,
-                         ArrayList<CriterioVinculacion> unosCriterios) {
-        criterios = unosCriterios;
+    public ResultadoVinculado vincular(ArrayList<OperacionVinculable> unosIngresos, ArrayList<OperacionVinculable> unosEgresos,
+                                       ArrayList<CriterioVinculacion> unosCriterios) {
 
-        for (CriterioVinculacion criterioVinculacion:criterios) {
-            criterioVinculacion.ejecutar(unosIngresos, unosEgresos);
+        ResultadoVinculado resultado = new ResultadoVinculado();
+
+        for (CriterioVinculacion criterioVinculacion:unosCriterios) {
+            ArrayList<Vinculacion> vinculaciones = criterioVinculacion.ejecutar(unosIngresos, unosEgresos);
+            resultado.agregarVinculaciones(criterioVinculacion.getTipoCriterio(), vinculaciones);
         }
-    }
 
-    public ArrayList<Vinculacion> getVinculacionesPorCriterio(ETipoCriterioVinculacion tipoCriterio){
-        for (CriterioVinculacion criterioVinculacion:criterios) {
-            if (criterioVinculacion.getTipoCriterio() == tipoCriterio) {
-                return criterioVinculacion.getResultadosVinculados();
-            }
-        }
-        return null;
+        return resultado;
     }
 
 }
