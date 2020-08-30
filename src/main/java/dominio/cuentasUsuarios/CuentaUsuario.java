@@ -111,10 +111,41 @@ public class CuentaUsuario {
 	}
 
 	public boolean puedeRecategorizar() {
-		//		TODO: definir roles
-		return true;
+		return tieneElPrivilegio("PRIVILEGIO_RECATEGORIZADOR");
 	}
-	
+
+	public boolean puedeVincular() {
+		return tieneElPrivilegio("PRIVILEGIO_VINCULADOR");
+	}
+
+	public boolean puedeLicitar() {
+		return tieneElPrivilegio("PRIVILEGIO_AB_LICITACIONES");
+	}
+
+	public boolean puedeSerRevisor() {
+		return tieneElPrivilegio("PRIVILEGIO_REVISOR");
+	}
+
+	public boolean puedeAdministarEntidadesJuridicas() {
+		return tieneElPrivilegio("PRIVILEGIO_ABM_ENTIDADES_JURIDICAS");
+	}
+
+	public boolean puedeAdministarEntidadesBase() {
+		return tieneElPrivilegio("PRIVILEGIO_ABM_ENTIDADES_BASE");
+	}
+
+	public boolean puedeAdministrarOperaciones() {
+		return tieneElPrivilegio("PRIVILEGIO_AB_OPERACIONES");
+	}
+
+	public boolean puedeAdministrarOrganizaciones() {
+		return tieneElPrivilegio("PRIVILEGIO_AB_ORGANIZACIONES");
+	}
+
+	public boolean puedeAdministrarUsuarios() {
+		return tieneElPrivilegio("PRIVILEGIO_ABM_USUARIOS");
+	}
+
 	public ArrayList<Rol> getRoles(){
 		return this.roles;
 	}
@@ -134,7 +165,7 @@ public class CuentaUsuario {
 		
 		String generatedString = new String(arrayAux);
 
-		// Esta contraseña autogenerada deberia ser enviada al usuario final de forma segura
+		// Esta contraseï¿½a autogenerada deberia ser enviada al usuario final de forma segura
 		
 		return generatedString;
 	}

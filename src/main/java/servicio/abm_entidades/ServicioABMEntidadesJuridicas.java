@@ -1,7 +1,9 @@
 package servicio.abm_entidades;
 
+import dominio.cuentasUsuarios.CuentaUsuario;
 import dominio.entidades.*;
 import dominio.entidades.calculadorFiscal.ETipoActividad;
+import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;
 
 
 public class ServicioABMEntidadesJuridicas {
@@ -33,14 +35,29 @@ public class ServicioABMEntidadesJuridicas {
     }
 
 
-    public Object buscarEntidadJuridica (String razonSocial) {
-        return RepoEntidadesJuridicas.getInstance().buscarEntidadJuridica(razonSocial);
+    public EntidadJuridica buscarEntidadJuridica (String razonSocial) {
+        if (RepoEntidadesJuridicas.getInstance().tieneEntidad(razonSocial)){
+            return RepoEntidadesJuridicas.getInstance().buscarEntidadJuridica(razonSocial);
+        } else {
+            return null;
+        }
     }
 
-
-    public void  listarEntidadJuridica(String organizacion) throws Exception {
+    public void listarEntidadJuridica(String organizacion) throws Exception {
         Organizacion org = RepoOrganizaciones.buscarOrganizacion(organizacion);
         org.getEntidades();
+    }
+
+    public void recategorizar (String nombreUsuario,String razonSocial, double cantidadPersonal, double ventasPromedio) throws Exception {
+        CuentaUsuario cuentaUsuario = RepositorioUsuarios.getInstance().buscarUsuario(nombreUsuario);
+
+        EntidadJuridica entidadJuridica = buscarEntidadJuridica(razonSocial);
+
+        if (entidadJuridica != null && cuentaUsuario.puedeRecategorizar()) {
+            entidadJuridica.recategorizar(cantidadPersonal, ventasPromedio);
+        } else {
+            throw new Exception("No existe la entidad juridica");
+        }
     }
 
 }
