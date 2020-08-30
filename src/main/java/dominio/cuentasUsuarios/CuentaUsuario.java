@@ -20,7 +20,7 @@ public class CuentaUsuario {
 
 	private Perfil perfil;
 	private String passwordHash;
-	private String passwordPlana; // TODO. este atributo sera usado unicamente para testeo, posteriormente sera eliminado para quedar solo el hash
+	private String passwordPlana;
 	private ArrayList<String> contraseniasPrevias;
 	private Integer intentosPendientes;
 	private ArrayList<Rol> roles;
