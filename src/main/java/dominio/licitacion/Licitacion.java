@@ -3,6 +3,7 @@ package dominio.licitacion;
 import java.util.ArrayList;
 
 import dominio.cuentasUsuarios.CuentaUsuario;
+import dominio.licitacion.criterioSeleccion.CriterioSeleccionDeProveedor;
 import dominio.notificador_suscriptores.NotificadorSuscriptores;
 import dominio.operaciones.OperacionEgreso;
 
@@ -11,19 +12,19 @@ public class Licitacion {
 	private ArrayList<Presupuesto> presupuestos;
 	private boolean finalizada;
 	private boolean resultadoCantPresupCargada;
-	private boolean resultadoMenorPrecio;
+	private boolean resultadoSeleccionDeProveedor;
 	private boolean resultadoPresupCorresp;
+	private CriterioSeleccionDeProveedor criterioSeleccionDeProveedor;
 
 	public Licitacion(OperacionEgreso compra){
 		this.compra = compra;
-		this.presupuestos = new ArrayList<Presupuesto>();
+		this.presupuestos = new ArrayList<>();
 		this.finalizada = false;
 	}
 	
 	public ArrayList<Presupuesto> getPresupuestos() {
 		return presupuestos;
 	}
-
 	
 	public void agregarPresupuesto(Presupuesto presup) {
 		if(presup.esValido(compra)) {
@@ -34,51 +35,28 @@ public class Licitacion {
 	public void sacarPresupuesto(Presupuesto presup) {
 		this.presupuestos.remove(presup);
 	}
-	
+
+	public void agregarCriterioSeleccionDeProveedor(CriterioSeleccionDeProveedor criterioSeleccionDeProveedor){
+		this.criterioSeleccionDeProveedor = criterioSeleccionDeProveedor;
+	}
+
 	private boolean cumpleCriterioCantidadPresupuestos(OperacionEgreso operacion) {
 		resultadoCantPresupCargada = operacion.getPresupuestosNecesarios() == this.presupuestos.size();
 		return resultadoCantPresupCargada;
 	}
 	
-//	private boolean cumpleCriterioMenorPrecio(ArrayList<Presupuesto> presupuestos) {
-//		//Collections.sort(presupuestos, new OrdenarPorPrecio());
-//		 Presupuesto presupuestoElegido = presupuestos.stream()
-//										 .min(new OrdenarPorPrecio())
-//										 .get();
-//		if(presupuestoElegido.getMontoTotal() < presupuestos.get(1).getMontoTotal()) {
-//			resultadoMenorPrecio = true;
-//			return resultadoMenorPrecio;
-//		}
-//		else {
-//			resultadoMenorPrecio = false;
-//			return resultadoMenorPrecio;
-//		}
-//		// TODO, ACA HAY QUE ARREGLAR CALCULAR EL RESULTADO Y SETEARLO
-//	}
-	
-//	private boolean cumpleCriterioPresupuestosCorrespondientes(OperacionEgreso operacion) {
-//		resultadoPresupCorresp =  this.presupuestosNecesarios == operacion.getPresupuestosNecesarios();
-//		return resultadoPresupCorresp;
-//	}
-	
 	public boolean cantidadItemsValida(OperacionEgreso operacion) {
 		return this.getPresupuestos().stream().allMatch(p->p.esValido(operacion));
 	}
 	
-	private boolean cumpleCriterioCorrespondeYEsMenorPrecio(OperacionEgreso operacion) {
-		Presupuesto presupuestoElegidoMenorPrecio = presupuestos.stream()
-				 									.min(new OrdenarPorPrecio())
-				 									.get();
-		
+	private boolean cumpleCriterioCorrespondeYSeleccionDeProveedor(OperacionEgreso operacion) {
 		Presupuesto presupuestoCorrespondiente = presupuestos.stream().filter(p->p.esCorrespondiente(operacion))
 																	  .findFirst()
 																	  .get();
 		
 		resultadoPresupCorresp = presupuestoCorrespondiente!=null;
-		
-		resultadoMenorPrecio = presupuestoElegidoMenorPrecio == presupuestoCorrespondiente;
-		
-		return resultadoPresupCorresp && resultadoMenorPrecio;
+		resultadoSeleccionDeProveedor = criterioSeleccionDeProveedor.presupuestoElegido(presupuestos) == presupuestoCorrespondiente;
+		return resultadoPresupCorresp && resultadoSeleccionDeProveedor;
 }
 	
 	public String descripcionCantPresupuestos() {
@@ -89,16 +67,16 @@ public class Licitacion {
 		return resultadoPresupCorresp?"Criterio presupuesto correspondiente: Valido":"Criterio presupuesto correspondiente: Invalido";
 	}
 	
-	public String descripcionMenorPrecio() {
-		return resultadoMenorPrecio?"Criterio de menor precio: Valido":"Criterio de menor precio: Invalido";
+	public String descripcionSeleccionDeProveedor() {
+		return resultadoSeleccionDeProveedor?"Criterio de seleccion de proveedor: Valido":"Criterio de seleccion de proveedor: Invalido";
 	}
 	
 	public String mensajeTexto() {
-		return this.descripcionCantPresupuestos() + "\n" + this.descripcionMenorPrecio() + "\n" + this.descripcionPresupCorresp();
+		return this.descripcionCantPresupuestos() + "\n" + this.descripcionSeleccionDeProveedor() + "\n" + this.descripcionPresupCorresp();
 	}
 	
 	public void licitar () {
-		this.cumpleCriterioCorrespondeYEsMenorPrecio(compra);
+		this.cumpleCriterioCorrespondeYSeleccionDeProveedor(compra);
 		this.cumpleCriterioCantidadPresupuestos(compra);
 		this.finalizada = true;
 		NotificadorSuscriptores notificador = NotificadorSuscriptores.getInstance();
@@ -107,7 +85,7 @@ public class Licitacion {
 	
 	public boolean puedeLicitar() {
 		return this.cumpleCriterioCantidadPresupuestos(compra) && 
-			   this.cumpleCriterioCorrespondeYEsMenorPrecio(compra);
+			   this.cumpleCriterioCorrespondeYSeleccionDeProveedor(compra);
 	}
 	
 	public void suscribir(CuentaUsuario cuenta) throws Exception {

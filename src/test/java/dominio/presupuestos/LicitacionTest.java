@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.Date;
 
+import dominio.licitacion.criterioSeleccion.CriterioMenorPrecio;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -58,19 +59,17 @@ public class LicitacionTest {
          	.build();
 		
 		licitacion = new Licitacion(compra);
-		
+
+		licitacion.agregarCriterioSeleccionDeProveedor(new CriterioMenorPrecio());
+
 		ArrayList<Item> listaItems1 = new ArrayList<Item>();
 		listaItems1.add(new Item(50, ETipoItem.ARTICULO, "Item1"));
 		listaItems1.add(new Item(100, ETipoItem.ARTICULO, "Item2"));
-		
-		
-		
-		
+
 		ArrayList<Item> listaItems2 = new ArrayList<Item>();
 		listaItems2.add(new Item(200, ETipoItem.ARTICULO, "Item3"));
 		listaItems2.add(new Item(150, ETipoItem.ARTICULO, "Item4"));
-		
-		
+
 		ArrayList<Item> listaItems3 = new ArrayList<Item>();
 		listaItems3.add(new Item(500, ETipoItem.ARTICULO, "Item1"));
 		listaItems3.add(new Item(1020, ETipoItem.ARTICULO, "Item2"));
