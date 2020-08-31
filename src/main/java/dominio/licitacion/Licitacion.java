@@ -8,18 +8,22 @@ import dominio.notificador_suscriptores.NotificadorSuscriptores;
 import dominio.operaciones.OperacionEgreso;
 
 public class Licitacion {
-	private OperacionEgreso compra; 
+	private final OperacionEgreso compra;
 	private ArrayList<Presupuesto> presupuestos;
 	private boolean finalizada;
 	private boolean resultadoCantPresupCargada;
 	private boolean resultadoSeleccionDeProveedor;
 	private boolean resultadoPresupCorresp;
 	private CriterioSeleccionDeProveedor criterioSeleccionDeProveedor;
+	private final NotificadorSuscriptores notificadorSuscriptores;
+	private ArrayList<CuentaUsuario> suscriptores;
 
-	public Licitacion(OperacionEgreso compra){
+	public Licitacion(OperacionEgreso compra, NotificadorSuscriptores notificadorSuscriptores){
 		this.compra = compra;
 		this.presupuestos = new ArrayList<>();
+		this.suscriptores = new ArrayList<>();
 		this.finalizada = false;
+		this.notificadorSuscriptores = notificadorSuscriptores;
 	}
 	
 	public ArrayList<Presupuesto> getPresupuestos() {
@@ -79,8 +83,7 @@ public class Licitacion {
 		this.cumpleCriterioCorrespondeYSeleccionDeProveedor(compra);
 		this.cumpleCriterioCantidadPresupuestos(compra);
 		this.finalizada = true;
-		NotificadorSuscriptores notificador = NotificadorSuscriptores.getInstance();
-		notificador.notificar(this.mensajeTexto(),this);
+		notificadorSuscriptores.notificar(this.mensajeTexto(),this.suscriptores);
 	}
 	
 	public boolean puedeLicitar() {
@@ -89,12 +92,15 @@ public class Licitacion {
 	}
 	
 	public void suscribir(CuentaUsuario cuenta) throws Exception {
-		if(this.finalizada) {
-			NotificadorSuscriptores.getInstance().suscribir(cuenta, this);
+		if(this.validarSuscripcion()) {
+			suscriptores.add(cuenta);
 		}
 		else {
 			throw new Exception("Licitacion cerrada, no puede suscribir.");
 		}
 	}
-	
+
+	private boolean validarSuscripcion(){
+		return !this.finalizada;
+	}
 }

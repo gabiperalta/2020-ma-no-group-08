@@ -6,7 +6,11 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.Date;
 
+import dominio.cuentasUsuarios.CuentaUsuario;
+import dominio.cuentasUsuarios.Roles.Rol;
 import dominio.licitacion.criterioSeleccion.CriterioMenorPrecio;
+import dominio.notificador_suscriptores.NotificadorSuscriptores;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,7 +24,6 @@ import dominio.operaciones.Item;
 import dominio.operaciones.OperacionEgreso;
 import dominio.operaciones.OperacionEgresoBuilder;
 import dominio.operaciones.medioDePago.Efectivo;
-
 
 public class LicitacionTest {
 	OperacionEgresoBuilder builderCompra;
@@ -58,7 +61,7 @@ public class LicitacionTest {
          	.agregarPresupuestosNecesarios(2)
          	.build();
 		
-		licitacion = new Licitacion(compra);
+		licitacion = new Licitacion(compra, NotificadorSuscriptores.getInstance());
 
 		licitacion.agregarCriterioSeleccionDeProveedor(new CriterioMenorPrecio());
 
@@ -116,4 +119,14 @@ public class LicitacionTest {
     	licitacion.agregarPresupuesto(presup4);
     	assertFalse(licitacion.puedeLicitar());
     }
+
+    @Test
+	public void usuarioNoPuedeSuscribirse(){
+		CuentaUsuario usuario = new CuentaUsuario("Prueba","1234",new Rol("TESTER",null));
+		licitacion.agregarPresupuesto(presup1);
+		licitacion.agregarPresupuesto(presup3);
+		licitacion.licitar();
+		Assert.assertThrows(Exception.class,()->{licitacion.suscribir(usuario);});
+	}
+
 }
