@@ -2,52 +2,46 @@ package dominio.categorizacion;
 
 import java.util.ArrayList;
 
+import dominio.operaciones.Operacion;
 import dominio.categorizacion.exceptions.CategorizacionException;
 
 public class EntidadCategorizable {
-	private String identificador;
+	private Operacion operacion;
 	private ArrayList<Categoria> categoriasAsociadas;
 	
-	EntidadCategorizable(String identificador){
-		this.identificador = identificador;
+	EntidadCategorizable(Operacion unaOperacion){
+		operacion = unaOperacion;
 		categoriasAsociadas = new ArrayList<Categoria>();
 	}
 	
 	public String getIdentificador() {
-		return this.identificador;
+		return this.operacion.getIdentificador();
 	}
 	
 	public boolean esLaEntidad(String identificadorEntidadCategorizable) {
-		return this.identificador.contentEquals(identificadorEntidadCategorizable);
+		return this.operacion.esLaOperacion(identificadorEntidadCategorizable);
 	}
 	
 	public boolean esDeLaCategoria(Categoria unaCategoria) {
-		return this.categoriasAsociadas.contains(unaCategoria);
+		return this.categoriasAsociadas.contains(unaCategoria) || 
+				this.categoriasAsociadas.stream().anyMatch( categoria -> categoria.esDescendienteDe(unaCategoria));
+	}
+	
+	public boolean tieneCategoriaDelCriterio(CriterioDeCategorizacion unCriterio) {
+		return this.categoriasAsociadas.stream().anyMatch( categoria -> categoria.getCriterioDeCategorizacion().equals(unCriterio));
+	}
+	
+	public Categoria categoriaDelCriterio(CriterioDeCategorizacion unCriterio) {
+		return this.categoriasAsociadas.stream().filter(categoria -> categoria.getCriterioDeCategorizacion().equals(unCriterio)).findFirst().get();
 	}
 	
 	public void asociarseACategoria(Categoria unaCategoria) throws CategorizacionException {
-		if(this.puedeVincularseA(unaCategoria)) {
-			this.categoriasAsociadas.add(unaCategoria);
-		}
-		else {
-			throw new CategorizacionException("Esta entidad no puede vincularse con esa Categoria");
-		}
+		this.categoriasAsociadas.add(unaCategoria);
+		unaCategoria.seAsociaUnaEntidad();
 	}
 	
-	public void desasociarseDeCategoria(Categoria unaCategoria) throws CategorizacionException {
-		if(this.esDeLaCategoria(unaCategoria)) {
-			this.categoriasAsociadas.remove(unaCategoria);
-		}
-		else {
-			throw new CategorizacionException("Esta Entidad no esta vinculada a esa Categoria");
-		}
+	public void desasociarseACategoria(Categoria unaCategoria) {
+		this.categoriasAsociadas.remove(unaCategoria);
+		unaCategoria.seDesasociaUnaEntidad();
 	}
-	
-	private boolean puedeVincularseA(Categoria unaCategoria) {
-		return !this.categoriasAsociadas.contains(unaCategoria) && 
-				this.categoriasAsociadas.stream().allMatch(categoria -> categoria.getCategoriaPadre() != unaCategoria.getCategoriaPadre()
-				|| (categoria.getCategoriaPadre() == null && unaCategoria.getCategoriaPadre() == null &&
-					categoria.getCriterioDeCategorizacion() == unaCategoria.getCriterioDeCategorizacion())); 
-	} // TODO seguramente le falte logica a esta verificacion
-	
 }
