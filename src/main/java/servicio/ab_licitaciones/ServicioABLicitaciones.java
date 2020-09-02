@@ -12,7 +12,7 @@ public class ServicioABLicitaciones {
 	Licitacion licitacion;
 	
 	public Licitacion altaLicitacion(OperacionEgreso operacion) {
-		//licitacion = new Licitacion(operacion);
+		//licitacion = new Licitacion(operacion); // TODO revisar, rompe
 		return licitacion;
 	}
 	
