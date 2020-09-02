@@ -5,7 +5,7 @@ import dominio.operaciones.medioDePago.MedioDePago;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class OperacionEgreso {
+public class OperacionEgreso implements Operacion {
 	private String identificadorOperacion;
 	private ArrayList<Item> items;
 	private MedioDePago medioDePago;
@@ -83,8 +83,18 @@ public class OperacionEgreso {
 		return documento;
 	}
 
+	@Override
+	public double getMontoTotal() {
+		return getValorOperacion();
+	}
+
 	public Date getFecha() {
 		return fecha;
 	}
-	
+
+	@Override
+	public boolean esIngreso() {
+		return false;
+	}
+
 }

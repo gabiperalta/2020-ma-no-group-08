@@ -33,7 +33,9 @@ public class RepositorioUsuarios {
 		Privilegio privilegioABOperacion = new Privilegio("PRIVILEGIO_AB_OPERACIONES");
 		Privilegio privilegioABLicitaciones = new Privilegio("PRIVILEGIO_AB_LICITACIONES");
 		Privilegio privilegioRevisor = new Privilegio("PRIVILEGIO_REVISOR");
-		
+		Privilegio privilegioRecategorizador = new Privilegio("PRIVILEGIO_RECATEGORIZADOR");
+		Privilegio privilegioVinculador = new Privilegio("PRIVILEGIO_VINCULADOR");
+
 		ArrayList<Privilegio> privilegiosRolAdministradorSistema = new ArrayList<Privilegio>();
 		ArrayList<Privilegio> privilegiosRolAdministradorOrganizacion = new ArrayList<Privilegio>();
 		ArrayList<Privilegio> privilegiosRolEstandar = new ArrayList<Privilegio>();
@@ -45,6 +47,9 @@ public class RepositorioUsuarios {
 		privilegiosRolAdministradorOrganizacion.add(privilegioABMEntidadesBase);
 		privilegiosRolEstandar.add(privilegioABOperacion);
 		privilegiosRolEstandar.add(privilegioABLicitaciones);
+		privilegiosRolEstandar.add(privilegioRecategorizador);
+		privilegiosRolEstandar.add(privilegioVinculador);
+
 		privilegiosRolRevisor.add(privilegioRevisor);
 		
 		Rol rolAdministradorSistema = new Rol("ROL_ADMINISTRADOR_SISTEMA", privilegiosRolAdministradorSistema);

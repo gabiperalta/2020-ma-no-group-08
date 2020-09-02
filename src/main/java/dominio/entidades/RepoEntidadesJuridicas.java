@@ -8,9 +8,19 @@ import temporal.seguridad.repositorioUsuarios.exceptions.CredencialesNoValidasEx
 
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 public class RepoEntidadesJuridicas {
     private static ArrayList<EntidadJuridica> entidadesJuridicas;
+
+    public boolean tieneEntidad(String razonSocial) {
+        try {
+            buscarEntidadJuridica(razonSocial);
+            return true;
+        } catch (NoSuchElementException e) {
+            return false;
+        }
+    }
 
 
     private static class RepositorioEntidadesJuridicasHolder {
@@ -59,13 +69,4 @@ public class RepoEntidadesJuridicas {
         return entidadesJuridicas.stream().filter(entidad -> entidad.getRazonSocial().equals(razonSocial)).findFirst().get();
     }
 
-    public void recategorizar (String nombreUsuario,String razonSocial, double cantidadPersonal, double ventasPromedio) {
-        CuentaUsuario cuentaUsuario = RepositorioUsuarios.getInstance().buscarUsuario(nombreUsuario);
-
-        EntidadJuridica entidadJuridica = buscarEntidadJuridica(razonSocial);
-
-        if (entidadJuridica != null && cuentaUsuario.puedeRecategorizar()) {
-            entidadJuridica.recategorizar(cantidadPersonal, ventasPromedio);
-        }
-    }
 }

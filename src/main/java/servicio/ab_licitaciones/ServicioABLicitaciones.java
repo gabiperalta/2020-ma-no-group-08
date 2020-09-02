@@ -5,13 +5,14 @@ import dominio.licitacion.Licitacion;
 import dominio.licitacion.Presupuesto;
 import dominio.operaciones.OperacionEgreso;
 import seguridad.sesion.exceptions.PermisoDenegadoException;
+import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;
 
 public class ServicioABLicitaciones {
 	
 	Licitacion licitacion;
 	
 	public Licitacion altaLicitacion(OperacionEgreso operacion) {
-		licitacion = new Licitacion(operacion);
+		//licitacion = new Licitacion(operacion);
 		return licitacion;
 	}
 	
@@ -28,6 +29,16 @@ public class ServicioABLicitaciones {
 			licitacion.suscribir(cuentaUsuario);
 		}
 		throw new PermisoDenegadoException("Este Usuario no tiene el permiso de ser revisor");
+	}
+
+	public void licitar(String nombreUsuario) throws Exception {
+		CuentaUsuario cuentaUsuario = RepositorioUsuarios.getInstance().buscarUsuario(nombreUsuario);
+		if (cuentaUsuario.puedeLicitar()) {
+			licitacion.licitar();
+		} else {
+			throw new Exception("el usuario no tiene permisos para licitar");
+		}
+
 	}
 	
 	

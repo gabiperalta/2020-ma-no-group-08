@@ -6,6 +6,11 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.Date;
 
+import dominio.cuentasUsuarios.CuentaUsuario;
+import dominio.cuentasUsuarios.Roles.Rol;
+import dominio.licitacion.criterioSeleccion.CriterioMenorPrecio;
+import dominio.notificador_suscriptores.NotificadorSuscriptores;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,7 +24,6 @@ import dominio.operaciones.Item;
 import dominio.operaciones.OperacionEgreso;
 import dominio.operaciones.OperacionEgresoBuilder;
 import dominio.operaciones.medioDePago.Efectivo;
-
 
 public class LicitacionTest {
 	OperacionEgresoBuilder builderCompra;
@@ -57,20 +61,18 @@ public class LicitacionTest {
          	.agregarPresupuestosNecesarios(2)
          	.build();
 		
-		licitacion = new Licitacion(compra);
-		
+		licitacion = new Licitacion(compra, NotificadorSuscriptores.getInstance());
+
+		licitacion.agregarCriterioSeleccionDeProveedor(new CriterioMenorPrecio());
+
 		ArrayList<Item> listaItems1 = new ArrayList<Item>();
 		listaItems1.add(new Item(50, ETipoItem.ARTICULO, "Item1"));
 		listaItems1.add(new Item(100, ETipoItem.ARTICULO, "Item2"));
-		
-		
-		
-		
+
 		ArrayList<Item> listaItems2 = new ArrayList<Item>();
 		listaItems2.add(new Item(200, ETipoItem.ARTICULO, "Item3"));
 		listaItems2.add(new Item(150, ETipoItem.ARTICULO, "Item4"));
-		
-		
+
 		ArrayList<Item> listaItems3 = new ArrayList<Item>();
 		listaItems3.add(new Item(500, ETipoItem.ARTICULO, "Item1"));
 		listaItems3.add(new Item(1020, ETipoItem.ARTICULO, "Item2"));
@@ -117,4 +119,14 @@ public class LicitacionTest {
     	licitacion.agregarPresupuesto(presup4);
     	assertFalse(licitacion.puedeLicitar());
     }
+
+    @Test
+	public void usuarioNoPuedeSuscribirse(){
+		CuentaUsuario usuario = new CuentaUsuario("Prueba","1234",new Rol("TESTER",null));
+		licitacion.agregarPresupuesto(presup1);
+		licitacion.agregarPresupuesto(presup3);
+		licitacion.licitar();
+		Assert.assertThrows(Exception.class,()->{licitacion.suscribir(usuario);});
+	}
+
 }

@@ -8,7 +8,15 @@ public class Mensaje {
 		this.cuerpo = cuerpo;
 		this.leido = leido;
 	}
-	
+
+	public String getCuerpo(){
+		return cuerpo;
+	}
+
+	public boolean getLeido(){
+		return leido;
+	}
+
 	public void marcarComoLeido() {
 		this.leido = true;
 	}
