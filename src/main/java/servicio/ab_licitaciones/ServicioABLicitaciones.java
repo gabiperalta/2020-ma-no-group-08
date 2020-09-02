@@ -3,6 +3,7 @@ package servicio.ab_licitaciones;
 import dominio.cuentasUsuarios.CuentaUsuario;
 import dominio.licitacion.Licitacion;
 import dominio.licitacion.Presupuesto;
+import dominio.notificador_suscriptores.NotificadorSuscriptores;
 import dominio.operaciones.OperacionEgreso;
 import seguridad.sesion.exceptions.PermisoDenegadoException;
 import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;
@@ -11,8 +12,8 @@ public class ServicioABLicitaciones {
 	
 	Licitacion licitacion;
 	
-	public Licitacion altaLicitacion(OperacionEgreso operacion) {
-		licitacion = new Licitacion(operacion);
+	public Licitacion altaLicitacion(OperacionEgreso operacion, NotificadorSuscriptores notificadorSuscriptores) {
+		licitacion = new Licitacion(operacion,notificadorSuscriptores);
 		return licitacion;
 	}
 	
@@ -40,6 +41,4 @@ public class ServicioABLicitaciones {
 		}
 
 	}
-	
-	
 }
