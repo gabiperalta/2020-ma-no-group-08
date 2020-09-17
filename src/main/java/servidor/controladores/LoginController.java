@@ -2,11 +2,13 @@ package servidor.controladores;
 
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
+import servicio.Sesiones.ServicioSesiones;
 import spark.Request;
 import spark.Response;
 
 public class LoginController extends Controller{
 	
+	ServicioSesiones loginService;
 	
 	public String loguear(Request req, Response res) {
 		if (usuarioAutenticado(req) != null)
@@ -16,7 +18,7 @@ public class LoginController extends Controller{
 		String password = req.queryParams("password");
 
 		if (username != null) {
-			if (loginService.autenticar(username, password)) {
+			if (loginService.logIn(username, password)) { //Hay error de tipos
 				req.session(true);
 				req.session().attribute("username", username);
 				res.redirect("/calendar");
@@ -33,7 +35,7 @@ public class LoginController extends Controller{
 		String username = req.params("username");
 		JSONObject userJSON = new JSONObject()
 				.put("username", username)
-				.put("exists", loginService.userExists(username)); 
+				.put("exists", loginService.userExists(username)); //Aca tendriamos que tener algun metodo para chequear si existe el usuario
 		return userJSON.toString();
 	}
 
