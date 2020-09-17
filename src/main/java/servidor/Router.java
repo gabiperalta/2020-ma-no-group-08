@@ -1,22 +1,28 @@
 package servidor;
 import servidor.controladores.LoginController;
 import spark.Spark;
-
+import spark.template.handlebars.HandlebarsTemplateEngine;
+import spark.utils.BooleanHelper;
+import spark.utils.HandlebarsTemplateEngineBuilder;
 
  public class Router {
 	 
-	 static Router _instance;
+	  private static HandlebarsTemplateEngine engine;
+
+	  private static void initEngine() {
+        Router.engine = HandlebarsTemplateEngineBuilder
+                .create()
+                .withDefaultHelpers()
+                .withHelper("isTrue", BooleanHelper.isTrue)
+                .build();
+	   }
+	  public static void init() {
+        Router.initEngine();
+        Spark.staticFileLocation("/public");
+        Router.configure();
+	   }
 	 
-	 private Router () {}
-	 
-	 public static Router instance() {
-			if (_instance == null) {
-				_instance = new Router();
-			}
-			return _instance;
-	}
-	 
-	 public void configurar() {
+	 public static void configure() {
 		 LoginController loginc = new LoginController();
 		 
 		 Spark.get("/login", loginc::loguear);
