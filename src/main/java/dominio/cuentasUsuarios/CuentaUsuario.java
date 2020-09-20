@@ -34,7 +34,8 @@ public class CuentaUsuario {
 		roles = new ArrayList<Rol>();
 		roles.add(rolAdmin);
 	}
-	
+	public CuentaUsuario() { }
+
 	public CuentaUsuario(String unNombreUsuario, EntidadOperacion unaOrganizacion, ArrayList<String> nombresRoles) { // CONSTRUCTOR USUARIOS ESTANDAR
 		perfil = new PerfilEstandar(unNombreUsuario, unaOrganizacion);
 		

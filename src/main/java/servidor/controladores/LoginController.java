@@ -1,50 +1,47 @@
 package servidor.controladores;
 
+import dominio.cuentasUsuarios.CuentaUsuario;
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 import servicio.Sesiones.ServicioSesiones;
+import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
+
+import java.util.HashMap;
 
 public class LoginController extends Controller{
 	
 	ServicioSesiones loginService;
 	
-	public String loguear(Request req, Response res) {
+	public ModelAndView login(Request req, Response res) {
 		if (usuarioAutenticado(req) != null)
 			res.redirect("/home");
 
-		String username = req.queryParams("username");
-		String password = req.queryParams("password");
-
-		if (username != null) {
-			if (loginService.logIn(username, password)) { //Hay error de tipos
-				req.session(true);
-				req.session().attribute("username", username);
-				res.redirect("/calendar");
-			} else {
-				this.addAttribute("username", username);
-				this.addAttribute("errorLogueo", true);
-			}
-		}
-
-		return this.render("login.hbs");
+		return new ModelAndView(null, "login.hbs");
+		// agregarle password y username
 	}
-	
-	public String userExists(Request req, Response res) throws JSONException {
-		String username = req.params("username");
-		JSONObject userJSON = new JSONObject()
-				.put("username", username)
-				.put("exists", loginService.userExists(username)); //Aca tendriamos que tener algun metodo para chequear si existe el usuario
-		return userJSON.toString();
+
+	public Object loguear(Request req, Response res) {
+		String password = req.queryParams("password");
+		String username = req.queryParams("username");
+
+		// revisar credenciales del repositorio
+		CuentaUsuario usuario = new CuentaUsuario();
+
+		req.session().attribute("user", usuario);
+
+		res.redirect("/", 302);
+
+		return null;
 	}
 
 	private String usuarioAutenticado(Request req) {
-		return req.session().attribute("username");
+		return req.session().attribute("user");
 	}
 	
 	public String logout(Request req, Response res) {
-		req.session().removeAttribute("username");
+		req.session().removeAttribute("user");
 		res.redirect("/login");
 		return "";
 	}

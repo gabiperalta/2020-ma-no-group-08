@@ -20,25 +20,24 @@
       {{#if firstTime}}
       <p> Bienvenido a <b>GesOc</b>, ingrese por primera vez </p>
       {{/if}}
-      <form class="rounded mx-3 my-4" method="POST">
+      <form class="rounded mx-3 my-4" method="POST" action="/login">
         <div class="form-group m-3">
           <label class="ml-auto" for="username">Usuario</label>
-          <input type="username" name="username" class="form-control" id="username" placeholder="Usuario">
+          <input type="text" name="username" class="form-control" id="username" placeholder="Usuario">
         </div>
         <div class="form-group m-3">
-          <label class="ml-auto" for="password">Contraseña</label>
-          <input type="password" name="password" class="form-control" id="password" placeholder="Contraseña">
+          <label class="ml-auto" for="password">Contraseï¿½a</label>
+          <input type="text" name="password" class="form-control" id="password" placeholder="Contraseï¿½a">
         </div>
         <div class="mx-3 my-4">
           <button class="btn btn-primary px-3 rounded" type="submit">Ingresar</button>
         </div>
         <div class="mx-3 my-4">
-          <label class="ml-auto">Si no estas registrado, hacé click<a href="/register"> aca</a></label>
+          <label class="ml-auto">Si no estas registrado, hacï¿½ click<a href="/register"> aca</a></label>
         </div>
-
       </form>
       {{#if errorLogueo}}
-      <p class="text-danger mx-auto"> Usuario y/o contraseña incorrectos </p>
+      <p class="text-danger mx-auto"> Usuario y/o contraseï¿½a incorrectos </p>
       {{/if}}
     </div>
   </div>
