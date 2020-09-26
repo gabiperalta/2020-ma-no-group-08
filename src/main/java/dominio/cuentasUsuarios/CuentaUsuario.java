@@ -36,6 +36,17 @@ public class CuentaUsuario {
 	}
 	public CuentaUsuario() { }
 
+	public CuentaUsuario(String unNombreUsuario, EntidadOperacion unaOrganizacion, ArrayList<String> nombresRoles, String unaPassword){
+		perfil = new PerfilEstandar(unNombreUsuario, unaOrganizacion);
+		passwordPlana = unaPassword;
+		passwordHash = HashPassword.calcular(passwordPlana);
+		contraseniasPrevias = new ArrayList<String>();
+		intentosPendientes = 3;
+		roles = new ArrayList<Rol>();
+		nombresRoles.forEach(nombreRol -> this.addRol(RepositorioUsuarios.getInstance().buscarRol(nombreRol)));
+		RepositorioUsuarios.getInstance().agregarUsuarioEstandar(this);
+	}
+
 	public CuentaUsuario(String unNombreUsuario, EntidadOperacion unaOrganizacion, ArrayList<String> nombresRoles) { // CONSTRUCTOR USUARIOS ESTANDAR
 		perfil = new PerfilEstandar(unNombreUsuario, unaOrganizacion);
 		

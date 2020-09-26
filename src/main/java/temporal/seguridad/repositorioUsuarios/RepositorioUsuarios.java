@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import dominio.cuentasUsuarios.CuentaUsuario;
 import dominio.cuentasUsuarios.Roles.Privilegio;
 import dominio.cuentasUsuarios.Roles.Rol;
+import dominio.operaciones.EntidadOperacion;
 import temporal.seguridad.repositorioUsuarios.exceptions.CredencialesNoValidasException;
 
 // SINGLETON
@@ -73,7 +74,6 @@ public class RepositorioUsuarios {
 				usuarios.add(administrador1);
 				usuarios.add(administrador2);
 				usuarios.add(administrador3);
-		
 	}
 
 	public boolean existeElUsuario(String unNombreUsuario) {
@@ -112,4 +112,19 @@ public class RepositorioUsuarios {
 		return unRol;
 	}
 
+	public void inicializarClientesParaWeb(){
+		// Inicializacion USUARIOS CLIENTES PARA PRUEBAS WEB
+
+		ArrayList<String> listaDeRolesCliente = new ArrayList<String>();
+		listaDeRolesCliente.add("ROL_ESTANDAR");
+		ArrayList<String> listaDeRolesClienteMaestro = new ArrayList<String>();
+		listaDeRolesClienteMaestro.add("ROL_ADMINISTRADOR_ORGANIZACION");
+		listaDeRolesClienteMaestro.add("ROL_ESTANDAR");
+		listaDeRolesClienteMaestro.add("ROL_REVISOR");
+
+		CuentaUsuario usuarioClientePruebasWeb = new CuentaUsuario("UsuarioWeb1", null, listaDeRolesCliente, "1234");
+		CuentaUsuario usuarioClienteMaestroPruebasWeb = new CuentaUsuario("UsuarioWeb2", null, listaDeRolesClienteMaestro, "1234");
+		usuarios.add(usuarioClientePruebasWeb);
+		usuarios.add(usuarioClienteMaestroPruebasWeb);
+	}
 }
