@@ -9,6 +9,7 @@ import dominio.notificador_suscriptores.NotificadorSuscriptores;
 import dominio.operaciones.*;
 import dominio.operaciones.medioDePago.Efectivo;
 import servicio.ab_licitaciones.ServicioABLicitaciones;
+import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import spark.Spark.*;
@@ -22,6 +23,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.stream.Collectors;
 
 public class LicitacionController{
@@ -33,11 +35,11 @@ public class LicitacionController{
         initRepoPrueba();
     }
 
-    public static Gson getGson(){
+    public Gson getGson(){
         return gson;
     }
 
-    public static Object agregarPresupuesto(Request request, Response response){
+    public Object agregarPresupuesto(Request request, Response response){
         JsonObject jsonObject = null;
 
         request.attribute("org.eclipse.jetty.multipartConfig", new MultipartConfigElement("/temp"));
@@ -90,7 +92,7 @@ public class LicitacionController{
         return licitacionNueva.getIdentificador(); // retorno el id de la licitacion creada
     }
 
-    public static Object realizarLicitacion(Request request,Response response){
+    public Object realizarLicitacion(Request request,Response response){
         String licitacionId = request.queryParams("licitacion_id"); // podria ponerse tambien (como opcion) el id del egreso
         //System.out.println(licitacionId);
         Licitacion licitacionEncontrada = RepoLicitaciones.getInstance().buscarLicitacionPorIdentificador(licitacionId);
@@ -99,7 +101,7 @@ public class LicitacionController{
         return licitacionEncontrada.getIdentificador();
     }
 
-    public static Object resultadoLicitacion(Request request,Response response){
+    public Object resultadoLicitacion(Request request,Response response){
         String licitacionId = request.params("licitacion_id");
         Licitacion licitacionEncontrada = RepoLicitaciones.getInstance().buscarLicitacionPorIdentificador(licitacionId);
 
@@ -119,6 +121,10 @@ public class LicitacionController{
         jsonObject.addProperty("resultado",licitacionEncontrada.mensajeTexto());
 
         return jsonObject;
+    }
+
+    public ModelAndView agregarArchivo(Request request,Response response){
+        return new ModelAndView(new HashMap<>(),"archivo.hbs");
     }
 
     public static void initRepoPrueba(){

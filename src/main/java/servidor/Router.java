@@ -42,9 +42,11 @@ public class Router {
 		get("/logout", loginc::logout);
 		get("/", (request, response) -> { return "hola";});
 		get("/home", homec::showHomePage, engine);
-		post("/presupuesto",LicitacionController::agregarPresupuesto);
-		post("/licitacion",LicitacionController::realizarLicitacion);
-		get("/licitacion/:licitacion_id",LicitacionController::resultadoLicitacion,licitacionc.getGson()::toJson);
+		post("/presupuesto",licitacionc::agregarPresupuesto);
+		post("/licitacion",licitacionc::realizarLicitacion);
+		get("/licitacion/:licitacion_id",licitacionc::resultadoLicitacion,licitacionc.getGson()::toJson);
+
+		get("/archivo",licitacionc::agregarArchivo,engine);
 
 		before("/*", (request, response) -> {
 			if (isProtected(request.uri()) && request.session().attribute("user") == null) {
@@ -56,7 +58,10 @@ public class Router {
 	}
 
 	private static boolean isProtected(String uri) {
-		return !uri.startsWith("/login");
+		if(uri.startsWith("/login")){
+			return false;
+		}
+		else return !uri.startsWith("/licitacion");
 	}
 
 }
