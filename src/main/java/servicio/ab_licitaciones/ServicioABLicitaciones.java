@@ -9,30 +9,30 @@ import seguridad.sesion.exceptions.PermisoDenegadoException;
 import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;
 
 public class ServicioABLicitaciones {
-	
-	Licitacion licitacion;
-	
+
+	//Licitacion licitacion;
+
 	public Licitacion altaLicitacion(OperacionEgreso operacion, NotificadorSuscriptores notificadorSuscriptores) {
-		licitacion = new Licitacion(operacion,notificadorSuscriptores);
+		Licitacion licitacion = new Licitacion(operacion,notificadorSuscriptores);
 		return licitacion;
 	}
-	
-	public void altaPresupuesto(Presupuesto presupuesto){
+
+	public void altaPresupuesto(Licitacion licitacion,Presupuesto presupuesto){
 		licitacion.agregarPresupuesto(presupuesto);
 	}
-	
-	public void bajaPresupuesto(Presupuesto presupuesto) {
+
+	public void bajaPresupuesto(Licitacion licitacion,Presupuesto presupuesto) {
 		licitacion.sacarPresupuesto(presupuesto);
 	}
-	
-	public void suscribir(CuentaUsuario cuentaUsuario) throws Exception {
+
+	public void suscribir(Licitacion licitacion,CuentaUsuario cuentaUsuario) throws Exception {
 		if(cuentaUsuario.tieneElPrivilegio("PRIVILEGIO_REVISOR")) {
 			licitacion.suscribir(cuentaUsuario);
 		}
 		throw new PermisoDenegadoException("Este Usuario no tiene el permiso de ser revisor");
 	}
 
-	public void licitar(String nombreUsuario) throws Exception {
+	public void licitar(Licitacion licitacion,String nombreUsuario) throws Exception {
 		CuentaUsuario cuentaUsuario = RepositorioUsuarios.getInstance().buscarUsuario(nombreUsuario);
 		if (cuentaUsuario.puedeLicitar()) {
 			licitacion.licitar();
@@ -41,4 +41,5 @@ public class ServicioABLicitaciones {
 		}
 
 	}
+
 }
