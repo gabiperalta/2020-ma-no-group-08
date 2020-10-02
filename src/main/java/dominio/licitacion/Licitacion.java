@@ -35,8 +35,6 @@ public class Licitacion {
 
 	public void agregarPresupuesto(Presupuesto presup) {
 		if(presup.esValido(compra)) {
-			presup.setIdentificador(this.getIdentificador() + "-P" +this.ultimoIdentificadorPresupuesto);
-			ultimoIdentificadorPresupuesto++;
 			this.presupuestos.add(presup);
 		}
 	}
@@ -112,6 +110,10 @@ public class Licitacion {
 	public void setIdentificador(String identificadorLicitacion){
 		if(this.identificadorLicitacion == null) {
 			this.identificadorLicitacion = identificadorLicitacion;
+			presupuestos.forEach(presupuesto -> {
+				presupuesto.setIdentificador(this.getIdentificador() + "-P" +this.ultimoIdentificadorPresupuesto);
+				ultimoIdentificadorPresupuesto++;
+			});
 		}
 	}
 
