@@ -35,5 +35,9 @@ public class RepoLicitaciones {
     public Licitacion buscarLicitacionPorIdentificador(String identificadorLicitacion){
         return licitaciones.stream().filter(licitacion -> licitacion.getIdentificador().equals(identificadorLicitacion)).findFirst().get();
     }
+
+    public ArrayList<Licitacion> getLicitaciones(){
+        return licitaciones;
+    }
 }
 

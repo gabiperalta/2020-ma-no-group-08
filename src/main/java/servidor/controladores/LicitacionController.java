@@ -21,9 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class LicitacionController{
@@ -40,14 +38,25 @@ public class LicitacionController{
     }
 
     public Object agregarPresupuesto(Request request, Response response){
-        JsonObject jsonObject = null;
+        JsonObject jsonObjectArchivo = null;
+        JsonArray jsonArrayArchivo = null;
 
         request.attribute("org.eclipse.jetty.multipartConfig", new MultipartConfigElement("/temp"));
         try (InputStream is = request.raw().getPart("archivojson").getInputStream()) {
             // Use the input stream to create a file
-            String texto = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8)).lines().collect(Collectors.joining(""));
+            String textoArchivo = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8)).lines().collect(Collectors.joining(""));
             //System.out.println(texto);
-            jsonObject = JsonParser.parseString(texto).getAsJsonObject();
+
+            if(textoArchivo.startsWith("[")) {
+                jsonArrayArchivo = JsonParser.parseString(textoArchivo).getAsJsonArray();
+            }
+            else if(textoArchivo.startsWith("{")){
+                jsonObjectArchivo = JsonParser.parseString(textoArchivo).getAsJsonObject();
+            }
+            else{
+                // manejar el error con algun response
+                System.out.println("Archivo erroneo o no respeta la sintaxis JSON");
+            }
         } catch (ServletException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -56,11 +65,15 @@ public class LicitacionController{
 
         String egresoId = request.queryParams("egreso_id");
         //System.out.println("Egreso ID: " + egresoId);
-
         OperacionEgreso operacionEgresoEncontrada = RepoOperacionesEgreso.getInstance().buscarOperacionEgresoPorIdenticadorOperacionEgreso(egresoId);
         //System.out.println("Monto total del egreso encontrado: " + operacionEgresoEncontrada.getMontoTotal());
 
-        //ServicioABOperaciones servicioABOperaciones = new ServicioABOperaciones();
+        for(JsonElement i:jsonArrayArchivo){
+
+        }
+
+        /*
+
 
         //Gson gson = new Gson();
         //JsonObject jsonEntidadOperacion = jsonObject.get("entidadOperacion").getAsJsonObject();
@@ -83,6 +96,8 @@ public class LicitacionController{
         licitacion.agregarCriterioSeleccionDeProveedor(new CriterioMenorPrecio());
         RepoLicitaciones.getInstance().agregarLicitacion(licitacion);
 
+
+         */
         Licitacion licitacionNueva = RepoLicitaciones.getInstance().buscarLicitacionPorOperacionEgreso(egresoId);
 
         response.status(200);
@@ -127,16 +142,26 @@ public class LicitacionController{
         return new ModelAndView(new HashMap<>(),"archivo.hbs");
     }
 
-    public static void initRepoPrueba(){
-        //RepoOperacionesEgreso repoOperacionesEgreso = new RepoOperacionesEgreso();
+    public ModelAndView mostrarPresupuestos(Request request,Response response){
+        ArrayList<Licitacion> licitaciones = RepoLicitaciones.getInstance().getLicitaciones();
 
+        //OUTPUT
+        Map<String, Object> map = new HashMap<>();
+        map.put("licitaciones", licitaciones);
+        //map.put("valorprueba","TIME_IS_RUNNING_OUUUUT");
+
+        return new ModelAndView(map,"presupuestos.hbs");
+    }
+
+    public static void initRepoPrueba(){
         OperacionEgresoBuilder builderCompra;
         OperacionEgreso compra;
-        //Licitacion licitacion;
+        Licitacion licitacion1;
+        Licitacion licitacion2;
         Presupuesto presup1;
-        //Presupuesto presup2;
-        //Presupuesto presup3;
-        //Presupuesto presup4;
+        Presupuesto presup2;
+        Presupuesto presup3;
+        Presupuesto presup4;
         EntidadOperacion proveedor1;
         EntidadOperacion proveedor2;
 
@@ -158,11 +183,43 @@ public class LicitacionController{
                 .agregarFecha(fecha)
                 .agregarEntidadOrigen(origen)
                 .agregarEntidadDestino(destino)
-                .agregarPresupuestosNecesarios(1)
+                .agregarPresupuestosNecesarios(2)
                 .build();
+
+        licitacion1 = new Licitacion(compra, NotificadorSuscriptores.getInstance());
+
+        licitacion1.agregarCriterioSeleccionDeProveedor(new CriterioMenorPrecio());
+
+        ArrayList<Item> listaItems1 = new ArrayList<>();
+        listaItems1.add(new Item(50, ETipoItem.ARTICULO, "Item1"));
+        listaItems1.add(new Item(100, ETipoItem.ARTICULO, "Item2"));
+
+        ArrayList<Item> listaItems2 = new ArrayList<>();
+        listaItems2.add(new Item(200, ETipoItem.ARTICULO, "Item3"));
+        listaItems2.add(new Item(150, ETipoItem.ARTICULO, "Item4"));
+
+        ArrayList<Item> listaItems3 = new ArrayList<>();
+        listaItems3.add(new Item(500, ETipoItem.ARTICULO, "Item1"));
+        listaItems3.add(new Item(1020, ETipoItem.ARTICULO, "Item2"));
+
+        ArrayList<Item> listaItems4 = new ArrayList<>();
+        listaItems4.add(new Item(10, ETipoItem.ARTICULO, "Item1"));
+        listaItems4.add(new Item(30, ETipoItem.ARTICULO, "Item2"));
+
+        proveedor1 = new EntidadOperacion("Operacion compra 1","20-40678950-4","Av.Libertador 800");
+        proveedor2 = new EntidadOperacion("Operacion compra 2","20-40678950-3","Av.Libertador 100");
+
+        presup1 = new Presupuesto(proveedor1,listaItems1);
+        presup2 = new Presupuesto(proveedor2,listaItems2);
+        presup3 = new Presupuesto(proveedor1,listaItems3);
+        presup4 = new Presupuesto(proveedor2,listaItems4);
+
+        licitacion1.agregarPresupuesto(presup1);
+        licitacion1.agregarPresupuesto(presup3);
 
         try{
             RepoOperacionesEgreso.getInstance().agregarOperacionEgreso(compra);
+            RepoLicitaciones.getInstance().agregarLicitacion(licitacion1);
             //System.out.println(compra.getIdentificador());
             //System.out.println("Estado repo egreso: " + RepoOperacionesEgreso.getInstance().getOperacionesEgreso().size());
         }

@@ -1,0 +1,158 @@
+{{> home.hbs}}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test page</title>
+    <script src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script>
+    <style>
+body {
+  padding-top: 5rem;
+}
+.starter-template {
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+</style>
+
+
+</head>
+<body>
+
+
+<main role="main" class="container" >
+
+    <!--
+    <div class="list-group">
+        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start active">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">List group item heading</h5>
+                <small>3 days ago</small>
+            </div>
+            <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+            <small>Donec id elit non mi porta.</small>
+        </a>
+        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">List group item heading</h5>
+                <small class="text-muted">3 days ago</small>
+            </div>
+            <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+            <small class="text-muted">Donec id elit non mi porta.</small>
+        </a>
+        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">List group item heading</h5>
+                <small class="text-muted">3 days ago</small>
+            </div>
+            <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+            <small class="text-muted">Donec id elit non mi porta.</small>
+        </a>
+    </div>
+    -->
+
+
+    <div id="accordion">
+
+        {{#each licitaciones}}
+            {{#each this.presupuestos}}
+                <div class="card">
+                    <div class="card-header" id="headingPresupuesto{{@index}}-{{../operacionEgreso.identificador}}">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link" data-target="#collapsePresupuesto{{@index}}-{{../operacionEgreso.identificador}}" data-toggle="collapse" aria-expanded="false" aria-controls="collapsePresupuesto{{@index}}-{{../operacionEgreso.identificador}}">
+                                Presupuesto {{ identificador}} - Egreso {{../operacionEgreso.identificador}}
+                            </button>
+                        </h5>
+                    </div>
+
+                    <div id="collapsePresupuesto{{@index}}-{{../operacionEgreso.identificador}}" class="collapse" aria-labelledby="headingPresupuesto{{@index}}-{{../operacionEgreso.identificador}}" data-parent="#accordion">
+                        <div class="container">
+                            <div class="row">
+
+                                <div class="card-body col-10">
+                                    Items:
+                                    <ul>
+                                        {{#each this.items}}
+                                            <li>{{ descripcion }} - ${{valor}}</li>
+                                        {{/each}}
+                                    </ul>
+                                </div>
+                                <div class="col my-auto">
+                                    <button type="button" class="btn btn-primary">Categorizar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+        {{/each}}
+
+        <!--
+        <div class="card">
+            <div class="card-header" id="headingOne">
+                <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Presuesto Pepe SRL - Egreso E-1
+                    </button>
+                </h5>
+            </div>
+
+            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                <div class="card-body">
+                    Items:
+                    <ul>
+                        hola
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header" id="headingTwo">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        Collapsible Group Item #2
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                <div class="card-body">
+                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header" id="headingThree">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        Collapsible Group Item #3
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                <div class="card-body">
+                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                </div>
+            </div>
+        </div>
+        -->
+    </div>
+
+</main><!-- /.container -->
+
+<script type="text/javascript">
+    var Handlebars = require('handlebars');
+
+    require(['handlebars'], function (handlebars) {
+        handlebars.registerHelper("inc", function(value, options)
+        {
+            return parseInt(value) + 1;
+        });
+    });
+
+</script>
+
+</body>
+</html>

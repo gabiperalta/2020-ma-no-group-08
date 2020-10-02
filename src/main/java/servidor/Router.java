@@ -2,12 +2,16 @@ package servidor;
 import servidor.controladores.HomeController;
 import servidor.controladores.LicitacionController;
 import servidor.controladores.LoginController;
+import spark.ModelAndView;
 import spark.Spark;
 import spark.TemplateEngine;
 import spark.template.handlebars.HandlebarsTemplateEngine;
 import spark.utils.BooleanHelper;
 import spark.utils.HandlebarsTemplateEngineBuilder;
 import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import static spark.Spark.*;
 
@@ -42,6 +46,7 @@ public class Router {
 		get("/logout", loginc::logout);
 		get("/", (request, response) -> { return "hola";});
 		get("/home", homec::showHomePage, engine);
+		get("/presupuestos",licitacionc::mostrarPresupuestos,engine);
 		post("/presupuesto",licitacionc::agregarPresupuesto);
 		post("/licitacion",licitacionc::realizarLicitacion);
 		get("/licitacion/:licitacion_id",licitacionc::resultadoLicitacion,licitacionc.getGson()::toJson);
@@ -58,10 +63,13 @@ public class Router {
 	}
 
 	private static boolean isProtected(String uri) {
-		if(uri.startsWith("/login")){
-			return false;
-		}
-		else return !uri.startsWith("/licitacion");
+		ArrayList<String> urlNoProtegidas = new ArrayList<>();
+		urlNoProtegidas.add("/login");
+		urlNoProtegidas.add("/presupuestos");
+		urlNoProtegidas.add("/licitacion");
+		urlNoProtegidas.add("/home"); //SOLO PARA PRUEBA
+
+		return urlNoProtegidas.stream().noneMatch(uri::startsWith);
 	}
 
 }
