@@ -4,13 +4,15 @@ import java.util.ArrayList;
 
 import dominio.operaciones.EntidadOperacion;
 import dominio.operaciones.Item;
+import dominio.operaciones.Operacion;
 import dominio.operaciones.OperacionEgreso;
 
-public class Presupuesto {
+public class Presupuesto implements Operacion {
 	private EntidadOperacion proveedor;
 	private final ArrayList<Item> items;
 	private double montoTotal;
 	private boolean esValido;
+	private String identificador;
 	
 	public Presupuesto(EntidadOperacion proveedor, ArrayList<Item> unosItems){
 		this.proveedor = proveedor;
@@ -48,6 +50,19 @@ public class Presupuesto {
 		this.montoTotal = montoTotal;
 	}
 
+	public String getIdentificador(){
+		return identificador;
+	}
+
+	public void setIdentificador(String identificador){
+		this.identificador = identificador;
+	}
+
+	@Override
+	public boolean esLaOperacion(String identificadorEntidadCategorizable) {
+		return this.identificador.equals(identificadorEntidadCategorizable);
+	}
+
 	public EntidadOperacion getProveedor() {
 		return proveedor;
 	}
@@ -61,7 +76,6 @@ public class Presupuesto {
 	}
 
 	public boolean esValido(OperacionEgreso operacion) {
-//		return this.items.parallelStream().allMatch(i->i.esValido(operacion));
 		return this.esValido && this.items.size() == operacion.getItems().size() && this.items.stream().allMatch(i->i.esValido(operacion));
 	}
 
