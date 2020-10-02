@@ -104,5 +104,23 @@ public class RepositorioCategorizacion {
 		// transformo el Stream en un ArrayList
 		return new ArrayList<EntidadCategorizable>(this.entidadesCategorizables.stream().filter( entidad -> entidad.esDeLaCategoria(unaCategoria)).collect(Collectors.toList()));
 	}
-	
+
+	public ArrayList<EntidadCategorizable> filtrarEgresosDeLaCategoria(String nombreCategoria, String nombreCriterioDeCategorizacion){
+		// transformo el Stream en un ArrayList
+		return new ArrayList<EntidadCategorizable>(this.filtrarEntidadesDeLaCategoria(nombreCategoria, nombreCriterioDeCategorizacion).stream().
+						filter( entidad -> entidad.getIdentificador().startsWith("OE")).collect(Collectors.toList()));
+	}
+
+	public ArrayList<EntidadCategorizable> filtrarIngresosDeLaCategoria(String nombreCategoria, String nombreCriterioDeCategorizacion){
+		// transformo el Stream en un ArrayList
+		return new ArrayList<EntidadCategorizable>(this.filtrarEntidadesDeLaCategoria(nombreCategoria, nombreCriterioDeCategorizacion).stream().
+						filter( entidad -> entidad.getIdentificador().startsWith("OI")).collect(Collectors.toList()));
+	}
+
+	public ArrayList<EntidadCategorizable> filtrarPresupuestosDeLaCategoria(String nombreCategoria, String nombreCriterioDeCategorizacion){
+		// transformo el Stream en un ArrayList
+		return new ArrayList<EntidadCategorizable>(this.filtrarEntidadesDeLaCategoria(nombreCategoria, nombreCriterioDeCategorizacion).stream().
+				filter( entidad -> entidad.getIdentificador().startsWith("L")).collect(Collectors.toList()));
+	}
+
 }
