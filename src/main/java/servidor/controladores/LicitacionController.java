@@ -64,47 +64,30 @@ public class LicitacionController{
         }
 
         String egresoId = request.queryParams("egreso_id");
-        //System.out.println("Egreso ID: " + egresoId);
         OperacionEgreso operacionEgresoEncontrada = RepoOperacionesEgreso.getInstance().buscarOperacionEgresoPorIdenticadorOperacionEgreso(egresoId);
-        //System.out.println("Monto total del egreso encontrado: " + operacionEgresoEncontrada.getMontoTotal());
 
-        for(JsonElement i:jsonArrayArchivo){
+        ArrayList<Presupuesto> presupuestos = new ArrayList<>();
 
+        if(jsonArrayArchivo != null){
+            for(JsonElement i:jsonArrayArchivo){
+                presupuestos.add(jsonAPresupuesto(i.getAsJsonObject()));
+            }
         }
-
-        /*
-
-
-        //Gson gson = new Gson();
-        //JsonObject jsonEntidadOperacion = jsonObject.get("entidadOperacion").getAsJsonObject();
-        EntidadOperacion entidadOperacion = gson.fromJson(jsonObject.get("entidadOperacion"),EntidadOperacion.class);
-        //System.out.println(entidadOperacion.getDireccion());
-        JsonArray jsonArray = jsonObject.get("item").getAsJsonArray();
-        ArrayList<Item> items = new ArrayList<>();
-        for(JsonElement i : jsonArray){
-            //JsonObject jsonObj = i.getAsJsonObject();
-            Item item = gson.fromJson(i,Item.class);
-            items.add(item);
-            //System.out.println(item.getTipo());
+        else if (jsonObjectArchivo != null){
+            presupuestos.add(jsonAPresupuesto(jsonObjectArchivo));
         }
-
-        Presupuesto presupuesto = new Presupuesto(entidadOperacion,items);
 
         ServicioABLicitaciones servicioABLicitaciones = new ServicioABLicitaciones();
         Licitacion licitacion = servicioABLicitaciones.altaLicitacion(operacionEgresoEncontrada, NotificadorSuscriptores.getInstance());
-        servicioABLicitaciones.altaPresupuesto(licitacion,presupuesto);
+        presupuestos.forEach(presupuesto -> servicioABLicitaciones.altaPresupuesto(licitacion,presupuesto));
         licitacion.agregarCriterioSeleccionDeProveedor(new CriterioMenorPrecio());
         RepoLicitaciones.getInstance().agregarLicitacion(licitacion);
-
-
-         */
-        Licitacion licitacionNueva = RepoLicitaciones.getInstance().buscarLicitacionPorOperacionEgreso(egresoId);
 
         response.status(200);
         //response.body("licitacion_id=2");
         //response.type("application/json");
 
-        return licitacionNueva.getIdentificador(); // retorno el id de la licitacion creada
+        return licitacion.getIdentificador(); // retorno el id de la licitacion creada
     }
 
     public Object realizarLicitacion(Request request,Response response){
@@ -226,5 +209,15 @@ public class LicitacionController{
         catch (Exception e){
 
         }
+    }
+
+    public static Presupuesto jsonAPresupuesto(JsonObject jsonPresupuesto){
+        EntidadOperacion entidadOperacion = gson.fromJson(jsonPresupuesto.get("entidadOperacion"),EntidadOperacion.class);
+        JsonArray jsonArrayItems = jsonPresupuesto.get("item").getAsJsonArray();
+        ArrayList<Item> items = new ArrayList<>();
+        for(JsonElement x : jsonArrayItems){
+            items.add(gson.fromJson(x,Item.class));
+        }
+        return new Presupuesto(entidadOperacion,items);
     }
 }

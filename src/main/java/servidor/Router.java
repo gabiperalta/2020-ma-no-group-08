@@ -67,6 +67,7 @@ public class Router {
 		urlNoProtegidas.add("/login");
 		urlNoProtegidas.add("/presupuestos");
 		urlNoProtegidas.add("/licitacion");
+		urlNoProtegidas.add("/presupuesto");
 		urlNoProtegidas.add("/home"); //SOLO PARA PRUEBA
 
 		return urlNoProtegidas.stream().noneMatch(uri::startsWith);
