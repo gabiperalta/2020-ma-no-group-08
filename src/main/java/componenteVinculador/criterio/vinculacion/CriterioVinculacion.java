@@ -40,7 +40,7 @@ public class CriterioVinculacion {
         return vinculaciones;
     }
 
-    private boolean cumpleCondicion(Object parametro1, Object parametro2) {
+    protected boolean cumpleCondicion(Object parametro1, Object parametro2) {
         return  FechaUtils.estaDentroDelRango((Date) parametro1,(Date) parametro2,(int)parametro);
     }
 
@@ -51,7 +51,7 @@ public class CriterioVinculacion {
 
 
 
-    private Vinculacion buscaOCreaResultadoNuevo(OperacionVinculable ingreso, ArrayList<Vinculacion> vinculaciones) {
+    protected Vinculacion buscaOCreaResultadoNuevo(OperacionVinculable ingreso, ArrayList<Vinculacion> vinculaciones) {
         for (Vinculacion vinculacion : vinculaciones) {
             if (vinculacion.contieneAlIngreso(ingreso)) {
                 return vinculacion;
@@ -64,7 +64,7 @@ public class CriterioVinculacion {
        return null;
     }
 
-    private void agregarResultadoSiEsNecesario(Vinculacion vinculacion, ArrayList<Vinculacion> vinculaciones) {
+    protected void agregarResultadoSiEsNecesario(Vinculacion vinculacion, ArrayList<Vinculacion> vinculaciones) {
         if(vinculacion.getEgresos().size() == 1){
             vinculaciones.add(vinculacion);
         }
