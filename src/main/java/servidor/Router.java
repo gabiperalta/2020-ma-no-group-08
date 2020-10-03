@@ -1,7 +1,10 @@
 package servidor;
+import dominio.operaciones.RepoOperacionesEgreso;
+import dominio.operaciones.RepoOperacionesIngreso;
 import servidor.controladores.HomeController;
 import servidor.controladores.LicitacionController;
 import servidor.controladores.LoginController;
+import servidor.controladores.VinculacionesController;
 import spark.Spark;
 import spark.TemplateEngine;
 import spark.template.handlebars.HandlebarsTemplateEngine;
@@ -22,7 +25,7 @@ public class Router {
 			.withHelper("isTrue", BooleanHelper.isTrue)
 			.build();
 	}
-	public static void init() {
+	public static void init() throws Exception {
 		Router.initEngine();
 		String projectDir = System.getProperty("user.dir");
 		String staticDir = "/src/main/resources/public";
@@ -30,10 +33,11 @@ public class Router {
 		Router.configure();
 	}
 
-	public static void configure() {
+	public static void configure() throws Exception {
 		LoginController loginc = new LoginController();
 		HomeController homec = new HomeController();
 		LicitacionController licitacionc = new LicitacionController();
+		VinculacionesController vinculacionesC = new VinculacionesController();
 
 		RepositorioUsuarios.getInstance().inicializarClientesParaWeb();
 
@@ -48,6 +52,8 @@ public class Router {
 		get("/egreso", homec::showEgreso, engine);
 
 		get("/archivo",licitacionc::agregarArchivo,engine);
+		get("/vinculaciones",vinculacionesC::seleccionarOperaciones,engine);
+		post("/vinculaciones",vinculacionesC::vincular);
 
 		/*before("/*", (request, response) -> {
 			if (isProtected(request.uri()) && request.session().attribute("user") == null) {

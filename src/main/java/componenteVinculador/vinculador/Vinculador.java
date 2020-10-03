@@ -1,5 +1,6 @@
 package componenteVinculador.vinculador;
 
+import com.google.gson.Gson;
 import componenteVinculador.criterio.ResultadoVinculado.ResultadoVinculado;
 import componenteVinculador.criterio.ResultadoVinculado.Vinculacion;
 import componenteVinculador.criterio.vinculacion.CriterioVinculacion;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 
 public class Vinculador {
     private static Vinculador shared;
+    private String vinculacionJsonString;
 
     public  static Vinculador getInstance() {
 
@@ -31,7 +33,14 @@ public class Vinculador {
             resultado.agregarVinculaciones(criterioVinculacion.getTipoCriterio(), vinculaciones);
         }
 
+        vinculacionJsonString = new Gson().toJson(resultado);
+//        TODO: sacar cunado se genere el archivo
+        System.out.print(vinculacionJsonString);
+
         return resultado;
     }
 
+    public String getVinculacionJsonString() {
+        return vinculacionJsonString;
+    }
 }
