@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import dominio.categorizacion.exceptions.CategorizacionException;
+import dominio.licitacion.Licitacion;
+import dominio.licitacion.Presupuesto;
+import dominio.licitacion.RepoLicitaciones;
 import dominio.operaciones.OperacionEgreso;
 import dominio.operaciones.OperacionIngreso;
 import dominio.operaciones.RepoOperacionesEgreso;
@@ -81,8 +84,14 @@ public class RepositorioCategorizacion {
 					OperacionIngreso operacionIngreso = RepoOperacionesIngreso.getInstance().buscarOperacionEgresoPorIdentificador(identificadorEntidadCategorizable);
 					unaEntidadCategorizable = new EntidadCategorizable(operacionIngreso);
 				}
-				else
-					throw new CategorizacionException("Identificador de Entidad Categorizable INVALIDO");
+				else{
+					if(identificadorEntidadCategorizable.startsWith("L")){
+						Licitacion licitacion = RepoLicitaciones.getInstance().buscarLicitacionPorIdentificador(identificadorEntidadCategorizable.substring(0,identificadorEntidadCategorizable.length() - 4));
+						Presupuesto presupuesto = licitacion.getPresupuestos().stream().filter(presupuesto -> presupuesto.).findFirst().get();
+					}
+					else
+						throw new CategorizacionException("Identificador de Entidad Categorizable INVALIDO");
+				}
 		}
 		return unaEntidadCategorizable;
 	}
