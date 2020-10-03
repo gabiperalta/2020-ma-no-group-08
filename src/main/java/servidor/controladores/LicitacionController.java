@@ -138,11 +138,10 @@ public class LicitacionController{
 
             //OUTPUT
             Map<String, Object> map = new HashMap<>();
-            //map.put("licitaciones", licitaciones);
             map.put("presupuestos",presupuestos);
+            map.put("user", request.session().attribute("user"));
 
-            //return new ModelAndView(map,"presupuestos.hbs");
-            return new ModelAndView(map,"presupuestos_v2.hbs");
+            return new ModelAndView(map,"presupuestos.hbs");
         }
         else{
             int numeroPagina = Integer.parseInt(pagina);
@@ -154,8 +153,8 @@ public class LicitacionController{
             Map<String, Object> map = new HashMap<>();
             //map.put("licitaciones", licitaciones);
             map.put("presupuestos",presupuestosSubLista);
-            map.put("pagina_anterior",0);
-            map.put("pagina_siguiente",0);
+            //map.put("pagina_anterior",0);
+            //map.put("pagina_siguiente",0);
             int cantidadPaginas = (int) Math.ceil((double)presupuestos.size()/presupuestosPorPagina);
             ArrayList<Integer> listaCantidadPaginas = new ArrayList<>();
             for(int i = 1;i<=cantidadPaginas; i++){
@@ -167,9 +166,20 @@ public class LicitacionController{
             if(numeroPagina * presupuestosPorPagina < presupuestos.size())
                 map.put("pagina_siguiente",numeroPagina + 1);
 
+            map.put("user", request.session().attribute("user"));
             //return new ModelAndView(map,"presupuestos.hbs");
-            return new ModelAndView(map,"presupuestos_v2.hbs");
+            return new ModelAndView(map,"presupuestos.hbs");
         }
+    }
+
+    public ModelAndView agregarEgreso(Request request,Response response){
+        Map<String,Object> map = new HashMap<>();
+        return new ModelAndView(map,"egreso.hbs");
+    }
+
+    public Object categorizarPresupuesto(Request request,Response response){
+
+        return null;
     }
 
     public static Presupuesto jsonAPresupuesto(JsonObject jsonPresupuesto){

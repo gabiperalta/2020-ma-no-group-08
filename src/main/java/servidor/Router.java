@@ -48,8 +48,11 @@ public class Router {
 		get("/home", homec::showHomePage, engine);
 		get("/presupuestos",licitacionc::mostrarPresupuestos,engine);
 		post("/presupuesto",licitacionc::agregarPresupuesto);
+		post("/presupuesto/categorizar",licitacionc::categorizarPresupuesto);
 		post("/licitacion",licitacionc::realizarLicitacion);
 		get("/licitacion/:licitacion_id",licitacionc::resultadoLicitacion,licitacionc.getGson()::toJson);
+
+		get("/egreso",licitacionc::agregarEgreso,engine);
 
 		get("/archivo",licitacionc::agregarArchivo,engine);
 
@@ -68,6 +71,7 @@ public class Router {
 		urlNoProtegidas.add("/presupuestos");
 		urlNoProtegidas.add("/licitacion");
 		urlNoProtegidas.add("/presupuesto");
+		urlNoProtegidas.add("/egreso");
 		urlNoProtegidas.add("/home"); //SOLO PARA PRUEBA
 
 		return urlNoProtegidas.stream().noneMatch(uri::startsWith);
