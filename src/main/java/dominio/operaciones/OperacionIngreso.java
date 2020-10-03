@@ -56,5 +56,12 @@ public class OperacionIngreso implements Operacion {
 	public EntidadOperacion getEntidadDestino() {
 		return entidadDestino;
 	}
-	
+
+	public void setMontoTotal(double montoTotal) {
+		this.montoTotal = montoTotal;
+	}
+
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
 }

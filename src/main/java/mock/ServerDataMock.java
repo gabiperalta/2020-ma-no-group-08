@@ -5,6 +5,8 @@ import dominio.operaciones.OperacionIngreso;
 import dominio.operaciones.RepoOperacionesEgreso;
 import dominio.operaciones.RepoOperacionesIngreso;
 
+import java.util.Date;
+
 public class ServerDataMock {
 
     public void cargarMock() throws Exception {
@@ -16,12 +18,15 @@ public class ServerDataMock {
 
     private void cargarIngresos() throws Exception {
         OperacionIngreso ingreso1 = new OperacionIngreso();
-        OperacionIngreso ingreso2 = new OperacionIngreso();
-        OperacionIngreso ingreso3 = new OperacionIngreso();
+        ingreso1.setFecha(new Date());
+        ingreso1.setMontoTotal(1000);
 
+        OperacionIngreso ingreso2 = new OperacionIngreso();
+        ingreso1.setFecha(new Date());
+        ingreso1.setMontoTotal(2000);
+        
         RepoOperacionesIngreso.getInstance().agregarIngreso(ingreso1);
         RepoOperacionesIngreso.getInstance().agregarIngreso(ingreso2);
-        RepoOperacionesIngreso.getInstance().agregarIngreso(ingreso3);
     }
 
     private void cargarEgregos() {
