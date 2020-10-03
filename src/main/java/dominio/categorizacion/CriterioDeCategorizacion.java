@@ -13,6 +13,10 @@ public class CriterioDeCategorizacion {
 		this.nombre = nombreCriterio;
 		this.categorias = new ArrayList<Categoria>();
 	}
+
+	public ArrayList<Categoria> getCategorias(){
+		return this.categorias;
+	}
 	
 	public Categoria buscarCategoria(String nombreCategoria) {
 		Categoria unaCategoria = this.categorias.stream().filter(categoria -> categoria.getNombre().equals(nombreCategoria)).findFirst().get();
