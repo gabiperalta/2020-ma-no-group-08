@@ -18,6 +18,7 @@ public class Licitacion {
 	private final NotificadorSuscriptores notificadorSuscriptores;
 	private ArrayList<CuentaUsuario> suscriptores;
 	public String identificadorLicitacion;
+	private int ultimoIdentificadorPresupuesto;
 
 	public Licitacion(OperacionEgreso compra, NotificadorSuscriptores notificadorSuscriptores){
 		this.compra = compra;
@@ -25,6 +26,7 @@ public class Licitacion {
 		this.suscriptores = new ArrayList<>();
 		this.finalizada = false;
 		this.notificadorSuscriptores = notificadorSuscriptores;
+		this.ultimoIdentificadorPresupuesto = 1;
 	}
 
 	public ArrayList<Presupuesto> getPresupuestos() {
@@ -108,6 +110,10 @@ public class Licitacion {
 	public void setIdentificador(String identificadorLicitacion){
 		if(this.identificadorLicitacion == null) {
 			this.identificadorLicitacion = identificadorLicitacion;
+			presupuestos.forEach(presupuesto -> {
+				presupuesto.setIdentificador(this.getIdentificador() + "-P" +this.ultimoIdentificadorPresupuesto);
+				ultimoIdentificadorPresupuesto++;
+			});
 		}
 	}
 

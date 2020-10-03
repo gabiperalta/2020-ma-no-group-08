@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import dominio.categorizacion.exceptions.CategorizacionException;
+import dominio.licitacion.Licitacion;
+import dominio.licitacion.Presupuesto;
+import dominio.licitacion.RepoLicitaciones;
 import dominio.operaciones.OperacionEgreso;
 import dominio.operaciones.OperacionIngreso;
 import dominio.operaciones.RepoOperacionesEgreso;
@@ -27,6 +30,10 @@ public class RepositorioCategorizacion {
 	public RepositorioCategorizacion() {
 		this.criteriosDeCategorizacion = new ArrayList<CriterioDeCategorizacion>();
 		this.entidadesCategorizables = new ArrayList<EntidadCategorizable>();
+	}
+
+	public ArrayList<CriterioDeCategorizacion> getCriteriosDeCategorizacion(){
+		return this.criteriosDeCategorizacion;
 	}
 	
 	// Criterios De Categorizacion
@@ -81,8 +88,19 @@ public class RepositorioCategorizacion {
 					OperacionIngreso operacionIngreso = RepoOperacionesIngreso.getInstance().buscarOperacionEgresoPorIdentificador(identificadorEntidadCategorizable);
 					unaEntidadCategorizable = new EntidadCategorizable(operacionIngreso);
 				}
-				else
-					throw new CategorizacionException("Identificador de Entidad Categorizable INVALIDO");
+				else{
+					if(identificadorEntidadCategorizable.startsWith("L")){
+						int largoIdentificador = identificadorEntidadCategorizable.length();
+						String identificadorLicitacion = identificadorEntidadCategorizable.substring(0,largoIdentificador - 4 - 1);
+						String identificadorPresupuesto = identificadorEntidadCategorizable.substring(largoIdentificador - 4 - 1, largoIdentificador - 1);
+						Licitacion licitacion = RepoLicitaciones.getInstance().buscarLicitacionPorIdentificador(identificadorLicitacion);
+						Presupuesto presupuesto = licitacion.getPresupuestos().stream().filter( unPresupuesto -> unPresupuesto.getIdentificador().endsWith(identificadorPresupuesto)).
+														findFirst().get();
+						unaEntidadCategorizable = new EntidadCategorizable(presupuesto);
+					}
+					else
+						throw new CategorizacionException("Identificador de Entidad Categorizable INVALIDO");
+				}
 		}
 		return unaEntidadCategorizable;
 	}
@@ -104,5 +122,23 @@ public class RepositorioCategorizacion {
 		// transformo el Stream en un ArrayList
 		return new ArrayList<EntidadCategorizable>(this.entidadesCategorizables.stream().filter( entidad -> entidad.esDeLaCategoria(unaCategoria)).collect(Collectors.toList()));
 	}
-	
+
+	public ArrayList<EntidadCategorizable> filtrarEgresosDeLaCategoria(String nombreCategoria, String nombreCriterioDeCategorizacion){
+		// transformo el Stream en un ArrayList
+		return new ArrayList<EntidadCategorizable>(this.filtrarEntidadesDeLaCategoria(nombreCategoria, nombreCriterioDeCategorizacion).stream().
+						filter( entidad -> entidad.getIdentificador().startsWith("OE")).collect(Collectors.toList()));
+	}
+
+	public ArrayList<EntidadCategorizable> filtrarIngresosDeLaCategoria(String nombreCategoria, String nombreCriterioDeCategorizacion){
+		// transformo el Stream en un ArrayList
+		return new ArrayList<EntidadCategorizable>(this.filtrarEntidadesDeLaCategoria(nombreCategoria, nombreCriterioDeCategorizacion).stream().
+						filter( entidad -> entidad.getIdentificador().startsWith("OI")).collect(Collectors.toList()));
+	}
+
+	public ArrayList<EntidadCategorizable> filtrarPresupuestosDeLaCategoria(String nombreCategoria, String nombreCriterioDeCategorizacion){
+		// transformo el Stream en un ArrayList
+		return new ArrayList<EntidadCategorizable>(this.filtrarEntidadesDeLaCategoria(nombreCategoria, nombreCriterioDeCategorizacion).stream().
+				filter( entidad -> entidad.getIdentificador().startsWith("L")).collect(Collectors.toList()));
+	}
+
 }
