@@ -63,6 +63,11 @@ public class Presupuesto implements Operacion {
 		return this.identificador.equals(identificadorEntidadCategorizable);
 	}
 
+	@Override
+	public boolean esIngreso() {
+		return false;
+	}
+
 	public EntidadOperacion getProveedor() {
 		return proveedor;
 	}
