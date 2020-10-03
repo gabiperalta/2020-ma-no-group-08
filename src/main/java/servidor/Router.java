@@ -45,14 +45,15 @@ public class Router {
 		post("/presupuesto",licitacionc::agregarPresupuesto);
 		post("/licitacion",licitacionc::realizarLicitacion);
 		get("/licitacion/:licitacion_id",licitacionc::resultadoLicitacion,licitacionc.getGson()::toJson);
+		get("/egreso", homec::showEgreso, engine);
 
 		get("/archivo",licitacionc::agregarArchivo,engine);
 
-		before("/*", (request, response) -> {
+		/*before("/*", (request, response) -> {
 			if (isProtected(request.uri()) && request.session().attribute("user") == null) {
 				response.redirect("/login", 302);
 			}
-		});
+		});*/
 
 		//request.session().attribute("user");
 	}

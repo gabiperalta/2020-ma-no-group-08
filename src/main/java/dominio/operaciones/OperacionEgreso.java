@@ -92,7 +92,6 @@ public class OperacionEgreso implements Operacion {
 		return fecha;
 	}
 
-	@Override
 	public boolean esIngreso() {
 		return false;
 	}

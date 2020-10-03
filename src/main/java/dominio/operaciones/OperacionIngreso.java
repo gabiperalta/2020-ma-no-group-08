@@ -48,7 +48,6 @@ public class OperacionIngreso implements Operacion {
 		return fecha;
 	}
 
-	@Override
 	public boolean esIngreso() {
 		return true;
 	}
