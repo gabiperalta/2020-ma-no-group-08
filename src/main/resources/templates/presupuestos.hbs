@@ -1,0 +1,144 @@
+{{> home.hbs}}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test page</title>
+    <!--
+    <script src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script>
+    <script type="text/javascript" src="/public/handlebars.min-v4.7.6.js"></script>
+    <script src="https://s3.amazonaws.com/builds.handlebarsjs.com/handlebars.min-v4.7.6.js"></script>
+    -->
+
+    <style>
+body {
+  padding-top: 5rem;
+}
+.starter-template {
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+</style>
+
+
+</head>
+<body>
+
+
+<main role="main" class="container" >
+
+    <div id="accordion">
+
+        {{#each presupuestos}}
+            <div class="card">
+                <div class="card-header" id="headingPresupuesto{{identificador}}">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" data-target="#collapsePresupuesto{{identificador}}" data-toggle="collapse" aria-expanded="false" aria-controls="collapsePresupuesto{{identificador}}">
+                            Presupuesto {{ identificador}}
+                        </button>
+                    </h5>
+                </div>
+
+                <div id="collapsePresupuesto{{identificador}}" class="collapse" aria-labelledby="headingPresupuesto{{identificador}}" data-parent="#accordion">
+                    <div class="container">
+                        <div class="row">
+
+                            <div class="card-body col-9">
+                                Items:
+                                <ul>
+                                    {{#each this.items}}
+                                        <li>{{ descripcion }} - ${{valor}}</li>
+                                    {{/each}}
+                                </ul>
+                            </div>
+                            <div class="col my-auto">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <label class="input-group-text" for="inputGroupSelect01">Categoria</label>
+                                    </div>
+                                    <select class="custom-select" id="inputGroupSelect01">
+                                        <option selected>Elegir...</option>
+                                        <option value="1">Categoria1</option>
+                                        <option value="2">Categoria2</option>
+                                    </select>
+                                </div>
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Categorizar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {{/each}}
+    </div>
+
+    <div class="mt-5">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+
+                {{#if pagina_anterior}}
+                    <li class="page-item">
+                {{else}}
+                    <li class="page-item disabled">
+                {{/if}}
+                    <a class="page-link" href="/presupuestos?pagina={{pagina_anterior}}" tabindex="-1">Anterior</a>
+                </li>
+
+                {{#each cantidad_paginas}}
+                    <li class="page-item"><a class="page-link" href="/presupuestos?pagina={{this}}">{{this}}</a></li>
+                {{/each}}
+
+                {{#if pagina_siguiente}}
+                    <li class="page-item">
+                {{else}}
+                    <li class="page-item disabled">
+                {{/if}}
+                    <a class="page-link" href="/presupuestos?pagina={{pagina_siguiente}}">Siguiente</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Modal -->
+    <!--
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Categorizar</button>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="categorizarPresupuesto('L-1-P01')">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    -->
+</main><!-- /.container -->
+
+<script type="text/javascript">
+    /*
+    Handlebars.registerHelper('times', function(n, block) {
+        var accum = '';
+        for(var i = 0; i < n; ++i)
+            accum += block.fn(i);
+        return accum;
+    });
+    */
+
+    //function categorizarPresupuesto(presupuesto_id){
+    //    console.log("Se a categorizado el presupuesto " + presupuesto_id);
+    //}
+</script>
+
+</body>
+</html>
