@@ -57,9 +57,7 @@ public class LicitacionController{
                 // manejar el error con algun response
                 System.out.println("Archivo erroneo o no respeta la sintaxis JSON");
             }
-        } catch (ServletException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (ServletException | IOException e) {
             e.printStackTrace();
         }
 
@@ -69,9 +67,7 @@ public class LicitacionController{
         ArrayList<Presupuesto> presupuestos = new ArrayList<>();
 
         if(jsonArrayArchivo != null){
-            for(JsonElement i:jsonArrayArchivo){
-                presupuestos.add(jsonAPresupuesto(i.getAsJsonObject()));
-            }
+            jsonArrayArchivo.forEach(jsonElement -> presupuestos.add(jsonAPresupuesto(jsonElement.getAsJsonObject())));
         }
         else if (jsonObjectArchivo != null){
             presupuestos.add(jsonAPresupuesto(jsonObjectArchivo));
@@ -92,10 +88,12 @@ public class LicitacionController{
 
     public Object realizarLicitacion(Request request,Response response){
         String licitacionId = request.queryParams("licitacion_id"); // podria ponerse tambien (como opcion) el id del egreso
-        //System.out.println(licitacionId);
         Licitacion licitacionEncontrada = RepoLicitaciones.getInstance().buscarLicitacionPorIdentificador(licitacionId);
+        if(licitacionEncontrada == null){
+            response.status(404);
+            return "Licitacion inexistente";
+        }
         licitacionEncontrada.licitar();
-        //System.out.println(licitacionEncontrada.estaFinalizada());
         return licitacionEncontrada.getIdentificador();
     }
 
@@ -108,7 +106,7 @@ public class LicitacionController{
             jsonResultado = "{resultado: " + licitacionEncontrada.mensajeTexto() + "}";
         }
         else{
-            jsonResultado = "{resultado:\"Licitacion en proceso\"}";
+            jsonResultado = "{\"resultado\":\"Licitacion en proceso\"}";
         }
 
         response.type("application/json");
@@ -215,9 +213,7 @@ public class LicitacionController{
         EntidadOperacion entidadOperacion = gson.fromJson(jsonPresupuesto.get("entidadOperacion"),EntidadOperacion.class);
         JsonArray jsonArrayItems = jsonPresupuesto.get("item").getAsJsonArray();
         ArrayList<Item> items = new ArrayList<>();
-        for(JsonElement x : jsonArrayItems){
-            items.add(gson.fromJson(x,Item.class));
-        }
+        jsonArrayItems.forEach(jsonElement -> items.add(gson.fromJson(jsonElement,Item.class)));
         return new Presupuesto(entidadOperacion,items);
     }
 }
