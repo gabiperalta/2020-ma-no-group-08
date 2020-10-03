@@ -124,14 +124,60 @@ public class LicitacionController{
     }
 
     public ModelAndView mostrarPresupuestos(Request request,Response response){
+        int presupuestosPorPagina = 3;
+
+        String pagina = request.queryParams("pagina");
         ArrayList<Licitacion> licitaciones = RepoLicitaciones.getInstance().getLicitaciones();
+        List<Presupuesto> presupuestos = licitaciones.stream().flatMap(licitacion -> licitacion.getPresupuestos().stream()).collect(Collectors.toList());
 
-        //OUTPUT
-        Map<String, Object> map = new HashMap<>();
-        map.put("licitaciones", licitaciones);
-        //map.put("valorprueba","TIME_IS_RUNNING_OUUUUT");
+        if(pagina == null){
+            if(presupuestos.size() > presupuestosPorPagina){ // 3 presupuestos por pagina
+                response.redirect("/presupuestos?pagina=1"); // redirecciona a la pagina 1
+                return null;
+            }
 
-        return new ModelAndView(map,"presupuestos.hbs");
+            //OUTPUT
+            Map<String, Object> map = new HashMap<>();
+            //map.put("licitaciones", licitaciones);
+            map.put("presupuestos",presupuestos);
+
+            //return new ModelAndView(map,"presupuestos.hbs");
+            return new ModelAndView(map,"presupuestos_v2.hbs");
+        }
+        else{
+            int numeroPagina = Integer.parseInt(pagina);
+            int indiceInicial = Math.min((numeroPagina - 1) * presupuestosPorPagina,presupuestos.size());
+            int indiceFinal = Math.min(numeroPagina * presupuestosPorPagina,presupuestos.size());
+            List<Presupuesto> presupuestosSubLista = presupuestos.subList(indiceInicial,indiceFinal);
+
+            //OUTPUT
+            Map<String, Object> map = new HashMap<>();
+            //map.put("licitaciones", licitaciones);
+            map.put("presupuestos",presupuestosSubLista);
+            map.put("pagina_anterior",0);
+            map.put("pagina_siguiente",0);
+            int cantidadPaginas = (int) Math.ceil((double)presupuestos.size()/presupuestosPorPagina);
+            ArrayList<Integer> listaCantidadPaginas = new ArrayList<>();
+            for(int i = 1;i<=cantidadPaginas; i++){
+                listaCantidadPaginas.add(i);
+            }
+            map.put("cantidad_paginas",listaCantidadPaginas);
+            if(numeroPagina > 1)
+                map.put("pagina_anterior",numeroPagina - 1);
+            if(numeroPagina * presupuestosPorPagina < presupuestos.size())
+                map.put("pagina_siguiente",numeroPagina + 1);
+
+            //return new ModelAndView(map,"presupuestos.hbs");
+            return new ModelAndView(map,"presupuestos_v2.hbs");
+        }
+    }
+
+    public static Presupuesto jsonAPresupuesto(JsonObject jsonPresupuesto){
+        EntidadOperacion entidadOperacion = gson.fromJson(jsonPresupuesto.get("entidadOperacion"),EntidadOperacion.class);
+        JsonArray jsonArrayItems = jsonPresupuesto.get("item").getAsJsonArray();
+        ArrayList<Item> items = new ArrayList<>();
+        jsonArrayItems.forEach(jsonElement -> items.add(gson.fromJson(jsonElement,Item.class)));
+        return new Presupuesto(entidadOperacion,items);
     }
 
     public static void initRepoPrueba(){
@@ -139,6 +185,7 @@ public class LicitacionController{
         OperacionEgreso compra;
         Licitacion licitacion1;
         Licitacion licitacion2;
+        Licitacion licitacion3;
         Presupuesto presup1;
         Presupuesto presup2;
         Presupuesto presup3;
@@ -168,8 +215,12 @@ public class LicitacionController{
                 .build();
 
         licitacion1 = new Licitacion(compra, NotificadorSuscriptores.getInstance());
+        licitacion2 = new Licitacion(compra, NotificadorSuscriptores.getInstance());
+        licitacion3 = new Licitacion(compra, NotificadorSuscriptores.getInstance());
 
         licitacion1.agregarCriterioSeleccionDeProveedor(new CriterioMenorPrecio());
+        licitacion2.agregarCriterioSeleccionDeProveedor(new CriterioMenorPrecio());
+        licitacion3.agregarCriterioSeleccionDeProveedor(new CriterioMenorPrecio());
 
         ArrayList<Item> listaItems1 = new ArrayList<>();
         listaItems1.add(new Item(50, ETipoItem.ARTICULO, "Item1"));
@@ -197,23 +248,21 @@ public class LicitacionController{
 
         licitacion1.agregarPresupuesto(presup1);
         licitacion1.agregarPresupuesto(presup3);
+        licitacion2.agregarPresupuesto(presup1);
+        licitacion2.agregarPresupuesto(presup3);
+        licitacion3.agregarPresupuesto(presup1);
+        licitacion3.agregarPresupuesto(presup3);
 
         try{
             RepoOperacionesEgreso.getInstance().agregarOperacionEgreso(compra);
             RepoLicitaciones.getInstance().agregarLicitacion(licitacion1);
+            RepoLicitaciones.getInstance().agregarLicitacion(licitacion2);
+            RepoLicitaciones.getInstance().agregarLicitacion(licitacion3);
             //System.out.println(compra.getIdentificador());
             //System.out.println("Estado repo egreso: " + RepoOperacionesEgreso.getInstance().getOperacionesEgreso().size());
         }
         catch (Exception e){
 
         }
-    }
-
-    public static Presupuesto jsonAPresupuesto(JsonObject jsonPresupuesto){
-        EntidadOperacion entidadOperacion = gson.fromJson(jsonPresupuesto.get("entidadOperacion"),EntidadOperacion.class);
-        JsonArray jsonArrayItems = jsonPresupuesto.get("item").getAsJsonArray();
-        ArrayList<Item> items = new ArrayList<>();
-        jsonArrayItems.forEach(jsonElement -> items.add(gson.fromJson(jsonElement,Item.class)));
-        return new Presupuesto(entidadOperacion,items);
     }
 }
