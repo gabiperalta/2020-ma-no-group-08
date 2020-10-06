@@ -1,5 +1,6 @@
 package servicio.abOperaciones;
 
+import dominio.entidades.Organizacion;
 import dominio.operaciones.*;
 import dominio.operaciones.medioDePago.MedioDePago;
 
@@ -24,7 +25,7 @@ public class ServicioABOperaciones {
         RepoOperacionesEgreso.getInstance().eliminarOperacionEgreso(operacionEgreso);
     }
 
-    public ArrayList<OperacionEgreso> listarOperaciones(){
+    public ArrayList<OperacionEgreso> listarOperaciones(Organizacion org){
         return RepoOperacionesEgreso.getInstance().getOperacionesEgreso();
     }
 }
