@@ -36,6 +36,7 @@ public class EgresoController extends Controller{
         return new ModelAndView(parameters, "egreso.hbs");
     }
 
+
     public ModelAndView crearEgreso(Request req, Response res) throws Exception {
 
         String mensajeError;
