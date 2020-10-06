@@ -22,7 +22,7 @@
             <h4>1 - Agregar items</h4>
             <div class="row">
 
-                <form class="col-6">
+                <div class="col-6">
                     <div class="form-group">
                         <label for="item_monto">Valor</label>
                         <input type="number" min="0" class="form-control" id="item_monto" placeholder="Ingrese un monto">
@@ -42,7 +42,7 @@
                         <input type="text" class="form-control" id="item_descripcion" placeholder="Ingrese una descripcion">
                     </div>
                     <button type="button" onclick="agregarItem()" class="btn btn-primary">Agregar item</button>
-                </form>
+                </div>
                 <div class="col-6">
                     <div class="list-group" style="max-height: 200px;overflow: scroll" id="lista_items">
                         <div class="d-none">
@@ -67,7 +67,7 @@
             </nav>
             <div class="tab-content" id="nav-tabContent">
                 <div class="tab-pane fade show active" id="nav-tarjeta-credito" role="tabpanel" aria-labelledby="nav-tarjeta-credito-tab">
-                    <form class="col-6">
+                    <div class="col-6">
                         <div class="form-group">
                             <label for="tarjeta-credito-num">Número de tarjeta</label>
                             <input type="text" class="form-control" name="tarjeta-credito-num" id="tarjeta-credito-num" placeholder="Ingrese el numero">
@@ -80,10 +80,10 @@
                             <label for="tarjeta-credito-cantidad">Cuotas</label>
                             <input type="number" min="0" class="form-control" name="tarjeta-credito-cantidad" id="tarjeta-credito-cantidad" placeholder="Ingrese una cantidad">
                         </div>
-                    </form>
+                    </div>
                 </div>
                 <div class="tab-pane fade" id="nav-tarjeta-debito" role="tabpanel" aria-labelledby="nav-tarjeta-debito-tab">
-                    <form class="col-6">
+                    <div class="col-6">
                         <div class="form-group">
                             <label for="tarjeta-debito-num">Número de tarjeta</label>
                             <input type="text" class="form-control" name="tarjeta-debito-num" id="tarjeta-debito-num" placeholder="Ingrese el numero">
@@ -92,10 +92,10 @@
                             <label for="tarjeta-debito-nombre-apellido">Nombre del titular</label>
                             <input type="text" class="form-control" name="tarjeta-debito-nombre-apellido" id="tarjeta-debito-nombre-apellido" placeholder="Ingrese nombre y apellido">
                         </div>
-                    </form>
+                    </div>
                 </div>
                 <div class="tab-pane fade" id="nav-efectivo" role="tabpanel" aria-labelledby="nav-efectivo-tab">
-                    <form class="col-6">
+                    <div class="col-6">
                         <div class="form-group">
                             <label for="efectivo-monto">Monto</label>
                             <input type="number" min="0" class="form-control" name="efectivo-monto" id="efectivo-monto" placeholder="Ingrese un número">
@@ -104,10 +104,10 @@
                             <label for="efectivo-punto-de-pago">Punto de pago</label>
                             <input type="text" class="form-control" name="efectivo-punto-de-pago" id="efectivo-punto-de-pago" placeholder="Ingrese un punto de pago">
                         </div>
-                    </form>
+                    </div>
                 </div>
                 <div class="tab-pane fade" id="nav-dinero-cuenta" role="tabpanel" aria-labelledby="nav-dinero-cuenta-tab">
-                    <form class="col-6">
+                    <div class="col-6">
                         <div class="form-group">
                             <label for="dinero-cuenta-monto">Monto</label>
                             <input type="number" min="0" class="form-control" name="dinero-cuenta-monto" id="dinero-cuenta-monto" placeholder="Ingrese un número">
@@ -116,7 +116,7 @@
                             <label for="dinero-cuenta-nombre-apellido">Nombre</label>
                             <input type="text" class="form-control" name="dinero-cuenta-nombre-apellido" id="dinero-cuenta-nombre-apellido" placeholder="Ingrese nombre y apellido">
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -166,7 +166,7 @@
             </div>
         </div>
         <div class="mx-3 my-4">
-                <button type="submit" class="btn btn-primary px-3 rounded" >Crear egreso</button>
+            <button type="submit" class="btn btn-primary px-3 rounded" >Crear egreso</button>
         </div>
     </form>
 
