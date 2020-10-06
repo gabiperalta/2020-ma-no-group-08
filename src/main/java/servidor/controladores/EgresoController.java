@@ -33,7 +33,6 @@ public class EgresoController extends Controller{
 
         parameters.put("egresos", servicioOperaciones.listarOperaciones());
 
-
         return new ModelAndView(parameters, "egresos.hbs");
 
     }
