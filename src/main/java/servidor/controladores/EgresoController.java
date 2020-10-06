@@ -36,7 +36,7 @@ public class EgresoController extends Controller{
         ArrayList<OperacionEgreso> egresos = servicioOperaciones.listarOperaciones();
 
 
-        Integer numeroPagina = Integer.valueOf(req.queryParams("query_num_pagina"));
+        Integer numeroPagina = req.queryParams("query_num_pagina")!= null ? Integer.valueOf(req.queryParams("query_num_pagina")) : 1;
 
         for(int i =0; i < egresos.size() ; i++){
             if((numeroPagina*10)-10 < i  && i < numeroPagina*10 ){
