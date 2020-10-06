@@ -107,7 +107,6 @@ public class EgresoController extends Controller{
 
             }
 
-
             String EONombre = req.queryParams("query_EO_nombre");
             String EOCuil = req.queryParams("query_EO_cuil");
             String EODireccion = req.queryParams("query_EO_direccion");
@@ -131,7 +130,7 @@ public class EgresoController extends Controller{
             mensajeError = "Null error: " + e.getMessage();
             return new ModelAndView(this, "fallaCreacionEgreso.hbs"); }
         catch (Exception e) {
-            mensajeError = "Error desconocido.";
+            mensajeError = "Error desconocido: " + e.getMessage();
             return new ModelAndView(this, "fallaCreacionEgreso.hbs");
         }
 
