@@ -41,6 +41,9 @@ public class EgresoController extends Controller{
     public ModelAndView crearEgreso(Request req, Response res) throws Exception {
 
         try {
+
+            System.out.println(req.body().toString());
+
             String medioDePago = req.queryParams("query_medio_de_pago");
             MedioDePago medioDePagoFinal;
             String monto;
@@ -130,7 +133,7 @@ public class EgresoController extends Controller{
             mensajeError = "Null error: " + e.getMessage();
             return new ModelAndView(this, "fallaCreacionEgreso.hbs"); }
         catch (Exception e) {
-            mensajeError = "Error desconocido: " + e.getMessage();
+            mensajeError = "Error desconocido: " + e.getMessage() + req.queryMap();
             return new ModelAndView(this, "fallaCreacionEgreso.hbs");
         }
 
