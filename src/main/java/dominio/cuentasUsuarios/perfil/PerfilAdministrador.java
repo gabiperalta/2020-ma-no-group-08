@@ -27,7 +27,7 @@ public class PerfilAdministrador implements Perfil {
 	}
 
 	@Override
-	public EntidadOperacion getOrganizacion() {
+	public Organizacion getOrganizacion() {
 		return null;
 	}
 

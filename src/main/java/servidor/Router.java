@@ -42,8 +42,6 @@ public class Router {
 		LicitacionController licitacionc = new LicitacionController();
 		VinculacionesController vinculacionesC = new VinculacionesController();
 
-		RepositorioUsuarios.getInstance().inicializarClientesParaWeb();
-
 		get("/login", loginc::login, engine);
 		post("/login", loginc::loguear);
 		get("/logout", loginc::logout);
@@ -55,6 +53,7 @@ public class Router {
 		post("/licitacion",licitacionc::realizarLicitacion);
 		get("/licitacion/:licitacion_id",licitacionc::resultadoLicitacion,licitacionc.getGson()::toJson);
 		get("/egreso", homec::showEgreso, engine);
+		post("/egreso", homec::crearEgreso, engine);
 
 		//get("/archivo",licitacionc::agregarArchivo,engine);
 		get("/vinculaciones",vinculacionesC::seleccionarOperaciones,engine);

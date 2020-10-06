@@ -21,7 +21,7 @@ public class ServicioABMUsuarios {
 
 	}
 	
-	public void altaUsuarioColaborador(String unNombreUsuario, EntidadOperacion organizacion, ArrayList<String> rolesAsignados) throws UsuarioYaExistenteException, RolInvalidoException{
+	public void altaUsuarioColaborador(String unNombreUsuario, Organizacion organizacion, ArrayList<String> rolesAsignados) throws UsuarioYaExistenteException, RolInvalidoException{
 		
 		if(!RepositorioUsuarios.getInstance().existeElUsuario(unNombreUsuario)) {
 			if(!rolesAsignados.stream().anyMatch(nombreRol -> nombreRol.equals("ROL_ADMINISTRADOR_SISTEMA"))) {

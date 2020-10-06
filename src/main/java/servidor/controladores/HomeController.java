@@ -29,7 +29,9 @@ public class HomeController extends Controller{
         return new ModelAndView(parameters, "egreso.hbs");
     }
 
-    public Response crearEgreso(Request req, Response res) throws Exception {
+    public ModelAndView crearEgreso(Request req, Response res) throws Exception {
+
+        String mensajeError;
 
         try {
             String medioDePago = req.queryParams("query_medio_de_pago");
@@ -105,13 +107,15 @@ public class HomeController extends Controller{
 
             EntidadOperacion entidadOrigen = new EntidadOperacion(EONombre, EOCuil, EODireccion);
 
+            // TODO, debe verificarse que la entidad origen sea perteneciente a la org del usuario
+
             String EDNombre = req.queryParams("query_ED_nombre");
             String EDCuil = req.queryParams("query_ED_cuil");
             String EDDireccion = req.queryParams("query_ED_direccion");
 
             EntidadOperacion entidadDestino = new EntidadOperacion(EDNombre, EDCuil, EDDireccion);
 
-            String presupuestosNecesarios = req.queryParams("query_presupuestos_necesarios");
+            String presupuestosNecesarios = req.queryParams("presupuestos-necesarios-num");
 
             OperacionEgreso egreso = new OperacionEgreso(items,medioDePagoFinal , documento, new Date(fecha), entidadOrigen, entidadDestino, Integer.valueOf(presupuestosNecesarios));
 
@@ -128,13 +132,9 @@ public class HomeController extends Controller{
         res.redirect("/egresos");
 
 
-        return res;
+        return null;
 
 
-    }
-
-    public String getMensajeError() {
-        return mensajeError;
     }
 
     private HashMap<String, ETipoItem> tipoDeItem = new HashMap<String, ETipoItem>() {{
