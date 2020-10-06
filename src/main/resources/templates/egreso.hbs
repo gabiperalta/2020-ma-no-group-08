@@ -184,11 +184,10 @@
         var monto = $("<input>").attr("id","item_monto" + ultimoItem).addClass("d-none").attr("name", "item_monto" + ultimoItem);
         var tipo = $("<input>").attr("id","item_tipo" + ultimoItem).addClass("d-none").attr("name", "item_tipo" + ultimoItem);
         var descripcion = $("<input>").attr("id","item_descripcion" + ultimoItem).addClass("d-none").attr("name", "item_descripcion" + ultimoItem);
-        $("#cantidad-items").val = ultimoItem;
 
-        monto.val = $('#item_monto').val();
-        tipo.val =$('#item_tipo').val();
-        descripcion.val = $('#item_descripcion').val();
+        monto.val($('#item_monto').val());
+        tipo.val($('#item_tipo').val());
+        descripcion.val($('#item_descripcion').val());
 
         item.append(monto);
         item.append(tipo);
@@ -197,6 +196,8 @@
         $("#lista_items").append(item);
 
         ultimoItem++;
+
+        $("#cantidad-items").val(ultimoItem);
     }
 
 </script>
