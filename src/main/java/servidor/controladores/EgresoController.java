@@ -16,6 +16,7 @@ public class EgresoController extends Controller{
 
     ServicioABOperaciones servicioOperaciones = new ServicioABOperaciones();
 
+    private String mensajeError;
 
     public ModelAndView mostrarEgresos(Request req, Response res) {
 
@@ -38,8 +39,6 @@ public class EgresoController extends Controller{
 
 
     public ModelAndView crearEgreso(Request req, Response res) throws Exception {
-
-        String mensajeError;
 
         try {
             String medioDePago = req.queryParams("query_medio_de_pago");
@@ -143,6 +142,10 @@ public class EgresoController extends Controller{
         return null;
 
 
+    }
+
+    public String getMensajeError() {
+        return mensajeError;
     }
 
     private HashMap<String, ETipoItem> tipoDeItem = new HashMap<String, ETipoItem>() {{
