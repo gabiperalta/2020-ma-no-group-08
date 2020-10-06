@@ -40,11 +40,11 @@ public class EgresoController extends Controller{
 
         for(int i =0; i < egresos.size() ; i++){
             if((numeroPagina*10)-10 < i  && i < numeroPagina*10 ){
-                egresosPaginados.add(egresos.get(i);
+                egresosPaginados.add(egresos.get(i));
 
             }
         }
-        
+
         parameters.put("egresos", egresosPaginados);
 
         return new ModelAndView(parameters, "egresos.hbs");
