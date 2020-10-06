@@ -29,7 +29,7 @@ public class EgresoController extends Controller{
 
         Organizacion org = usuario.getOrganizacion();
 
-        parameters.put("egresos", servicioOperaciones.metodoQueHaceFedeParaFiltrarEgresoPorOrganizacion(org));
+        //parameters.put("egresos", servicioOperaciones.metodoQueHaceFedeParaFiltrarEgresoPorOrganizacion(org));
 
         return new ModelAndView(parameters, "egresos.hbs");
 
@@ -48,7 +48,6 @@ public class EgresoController extends Controller{
     public ModelAndView crearEgreso(Request req, Response res) throws Exception {
 
         try {
-
 
             String medioDePago = req.queryParams("query_medio_de_pago");
             MedioDePago medioDePagoFinal;
