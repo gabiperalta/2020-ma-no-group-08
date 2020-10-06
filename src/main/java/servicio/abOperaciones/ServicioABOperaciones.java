@@ -25,7 +25,7 @@ public class ServicioABOperaciones {
         RepoOperacionesEgreso.getInstance().eliminarOperacionEgreso(operacionEgreso);
     }
 
-    public ArrayList<OperacionEgreso> listarOperaciones(Organizacion org){
+    public ArrayList<OperacionEgreso> listarOperaciones(){
         return RepoOperacionesEgreso.getInstance().getOperacionesEgreso();
     }
 }
