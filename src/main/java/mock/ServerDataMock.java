@@ -1,7 +1,14 @@
 package mock;
 
+import dominio.categorizacion.CriterioDeCategorizacion;
+import dominio.categorizacion.RepositorioCategorizacion;
+import dominio.categorizacion.exceptions.CategorizacionException;
+import dominio.cuentasUsuarios.CuentaUsuario;
+import dominio.entidades.Organizacion;
+import dominio.entidades.RepoOrganizaciones;
 import dominio.operaciones.*;
 import dominio.operaciones.medioDePago.Efectivo;
+import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,9 +18,11 @@ public class ServerDataMock {
     public void cargarMock() throws Exception {
         cargarIngresos();
         cargarEgregos();
+        cargarCategorias();
+        cargarOrganizaciones();
+        cargarEntidades();
+        cargarUsuarios();
     }
-
-
 
     private void cargarIngresos() throws Exception {
         OperacionIngreso ingreso1 = new OperacionIngreso();
@@ -87,5 +96,48 @@ public class ServerDataMock {
         RepoOperacionesEgreso.getInstance().agregarOperacionEgreso(egreso2);
         RepoOperacionesEgreso.getInstance().agregarOperacionEgreso(egreso3);
         RepoOperacionesEgreso.getInstance().agregarOperacionEgreso(egreso4);
+    }
+
+    private void cargarCategorias() throws CategorizacionException {
+        CriterioDeCategorizacion criterioDePrueba1 = new CriterioDeCategorizacion("CriterioDePrueba-1");
+        criterioDePrueba1.agregarCategoria("Categoria-1");
+        criterioDePrueba1.agregarCategoria("Categoria-1.1", "Categoria-1");
+        criterioDePrueba1.agregarCategoria("Categoria-2");
+
+        CriterioDeCategorizacion criterioDePrueba2 = new CriterioDeCategorizacion("CriterioDePrueba-2");
+        criterioDePrueba1.agregarCategoria("Categoria-1");
+        criterioDePrueba1.agregarCategoria("Categoria-1.1", "Categoria-1");
+        criterioDePrueba1.agregarCategoria("Categoria-2");
+        criterioDePrueba1.agregarCategoria("Categoria-3");
+        criterioDePrueba1.agregarCategoria("Categoria-3.1", "Categoria-3");
+
+        RepositorioCategorizacion.getInstance().agregarCriterioDeCategorizacion(criterioDePrueba1);
+        RepositorioCategorizacion.getInstance().agregarCriterioDeCategorizacion(criterioDePrueba2);
+    }
+
+    private void cargarOrganizaciones(){
+        RepoOrganizaciones.getInstance().agregarOrganizacion("Organizacion1");
+        RepoOrganizaciones.getInstance().agregarOrganizacion("Organizacion2");
+    }
+
+    private void cargarEntidades(){
+
+    }
+
+    private void cargarUsuarios(){
+        ArrayList<String> listaDeRolesCliente = new ArrayList<String>();
+        listaDeRolesCliente.add("ROL_ESTANDAR");
+        ArrayList<String> listaDeRolesClienteMaestro = new ArrayList<String>();
+        listaDeRolesClienteMaestro.add("ROL_ADMINISTRADOR_ORGANIZACION");
+        listaDeRolesClienteMaestro.add("ROL_ESTANDAR");
+        listaDeRolesClienteMaestro.add("ROL_REVISOR");
+
+        Organizacion organizacion1 = RepoOrganizaciones.buscarOrganizacion("Organizacion1");
+        Organizacion organizacion2 = RepoOrganizaciones.buscarOrganizacion("Organizacion2");
+
+        CuentaUsuario usuarioClientePruebasWeb = new CuentaUsuario("UsuarioWeb1", organizacion1, listaDeRolesCliente, "1234");
+        CuentaUsuario usuarioClienteMaestroPruebasWeb = new CuentaUsuario("UsuarioWeb2", organizacion2, listaDeRolesClienteMaestro, "1234");
+        RepositorioUsuarios.getInstance().agregarUsuarioEstandar(usuarioClientePruebasWeb);
+        RepositorioUsuarios.getInstance().agregarUsuarioEstandar(usuarioClienteMaestroPruebasWeb);
     }
 }
