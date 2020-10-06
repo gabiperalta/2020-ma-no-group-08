@@ -31,7 +31,21 @@ public class EgresoController extends Controller{
 
         //parameters.put("egresos", servicioOperaciones.metodoQueHaceFedeParaFiltrarEgresoPorOrganizacion(org));
 
-        parameters.put("egresos", servicioOperaciones.listarOperaciones());
+        ArrayList<OperacionEgreso> egresosPaginados = new ArrayList<>();
+
+        ArrayList<OperacionEgreso> egresos = servicioOperaciones.listarOperaciones();
+
+
+        Integer numeroPagina = Integer.valueOf(req.queryParams("query_num_pagina"));
+
+        for(int i =0; i < egresos.size() ; i++){
+            if((numeroPagina*10)-10 < i  && i < numeroPagina*10 ){
+                egresosPaginados.add(egresos.get(i);
+
+            }
+        }
+        
+        parameters.put("egresos", egresosPaginados);
 
         return new ModelAndView(parameters, "egresos.hbs");
 
