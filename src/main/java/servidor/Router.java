@@ -45,6 +45,8 @@ public class Router {
 		VinculacionesController vinculacionesC = new VinculacionesController();
 		EgresoController egresoC = new EgresoController();
 
+
+
 		get("/login", loginc::login, engine);
 		post("/login", loginc::loguear);
 		get("/logout", loginc::logout);
@@ -55,8 +57,10 @@ public class Router {
 		post("/presupuesto/categorizar",licitacionc::categorizarPresupuesto);
 		post("/licitacion",licitacionc::realizarLicitacion);
 		get("/licitacion/:licitacion_id",licitacionc::resultadoLicitacion,licitacionc.getGson()::toJson);
-		get("/egresos", egresoC::showEgreso, engine);
+		get("/egreso", egresoC::showEgreso, engine);
 		post("/egreso", egresoC::crearEgreso, engine);
+		Spark.get("/egresos", egresoC::mostrarEgresos, engine);
+
 
 		//get("/archivo",licitacionc::agregarArchivo,engine);
 		get("/vinculaciones",vinculacionesC::seleccionarOperaciones,engine);

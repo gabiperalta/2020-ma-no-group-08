@@ -21,5 +21,4 @@ public class HomeController extends Controller{
         return new ModelAndView(parameters, "home.hbs");
     }
 
-
 }

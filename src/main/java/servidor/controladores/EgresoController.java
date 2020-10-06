@@ -2,6 +2,7 @@ package servidor.controladores;
 
 import dominio.operaciones.*;
 import dominio.operaciones.medioDePago.*;
+import servicio.abOperaciones.ServicioABOperaciones;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -13,13 +14,26 @@ import java.util.Map;
 
 public class EgresoController extends Controller{
 
+    ServicioABOperaciones servicioOperaciones = new ServicioABOperaciones();
+
+
+    public ModelAndView mostrarEgresos(Request req, Response res) {
+
+        Map<String, Object> parameters = new HashMap<>();
+
+        parameters.put("egresos", servicioOperaciones.listarOperaciones());
+
+        return new ModelAndView(parameters, "egresos.hbs");
+
+    }
+
 
     public ModelAndView showEgreso(Request request, Response response){
         Map<String, Object> parameters = new HashMap<>();
 
         parameters.put("user", request.session().attribute("user"));
 
-        return new ModelAndView(parameters, "egresos.hbs");
+        return new ModelAndView(parameters, "egreso.hbs");
     }
 
     public ModelAndView crearEgreso(Request req, Response res) throws Exception {
