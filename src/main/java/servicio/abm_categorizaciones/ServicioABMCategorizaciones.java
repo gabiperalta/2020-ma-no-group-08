@@ -7,6 +7,7 @@ import dominio.categorizacion.CriterioDeCategorizacion;
 import dominio.categorizacion.EntidadCategorizable;
 import dominio.categorizacion.RepositorioCategorizacion;
 import dominio.categorizacion.exceptions.CategorizacionException;
+import dominio.entidades.Organizacion;
 
 public class ServicioABMCategorizaciones {
 	
@@ -46,8 +47,13 @@ public class ServicioABMCategorizaciones {
 		RepositorioCategorizacion.getInstance().desasociarCategoriaAEntidadCategorizable(identificadorEntidadCategorizable, nombreCategoria, nombreCriterioDeCategorizacion);
 	}
 	
-	public ArrayList<EntidadCategorizable> filtrarEntidadesDeLaCategoria(String nombreCategoria, String nombreCriterioDeCategorizacion){
-		return RepositorioCategorizacion.getInstance().filtrarEntidadesDeLaCategoria( nombreCategoria, nombreCriterioDeCategorizacion);
+	public ArrayList<EntidadCategorizable> filtrarEntidadesDeLaCategoria(String nombreCategoria, String nombreCriterioDeCategorizacion, Organizacion unaOrganizacion){
+		return RepositorioCategorizacion.getInstance().filtrarEntidadesDeLaCategoria( nombreCategoria, nombreCriterioDeCategorizacion, unaOrganizacion
+		);
+	}
+
+	public ArrayList<CriterioDeCategorizacion> listarCriteriosDeCategorizacion(){
+		return RepositorioCategorizacion.getInstance().getCriteriosDeCategorizacion();
 	}
 	
 }
