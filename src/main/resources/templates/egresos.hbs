@@ -12,28 +12,54 @@
     <link rel="stylesheet" href="/css/egresos.css" />
 </head>
 
+<!--
 <body style="padding-top: 20rem">
     <div class="container d-flex p-2 flex-wrap justify-content-center">
-            <div class="list_group">
-                {{#each egresos}}
-                    <div class="float-sm-left d-flex align-items-center">
-                    <a href="/egresos/{{egreso.identificadorOperacion}}" class="list-group-item list-group-item-action active" >Egreso {{@index}}</a>
-                    <form id="eliminarEgreso" action="/egresos/{{egreso.id_egreso}}/"
-                      method="DELETE">
-                     <button type="submit" class="btn btn-danger" onclick="confirmarEliminacion()">Eliminar </button>
-                     </form>
-                    <form id="modificarEgreso" action="/egresos/{{egreso.id_egreso}}/"
-                          method="PUT">
-                        <button type="submit" class="btn btn-danger" href="/egresos/:id">Modificar </button>
-                    </form>
-                    {{/each}}
-                    </div>
-            </div>
+        <div class="list_group">
+            {{#each egresos}}
+                <div class="float-sm-left d-flex align-items-center">
+                    <a href="/egresos/{{egreso.identificadorOperacion}}" class="list-group-item list-group-item-action active" >Egreso {{@index}}
+                        <form id="eliminarEgreso" action="/egresos/{{egreso.id_egreso}}/" method="DELETE">
+                            <button type="submit" class="btn btn-danger" onclick="confirmarEliminacion()">Eliminar </button>
+                        </form>
+                        <form id="modificarEgreso" action="/egresos/{{egreso.id_egreso}}/" method="PUT">
+                            <button type="submit" class="btn btn-danger" href="/egresos/:id">Modificar </button>
+                        </form>
+                    </a>
+                </div>
+            {{/each}}
         </div>
-            <form action="/egreso" method="GET">
-                <button type="submit" class="btn btn-success float-sm-right">Nuevo egreso</button>
-            </form>
+        <form action="/egreso" method="GET">
+            <button type="submit" class="btn btn-success float-sm-right">Nuevo egreso</button>
+        </form>
     </div>
+</body>
+-->
+<body style="padding-top: 5rem">
+    <ul class="list-group">
+        {{#each egresos}}
+            <li class="list-group align-items-center">
+                <div class="container">
+                    <div class="row justify-content-md-center">
+                        <a href="/egresos/{{egreso.identificadorOperacion}}" class="list-group-item list-group-item-action active col-6" >Egreso {{@index}}</a>
+                        <div class="offset-2 col-4">
+                            <div class="row">
+                                <form id="eliminarEgreso" action="/egresos/{{egreso.id_egreso}}/" method="DELETE">
+                                    <button type="submit" class="btn btn-danger" onclick="confirmarEliminacion()">Eliminar </button>
+                                </form>
+                                <form id="modificarEgreso" action="/egresos/{{egreso.id_egreso}}/" method="PUT">
+                                    <button type="submit" class="btn btn-danger" href="/egresos/:id">Modificar </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        {{/each}}
+    </ul>
+    <form action="/egreso" method="GET">
+        <button type="submit" class="btn btn-success float-sm-right">Nuevo egreso</button>
+    </form>
 </body>
 
 </html>
