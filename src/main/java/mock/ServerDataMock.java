@@ -105,11 +105,11 @@ public class ServerDataMock {
         criterioDePrueba1.agregarCategoria("Categoria-2");
 
         CriterioDeCategorizacion criterioDePrueba2 = new CriterioDeCategorizacion("CriterioDePrueba-2");
-        criterioDePrueba1.agregarCategoria("Categoria-1");
-        criterioDePrueba1.agregarCategoria("Categoria-1.1", "Categoria-1");
-        criterioDePrueba1.agregarCategoria("Categoria-2");
-        criterioDePrueba1.agregarCategoria("Categoria-3");
-        criterioDePrueba1.agregarCategoria("Categoria-3.1", "Categoria-3");
+        criterioDePrueba2.agregarCategoria("Categoria-1");
+        criterioDePrueba2.agregarCategoria("Categoria-1.1", "Categoria-1");
+        criterioDePrueba2.agregarCategoria("Categoria-2");
+        criterioDePrueba2.agregarCategoria("Categoria-3");
+        criterioDePrueba2.agregarCategoria("Categoria-3.1", "Categoria-3");
 
         RepositorioCategorizacion.getInstance().agregarCriterioDeCategorizacion(criterioDePrueba1);
         RepositorioCategorizacion.getInstance().agregarCriterioDeCategorizacion(criterioDePrueba2);
