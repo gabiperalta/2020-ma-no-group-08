@@ -1,5 +1,6 @@
 package servicio.abOperaciones;
 
+import dominio.entidades.Organizacion;
 import dominio.operaciones.*;
 import dominio.operaciones.medioDePago.MedioDePago;
 
