@@ -25,6 +25,8 @@ public class EgresoController extends Controller{
 
         Map<String, Object> parameters = new HashMap<>();
 
+        parameters.put("user", req.session().attribute("user"));
+
         CuentaUsuario usuario = req.session().attribute("user");
 
         Organizacion org = usuario.getOrganizacion();
@@ -47,8 +49,9 @@ public class EgresoController extends Controller{
 
         parameters.put("egresos", egresosPaginados);
 
-        return new ModelAndView(parameters, "egresos.hbs");
+        System.out.println(egresos);
 
+        return new ModelAndView(parameters, "egresos.hbs");
     }
 
 
