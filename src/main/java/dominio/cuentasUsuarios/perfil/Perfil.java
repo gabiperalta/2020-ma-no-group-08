@@ -7,5 +7,5 @@ public interface Perfil {
 	public boolean esUsuarioAdministrador();
 	public void setNombre(String unNombre);
 	public String getNombre();
-	public EntidadOperacion getOrganizacion();
+	public Organizacion getOrganizacion();
 }

@@ -2,6 +2,8 @@ package servidor;
 import dominio.operaciones.RepoOperacionesEgreso;
 import dominio.operaciones.RepoOperacionesIngreso;
 import servidor.controladores.HomeController;
+import servidor.controladores.EgresoController;
+
 import servidor.controladores.LicitacionController;
 import servidor.controladores.LoginController;
 import servidor.controladores.VinculacionesController;
@@ -41,8 +43,9 @@ public class Router {
 		HomeController homec = new HomeController();
 		LicitacionController licitacionc = new LicitacionController();
 		VinculacionesController vinculacionesC = new VinculacionesController();
+		EgresoController egresoC = new EgresoController();
 
-		RepositorioUsuarios.getInstance().inicializarClientesParaWeb();
+
 
 		get("/login", loginc::login, engine);
 		post("/login", loginc::loguear);
@@ -54,11 +57,15 @@ public class Router {
 		post("/presupuesto/categorizar",licitacionc::categorizarPresupuesto);
 		post("/licitacion",licitacionc::realizarLicitacion);
 		get("/licitacion/:licitacion_id",licitacionc::resultadoLicitacion,licitacionc.getGson()::toJson);
-		get("/egreso", homec::showEgreso, engine);
+		get("/egreso", egresoC::showEgreso, engine);
+		post("/egreso", egresoC::crearEgreso, engine);
+		Spark.get("/egresos", egresoC::mostrarEgresos, engine);
+
 
 		//get("/archivo",licitacionc::agregarArchivo,engine);
 		get("/vinculaciones",vinculacionesC::seleccionarOperaciones,engine);
 		post("/vinculaciones",vinculacionesC::vincular);
+
 
 		/*before("/*", (request, response) -> {
 			if (isProtected(request.uri()) && request.session().attribute("user") == null) {

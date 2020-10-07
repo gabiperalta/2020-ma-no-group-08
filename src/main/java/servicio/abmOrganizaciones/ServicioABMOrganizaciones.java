@@ -12,7 +12,7 @@ public class ServicioABMOrganizaciones {
     }
 
     public void bajaOrganizacion (String nombreOrganizacion){
-        if (this.buscarOrganizacion(nombreOrganizacion) == null) {
+        if (this.buscarOrganizacion(nombreOrganizacion) != null) {
             RepoOrganizaciones.getInstance().eliminarOrganizacion(nombreOrganizacion);
         }
     }
@@ -20,6 +20,4 @@ public class ServicioABMOrganizaciones {
     public Organizacion buscarOrganizacion (String nombreOrganizacion) {
         return RepoOrganizaciones.getInstance().buscarOrganizacion(nombreOrganizacion);
     }
-
-
 }

@@ -36,7 +36,7 @@ public class CuentaUsuario {
 	}
 	public CuentaUsuario() { }
 
-	public CuentaUsuario(String unNombreUsuario, EntidadOperacion unaOrganizacion, ArrayList<String> nombresRoles, String unaPassword){
+	public CuentaUsuario(String unNombreUsuario, Organizacion unaOrganizacion, ArrayList<String> nombresRoles, String unaPassword){
 		perfil = new PerfilEstandar(unNombreUsuario, unaOrganizacion);
 		passwordPlana = unaPassword;
 		passwordHash = HashPassword.calcular(passwordPlana);
@@ -47,7 +47,7 @@ public class CuentaUsuario {
 		RepositorioUsuarios.getInstance().agregarUsuarioEstandar(this);
 	}
 
-	public CuentaUsuario(String unNombreUsuario, EntidadOperacion unaOrganizacion, ArrayList<String> nombresRoles) { // CONSTRUCTOR USUARIOS ESTANDAR
+	public CuentaUsuario(String unNombreUsuario, Organizacion unaOrganizacion, ArrayList<String> nombresRoles) { // CONSTRUCTOR USUARIOS ESTANDAR
 		perfil = new PerfilEstandar(unNombreUsuario, unaOrganizacion);
 		
 		String unaPassword = this.generarContrasenia();
@@ -99,7 +99,7 @@ public class CuentaUsuario {
 		return perfil.esUsuarioAdministrador();
 	}
 	
-	public EntidadOperacion getOrganizacion() {
+	public Organizacion getOrganizacion() {
 		return perfil.getOrganizacion();
 	}
 	

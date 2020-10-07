@@ -6,9 +6,9 @@ import dominio.operaciones.EntidadOperacion;
 public class PerfilEstandar implements Perfil{
 	
 	private String nombre;
-	private EntidadOperacion organizacion;
+	private Organizacion organizacion;
 
-	public PerfilEstandar(String unNombre, EntidadOperacion unaOrganizacion) {
+	public PerfilEstandar(String unNombre, Organizacion unaOrganizacion) {
 		nombre = unNombre;
 		organizacion = unaOrganizacion;
 	}
@@ -29,7 +29,7 @@ public class PerfilEstandar implements Perfil{
 	}
 
 	@Override
-	public EntidadOperacion getOrganizacion() {
+	public Organizacion getOrganizacion() {
 		return organizacion;
 	}
 	

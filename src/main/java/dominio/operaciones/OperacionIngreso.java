@@ -1,5 +1,7 @@
 package dominio.operaciones;
 
+import dominio.entidades.Organizacion;
+
 import java.util.Date;
 import java.util.List;
 
@@ -62,5 +64,10 @@ public class OperacionIngreso implements Operacion {
 
 	public void setFecha(Date fecha) {
 		this.fecha = fecha;
+	}
+
+	@Override
+	public boolean esDeLaOrganizacion(Organizacion unaOrganizacion) {
+		return unaOrganizacion.existeLaEntidad(this.entidadDestino.getNombre());
 	}
 }

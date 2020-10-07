@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>GesOc</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/egresos.css" />
+</head>
+
+<body style="padding-top: 20rem">
+    <div class="container d-flex p-2 flex-wrap justify-content-center">
+            <div class="list_group">
+                {{#each egresos}}
+                    <div class="float-sm-left d-flex align-items-center">
+                    <a href="/egresos/{{egreso.identificadorOperacion}}" class="list-group-item list-group-item-action active" >Egreso {{@index}}</a>
+                    <form id="eliminarEgreso" action="/egresos/{{egreso.id_egreso}}/"
+                      method="DELETE">
+                     <button type="submit" class="btn btn-danger" onclick="confirmarEliminacion()">Eliminar </button>
+                     </form>
+                    <form id="modificarEgreso" action="/egresos/{{egreso.id_egreso}}/"
+                          method="PUT">
+                        <button type="submit" class="btn btn-danger" href="/egresos/:id">Modificar </button>
+                    </form>
+                    {{/each}}
+                    </div>
+            </div>
+        </div>
+            <form action="/egreso" method="GET">
+                <button type="submit" class="btn btn-success float-sm-right">Nuevo egreso</button>
+            </form>
+    </div>
+</body>
+
+</html>
+
+{{> home.hbs}}
+
+

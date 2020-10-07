@@ -1,6 +1,10 @@
 package dominio.operaciones;
 
+import dominio.categorizacion.EntidadCategorizable;
+import dominio.entidades.Organizacion;
+
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class RepoOperacionesEgreso {
 
@@ -42,6 +46,10 @@ public class RepoOperacionesEgreso {
 
     public ArrayList<OperacionEgreso> getOperacionesEgreso(){
         return operacionesEgreso;
+    }
+
+    public ArrayList<OperacionEgreso> getOperacionesEgresoDeLaOrganizacion(Organizacion unaOrganizacion){
+        return new ArrayList< OperacionEgreso >(this.getOperacionesEgreso().stream().filter(egreso -> egreso.esDeLaOrganizacion(unaOrganizacion)).collect(Collectors.toList()));
     }
 
     public OperacionEgreso buscarOperacionEgresoPorIdentificador(String identificadorEntidadCategorizable) {
