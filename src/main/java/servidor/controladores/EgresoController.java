@@ -1,11 +1,14 @@
 package servidor.controladores;
 
+import dominio.cuentasUsuarios.CuentaUsuario;
+import dominio.entidades.Organizacion;
 import dominio.operaciones.*;
 import dominio.operaciones.medioDePago.*;
 import servicio.abOperaciones.ServicioABOperaciones;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
+import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,10 +25,33 @@ public class EgresoController extends Controller{
 
         Map<String, Object> parameters = new HashMap<>();
 
-        parameters.put("egresos", servicioOperaciones.listarOperaciones());
+        parameters.put("user", req.session().attribute("user"));
+
+        CuentaUsuario usuario = req.session().attribute("user");
+
+        Organizacion org = usuario.getOrganizacion();
+
+        //parameters.put("egresos", servicioOperaciones.metodoQueHaceFedeParaFiltrarEgresoPorOrganizacion(org));
+
+        ArrayList<OperacionEgreso> egresosPaginados = new ArrayList<>();
+
+        ArrayList<OperacionEgreso> egresos = servicioOperaciones.listarOperaciones();
+
+
+        Integer numeroPagina = req.queryParams("query_num_pagina")!= null ? Integer.valueOf(req.queryParams("query_num_pagina")) : 1;
+
+        for(int i =0; i < egresos.size() ; i++){
+            if((numeroPagina*10)-10 < i  && i < numeroPagina*10 ){
+                egresosPaginados.add(egresos.get(i));
+
+            }
+        }
+
+        parameters.put("egresos", egresosPaginados);
+
+        System.out.println(egresos);
 
         return new ModelAndView(parameters, "egresos.hbs");
-
     }
 
 
@@ -41,8 +67,6 @@ public class EgresoController extends Controller{
     public ModelAndView crearEgreso(Request req, Response res) throws Exception {
 
         try {
-
-            System.out.println(req.body().toString());
 
             String medioDePago = req.queryParams("query_medio_de_pago");
             MedioDePago medioDePagoFinal;
@@ -109,6 +133,7 @@ public class EgresoController extends Controller{
                 items.add(new Item(Integer.valueOf(itemValor), itemTipoEnum, itemDescripcion));
 
             }
+
 
             String EONombre = req.queryParams("query_EO_nombre");
             String EOCuil = req.queryParams("query_EO_cuil");
