@@ -2,6 +2,7 @@ package dominio.categorizacion;
 
 import java.util.ArrayList;
 
+import dominio.entidades.Organizacion;
 import dominio.operaciones.Operacion;
 import dominio.categorizacion.exceptions.CategorizacionException;
 
@@ -21,7 +22,11 @@ public class EntidadCategorizable {
 	public boolean esLaEntidad(String identificadorEntidadCategorizable) {
 		return this.operacion.esLaOperacion(identificadorEntidadCategorizable);
 	}
-	
+
+	public boolean esDeLaOrganizacion(Organizacion unaOrganizacion){
+		return this.operacion.esDeLaOrganizacion(unaOrganizacion);
+	}
+
 	public boolean esDeLaCategoria(Categoria unaCategoria) {
 		return this.categoriasAsociadas.contains(unaCategoria) || 
 				this.categoriasAsociadas.stream().anyMatch( categoria -> categoria.esDescendienteDe(unaCategoria));

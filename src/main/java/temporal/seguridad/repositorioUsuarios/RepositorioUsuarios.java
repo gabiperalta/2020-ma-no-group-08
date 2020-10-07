@@ -111,20 +111,4 @@ public class RepositorioUsuarios {
 		Rol unRol = roles.stream().filter(rol -> rol.esElRol(nombreRol)).findFirst().get();
 		return unRol;
 	}
-
-	public void inicializarClientesParaWeb(){
-		// Inicializacion USUARIOS CLIENTES PARA PRUEBAS WEB
-
-		ArrayList<String> listaDeRolesCliente = new ArrayList<String>();
-		listaDeRolesCliente.add("ROL_ESTANDAR");
-		ArrayList<String> listaDeRolesClienteMaestro = new ArrayList<String>();
-		listaDeRolesClienteMaestro.add("ROL_ADMINISTRADOR_ORGANIZACION");
-		listaDeRolesClienteMaestro.add("ROL_ESTANDAR");
-		listaDeRolesClienteMaestro.add("ROL_REVISOR");
-
-		CuentaUsuario usuarioClientePruebasWeb = new CuentaUsuario("UsuarioWeb1", null, listaDeRolesCliente, "1234");
-		CuentaUsuario usuarioClienteMaestroPruebasWeb = new CuentaUsuario("UsuarioWeb2", null, listaDeRolesClienteMaestro, "1234");
-		usuarios.add(usuarioClientePruebasWeb);
-		usuarios.add(usuarioClienteMaestroPruebasWeb);
-	}
 }

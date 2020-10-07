@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import dominio.categorizacion.exceptions.CategorizacionException;
+import dominio.entidades.Organizacion;
 import dominio.licitacion.Licitacion;
 import dominio.licitacion.Presupuesto;
 import dominio.licitacion.RepoLicitaciones;
@@ -117,27 +118,25 @@ public class RepositorioCategorizacion {
 		unCriterio.desasociarCategoriaAEntidadCategorizable(nombreCategoria, unaEntidad);
 	}
 	
-	public ArrayList<EntidadCategorizable> filtrarEntidadesDeLaCategoria(String nombreCategoria, String nombreCriterioDeCategorizacion){
+	public ArrayList<EntidadCategorizable> filtrarEntidadesDeLaCategoria(String nombreCategoria, String nombreCriterioDeCategorizacion, Organizacion unaOrganizacion){
 		Categoria unaCategoria = this.buscarCriterioDeCategorizacion(nombreCriterioDeCategorizacion).buscarCategoria(nombreCategoria);
-		// transformo el Stream en un ArrayList
-		return new ArrayList<EntidadCategorizable>(this.entidadesCategorizables.stream().filter( entidad -> entidad.esDeLaCategoria(unaCategoria)).collect(Collectors.toList()));
+
+		return new ArrayList<EntidadCategorizable>(this.entidadesCategorizables.stream().
+				filter( entidad -> entidad.esDeLaCategoria(unaCategoria) && entidad.esDeLaOrganizacion(unaOrganizacion)).collect(Collectors.toList()));
 	}
 
-	public ArrayList<EntidadCategorizable> filtrarEgresosDeLaCategoria(String nombreCategoria, String nombreCriterioDeCategorizacion){
-		// transformo el Stream en un ArrayList
-		return new ArrayList<EntidadCategorizable>(this.filtrarEntidadesDeLaCategoria(nombreCategoria, nombreCriterioDeCategorizacion).stream().
+	public ArrayList<EntidadCategorizable> filtrarEgresosDeLaCategoria(String nombreCategoria, String nombreCriterioDeCategorizacion, Organizacion unaOrganizacion){
+		return new ArrayList<EntidadCategorizable>(this.filtrarEntidadesDeLaCategoria(nombreCategoria, nombreCriterioDeCategorizacion, unaOrganizacion).stream().
 						filter( entidad -> entidad.getIdentificador().startsWith("OE")).collect(Collectors.toList()));
 	}
 
-	public ArrayList<EntidadCategorizable> filtrarIngresosDeLaCategoria(String nombreCategoria, String nombreCriterioDeCategorizacion){
-		// transformo el Stream en un ArrayList
-		return new ArrayList<EntidadCategorizable>(this.filtrarEntidadesDeLaCategoria(nombreCategoria, nombreCriterioDeCategorizacion).stream().
+	public ArrayList<EntidadCategorizable> filtrarIngresosDeLaCategoria(String nombreCategoria, String nombreCriterioDeCategorizacion, Organizacion unaOrganizacion){
+		return new ArrayList<EntidadCategorizable>(this.filtrarEntidadesDeLaCategoria(nombreCategoria, nombreCriterioDeCategorizacion, unaOrganizacion).stream().
 						filter( entidad -> entidad.getIdentificador().startsWith("OI")).collect(Collectors.toList()));
 	}
 
-	public ArrayList<EntidadCategorizable> filtrarPresupuestosDeLaCategoria(String nombreCategoria, String nombreCriterioDeCategorizacion){
-		// transformo el Stream en un ArrayList
-		return new ArrayList<EntidadCategorizable>(this.filtrarEntidadesDeLaCategoria(nombreCategoria, nombreCriterioDeCategorizacion).stream().
+	public ArrayList<EntidadCategorizable> filtrarPresupuestosDeLaCategoria(String nombreCategoria, String nombreCriterioDeCategorizacion, Organizacion unaOrganizacion){
+		return new ArrayList<EntidadCategorizable>(this.filtrarEntidadesDeLaCategoria(nombreCategoria, nombreCriterioDeCategorizacion, unaOrganizacion).stream().
 				filter( entidad -> entidad.getIdentificador().startsWith("L")).collect(Collectors.toList()));
 	}
 

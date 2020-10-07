@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
+import dominio.entidades.Organizacion;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,7 +19,7 @@ import temporal.seguridad.repositorioUsuarios.exceptions.UsuarioYaExistenteExcep
 public class ServicioABMUsuariosTest {
 
 	ServicioABMUsuarios abmUsuarios;
-	// Organizacion organizacion; TODO, Debemos modificar a la cuenta de usuario nuevamente para que use a la organizacion
+	Organizacion organizacion;
 	EntidadOperacion entidadOperacion;
 	ArrayList<String> listaDeRoles;
 			
@@ -27,8 +28,7 @@ public class ServicioABMUsuariosTest {
 		
 		abmUsuarios = new ServicioABMUsuarios();
 
-		// organizacion = new Organizacion("Organizacion 1");
-		entidadOperacion = new EntidadOperacion("EntidadOperacionTest", "UnCuil", "UnaDireccion");
+		organizacion = new Organizacion("Organizacion 1");
 		
 		listaDeRoles = new ArrayList<String>();
 		
@@ -39,14 +39,12 @@ public class ServicioABMUsuariosTest {
 	@Test
 	public void testAltaUsuarioColaboradorOK() throws UsuarioYaExistenteException, RolInvalidoException {
 		// abmUsuarios.altaUsuarioColaborador("usuario1", organizacion, listaDeRoles);
-		abmUsuarios.altaUsuarioColaborador("usuario1", entidadOperacion, listaDeRoles);
+		abmUsuarios.altaUsuarioColaborador("usuario1", organizacion, listaDeRoles);
 	}
 	
 	@Test
 	public void testAltaUsuarioColaboradorNombreYaUtilizado() throws UsuarioYaExistenteException, RolInvalidoException  {
-		abmUsuarios.altaUsuarioColaborador("usuarioRepetido", entidadOperacion, listaDeRoles);
-		assertThrows(UsuarioYaExistenteException.class, ()->{abmUsuarios.altaUsuarioColaborador("usuarioRepetido", entidadOperacion, listaDeRoles);});
-		// abmUsuarios.altaUsuarioColaborador("usuarioRepetido", organizacion, listaDeRoles);
-		// assertThrows(UsuarioYaExistenteException.class, ()->{abmUsuarios.altaUsuarioColaborador("usuarioRepetido", organizacion, listaDeRoles);});
+		abmUsuarios.altaUsuarioColaborador("usuarioRepetido", organizacion, listaDeRoles);
+		assertThrows(UsuarioYaExistenteException.class, ()->{abmUsuarios.altaUsuarioColaborador("usuarioRepetido", organizacion, listaDeRoles);});
 	}
 }

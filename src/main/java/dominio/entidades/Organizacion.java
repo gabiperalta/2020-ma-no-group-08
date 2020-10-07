@@ -1,5 +1,8 @@
 package dominio.entidades;
 
+import dominio.cuentasUsuarios.CuentaUsuario;
+import dominio.operaciones.EntidadOperacion;
+
 import java.util.ArrayList;
 
 public class Organizacion {
@@ -28,6 +31,23 @@ public class Organizacion {
 
     public ArrayList<EntidadJuridica> getEntidades() {
         return entidades;
+    }
+
+    public boolean existeLaEntidad(String razonSocial) {
+        boolean existeLaEntidad;
+        try {
+            this.buscarEntidad(razonSocial);
+            existeLaEntidad = true;
+        }
+        catch (Exception NoSuchElementException){
+            existeLaEntidad = false;
+        }
+        return existeLaEntidad;
+    }
+
+    private EntidadJuridica buscarEntidad(String razonSocial){
+        EntidadJuridica unaEntidadJuridica = entidades.stream().filter( entidad -> entidad.getRazonSocial().equals(razonSocial)).findFirst().get();
+        return unaEntidadJuridica;
     }
 
     public void setEntidades(ArrayList<EntidadJuridica> entidades) {

@@ -1,5 +1,6 @@
 package dominio.operaciones;
 
+import dominio.entidades.Organizacion;
 import dominio.operaciones.medioDePago.MedioDePago;
 
 import java.util.ArrayList;
@@ -96,4 +97,8 @@ public class OperacionEgreso implements Operacion {
 		return false;
 	}
 
+	@Override
+	public boolean esDeLaOrganizacion(Organizacion unaOrganizacion) {
+		return unaOrganizacion.existeLaEntidad(this.entidadOrigen.getNombre());
+	}
 }
