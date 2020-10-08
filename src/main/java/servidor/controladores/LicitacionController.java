@@ -61,7 +61,7 @@ public class LicitacionController{
             e.printStackTrace();
         }
 
-        String egresoId = request.queryParams("egreso_id");
+        String egresoId = request.queryParams("identificador_egreso");
         OperacionEgreso operacionEgresoEncontrada = RepoOperacionesEgreso.getInstance().buscarOperacionEgresoPorIdenticadorOperacionEgreso(egresoId);
 
         ArrayList<Presupuesto> presupuestos = new ArrayList<>();
@@ -83,7 +83,9 @@ public class LicitacionController{
         //response.body("licitacion_id=2");
         //response.type("application/json");
 
-        return licitacion.getIdentificador(); // retorno el id de la licitacion creada
+        response.redirect("/egresos");
+        //return licitacion.getIdentificador(); // retorno el id de la licitacion creada
+        return null;
     }
 
     public Object realizarLicitacion(Request request,Response response){
