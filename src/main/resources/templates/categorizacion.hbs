@@ -1,0 +1,27 @@
+{{> home.hbs}}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test page</title>
+
+    <style>
+        body {
+            padding-top: 5rem;
+        }
+    </style>
+
+</head>
+<body>
+    <h4>Criterio de categorización</h4>
+    <label for="criterio-select">Tipo documento comercial:</label>
+    <select name="criterio" id="criterio-select">
+        <option value="">--Criterio--</option>
+        {{#each criterios-de-categorizacion}}
+            <option value="{{nombre}}">{{nombre}}</option>
+        {{/each}}
+    </select>
+    {{#if}}{{/if}}
+</body>
+</html>

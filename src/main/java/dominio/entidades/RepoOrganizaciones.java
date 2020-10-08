@@ -33,7 +33,7 @@ public class RepoOrganizaciones {
     }
 
     public void agregarOrganizacion(String nombreOrganizacion) {
-        if (this.buscarOrganizacion(nombreOrganizacion) == null) {
+        if (!this.existeLaOrganizacion(nombreOrganizacion)) {
             Organizacion organizacion = new Organizacion(nombreOrganizacion);
             organizaciones.add(organizacion);
         }
@@ -44,6 +44,18 @@ public class RepoOrganizaciones {
         if (organizacionABorrar != null) {
             organizaciones.remove(organizacionABorrar);
         }
+    }
+
+    public boolean existeLaOrganizacion(String nombreOrganizacion) {
+        boolean existeLaOrganizacion;
+        try {
+            this.buscarOrganizacion(nombreOrganizacion);
+            existeLaOrganizacion = true;
+        }
+        catch (Exception NoSuchElementException){
+            existeLaOrganizacion = false;
+        }
+        return existeLaOrganizacion;
     }
 
     public static Organizacion buscarOrganizacion(String nombreOrganizacion) {

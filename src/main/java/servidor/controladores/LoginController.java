@@ -3,8 +3,6 @@ package servidor.controladores;
 import dominio.cuentasUsuarios.CuentaUsuario;
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
-import seguridad.sesion.exceptions.CredencialesNoValidasException;
-import seguridad.sesion.exceptions.CuentaBloqueadaException;
 import servicio.Sesiones.ServicioSesiones;
 import spark.ModelAndView;
 import spark.Request;
@@ -35,7 +33,7 @@ public class LoginController extends Controller{
 		return new ModelAndView(parameters, "login.hbs");
 	}
 
-	public Response loguear(Request request, Response response) throws CredencialesNoValidasException, CuentaBloqueadaException {
+	public Response loguear(Request request, Response response) {
 		String password = request.queryParams("password");
 		String username = request.queryParams("username");
 

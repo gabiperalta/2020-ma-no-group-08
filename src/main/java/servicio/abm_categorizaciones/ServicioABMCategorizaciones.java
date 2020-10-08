@@ -50,5 +50,9 @@ public class ServicioABMCategorizaciones {
 	public ArrayList<EntidadCategorizable> filtrarEntidadesDeLaCategoria(String nombreCategoria, String nombreCriterioDeCategorizacion, Organizacion unaOrganizacion){
 		return RepositorioCategorizacion.getInstance().filtrarEntidadesDeLaCategoria( nombreCategoria, nombreCriterioDeCategorizacion, unaOrganizacion);
 	}
+
+	public ArrayList<CriterioDeCategorizacion> listarCriteriosDeCategorizacion(){
+		return RepositorioCategorizacion.getInstance().getCriteriosDeCategorizacion();
+	}
 	
 }
