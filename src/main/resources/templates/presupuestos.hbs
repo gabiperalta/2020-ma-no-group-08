@@ -53,7 +53,9 @@ body {
                                 </ul>
                             </div>
                             <div class="col my-auto">
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Categorizar</button>
+                               <form action="/categorizar?id-entidad-categorizable={{identificador}}/" method="GET">
+                                    <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Categorizar</button>
+                               </form>
                             </div>
                         </div>
                     </div>
@@ -91,6 +93,8 @@ body {
 
     <!-- Modal -->
     <!--
+
+
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Categorizar</button>
 
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
