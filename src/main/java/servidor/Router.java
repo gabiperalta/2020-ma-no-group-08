@@ -59,7 +59,7 @@ public class Router {
 		get("/egresos", egresoC::mostrarEgresos, engine);
 
 		get("/categorizar", categorizacionesC::showCategorizacionesPage, engine);
-
+		post("/categorizar", categorizacionesC::Categorizar);
 
 		//get("/archivo",licitacionc::agregarArchivo,engine);
 		get("/vinculaciones",vinculacionesC::seleccionarOperaciones,engine);

@@ -139,5 +139,4 @@ public class RepositorioCategorizacion {
 		return new ArrayList<EntidadCategorizable>(this.filtrarEntidadesDeLaCategoria(nombreCategoria, nombreCriterioDeCategorizacion, unaOrganizacion).stream().
 				filter( entidad -> entidad.getIdentificador().startsWith("L")).collect(Collectors.toList()));
 	}
-
 }
