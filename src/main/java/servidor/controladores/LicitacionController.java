@@ -61,7 +61,7 @@ public class LicitacionController{
             e.printStackTrace();
         }
 
-        String egresoId = request.queryParams("egreso_id");
+        String egresoId = request.queryParams("identificador_egreso");
         OperacionEgreso operacionEgresoEncontrada = RepoOperacionesEgreso.getInstance().buscarOperacionEgresoPorIdenticadorOperacionEgreso(egresoId);
 
         ArrayList<Presupuesto> presupuestos = new ArrayList<>();
@@ -73,17 +73,24 @@ public class LicitacionController{
             presupuestos.add(jsonAPresupuesto(jsonObjectArchivo));
         }
 
+
+        Licitacion licitacion = RepoLicitaciones.getInstance().buscarLicitacionPorOperacionEgreso(egresoId);
         ServicioABLicitaciones servicioABLicitaciones = new ServicioABLicitaciones();
-        Licitacion licitacion = servicioABLicitaciones.altaLicitacion(operacionEgresoEncontrada, NotificadorSuscriptores.getInstance());
-        presupuestos.forEach(presupuesto -> servicioABLicitaciones.altaPresupuesto(licitacion,presupuesto));
-        licitacion.agregarCriterioSeleccionDeProveedor(new CriterioMenorPrecio());
-        RepoLicitaciones.getInstance().agregarLicitacion(licitacion);
+        if(licitacion == null){
+            licitacion = servicioABLicitaciones.altaLicitacion(operacionEgresoEncontrada, NotificadorSuscriptores.getInstance());
+            licitacion.agregarCriterioSeleccionDeProveedor(new CriterioMenorPrecio());
+            RepoLicitaciones.getInstance().agregarLicitacion(licitacion);
+        }
+        Licitacion finalLicitacion = licitacion;
+        presupuestos.forEach(presupuesto -> servicioABLicitaciones.altaPresupuesto(finalLicitacion,presupuesto));
 
         response.status(200);
         //response.body("licitacion_id=2");
         //response.type("application/json");
 
-        return licitacion.getIdentificador(); // retorno el id de la licitacion creada
+        response.redirect("/egresos");
+        //return licitacion.getIdentificador(); // retorno el id de la licitacion creada
+        return null;
     }
 
     public Object realizarLicitacion(Request request,Response response){

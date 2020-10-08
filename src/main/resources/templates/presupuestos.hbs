@@ -44,7 +44,7 @@ body {
                     <div class="container">
                         <div class="row">
 
-                            <div class="card-body col-9">
+                            <div class="card-body col-10">
                                 Items:
                                 <ul>
                                     {{#each this.items}}
@@ -53,17 +53,9 @@ body {
                                 </ul>
                             </div>
                             <div class="col my-auto">
-                                <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <label class="input-group-text" for="inputGroupSelect01">Categoria</label>
-                                    </div>
-                                    <select class="custom-select" id="inputGroupSelect01">
-                                        <option selected>Elegir...</option>
-                                        <option value="1">Categoria1</option>
-                                        <option value="2">Categoria2</option>
-                                    </select>
-                                </div>
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Categorizar</button>
+                               <form action="/categorizar?id-entidad-categorizable={{identificador}}/" method="GET">
+                                    <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Categorizar</button>
+                               </form>
                             </div>
                         </div>
                     </div>
@@ -101,6 +93,8 @@ body {
 
     <!-- Modal -->
     <!--
+
+
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Categorizar</button>
 
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
