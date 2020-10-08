@@ -6,6 +6,7 @@ import dominio.operaciones.medioDePago.MedioDePago;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.stream.Collectors;
 
 public class ServicioABOperaciones {
 
@@ -27,5 +28,10 @@ public class ServicioABOperaciones {
 
     public ArrayList<OperacionEgreso> listarOperaciones(){
         return RepoOperacionesEgreso.getInstance().getOperacionesEgreso();
+    }
+
+    public ArrayList<OperacionEgreso> listarOperaciones(Organizacion unaOrganizacion){
+        return new ArrayList<OperacionEgreso>(this.listarOperaciones().stream().
+                filter(egreso -> egreso.esDeLaOrganizacion(unaOrganizacion)).collect(Collectors.toList()));
     }
 }

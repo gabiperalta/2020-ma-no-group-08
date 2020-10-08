@@ -12,29 +12,89 @@
     <link rel="stylesheet" href="/css/egresos.css" />
 </head>
 
+<!--
 <body style="padding-top: 20rem">
     <div class="container d-flex p-2 flex-wrap justify-content-center">
-            <div class="list_group">
-                {{#each egresos}}
-                    <div class="float-sm-left d-flex align-items-center">
-                    <a href="/egresos/{{egreso.identificadorOperacion}}" class="list-group-item list-group-item-action active" >Egreso {{@index}}</a>
-                    <form id="eliminarEgreso" action="/egresos/{{egreso.id_egreso}}/"
-                      method="DELETE">
-                     <button type="submit" class="btn btn-danger" onclick="confirmarEliminacion()">Eliminar </button>
-                     </form>
-                    <form id="modificarEgreso" action="/egresos/{{egreso.id_egreso}}/"
-                          method="PUT">
-                        <button type="submit" class="btn btn-danger" href="/egresos/:id">Modificar </button>
-                    </form>
-                    {{/each}}
-                    </div>
-            </div>
+        <div class="list_group">
+            {{#each egresos}}
+                <div class="float-sm-left d-flex align-items-center">
+                    <a href="/egresos/{{egreso.identificadorOperacion}}" class="list-group-item list-group-item-action active" >Egreso {{@index}}
+                        <form id="eliminarEgreso" action="/egresos/{{egreso.id_egreso}}/" method="DELETE">
+                            <button type="submit" class="btn btn-danger" onclick="confirmarEliminacion()">Eliminar </button>
+                        </form>
+                        <form id="modificarEgreso" action="/egresos/{{egreso.id_egreso}}/" method="PUT">
+                            <button type="submit" class="btn btn-danger" href="/egresos/:id">Modificar </button>
+                        </form>
+                    </a>
+                </div>
+            {{/each}}
         </div>
-            <form action="/egreso" method="GET">
-                <button type="submit" class="btn btn-success float-sm-right">Nuevo egreso</button>
-            </form>
+        <form action="/egreso" method="GET">
+            <button type="submit" class="btn btn-success float-sm-right">Nuevo egreso</button>
+        </form>
     </div>
 </body>
+-->
+<body style="padding-top: 5rem">
+    <ul class="list-group">
+        {{#each egresos}}
+            <li class="list-group align-items-center">
+                <div class="container">
+                    <div class="row justify-content-md-center">
+                        <a href="/egresos/{{identificador}}" class="list-group-item list-group-item-action active col-6" >Egreso {{@index}}</a>
+                        <div class="offset-2 col-4">
+                            <div class="row">
+                                <form id="eliminarEgreso" action="/egresos/{{identificador}}/" method="DELETE">
+                                    <button style="margin-left: 10px" type="submit" class="btn btn-outline-danger" onclick="confirmarEliminacion()">Eliminar </button>
+                                </form>
+                                <form id="modificarEgreso" action="/egresos/{{identificador}}/" method="PUT">
+                                    <button type="submit" class="btn btn-outline-primary" href="/egresos/:id">Modificar </button>
+                                </form>
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalAgregarPresupuesto" onclick="obtenerEgreso('{{identificador}}')">Agregar presupuesto </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        {{/each}}
+    </ul>
+    <div class="mx-3 my-4"> <!--style="text-align:left ;width:220px"-->
+        <form action="/egreso" method="GET">
+            <button style="margin-left: 50px" type="submit" class="btn btn-success float-sm-center">Nuevo egreso</button>
+        </form>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalAgregarPresupuesto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalAgregarPresupuestoTitulo">Modal title</h5>
+                </div>
+                <div class="modal-body">
+                    <form id="formAgregarPresupuesto" method="post" action="/presupuesto" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <input type="file" name="archivojson" class="form-control-file" id="exampleFormControlFile1">
+                            <input type="text" name="identificador_egreso" class="d-none" id="inputIdentificadorEgreso">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button form="formAgregarPresupuesto" type="submit" class="btn btn-primary">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+<script type="text/javascript">
+    function obtenerEgreso(identificadorEgreso) {
+        $('#modalAgregarPresupuestoTitulo').text("Agregar presupuesto al egreso " + identificadorEgreso);
+        $('#inputIdentificadorEgreso').val(identificadorEgreso);
+    }
+</script>
 
 </html>
 

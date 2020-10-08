@@ -2,6 +2,7 @@ package dominio.licitacion;
 
 import java.util.ArrayList;
 
+import dominio.entidades.Organizacion;
 import dominio.operaciones.EntidadOperacion;
 import dominio.operaciones.Item;
 import dominio.operaciones.Operacion;
@@ -65,6 +66,11 @@ public class Presupuesto implements Operacion {
 
 	@Override
 	public boolean esIngreso() {
+		return false;
+	}
+
+	@Override
+	public boolean esDeLaOrganizacion(Organizacion unaOrganizacion) {
 		return false;
 	}
 
