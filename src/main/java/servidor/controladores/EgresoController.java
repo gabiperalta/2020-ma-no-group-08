@@ -160,7 +160,7 @@ public class EgresoController extends Controller{
             mensajeError = "Null error: " + e.getMessage();
             return new ModelAndView(this, "fallaCreacionEgreso.hbs"); }
         catch (Exception e) {
-            mensajeError = "Error desconocido: " + e.getMessage() + req.queryMap();
+            mensajeError = "Error desconocido: " + e.getMessage();
             return new ModelAndView(this, "fallaCreacionEgreso.hbs");
         }
 
