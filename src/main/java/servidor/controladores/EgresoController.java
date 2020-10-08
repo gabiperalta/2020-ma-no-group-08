@@ -35,8 +35,7 @@ public class EgresoController extends Controller{
 
         ArrayList<OperacionEgreso> egresosPaginados = new ArrayList<>();
 
-        ArrayList<OperacionEgreso> egresos = servicioOperaciones.listarOperaciones();
-
+        ArrayList<OperacionEgreso> egresos = servicioOperaciones.listarOperaciones(org);
 
         Integer numeroPagina = req.queryParams("query_num_pagina")!= null ? Integer.valueOf(req.queryParams("query_num_pagina")) : 1;
 
