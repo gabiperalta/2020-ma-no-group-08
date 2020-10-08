@@ -39,12 +39,16 @@ public class CategorizacionesController {
         }
         catch(CategorizacionException e){
             mensajeError = "Null error: " + e.getMessage();
-            return new ModelAndView(this, "fallaCreacionEgreso.hbs"); }
+            return new ModelAndView(this, "fallaCategorizacion.hbs"); }
         catch (Exception e) {
             mensajeError = "Error desconocido: " + e.getMessage() + request.queryMap();
-            return new ModelAndView(this, "fallaCreacionEgreso.hbs");
+            return new ModelAndView(this, "fallaCategorizacion.hbs");
         }
         response.redirect("/home");
-        return null;
+
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("user", request.session().attribute("user"));
+
+        return new ModelAndView(parameters, "home.hbs");
     }
 }

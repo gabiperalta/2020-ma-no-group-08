@@ -53,7 +53,8 @@ body {
                                 </ul>
                             </div>
                             <div class="col my-auto">
-                               <form action="/categorizar?id-entidad-categorizable={{identificador}}/" method="GET">
+                               <form action="/categorizar" method="GET">
+                                    <input name="id-entidad-categorizable" value={{identificador}} >
                                     <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Categorizar</button>
                                </form>
                             </div>
