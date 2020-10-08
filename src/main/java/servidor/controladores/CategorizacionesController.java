@@ -13,6 +13,8 @@ public class CategorizacionesController {
 
     ServicioABMCategorizaciones categorizacionesService;
 
+    private String mensajeError;
+
     public CategorizacionesController(){
         categorizacionesService = new ServicioABMCategorizaciones();
     }
@@ -27,14 +29,22 @@ public class CategorizacionesController {
         return new ModelAndView(parameters, "categorizacion.hbs");
     }
 
-    public Response Categorizar(Request request, Response response) throws CategorizacionException {
-        String idEntidadCategorizable = request.queryParams("id-entidad-categorizable");
-        String nombreCriterioCategorizacion = request.queryParams("criterio");
-        String nombreCategoria = request.queryParams("categoria");
+    public ModelAndView Categorizar(Request request, Response response) {
+        try{
+            String idEntidadCategorizable = request.queryParams("id-entidad-categorizable");
+            String nombreCriterioCategorizacion = request.queryParams("criterio");
+            String nombreCategoria = request.queryParams("categoria");
 
-        categorizacionesService.asociarCategoriaAEntidadCategorizable(idEntidadCategorizable, nombreCategoria, nombreCriterioCategorizacion);
-
+            categorizacionesService.asociarCategoriaAEntidadCategorizable(idEntidadCategorizable, nombreCategoria, nombreCriterioCategorizacion);
+        }
+        catch(CategorizacionException e){
+            mensajeError = "Null error: " + e.getMessage();
+            return new ModelAndView(this, "fallaCreacionEgreso.hbs"); }
+        catch (Exception e) {
+            mensajeError = "Error desconocido: " + e.getMessage() + request.queryMap();
+            return new ModelAndView(this, "fallaCreacionEgreso.hbs");
+        }
         response.redirect("/home");
-        return response;
+        return null;
     }
 }
