@@ -29,7 +29,10 @@ public class RepoLicitaciones {
     }
 
     public Licitacion buscarLicitacionPorOperacionEgreso(String identificadorOperacionEgreso){
-        return licitaciones.stream().filter(licitacion -> licitacion.getOperacionEgreso().getIdentificador().equals(identificadorOperacionEgreso)).findFirst().get();
+        if(licitaciones.stream().anyMatch(licitacion -> licitacion.getOperacionEgreso().getIdentificador().equals(identificadorOperacionEgreso)))
+            return licitaciones.stream().filter(licitacion -> licitacion.getOperacionEgreso().getIdentificador().equals(identificadorOperacionEgreso)).findFirst().get();
+        else
+            return null;
     }
 
     public Licitacion buscarLicitacionPorIdentificador(String identificadorLicitacion){

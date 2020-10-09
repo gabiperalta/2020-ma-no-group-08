@@ -1,6 +1,7 @@
 package dominio.licitacion;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import dominio.cuentasUsuarios.CuentaUsuario;
 import dominio.licitacion.criterioSeleccion.CriterioSeleccionDeProveedor;
@@ -35,7 +36,9 @@ public class Licitacion {
 
 	public void agregarPresupuesto(Presupuesto presup) {
 		if(presup.esValido(compra)) {
+			presup.setIdentificador(Objects.toString(this.getIdentificador(),"") + "-P" + ultimoIdentificadorPresupuesto);
 			this.presupuestos.add(presup);
+			ultimoIdentificadorPresupuesto++;
 		}
 	}
 
@@ -111,8 +114,8 @@ public class Licitacion {
 		if(this.identificadorLicitacion == null) {
 			this.identificadorLicitacion = identificadorLicitacion;
 			presupuestos.forEach(presupuesto -> {
-				presupuesto.setIdentificador(this.getIdentificador() + "-P" +this.ultimoIdentificadorPresupuesto);
-				ultimoIdentificadorPresupuesto++;
+				if(presupuesto.getIdentificador().startsWith("-"))
+					presupuesto.setIdentificador(this.getIdentificador() + presupuesto.getIdentificador());
 			});
 		}
 	}

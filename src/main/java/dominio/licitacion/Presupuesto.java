@@ -14,6 +14,7 @@ public class Presupuesto implements Operacion {
 	private double montoTotal;
 	private boolean esValido;
 	private String identificador;
+	private EntidadOperacion entidadOrigen;
 	
 	public Presupuesto(EntidadOperacion proveedor, ArrayList<Item> unosItems){
 		this.proveedor = proveedor;
@@ -47,16 +48,16 @@ public class Presupuesto implements Operacion {
 		return this.montoTotal;
 	}
 
-	public void setmontoTotal(int montoTotal) {
-		this.montoTotal = montoTotal;
-	}
-
 	public String getIdentificador(){
 		return identificador;
 	}
 
 	public void setIdentificador(String identificador){
 		this.identificador = identificador;
+	}
+
+	public void setEntidadOrigen(EntidadOperacion entidadOrigen){
+		this.entidadOrigen = entidadOrigen;
 	}
 
 	@Override
@@ -71,7 +72,7 @@ public class Presupuesto implements Operacion {
 
 	@Override
 	public boolean esDeLaOrganizacion(Organizacion unaOrganizacion) {
-		return false;
+		return unaOrganizacion.existeLaEntidad(this.entidadOrigen.getNombre());
 	}
 
 	public EntidadOperacion getProveedor() {

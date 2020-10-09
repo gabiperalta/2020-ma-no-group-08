@@ -1,12 +1,8 @@
 package servidor;
 import dominio.operaciones.RepoOperacionesEgreso;
 import dominio.operaciones.RepoOperacionesIngreso;
-import servidor.controladores.HomeController;
-import servidor.controladores.EgresoController;
+import servidor.controladores.*;
 
-import servidor.controladores.LicitacionController;
-import servidor.controladores.LoginController;
-import servidor.controladores.VinculacionesController;
 import spark.Spark;
 import spark.TemplateEngine;
 import spark.template.handlebars.HandlebarsTemplateEngine;
@@ -44,6 +40,9 @@ public class Router {
 		LicitacionController licitacionc = new LicitacionController();
 		VinculacionesController vinculacionesC = new VinculacionesController();
 		EgresoController egresoC = new EgresoController();
+		IngresoController ingresoC = new IngresoController();
+
+		CategorizacionesController categorizacionesC = new CategorizacionesController();
 
 
 
@@ -59,9 +58,14 @@ public class Router {
 		get("/licitacion/:licitacion_id",licitacionc::resultadoLicitacion,licitacionc.getGson()::toJson);
 		get("/egreso", egresoC::showEgreso, engine);
 		post("/egreso", egresoC::crearEgreso, engine);
-		Spark.get("/egresos", egresoC::mostrarEgresos, engine);
 		get("/egresos/:egreso", egresoC::showEgreso, engine);
+		get("/egresos", egresoC::mostrarEgresos, engine);
 
+		get("/ingreso", ingresoC::showIngreso, engine);
+		get("/ingresos", ingresoC::mostrarIngresos, engine);
+
+		get("/categorizar", categorizacionesC::showCategorizacionesPage, engine);
+		post("/categorizar", categorizacionesC::Categorizar, engine);
 
 		//get("/archivo",licitacionc::agregarArchivo,engine);
 		get("/vinculaciones",vinculacionesC::seleccionarOperaciones,engine);
