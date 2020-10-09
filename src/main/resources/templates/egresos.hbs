@@ -19,7 +19,7 @@
                <div class="container">
                     <div class="row justify-content-md-center">
                         <a class="list-group-item list-group-item-danger col-6" data-toggle="collapse{{@index}}"
-                            href="#collapse{{@index}}" aria-expanded="false" aria-controls="collapse{{@index}}" role="row">Egreso {{@index}}</a>
+                            data-target="collapse{{@index}}" href="#collapse{{@index}}" aria-expanded="false" aria-controls="collapse{{@index}}" role="row">Egreso {{@index}}</a>
                         <div class="offset-2 col-4">
                             <div class="row">
                                 <form id="eliminarEgreso" action="/egresos/{{identificador}}/" method="DELETE">
