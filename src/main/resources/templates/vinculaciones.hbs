@@ -51,14 +51,14 @@
         </div>
         <label for="seleccion-criterios">Elige tu criterio:</label>
 
-        <select name="criterios" id="seleccion-criterios">
-            <option value="">--Criterio--</option>
+        <select name="criterio" id="seleccion-criterios">
             <option value="Fecha_Egreso">Fecha Egreso</option>
             <option value="Valor_Ingreso">Valor Ingreso</option>
             <option value="Valor_Egreso">Valor Egreso</option>
         </select>
-        <label for="rango-dias">Rango de dias</label>
-        <input type="number" name="rango-dias" value={{identificador}}>
+
+        <label for="number">Rango de dias</label>
+        <input type="number" name="rangoDias" min="0" id="rangoDias" value={{number}}>
 
         <div>
             <button class="btn btn-primary px-3 rounded" type="submit">Vincular</button>
