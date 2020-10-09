@@ -191,9 +191,12 @@ public class LicitacionController{
         return new ModelAndView(map,"egreso.hbs");
     }
 
-    public Object categorizarPresupuesto(Request request,Response response){
-
-        return null;
+    public Object obtenerLicitacionPorEgreso(Request request,Response response){
+        Licitacion licitacionEncontrada = RepoLicitaciones.getInstance().buscarLicitacionPorOperacionEgreso(request.queryParams("idEgreso"));
+        if(licitacionEncontrada == null)
+            return "";
+        else
+            return licitacionEncontrada.getIdentificador();
     }
 
     public static Presupuesto jsonAPresupuesto(JsonObject jsonPresupuesto){

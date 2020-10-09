@@ -88,6 +88,7 @@
                             <input type="text" name="identificador_egreso" class="d-none" id="inputIdentificadorEgreso">
                         </div>
                     </form>
+                    <p id="pIdLicitacion" class="font-italic"></p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -103,6 +104,12 @@
     function obtenerEgreso(identificadorEgreso) {
         $('#modalAgregarPresupuestoTitulo').text("Agregar presupuesto al egreso " + identificadorEgreso);
         $('#inputIdentificadorEgreso').val(identificadorEgreso);
+
+        $.get("/licitacion?idEgreso=" + identificadorEgreso, function (data) {
+                if(data.length > 0)
+                    $("#pIdLicitacion").text("Los presupuestos se agregaran a la licitacion " + data);
+            }
+        );
     }
 </script>
 

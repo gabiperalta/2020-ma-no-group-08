@@ -51,8 +51,8 @@ public class Router {
 		get("/home", homec::showHomePage, engine);
 		get("/presupuestos",licitacionc::mostrarPresupuestos,engine);
 		post("/presupuesto",licitacionc::agregarPresupuesto);
-		post("/presupuesto/categorizar",licitacionc::categorizarPresupuesto);
 		post("/licitacion",licitacionc::realizarLicitacion);
+		get("/licitacion",licitacionc::obtenerLicitacionPorEgreso);
 		get("/licitacion/:licitacion_id",licitacionc::resultadoLicitacion,licitacionc.getGson()::toJson);
 		get("/egreso", egresoC::showEgreso, engine);
 		post("/egreso", egresoC::crearEgreso, engine);
