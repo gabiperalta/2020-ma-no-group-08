@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>GesOc</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/ingresos.css" />
+</head>
+
+<!--
+<body style="padding-top: 20rem">
+    <div class="container d-flex p-2 flex-wrap justify-content-center">
+        <div class="list_group">
+            {{#each ingresos}}
+                <div class="float-sm-left d-flex align-items-center">
+                    <a href="/ingresos/{{ingreso.identificadorOperacion}}" class="list-group-item list-group-item-action active" >Egreso {{@index}}
+                    </a>
+                </div>
+            {{/each}}
+        </div>
+    </div>
+</body>
+-->
+<body style="padding-top: 5rem">
+    <ul class="list-group">
+        {{#each ingresos}}
+            <li class="list-group align-items-center">
+                <div class="container">
+                    <div class="row justify-content-md-center">
+                        <a href="/ingresos/{{identificador}}" class="list-group-item list-group-item-action active col-6" >Egreso {{@index}}</a>
+                        <div class="offset-2 col-4">
+                            <div class="row">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        {{/each}}
+    </ul>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalAgregarPresupuesto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalAgregarPresupuestoTitulo">Modal title</h5>
+                </div>
+                <div class="modal-body">
+                    <form id="formAgregarPresupuesto" method="post" action="/presupuesto" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <input type="file" name="archivojson" class="form-control-file" id="exampleFormControlFile1">
+                            <input type="text" name="identificador_ingreso" class="d-none" id="inputIdentificadorEgreso">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button form="formAgregarPresupuesto" type="submit" class="btn btn-primary">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+<script type="text/javascript">
+    function obtenerEgreso(identificadorEgreso) {
+        $('#modalAgregarPresupuestoTitulo').text("Agregar presupuesto al ingreso " + identificadorEgreso);
+        $('#inputIdentificadorEgreso').val(identificadorEgreso);
+    }
+</script>
+
+</html>
+
+{{> home.hbs}}
+
+

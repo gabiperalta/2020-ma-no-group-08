@@ -9,8 +9,10 @@ public class Organizacion {
     protected String nombre;
     protected ArrayList<EntidadJuridica> entidades;
 
-    public Organizacion(String nombre){
+    public Organizacion(String nombre, ArrayList<EntidadJuridica> entidades){
         this.nombre = nombre;
+        this.entidades= entidades;
+
     }
 
     public void agregarEntidad(EntidadJuridica entidad) {

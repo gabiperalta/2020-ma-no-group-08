@@ -37,6 +37,7 @@ public class EgresoController extends Controller{
 
         ArrayList<OperacionEgreso> egresos = servicioOperaciones.listarOperaciones(org);
 
+
         Integer numeroPagina = req.queryParams("query_num_pagina")!= null ? Integer.valueOf(req.queryParams("query_num_pagina")) : 1;
 
         for(int i =0; i < egresos.size() ; i++){
@@ -47,10 +48,7 @@ public class EgresoController extends Controller{
         }
 
         parameters.put("egresos", egresosPaginados);
-
-        OperacionEgreso egreso1 = egresos.get(0);
-        System.out.println(egresos);
-        System.out.println(egreso1.getIdentificador());
+        System.out.println(egresos.size());
 
         return new ModelAndView(parameters, "egresos.hbs");
     }

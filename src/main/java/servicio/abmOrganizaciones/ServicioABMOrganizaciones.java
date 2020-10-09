@@ -1,13 +1,16 @@
 package servicio.abmOrganizaciones;
 
+import dominio.entidades.EntidadJuridica;
 import dominio.entidades.Organizacion;
 import dominio.entidades.RepoOrganizaciones;
 
+import java.util.ArrayList;
+
 public class ServicioABMOrganizaciones {
 
-    public void altaOrganizacion (String nombreOrganizacion) {
+    public void altaOrganizacion (String nombreOrganizacion, ArrayList<EntidadJuridica> entidades) {
         if (this.buscarOrganizacion(nombreOrganizacion) == null) {
-            RepoOrganizaciones.getInstance().agregarOrganizacion(nombreOrganizacion);
+            RepoOrganizaciones.getInstance().agregarOrganizacion(nombreOrganizacion, entidades);
         }
     }
 
