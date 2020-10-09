@@ -73,13 +73,31 @@ public class RepositorioCategorizacion {
 			return false;
 		}
 	}
+
+	private EntidadCategorizable buscarEntidadEntreLasYaCategorizadas(String identificadorEntidadCategorizable){
+		return entidadesCategorizables.stream().filter(entidad -> entidad.getIdentificador().
+				equals(identificadorEntidadCategorizable)).findFirst().get();
+	}
+
+	private boolean existeEntidadEntreLasCategorizadas(String identificadorEntidadCategorizable) {
+		boolean existiaLaEntidad;
+		try {
+			this.buscarEntidadEntreLasYaCategorizadas(identificadorEntidadCategorizable);
+			existiaLaEntidad = true;
+		} catch (Exception NoSuchElementException) {
+			existiaLaEntidad = false;
+		}
+		return existiaLaEntidad;
+	}
 	
 	// Entidades Categorizables
 	// TODO: Dependiendo de como terminemos normalizando la BD de Operaciones, vamos a tener que hacer la distincion entre OperacionEgreso y OperacionIngreso o no.
 	public EntidadCategorizable buscarEntidadCategorizable(String identificadorEntidadCategorizable) throws CategorizacionException {
-		EntidadCategorizable unaEntidadCategorizable = entidadesCategorizables.stream().filter(entidad -> entidad.getIdentificador().
-				equals(identificadorEntidadCategorizable)).findFirst().get();
-		if(unaEntidadCategorizable == null) {
+		EntidadCategorizable unaEntidadCategorizable;
+		if(existeEntidadEntreLasCategorizadas(identificadorEntidadCategorizable)){
+			unaEntidadCategorizable = buscarEntidadEntreLasYaCategorizadas(identificadorEntidadCategorizable);
+		}
+		else {
 			if(identificadorEntidadCategorizable.startsWith("OE")) { // OE por Operacion Egreso
 				OperacionEgreso operacionEgreso = RepoOperacionesEgreso.getInstance().buscarOperacionEgresoPorIdentificador(identificadorEntidadCategorizable);
 				unaEntidadCategorizable = new EntidadCategorizable(operacionEgreso);
@@ -92,8 +110,8 @@ public class RepositorioCategorizacion {
 				else{
 					if(identificadorEntidadCategorizable.startsWith("L")){
 						int largoIdentificador = identificadorEntidadCategorizable.length();
-						String identificadorLicitacion = identificadorEntidadCategorizable.substring(0,largoIdentificador - 4 - 1);
-						String identificadorPresupuesto = identificadorEntidadCategorizable.substring(largoIdentificador - 4 - 1, largoIdentificador - 1);
+						String identificadorLicitacion = identificadorEntidadCategorizable.substring(0,largoIdentificador - 3);
+						String identificadorPresupuesto = identificadorEntidadCategorizable.substring(largoIdentificador - 2, largoIdentificador);
 						Licitacion licitacion = RepoLicitaciones.getInstance().buscarLicitacionPorIdentificador(identificadorLicitacion);
 						Presupuesto presupuesto = licitacion.getPresupuestos().stream().filter( unPresupuesto -> unPresupuesto.getIdentificador().endsWith(identificadorPresupuesto)).
 														findFirst().get();

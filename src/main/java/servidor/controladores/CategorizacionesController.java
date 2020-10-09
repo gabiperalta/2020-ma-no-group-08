@@ -39,7 +39,8 @@ public class CategorizacionesController {
         }
         catch(CategorizacionException e){
             mensajeError = "Null error: " + e.getMessage();
-            return new ModelAndView(this, "fallaCategorizacion.hbs"); }
+            return new ModelAndView(this, "fallaCategorizacion.hbs");
+        }
         catch (Exception e) {
             mensajeError = "Error desconocido: " + e.getMessage() + request.queryMap();
             return new ModelAndView(this, "fallaCategorizacion.hbs");
@@ -50,5 +51,9 @@ public class CategorizacionesController {
         parameters.put("user", request.session().attribute("user"));
 
         return new ModelAndView(parameters, "home.hbs");
+    }
+
+    public String getMensajeError() {
+        return mensajeError;
     }
 }

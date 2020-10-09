@@ -64,7 +64,7 @@ public class Router {
 		get("/ingresos", ingresoC::mostrarIngresos, engine);
 
 		get("/categorizar", categorizacionesC::showCategorizacionesPage, engine);
-		post("/categorizar", categorizacionesC::Categorizar);
+		post("/categorizar", categorizacionesC::Categorizar, engine);
 
 		//get("/archivo",licitacionc::agregarArchivo,engine);
 		get("/vinculaciones",vinculacionesC::seleccionarOperaciones,engine);
