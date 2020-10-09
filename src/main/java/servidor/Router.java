@@ -58,6 +58,7 @@ public class Router {
 		get("/licitacion/:licitacion_id",licitacionc::resultadoLicitacion,licitacionc.getGson()::toJson);
 		get("/egreso", egresoC::showEgreso, engine);
 		post("/egreso", egresoC::crearEgreso, engine);
+		get("/egresos/:egreso", egresoC::showEgreso, engine);
 		get("/egresos", egresoC::mostrarEgresos, engine);
 
 		get("/ingreso", ingresoC::showIngreso, engine);

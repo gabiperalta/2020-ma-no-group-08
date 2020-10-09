@@ -48,9 +48,6 @@ public class EgresoController extends Controller{
 
         parameters.put("egresos", egresosPaginados);
 
-        OperacionEgreso egreso1 = egresos.get(0);
-        System.out.println(egresos);
-        System.out.println(egreso1.getIdentificador());
 
         return new ModelAndView(parameters, "egresos.hbs");
     }
@@ -159,7 +156,7 @@ public class EgresoController extends Controller{
             mensajeError = "Null error: " + e.getMessage();
             return new ModelAndView(this, "fallaCreacionEgreso.hbs"); }
         catch (Exception e) {
-            mensajeError = "Error desconocido: " + e.getMessage() + req.queryMap();
+            mensajeError = "Error desconocido: " + e.getMessage();
             return new ModelAndView(this, "fallaCreacionEgreso.hbs");
         }
 
