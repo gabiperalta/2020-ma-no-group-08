@@ -36,6 +36,16 @@
 </body>
 -->
 <body style="padding-top: 5rem">
+
+    {{#if error}}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>ERROR</strong> {{error}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {{/if}}
+
     <ul class="list-group">
         {{#each egresos}}
             <li class="list-group align-items-center">

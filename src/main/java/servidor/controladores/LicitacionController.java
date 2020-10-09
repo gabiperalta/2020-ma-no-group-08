@@ -30,7 +30,7 @@ public class LicitacionController{
 
     public LicitacionController(){
         gson = new Gson();
-        initRepoPrueba();
+        //initRepoPrueba();
     }
 
     public Gson getGson(){
@@ -82,7 +82,14 @@ public class LicitacionController{
             RepoLicitaciones.getInstance().agregarLicitacion(licitacion);
         }
         Licitacion finalLicitacion = licitacion;
-        presupuestos.forEach(presupuesto -> servicioABLicitaciones.altaPresupuesto(finalLicitacion,presupuesto));
+
+        if(!licitacion.estaFinalizada()) {
+            presupuestos.forEach(presupuesto -> servicioABLicitaciones.altaPresupuesto(finalLicitacion, presupuesto));
+            response.redirect("/egresos");
+        }
+        else{
+            response.redirect("/egresos?error=licitacionFinalizada");
+        }
 
         response.status(200);
         //response.body("licitacion_id=2");
