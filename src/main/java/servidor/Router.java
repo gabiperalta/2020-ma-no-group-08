@@ -60,6 +60,7 @@ public class Router {
 		get("/egreso", egresoC::showEgreso, engine);
 		post("/egreso", egresoC::crearEgreso, engine);
 		Spark.get("/egresos", egresoC::mostrarEgresos, engine);
+		get("/egresos/:egreso", egresoC::showEgreso, engine);
 
 
 		//get("/archivo",licitacionc::agregarArchivo,engine);

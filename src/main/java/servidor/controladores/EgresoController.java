@@ -49,9 +49,6 @@ public class EgresoController extends Controller{
 
         parameters.put("egresos", egresosPaginados);
 
-        OperacionEgreso egreso1 = egresos.get(0);
-        System.out.println(egresos);
-        System.out.println(egreso1.getIdentificador());
 
         return new ModelAndView(parameters, "egresos.hbs");
     }
