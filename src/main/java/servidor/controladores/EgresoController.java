@@ -166,7 +166,6 @@ public class EgresoController extends Controller{
         /* Si no se pone el redirect, igual va a ir a esa uri por que esta en la action de la form. Pero el metodo va a ser post, entonces cada vez que se recargue la pagina se vuelve a agregar la prenda. El redirect es un get de la uri.*/
         res.redirect("/egresos");
 
-
         return null;
 
 

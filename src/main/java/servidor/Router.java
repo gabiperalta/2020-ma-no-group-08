@@ -40,6 +40,8 @@ public class Router {
 		LicitacionController licitacionc = new LicitacionController();
 		VinculacionesController vinculacionesC = new VinculacionesController();
 		EgresoController egresoC = new EgresoController();
+		IngresoController ingresoC = new IngresoController();
+
 		CategorizacionesController categorizacionesC = new CategorizacionesController();
 
 
@@ -57,6 +59,9 @@ public class Router {
 		get("/egreso", egresoC::showEgreso, engine);
 		post("/egreso", egresoC::crearEgreso, engine);
 		get("/egresos", egresoC::mostrarEgresos, engine);
+
+		get("/ingreso", ingresoC::showIngreso, engine);
+		get("/ingresos", ingresoC::mostrarIngresos, engine);
 
 		get("/categorizar", categorizacionesC::showCategorizacionesPage, engine);
 		post("/categorizar", categorizacionesC::Categorizar);
