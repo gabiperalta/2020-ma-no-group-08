@@ -30,7 +30,7 @@ public class LicitacionController{
 
     public LicitacionController(){
         gson = new Gson();
-        //initRepoPrueba();
+        initRepoPrueba();
     }
 
     public Gson getGson(){
@@ -115,26 +115,19 @@ public class LicitacionController{
         String licitacionId = request.params("licitacion_id");
         Licitacion licitacionEncontrada = RepoLicitaciones.getInstance().buscarLicitacionPorIdentificador(licitacionId);
 
-        String jsonResultado;
-        if(licitacionEncontrada.estaFinalizada()){
-            jsonResultado = "{resultado: " + licitacionEncontrada.mensajeTexto() + "}";
-        }
-        else{
-            jsonResultado = "{\"resultado\":\"Licitacion en proceso\"}";
-        }
+        String resultado;
+        if(licitacionEncontrada.estaFinalizada())
+            resultado = licitacionEncontrada.mensajeTexto();
+        else
+            resultado = "Aun no se ejecuto la licitacion";
 
         response.type("application/json");
-        //response.body(jsonResultado);
         response.status(200);
 
         JsonObject jsonObject= new JsonObject();
-        jsonObject.addProperty("resultado",licitacionEncontrada.mensajeTexto());
+        jsonObject.addProperty("resultado",resultado);
 
         return jsonObject;
-    }
-
-    public ModelAndView agregarArchivo(Request request,Response response){
-        return new ModelAndView(new HashMap<>(),"archivo.hbs");
     }
 
     public ModelAndView mostrarPresupuestos(Request request,Response response){
