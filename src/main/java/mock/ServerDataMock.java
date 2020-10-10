@@ -47,6 +47,14 @@ public class ServerDataMock {
         ingreso4.setFecha(new Date());
         ingreso4.setMontoTotal(565.3);
 
+        OperacionIngreso ingreso5 = new OperacionIngreso();
+        ingreso5.setFecha(new Date());
+        ingreso5.setMontoTotal(565.3);
+
+        OperacionIngreso ingreso6 = new OperacionIngreso();
+        ingreso6.setFecha(new Date());
+        ingreso6.setMontoTotal(565.3);
+
         EntidadOperacion origen = new EntidadOperacion("Empresa 2","20-40678950-3","Av.Libertador 801");
         EntidadOperacion destino = new EntidadOperacion("Empresa 1", "20-40678950-3", "Av.Corrientes 550");
 
@@ -62,12 +70,18 @@ public class ServerDataMock {
         ingreso4.setEntidadOrigen(origen);
         ingreso4.setEntidadDestino(destino);
 
+        ingreso5.setEntidadOrigen(destino);
+        ingreso5.setEntidadDestino(origen);
+
+        ingreso6.setEntidadOrigen(destino);
+        ingreso6.setEntidadDestino(origen);
+
         RepoOperacionesIngreso.getInstance().agregarIngreso(ingreso1);
         RepoOperacionesIngreso.getInstance().agregarIngreso(ingreso2);
         RepoOperacionesIngreso.getInstance().agregarIngreso(ingreso3);
         RepoOperacionesIngreso.getInstance().agregarIngreso(ingreso4);
-
-
+        RepoOperacionesIngreso.getInstance().agregarIngreso(ingreso5);
+        RepoOperacionesIngreso.getInstance().agregarIngreso(ingreso6);
     }
 
     private void cargarEgregos() throws Exception {
@@ -138,13 +152,29 @@ public class ServerDataMock {
                 .agregarEntidadDestino(destino)
                 .agregarPresupuestosNecesarios(presupuestosNecesarios).build();
 
+        OperacionEgreso egreso6 = builderEgreso.agregarItems(items5)
+                .agregarMedioDePago(pesos)
+                .agregarDocComercial(documento)
+                .agregarFecha(fecha)
+                .agregarEntidadOrigen(destino)
+                .agregarEntidadDestino(origen)
+                .agregarPresupuestosNecesarios(presupuestosNecesarios).build();
+
+        OperacionEgreso egreso7 = builderEgreso.agregarItems(items4)
+                .agregarMedioDePago(pesos)
+                .agregarDocComercial(documento)
+                .agregarFecha(fecha)
+                .agregarEntidadOrigen(destino)
+                .agregarEntidadDestino(origen)
+                .agregarPresupuestosNecesarios(presupuestosNecesarios).build();
+
         RepoOperacionesEgreso.getInstance().agregarOperacionEgreso(egreso1);
         RepoOperacionesEgreso.getInstance().agregarOperacionEgreso(egreso2);
         RepoOperacionesEgreso.getInstance().agregarOperacionEgreso(egreso3);
         RepoOperacionesEgreso.getInstance().agregarOperacionEgreso(egreso4);
         RepoOperacionesEgreso.getInstance().agregarOperacionEgreso(egreso5);
-
-
+        RepoOperacionesEgreso.getInstance().agregarOperacionEgreso(egreso6);
+        RepoOperacionesEgreso.getInstance().agregarOperacionEgreso(egreso7);
     }
 
 
