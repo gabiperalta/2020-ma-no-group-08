@@ -23,8 +23,8 @@
             <h4>Modificando egreso {{egreso.identificador}}</h4>
             <div class="row">
                 <div class="list-group" style="max-height: 200px;overflow: scroll" id="lista_items">
-                    {{#each items}}
-                        <h4>Descripcion: {{this.descripcion}}   Valor:{{this.valor}}</h4>
+                    {{#each egreso.items}}
+                        <h5>Descripcion: {{this.descripcion}}   Valor:{{this.valor}}</h5>
                     {{/each}}
                 </div>
             </div>
@@ -69,87 +69,102 @@
             </div>
         {{/if}}
         <div class="container mt-4">
-            <h4>2 - Seleccionar medio de pago</h4>
+            {{#if egreso}}
+                <h4>1 - Seleccionar medio de pago</h4>
+            {{else}}
+                <h4>2 - Seleccionar medio de pago</h4>
+            {{/if}}
             <nav>
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                    <a class="nav-item nav-link" class="active" id="nav-tarjeta-credito-tab" data-toggle="tab" href="#nav-tarjeta-credito" role="tab" aria-controls="nav-home" aria-selected="true">Tarjeta crédito</a>
-                    <a class="nav-item nav-link" id="nav-tarjeta-debito-tab" data-toggle="tab" href="#nav-tarjeta-debito" role="tab" aria-controls="nav-profile" aria-selected="false">Tarjeta débito</a>
-                    <a class="nav-item nav-link" id="nav-efectivo-tab" data-toggle="tab" href="#nav-efectivo" role="tab" aria-controls="nav-contact" aria-selected="false">Efectivo</a>
-                    <a class="nav-item nav-link" id="nav-dinero-cuenta-tab" data-toggle="tab" href="#nav-dinero-cuenta" role="tab" aria-controls="nav-contact" aria-selected="false">Dinero en cuenta</a>
+                    <a {{#if egreso.medioDePago.cuotas egreso.medioDePago.nombre egreso.medioDePago.numero}} class="nav-item nav-link active" {{else}} class="nav-item nav-link" {{/if}}
+                            id="nav-tarjeta-credito-tab" data-toggle="tab" href="#nav-tarjeta-credito" role="tab" aria-controls="nav-home" aria-selected="true">Tarjeta crédito</a>
+                    <a {{#if egreso.medioDePago.nombre egreso.medioDePago.numero}}class="nav-item nav-link active"{{else}}class="nav-item nav-link"{{/if}}
+                            id="nav-tarjeta-debito-tab" data-toggle="tab" href="#nav-tarjeta-debito" role="tab" aria-controls="nav-profile" aria-selected="false">Tarjeta débito</a>
+                    <a {{#if egreso.medioDePago.monto egreso.medioDePago.puntoDePago}} class="nav-item nav-link active" {{else}} class="nav-item nav-link" {{/if}}
+                            id="nav-efectivo-tab" data-toggle="tab" href="#nav-efectivo" role="tab" aria-controls="nav-contact" aria-selected="false">Efectivo</a>
+                    <a {{#if egreso.medioDePago.nombre egreso.medioDePago.monto}} class="nav-item nav-link active" {{else}} class="nav-item nav-link" {{/if}} id="nav-dinero-cuenta-tab" data-toggle="tab" href="#nav-dinero-cuenta" role="tab" aria-controls="nav-contact" aria-selected="false">Dinero en cuenta</a>
                 </div>
             </nav>
             <div class="tab-content" id="nav-tabContent">
-                <div class="tab-pane fade show active" id="nav-tarjeta-credito" role="tabpanel" aria-labelledby="nav-tarjeta-credito-tab">
+                <div {{#if egreso.medioDePago.cuotas egreso.medioDePago.nombre egreso.medioDePago.numero}} class="tab-pane fade show active" {{else}} class="tab-pane fade" {{/if}}
+                        id="nav-tarjeta-credito" role="tabpanel" aria-labelledby="nav-tarjeta-credito-tab">
                     <div class="col-6">
                         <div class="form-group">
                             <label for="tarjeta-credito-num">Número de tarjeta</label>
                             <input type="text" class="form-control" name="tarjeta-credito-num" id="tarjeta-credito-num" placeholder="Ingrese el numero"
-                                {{#if egreso.medioDePago.cuotas egreso.medioDePago.nombre egreso.medioDePago.numero}} value="egreso.medioDePago.numero" {{/if}}>
+                                {{#if egreso.medioDePago.cuotas egreso.medioDePago.nombre egreso.medioDePago.numero}} value="{{egreso.medioDePago.numero}}" {{/if}}>
                         </div>
                         <div class="form-group">
                             <label for="tarjeta-credito-nombre-apellido">Nombre del titular</label>
                             <input type="text" class="form-control" name="tarjeta-credito-nombre-apellido" id="tarjeta-credito-nombre-apellido" placeholder="Ingrese nombre y apellido"
-                                {{#if egreso.medioDePago.cuotas egreso.medioDePago.nombre egreso.medioDePago.numero}} value="egreso.medioDePago.nombre" {{/if}}>
+                                {{#if egreso.medioDePago.cuotas egreso.medioDePago.nombre egreso.medioDePago.numero}} value="{{egreso.medioDePago.nombre}}" {{/if}}>
                         </div>
                         <div class="form-group">
                             <label for="tarjeta-credito-cantidad">Cuotas</label>
                             <input type="number" min="0" class="form-control" name="tarjeta-credito-cantidad" id="tarjeta-credito-cantidad" placeholder="Ingrese una cantidad"
-                                {{#if egreso.medioDePago.cuotas egreso.medioDePago.nombre egreso.medioDePago.numero}} value="egreso.medioDePago.nombre" {{/if}}>
+                                {{#if egreso.medioDePago.cuotas egreso.medioDePago.nombre egreso.medioDePago.numero}} value="{{egreso.medioDePago.cuotas}}" {{/if}}>
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="nav-tarjeta-debito" role="tabpanel" aria-labelledby="nav-tarjeta-debito-tab">
+                <div {{#if egreso.medioDePago.nombre egreso.medioDePago.numero}} class="tab-pane fade show active" {{else}} class="tab-pane fade" {{/if}}
+                        id="nav-tarjeta-debito" role="tabpanel" aria-labelledby="nav-tarjeta-debito-tab">
                     <div class="col-6">
                         <div class="form-group">
                             <label for="tarjeta-debito-num">Número de tarjeta</label>
                             <input type="text" class="form-control" name="tarjeta-debito-num" id="tarjeta-debito-num" placeholder="Ingrese el numero"
-                                {{#if egreso.medioDePago.nombre egreso.medioDePago.numero}} value="egreso.medioDePago.numero" {{/if}}>
+                                {{#if egreso.medioDePago.nombre egreso.medioDePago.numero}} value="{{egreso.medioDePago.numero}}" {{/if}}>
                         </div>
                         <div class="form-group">
                             <label for="tarjeta-debito-nombre-apellido">Nombre del titular</label>
                             <input type="text" class="form-control" name="tarjeta-debito-nombre-apellido" id="tarjeta-debito-nombre-apellido" placeholder="Ingrese nombre y apellido"
-                                {{#if egreso.medioDePago.nombre egreso.medioDePago.numero}} value="egreso.medioDePago.nombre" {{/if}}>
+                                {{#if egreso.medioDePago.nombre egreso.medioDePago.numero}} value="{{egreso.medioDePago.nombre}}" {{/if}}>
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="nav-efectivo" role="tabpanel" aria-labelledby="nav-efectivo-tab">
+                <div {{#if egreso.medioDePago.monto egreso.medioDePago.puntoDePago}} class="tab-pane fade show active" {{else}} class="tab-pane fade" {{/if}}
+                     id="nav-efectivo" role="tabpanel" aria-labelledby="nav-efectivo-tab">
                     <div class="col-6">
                         <div class="form-group">
                             <label for="efectivo-monto">Monto</label>
                             <input type="number" min="0" class="form-control" name="efectivo-monto" id="efectivo-monto" placeholder="Ingrese un número"
-                                {{#if egreso.medioDePago.monto egreso.medioDePago.puntoDePago}} value="egreso.medioDePago.monto" {{/if}}>
+                                {{#if egreso.medioDePago.monto egreso.medioDePago.puntoDePago}} value="{{egreso.medioDePago.monto}}" {{/if}}>
                         </div>
                         <div class="form-group">
                             <label for="efectivo-punto-de-pago">Punto de pago</label>
                             <input type="text" class="form-control" name="efectivo-punto-de-pago" id="efectivo-punto-de-pago" placeholder="Ingrese un punto de pago"
-                                {{#if egreso.medioDePago.monto egreso.medioDePago.puntoDePago}} value="egreso.medioDePago.puntoDePago" {{/if}}>>
+                                {{#if egreso.medioDePago.monto egreso.medioDePago.puntoDePago}} value="{{egreso.medioDePago.puntoDePago}}" {{/if}}>
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="nav-dinero-cuenta" role="tabpanel" aria-labelledby="nav-dinero-cuenta-tab">
+                <div {{#if egreso.medioDePago.nombre egreso.medioDePago.monto}} class="tab-pane fade show active" {{else}} class="tab-pane fade" {{/if}}
+                     id="nav-dinero-cuenta" role="tabpanel" aria-labelledby="nav-dinero-cuenta-tab">
                     <div class="col-6">
                         <div class="form-group">
                             <label for="dinero-cuenta-monto">Monto</label>
                             <input type="number" min="0" class="form-control" name="dinero-cuenta-monto" id="dinero-cuenta-monto" placeholder="Ingrese un número"
-                                {{#if egreso.medioDePago.monto egreso.medioDePago.nombre}} value="egreso.medioDePago.monto" {{/if}}>
+                                {{#if egreso.medioDePago.nombre egreso.medioDePago.monto}} value="{{egreso.medioDePago.monto}}" {{/if}}>
                         </div>
                         <div class="form-group">
                             <label for="dinero-cuenta-nombre-apellido">Nombre</label>
                             <input type="text" class="form-control" name="dinero-cuenta-nombre-apellido" id="dinero-cuenta-nombre-apellido" placeholder="Ingrese nombre y apellido"
-                                {{#if egreso.medioDePago.monto egreso.medioDePago.nombre}} value="egreso.medioDePago.nombre" {{/if}}>>
+                                {{#if egreso.medioDePago.nombre egreso.medioDePago.monto}} value="{{egreso.medioDePago.nombre}}" {{/if}}>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="container mt-4">
-            <h4>3 - Seleccionar documento comercial y entidades</h4>
+            {{#if egreso}}
+                <h4>2 - Seleccionar documento comercial y entidades</h4>
+            {{else}}
+                <h4>3 - Seleccionar documento comercial y entidades</h4>
+            {{/if}}
             <div class="row">
                 <div class="form-group">
                     <label for="tipo-documento-select">Tipo documento comercial:</label>
                     <select class="custom-select" name="tipo-documento" id="tipo-documento-select">
                         {{#if egreso}}
-                            <option value="{{egreso.documento.tipo}}" selected disabled hidden>{{egreso.documento.tipo}}</option>
+                            <option value="{{egreso.documento.tipo}}" selected hidden>{{egreso.documento.tipo}}</option>
                         {{else}}
                             <option value="none" selected disabled hidden>--Tipo--</option>
                         {{/if}}
@@ -177,7 +192,11 @@
         </div>
 
         <div class="container mt-4">
-            <h4>4 - Agregar datos finales</h4>
+            {{#if egreso}}
+                <h4>3 - Agregar datos finales</h4>
+            {{else}}
+                <h4>4 - Agregar datos finales</h4>
+            {{/if}}
             <div class="row">
                 <div class="form-group">
                     <label for="presupuestos-necesarios-num">Numero presupuestos necesarios:</label>
@@ -188,13 +207,19 @@
                 <div class="form-group">
                     <label for="operacion-egreso-date">Fecha operacion egreso:</label>
                     <input type="date" class="form-control" id="operacion-egreso-date" name="operacion-egreso-date"
-                           min="1990-01-01" max="2020-10-3" {{#if egreso}} value="{{egreso.fecha}}" {{/if}}>
+                           min="1990-01-01" max="2020-10-3"> <!--{{#if egreso}} value="{{egreso.fecha}}" {{/if}}-->
                 </div>
             </div>
         </div>
-        <div class="mx-3 my-4">
-            <button type="submit" class="btn btn-primary px-3 rounded" >Crear egreso</button>
-        </div>
+        {{#if}}
+            <div class="mx-3 my-4">
+                <button type="submit" class="btn btn-primary px-3 rounded" >Modificar egreso</button>
+            </div>
+        {{else}}
+            <div class="mx-3 my-4">
+                <button type="submit" class="btn btn-primary px-3 rounded" >Crear egreso</button>
+            </div>
+        {{/if}}
     </form>
 
 </main><!-- /.container -->

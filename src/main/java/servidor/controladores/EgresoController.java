@@ -179,6 +179,12 @@ public class EgresoController extends Controller{
         parameters.put("user", req.session().attribute("user"));
         parameters.put("egreso", egreso);
 
+        String date = egreso.getFecha().toString();
+
+        parameters.put("date", egreso.getFecha().toString());
+
+        Date fecha = egreso.getFecha();
+
         return new ModelAndView(parameters, "egreso.hbs");
     }
 
@@ -191,26 +197,26 @@ public class EgresoController extends Controller{
             String nombre;
             String numero;
 
-            if(req.queryParams("tarjeta-credito-num") != null){
+            if(!req.queryParams("tarjeta-credito-num").isEmpty()){
                 nombre = req.queryParams("tarjeta-credito-nombre-apellido");
                 String cuotas = req.queryParams("tarjeta-credito-cantidad");
                 numero = req.queryParams("tarjeta-credito-num");
                 medioDePagoFinal = new TarjetaDeCredito(Integer.valueOf(cuotas), nombre, numero);
             }
             else{
-                if(req.queryParams("tarjeta-debito-num") != null){
+                if(!req.queryParams("tarjeta-debito-num").isEmpty()){
                     nombre = req.queryParams("tarjeta-debito-nombre-apellido");
                     numero = req.queryParams("tarjeta-debito-num");
                     medioDePagoFinal = new TarjetaDeDebito(nombre, numero);
                 }
                 else {
-                    if(req.queryParams("efectivo-monto") != null){
+                    if(!req.queryParams("efectivo-monto").isEmpty()){
                         monto = req.queryParams("efectivo-monto");
                         String puntoDePago = req.queryParams("efectivo-punto-de-pago");
                         medioDePagoFinal = new Efectivo(Double.valueOf(monto), puntoDePago);
                     }
                     else{
-                        if(req.queryParams("dinero-cuenta-monto") != null){
+                        if(!req.queryParams("dinero-cuenta-monto").isEmpty()){
                             monto = req.queryParams("dinero-cuenta-monto");
                             nombre = req.queryParams("dinero-cuenta-nombre-apellido");
                             medioDePagoFinal = new DineroEnCuenta(Double.valueOf(monto), nombre);
@@ -223,6 +229,8 @@ public class EgresoController extends Controller{
             }
 
             String documentoComercialNumero = req.queryParams("documento-num");
+
+            String tipoDocumento = req.queryParams("tipo-documento");
 
             ETipoDoc Etipo =  tipoDeDocumento.get(req.queryParams("tipo-documento"));
 
@@ -277,6 +285,8 @@ public class EgresoController extends Controller{
     private HashMap<String, ETipoDoc> tipoDeDocumento = new HashMap<String, ETipoDoc>() {{
         put("ticket", ETipoDoc.TICKET);
         put("factura", ETipoDoc.FACTURA);
+        put("TICKET", ETipoDoc.TICKET);
+        put("FACTURA", ETipoDoc.FACTURA);
     }};
 
 }
