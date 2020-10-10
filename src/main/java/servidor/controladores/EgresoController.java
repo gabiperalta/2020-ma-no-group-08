@@ -35,11 +35,10 @@ public class EgresoController extends Controller{
 
         Organizacion org = usuario.getOrganizacion();
 
-        //parameters.put("egresos", servicioOperaciones.metodoQueHaceFedeParaFiltrarEgresoPorOrganizacion(org));
 
         ArrayList<OperacionEgreso> egresosPaginados = new ArrayList<>();
 
-        ArrayList<OperacionEgreso> egresos = servicioOperaciones.listarOperaciones();
+        ArrayList<OperacionEgreso> egresos = servicioOperaciones.listarOperaciones(org);
 
 
         int egresosPorPagina = 3;
