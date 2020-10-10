@@ -110,7 +110,14 @@ public class LicitacionController{
         String licitacionId = request.queryParams("licitacion_id");
         CuentaUsuario usuario = request.session().attribute("user");
         ServicioABLicitaciones servicioABLicitaciones = new ServicioABLicitaciones();
-        Licitacion licitacionEncontrada = RepoLicitaciones.getInstance().buscarLicitacionPorIdentificador(licitacionId);
+        ArrayList<Licitacion> licitaciones = servicioABLicitaciones.listarLicitacionesOrg(usuario.getOrganizacion());
+
+        Licitacion licitacionEncontrada = null;
+
+        if(licitaciones.stream().anyMatch(licitacion -> licitacion.getIdentificador().equals(licitacionId))){
+            licitacionEncontrada = licitaciones.stream().filter(licitacion -> licitacion.getIdentificador().equals(licitacionId)).findFirst().get();
+        }
+
         if(licitacionEncontrada == null){
             response.status(404);
             return "Licitacion inexistente";
