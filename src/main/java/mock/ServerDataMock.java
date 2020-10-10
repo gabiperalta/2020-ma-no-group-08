@@ -4,8 +4,8 @@ import dominio.categorizacion.CriterioDeCategorizacion;
 import dominio.categorizacion.RepositorioCategorizacion;
 import dominio.categorizacion.exceptions.CategorizacionException;
 import dominio.cuentasUsuarios.CuentaUsuario;
-import dominio.entidades.Organizacion;
-import dominio.entidades.RepoOrganizaciones;
+import dominio.entidades.*;
+import dominio.entidades.calculadorFiscal.ETipoActividad;
 import dominio.operaciones.*;
 import dominio.operaciones.medioDePago.Efectivo;
 import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;
@@ -30,8 +30,17 @@ public class ServerDataMock {
         ingreso1.setMontoTotal(1000);
 
         OperacionIngreso ingreso2 = new OperacionIngreso();
-        ingreso1.setFecha(new Date());
-        ingreso1.setMontoTotal(2000);
+        ingreso2.setFecha(new Date());
+        ingreso2.setMontoTotal(2000);
+
+        EntidadOperacion origen = new EntidadOperacion("Empresa 1","20-40678950-3","Av.Libertador 801");
+        EntidadOperacion destino = new EntidadOperacion("Empresa 2", "20-40678950-3", "Av.Corrientes 550");
+
+        ingreso1.setEntidadOrigen(origen);
+        ingreso1.setEntidadDestino(destino);
+
+        ingreso2.setEntidadOrigen(origen);
+        ingreso2.setEntidadDestino(destino);
 
         RepoOperacionesIngreso.getInstance().agregarIngreso(ingreso1);
         RepoOperacionesIngreso.getInstance().agregarIngreso(ingreso2);
@@ -54,7 +63,7 @@ public class ServerDataMock {
         items3.add(tinta);
         items4.add(pc);
 
-        Efectivo pesos = new Efectivo(200000,"Rapipago");
+        Efectivo pesos = new Efectivo(200000,"Rapipago", "Efectivo");
         DocumentoComercial documento = new DocumentoComercial(ETipoDoc.FACTURA, 2000);
         Date fecha = new Date();
         EntidadOperacion origen = new EntidadOperacion("Empresa 1","20-40678950-3","Av.Libertador 801");
@@ -98,6 +107,8 @@ public class ServerDataMock {
         RepoOperacionesEgreso.getInstance().agregarOperacionEgreso(egreso4);
     }
 
+
+
     private void cargarCategorias() throws CategorizacionException {
         CriterioDeCategorizacion criterioDePrueba1 = new CriterioDeCategorizacion("CriterioDePrueba-1");
         criterioDePrueba1.agregarCategoria("Categoria-1");
@@ -116,11 +127,19 @@ public class ServerDataMock {
     }
 
     private void cargarOrganizaciones(){
-        RepoOrganizaciones.getInstance().agregarOrganizacion("Organizacion1");
-        RepoOrganizaciones.getInstance().agregarOrganizacion("Organizacion2");
+
+        ArrayList<EntidadJuridica> entidades = new ArrayList<>();
+
+        entidades.add(new Empresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa 1", "Empresa 1", "20-40678950-3", "200", "Av.Libertador 801",false));
+
+
+        RepoOrganizaciones.getInstance().agregarOrganizacion("Organizacion1", entidades);
+        RepoOrganizaciones.getInstance().agregarOrganizacion("Organizacion2", entidades);
     }
 
     private void cargarEntidades(){
+
+        RepoEntidadesJuridicas.getInstance().agregarEntidadEmpresa(new Empresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa 1", "Empresa 1", "20-40678950-3", "200", "Av.Libertador 801",false));
 
     }
 

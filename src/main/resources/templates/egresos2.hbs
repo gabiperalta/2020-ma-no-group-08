@@ -1,0 +1,140 @@
+{{> home.hbs}}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test page</title>
+    <!--
+    <script src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script>
+    <script type="text/javascript" src="/public/handlebars.min-v4.7.6.js"></script>
+    <script src="https://s3.amazonaws.com/builds.handlebarsjs.com/handlebars.min-v4.7.6.js"></script>
+    -->
+
+    <style>
+body {
+  padding-top: 5rem;
+}
+.starter-template {
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+.invisible{
+    opacity: 0;
+    display: none;
+}
+</style>
+
+
+</head>
+<body>
+
+
+<main role="main" class="container" >
+
+    <div id="accordion">
+
+        {{#each egresos}}
+            <div class="card">
+                <div class="card-header" id="headingEgresos{{identificador}}">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" data-target="#collapseEgreso{{identificador}}" data-toggle="collapse" aria-expanded="false" aria-controls="collapseEgreso{{identificador}}">
+                            Egreso {{ identificador}}
+                        </button>
+                    </h5>
+                </div>
+
+                <div id="collapseEgreso{{identificador}}" class="collapse" aria-labelledby="headingEgreso{{identificador}}" data-parent="#accordion">
+                    <div class="container">
+                        <div class="row">
+                            <div class="card-body col-10">
+                                Items:
+                                <ul>
+                                    {{#each this.items}}
+                                        <li>{{ descripcion }} - ${{valor}}</li>
+                                    {{/each}}
+                                </ul>
+                                Entidad origen:
+                                <ul>
+                                    <li>{{ this.entidadOrigen.nombre }} </li>
+                                </ul>
+                                Entidad destino:
+                                <ul>
+                                    <li>{{ this.entidadDestino.nombre }} </li>
+                                </ul>
+                                Presupuestos necesarios:
+                                <ul>
+                                    <li>{{ this.presupuestosNecesarios }} </li>
+                                 </ul>
+                                Medio de pago:
+                                <ul>
+                                   <li>{{medioDePago.nombre}}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {{/each}}
+    </div>
+
+    <div class="mt-5">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+
+                {{#if pagina_anterior}}
+                    <li class="page-item">
+                {{else}}
+                    <li class="page-item disabled">
+                {{/if}}
+                    <a class="page-link" href="/egresos?pagina={{pagina_anterior}}" tabindex="-1">Anterior</a>
+                </li>
+
+                {{#each cantidad_paginas}}
+                    <li class="page-item"><a class="page-link" href="/egresos?pagina={{this}}">{{this}}</a></li>
+                {{/each}}
+
+                {{#if pagina_siguiente}}
+                    <li class="page-item">
+                {{else}}
+                    <li class="page-item disabled">
+                {{/if}}
+                    <a class="page-link" href="/egresos?pagina={{pagina_siguiente}}">Siguiente</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Modal -->
+    <!--
+
+
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Eliminar</button>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    -->
+</main><!-- /.container -->
+
+<script type="text/javascript">
+
+</script>
+
+</body>
+</html>

@@ -58,6 +58,13 @@ public class OperacionIngreso implements Operacion {
 		return entidadDestino;
 	}
 
+	public void setEntidadDestino(EntidadOperacion entidadDestino) {
+		this.entidadDestino = entidadDestino;
+	}
+	public void setEntidadOrigen(EntidadOperacion entidadOrigen) {
+		this.entidadOrigen = entidadOrigen;
+	}
+
 	public void setMontoTotal(double montoTotal) {
 		this.montoTotal = montoTotal;
 	}
