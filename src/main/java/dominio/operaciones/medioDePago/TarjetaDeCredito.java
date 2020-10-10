@@ -4,11 +4,6 @@ import dominio.operaciones.medioDePago.MedioDePago;
 
 public class TarjetaDeCredito implements MedioDePago {
     int cuotas;
-
-    public String getNombre() {
-        return nombre;
-    }
-
     String nombre;
     String numero;
 

@@ -248,11 +248,13 @@ public class EgresoController extends Controller{
     public ModelAndView showModificarEgreso(Request req, Response res){
         Map<String, Object> parameters = new HashMap<>();
         OperacionEgreso egreso = servicioOperaciones.buscarEgreso(req.params("id"));
+        Date fecha = egreso.getFecha();
+        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yy");
+        String fechaFormateada = formateador.format(fecha);
 
         parameters.put("user", req.session().attribute("user"));
         parameters.put("egreso", egreso);
-
-        Date fecha = egreso.getFecha();
+        parameters.put("fecha", fechaFormateada);
 
         return new ModelAndView(parameters, "egreso.hbs");
     }
@@ -325,8 +327,10 @@ public class EgresoController extends Controller{
 
             OperacionEgreso egreso = servicioOperaciones.buscarEgreso(req.params("id"));
 
+            Date parsed=new SimpleDateFormat("yyyy-MM-dd").parse(fecha);
+
             // Modificar Egreso
-            egreso.modificarse(medioDePagoFinal , documento, new Date(fecha), entidadOrigen, entidadDestino);
+            egreso.modificarse(medioDePagoFinal , documento, parsed, entidadOrigen, entidadDestino);
 
         }
         catch(NullPointerException e){
