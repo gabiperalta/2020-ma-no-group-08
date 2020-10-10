@@ -64,12 +64,13 @@ public class EgresoController extends Controller{
             Map<String, Object> map = new HashMap<>();
             map.put("egresos",egresos);
             map.put("user", req.session().attribute("user"));
-
-            String mensajeError = Objects.toString(req.queryParams("error"),"");
-            if(mensajeError.equals("licitacionFinalizada"))
+            String mensajeE = Objects.toString(req.queryParams("error"),"");
+            if(mensajeE.equals("licitacionFinalizada"))
                 parameters.put("error","No puede agregarse el presupuesto debido a que la licitacion a finalizado");
 
-            return new ModelAndView(parameters, "egresos2.hbs");        }
+
+            return new ModelAndView(map,"egresos2.hbs");
+        }
         else{
             int numeroPagina = Integer.parseInt(pagina);
             int indiceInicial = Math.min((numeroPagina - 1) * egresosPorPagina,egresos.size());
@@ -93,12 +94,14 @@ public class EgresoController extends Controller{
 
             map.put("user", req.session().attribute("user"));
 
-            String mensajeError = Objects.toString(req.queryParams("error"),"");
-            if(mensajeError.equals("licitacionFinalizada"))
+            String mensajeE = Objects.toString(req.queryParams("error"),"");
+            if(mensajeE.equals("licitacionFinalizada"))
                 parameters.put("error","No puede agregarse el presupuesto debido a que la licitacion a finalizado");
 
-            return new ModelAndView(parameters, "egresos2.hbs");        }
-        
+
+            return new ModelAndView(map,"egresos2.hbs");
+        }
+
     }
 
 
