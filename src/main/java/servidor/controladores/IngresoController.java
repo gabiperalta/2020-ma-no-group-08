@@ -39,7 +39,7 @@ public class IngresoController extends Controller{
             String[] nombreCategoriaCriterio= filtro.split("_");
 
             try{
-                ingresos = (ArrayList<OperacionIngreso>) RepositorioCategorizacion.getInstance().filtrarPresupuestosDeLaCategoria(nombreCategoriaCriterio[1],nombreCategoriaCriterio[0], org).stream().map(entidadCategorizable -> (OperacionIngreso)entidadCategorizable.getOperacion()).collect(Collectors.toList());
+                ingresos = (ArrayList<OperacionIngreso>) RepositorioCategorizacion.getInstance().filtrarIngresosDeLaCategoria(nombreCategoriaCriterio[1],nombreCategoriaCriterio[0], org).stream().map(entidadCategorizable -> (OperacionIngreso)entidadCategorizable.getOperacion()).collect(Collectors.toList());
                 parameters.put("infoFiltroActual","Filtrado por " + nombreCategoriaCriterio[0] + " - " + nombreCategoriaCriterio[1]);
             }catch (NullPointerException e){
                 ingresos = null;
