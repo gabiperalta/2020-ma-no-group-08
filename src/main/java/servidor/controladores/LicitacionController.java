@@ -2,6 +2,7 @@ package servidor.controladores;
 
 import com.google.gson.*;
 import com.sun.tools.javac.file.SymbolArchive;
+import dominio.categorizacion.CriterioDeCategorizacion;
 import dominio.categorizacion.RepositorioCategorizacion;
 import dominio.cuentasUsuarios.CuentaUsuario;
 import dominio.entidades.Organizacion;
@@ -145,13 +146,17 @@ public class LicitacionController{
         List<Presupuesto> presupuestos = licitaciones.stream().flatMap(licitacion -> licitacion.getPresupuestos().stream()).collect(Collectors.toList());
 
         if(filtro != null){
+
             String[] nombreCategoriaCriterio= filtro.split("_");
-            // las dos lineas de abajo solo estan comentadas para prueba
+
             CuentaUsuario usuario = request.session().attribute("user");
             try{
                 presupuestos = RepositorioCategorizacion.getInstance().filtrarPresupuestosDeLaCategoria(nombreCategoriaCriterio[1],nombreCategoriaCriterio[0], usuario.getOrganizacion()).stream().map(entidadCategorizable -> (Presupuesto)entidadCategorizable.getOperacion()).collect(Collectors.toList());
+                map.put("infoFiltroActual","Filtrado por " + nombreCategoriaCriterio[0] + " - " + nombreCategoriaCriterio[1]);
             }catch (NullPointerException e){
                 presupuestos = null;
+            }catch (ArrayIndexOutOfBoundsException e){
+
             }
             //presupuestos = RepositorioCategorizacion.getInstance().filtrarPresupuestosDeLaCategoria(nombreCategoriaCriterio[0],nombreCategoriaCriterio[1], usuario.getOrganizacion()).stream().map(entidadCategorizable -> (Presupuesto)entidadCategorizable.getOperacion()).collect(Collectors.toList());
             href = href.concat("?filtro=" + filtro);
@@ -175,7 +180,6 @@ public class LicitacionController{
             map.put("presupuestos",presupuestos);
             map.put("user", request.session().attribute("user"));
 
-            return new ModelAndView(map,"presupuestos.hbs");
         }
         else{
             int numeroPagina = Integer.parseInt(pagina);
@@ -201,12 +205,10 @@ public class LicitacionController{
                 map.put("pagina_siguiente",numeroPagina + 1);
 
             map.put("user", request.session().attribute("user"));
-            //return new ModelAndView(map,"presupuestos.hbs");
-
-            map.put("criteriosDeCategorizacion",RepositorioCategorizacion.getInstance().getCriteriosDeCategorizacion());
-
-            return new ModelAndView(map,"presupuestos.hbs");
         }
+
+        map.put("criteriosDeCategorizacion",RepositorioCategorizacion.getInstance().getCriteriosDeCategorizacion());
+        return new ModelAndView(map,"presupuestos.hbs");
     }
 
     public ModelAndView agregarEgreso(Request request,Response response){

@@ -35,19 +35,17 @@ body {
     <div class="form-group">
         <div class="row">
             <select id="selectCategorias" class="custom-select" name="categoria-elegida" style="max-width: 300px">
-                <option selected>Seleccione una categoria</option>
+                <option selected value=" _ ">Seleccione una categoria</option>
                 {{#each criteriosDeCategorizacion}}
                     {{#each this.categorias}}
-                        <option value="{{../nombre}}_{{nombre}}"> {{../nombre}}-{{nombre}} </option>
+                        <option value="{{../nombre}}_{{nombre}}"> {{../nombre}} - {{nombre}} </option>
                     {{/each}}
                 {{/each}}
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
             </select>
             <div class="mx-3">
                 <button type="button" class="btn btn-primary px-3 rounded" onclick="obtenerCategoria()">Filtrar</button>
             </div>
+            <p class="font-italic my-auto">{{infoFiltroActual}}</p>
         </div>
     </div>
 
