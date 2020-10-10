@@ -63,7 +63,7 @@ public class ServerDataMock {
         items3.add(tinta);
         items4.add(pc);
 
-        Efectivo pesos = new Efectivo(200000,"Rapipago");
+        Efectivo pesos = new Efectivo(200000,"Rapipago", "Efectivo");
         DocumentoComercial documento = new DocumentoComercial(ETipoDoc.FACTURA, 2000);
         Date fecha = new Date();
         EntidadOperacion origen = new EntidadOperacion("Empresa 1","20-40678950-3","Av.Libertador 801");

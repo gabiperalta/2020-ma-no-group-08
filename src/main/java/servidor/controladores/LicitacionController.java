@@ -210,7 +210,7 @@ public class LicitacionController{
         EntidadOperacion proveedor1;
         EntidadOperacion proveedor2;
 
-        Efectivo pesos = new Efectivo(200000,"Rapipago");
+        Efectivo pesos = new Efectivo(200000,"Rapipago", "Efectivo");
         DocumentoComercial documento = new DocumentoComercial(ETipoDoc.FACTURA, 2000);
         Date fecha = new Date();
         EntidadOperacion origen = new EntidadOperacion("Operacion compra 1","20-40678950-4","Av.Libertador 800");

@@ -57,7 +57,7 @@ public class EgresoController extends Controller{
 
         parameters.put("egresos", egresosPaginados);
 
-        return new ModelAndView(parameters, "egresos.hbs");
+        return new ModelAndView(parameters, "egresos2.hbs");
     }
 
 
@@ -108,7 +108,7 @@ public class EgresoController extends Controller{
                     if(req.queryParams("efectivo-monto") != null && !req.queryParams("efectivo-monto").equals("")){
                         monto = req.queryParams("efectivo-monto");
                         String puntoDePago = req.queryParams("efectivo-punto-de-pago");
-                        medioDePagoFinal = new Efectivo(Double.valueOf(monto), puntoDePago);
+                        medioDePagoFinal = new Efectivo(Double.valueOf(monto), puntoDePago, "Efectivo");
                     }
                     else{
                         if(req.queryParams("dinero-cuenta-monto") != null && !req.queryParams("dinero-cuenta-monto").equals("")){
