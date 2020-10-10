@@ -60,7 +60,7 @@ public class Router {
 		get("/egreso/:id", egresoC::showModificarEgreso, engine);
 		post("/egreso/:id", egresoC::modificarEgreso, engine);
 		get("/egresos/:egreso", egresoC::showEgreso, engine);
-		delete("/egreso/:identificador", egresoC::deleteEgreso, engine);
+		delete("/egreso/:identificador", egresoC::deleteEgreso);
 
 		get("/egresos", egresoC::mostrarEgresos, engine);
 
