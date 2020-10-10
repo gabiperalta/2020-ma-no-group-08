@@ -16,6 +16,14 @@ public abstract class EntidadJuridica {
         return razonSocial;
     }
 
+    public String getCuit(){
+        return cuit;
+    }
+
+    public String getDireccionPostal(){
+        return direccionPostal;
+    }
+
     public void recategorizar(double cantidadPersonalNuevo, double ventasPromedioNuevo) {}
 
 }

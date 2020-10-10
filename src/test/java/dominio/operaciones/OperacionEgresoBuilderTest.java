@@ -28,7 +28,7 @@ public class OperacionEgresoBuilderTest {
         flete = new Item(500, ETipoItem.SERVICIO, "Servicio de transporte de productos");
         items.add(flete);
         items.add(computadora);
-        pesos = new Efectivo(200000,"Rapipago");
+        pesos = new Efectivo(200000,"Rapipago", "Efectivo");
         documento = new DocumentoComercial(ETipoDoc.FACTURA, 2000);
         fecha = new Date();
         origen = new EntidadOperacion("Operacion compra 1","20-40678950-4","Av.Libertador 800");

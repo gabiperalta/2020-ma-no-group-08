@@ -29,6 +29,14 @@ body {
 </head>
 <body>
 
+{{#if error}}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>ERROR</strong> {{error}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+{{/if}}
 
 <main role="main" class="container" >
 
@@ -51,33 +59,37 @@ body {
 
     <div id="accordion">
 
-        {{#each presupuestos}}
+        {{#each ingresos}}
             <div class="card">
-                <div class="card-header" id="headingPresupuesto{{identificador}}">
+                <div class="card-header" id="headingIngresos{{identificador}}">
                     <h5 class="mb-0">
-                        <button class="btn btn-link" data-target="#collapsePresupuesto{{identificador}}" data-toggle="collapse" aria-expanded="false" aria-controls="collapsePresupuesto{{identificador}}">
-                            Presupuesto {{ identificador}}
+                        <button class="btn btn-link" data-target="#collapseIngreso{{identificador}}" data-toggle="collapse" aria-expanded="false" aria-controls="collapseIngreso{{identificador}}">
+                            Ingreso {{ identificador}}
                         </button>
                     </h5>
                 </div>
 
-                <div id="collapsePresupuesto{{identificador}}" class="collapse" aria-labelledby="headingPresupuesto{{identificador}}" data-parent="#accordion">
+                <div id="collapseIngreso{{identificador}}" class="collapse" aria-labelledby="headingIngreso{{identificador}}" data-parent="#accordion">
                     <div class="container">
                         <div class="row">
-
                             <div class="card-body col-10">
-                                Items:
+                                Entidad origen:
                                 <ul>
-                                    {{#each this.items}}
-                                        <li>{{ descripcion }} - ${{valor}}</li>
-                                    {{/each}}
+                                    <li>{{ this.entidadOrigen.nombre }} </li>
                                 </ul>
-                            </div>
-                            <div class="col my-auto">
-                               <form action="/categorizar" method="GET">
-                                    <input class="invisible" name="id-entidad-categorizable" value={{identificador}} >
-                                    <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Categorizar</button>
-                               </form>
+                                Entidad destino:
+                                <ul>
+                                    <li>{{ this.entidadDestino.nombre }} </li>
+                                </ul>
+                                Monto total:
+                                <ul>
+                                    <li>{{ this.montoTotal }} </li>
+                                 </ul>
+                                Fecha:
+                                <ul>
+                                   <li>{{fechaString}}</li>
+                                </ul>
+
                             </div>
                         </div>
                     </div>
@@ -85,6 +97,8 @@ body {
             </div>
         {{/each}}
     </div>
+
+
 
     <div class="mt-5">
         <nav aria-label="Page navigation example">
@@ -95,11 +109,11 @@ body {
                 {{else}}
                     <li class="page-item disabled">
                 {{/if}}
-                    <a class="page-link" href="/presupuestos?pagina={{pagina_anterior}}{{filtroPaginado}}" tabindex="-1">Anterior</a>
+                    <a class="page-link" href="/ingresos?pagina={{pagina_anterior}}{{filtroPaginado}}" tabindex="-1">Anterior</a>
                 </li>
 
                 {{#each cantidad_paginas}}
-                    <li class="page-item"><a class="page-link" href="/presupuestos?pagina={{this}}{{filtroPaginado}}">{{this}}</a></li>
+                    <li class="page-item"><a class="page-link" href="/ingresos?pagina={{this}}{{filtroPaginado}}">{{this}}</a></li>
                 {{/each}}
 
                 {{#if pagina_siguiente}}
@@ -107,13 +121,13 @@ body {
                 {{else}}
                     <li class="page-item disabled">
                 {{/if}}
-                    <a class="page-link" href="/presupuestos?pagina={{pagina_siguiente}}{{filtroPaginado}}">Siguiente</a>
+                    <a class="page-link" href="/ingresos?pagina={{pagina_siguiente}}{{filtroPaginado}}">Siguiente</a>
                 </li>
             </ul>
         </nav>
     </div>
-
-</main><!-- /.container -->
+</main>
+</body>
 
 <script type="text/javascript">
     /*
@@ -126,10 +140,9 @@ body {
     */
 
     function obtenerCategoria(){
-        window.location.href = "/presupuestos?filtro=" + $("#selectCategorias").val()
+        window.location.href = "/ingresos?filtro=" + $("#selectCategorias").val()
     }
 
 </script>
 
-</body>
 </html>

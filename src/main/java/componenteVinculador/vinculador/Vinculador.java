@@ -34,8 +34,7 @@ public class Vinculador {
         }
 
         vinculacionJsonString = new Gson().toJson(resultado);
-//        TODO: sacar cunado se genere el archivo
-        System.out.print(vinculacionJsonString);
+        System.out.print("Vinculacion:\n" + vinculacionJsonString + "\n");
 
         return resultado;
     }

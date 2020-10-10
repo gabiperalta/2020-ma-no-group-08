@@ -9,8 +9,10 @@ public class Organizacion {
     protected String nombre;
     protected ArrayList<EntidadJuridica> entidades;
 
-    public Organizacion(String nombre){
+    public Organizacion(String nombre, ArrayList<EntidadJuridica> entidades){
         this.nombre = nombre;
+        this.entidades= entidades;
+
     }
 
     public void agregarEntidad(EntidadJuridica entidad) {
@@ -45,10 +47,15 @@ public class Organizacion {
         return existeLaEntidad;
     }
 
-    private EntidadJuridica buscarEntidad(String razonSocial){
+    public EntidadJuridica buscarEntidad(String razonSocial){
         EntidadJuridica unaEntidadJuridica = entidades.stream().filter( entidad -> entidad.getRazonSocial().equals(razonSocial)).findFirst().get();
         return unaEntidadJuridica;
     }
+    public EntidadJuridica buscarEntidadPorCuit(String cuit){
+        EntidadJuridica unaEntidadJuridica = entidades.stream().filter( entidad -> entidad.getCuit().equals(cuit)).findFirst().get();
+        return unaEntidadJuridica;
+    }
+
 
     public void setEntidades(ArrayList<EntidadJuridica> entidades) {
         this.entidades = entidades;
