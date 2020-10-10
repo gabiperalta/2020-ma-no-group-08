@@ -12,55 +12,67 @@
     <link rel="stylesheet" href="/css/egresos.css" />
 </head>
 
-<!--
-<body style="padding-top: 20rem">
-    <div class="container d-flex p-2 flex-wrap justify-content-center">
-        <div class="list_group">
-            {{#each egresos}}
-                <div class="float-sm-left d-flex align-items-center">
-                    <a href="/egresos/{{egreso.identificadorOperacion}}" class="list-group-item list-group-item-action active" >Egreso {{@index}}
-                        <form id="eliminarEgreso" action="/egresos/{{egreso.id_egreso}}/" method="DELETE">
-                            <button type="submit" class="btn btn-danger" onclick="confirmarEliminacion()">Eliminar </button>
-                        </form>
-                        <form id="modificarEgreso" action="/egresos/{{egreso.id_egreso}}/" method="PUT">
-                            <button type="submit" class="btn btn-danger" href="/egresos/:id">Modificar </button>
-                        </form>
-                    </a>
-                </div>
-            {{/each}}
-        </div>
-        <form action="/egreso" method="GET">
-            <button type="submit" class="btn btn-success float-sm-right">Nuevo egreso</button>
-        </form>
-    </div>
-</body>
--->
 <body style="padding-top: 5rem">
+
+    {{#if error}}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>ERROR</strong> {{error}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {{/if}}
+
     <ul class="list-group">
         {{#each egresos}}
             <li class="list-group align-items-center">
-                <div class="container">
+               <div class="container">
                     <div class="row justify-content-md-center">
-                        <a href="/egresos/{{identificador}}" class="list-group-item list-group-item-action active col-6" >Egreso {{@index}}</a>
+                        <a class="list-group-item list-group-item-danger col-6" data-toggle="collapse{{@index}}"
+                            data-target="collapse{{@index}}" href="#collapse{{@index}}" aria-expanded="false" aria-controls="collapse{{@index}}" role="row">Egreso {{@index}}</a>
                         <div class="offset-2 col-4">
                             <div class="row">
-                                <form id="eliminarEgreso" action="/egresos/{{identificador}}/" method="DELETE">
+                                <form id="eliminarEgreso" action="/egresos/{{identificador}}" method="DELETE">
                                     <button style="margin-left: 10px" type="submit" class="btn btn-outline-danger" onclick="confirmarEliminacion()">Eliminar </button>
                                 </form>
+                                &nbsp
                                 <form id="modificarEgreso" action="/egresos/{{identificador}}/" method="PUT">
                                     <button type="submit" class="btn btn-outline-primary" href="/egresos/:id">Modificar </button>
                                 </form>
+                                &nbsp
                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalAgregarPresupuesto" onclick="obtenerEgreso('{{identificador}}')">Agregar presupuesto </button>
+                            </div>
+                        </div>
+                    <div class="accordion" id="accordion{{@index}}">
+                        <div class="collapse{{@index}}" id="collapse{{@index}}" data-parent="#accordion{{@index}}">
+                            <div class="card-body">
+                                <h6>
+                                    <b>Items: </b>
+                                </h6>
+                                <ul class="list-group">
+                                    {{#each items}}
+                                        <li>{{descripcion}}</li>
+                                    {{/each}}
+                                </ul>
+                                <h6>
+                                    <b>Medio de pago: </b>
+                                </h6>
+                                <i>{{medioDePago}}</i>
+                                <h6>
+                                    <b>Documento comercial: </b>
+                                </h6>
+                                <i>{{documento.}}</i>
                             </div>
                         </div>
                     </div>
                 </div>
+                </div>
             </li>
         {{/each}}
     </ul>
-    <div class="mx-3 my-4"> <!--style="text-align:left ;width:220px"-->
+    <div class="mx-3 my-4 text-center" >
         <form action="/egreso" method="GET">
-            <button style="margin-left: 50px" type="submit" class="btn btn-success float-sm-center">Nuevo egreso</button>
+            <button type="submit" class="btn btn-dark float-sm-center">Nuevo egreso</button>
         </form>
     </div>
 
@@ -78,6 +90,7 @@
                             <input type="text" name="identificador_egreso" class="d-none" id="inputIdentificadorEgreso">
                         </div>
                     </form>
+                    <p id="pIdLicitacion" class="font-italic"></p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -93,8 +106,37 @@
     function obtenerEgreso(identificadorEgreso) {
         $('#modalAgregarPresupuestoTitulo').text("Agregar presupuesto al egreso " + identificadorEgreso);
         $('#inputIdentificadorEgreso').val(identificadorEgreso);
+
+        $.get("/licitacion?idEgreso=" + identificadorEgreso, function (data) {
+                if(data.length > 0)
+                    $("#pIdLicitacion").text("Los presupuestos se agregaran a la licitacion " + data);
+            }
+        );
     }
 </script>
+
+<!--{{#each egresos as | egreso |}}
+<div class="collapse" id="collapseExample">
+    <div class="card card-body">
+        <h6>
+            <b>Items: </b>
+        </h6>
+        <ul class="list-group">
+            {{#each egreso.items}}
+                <li>{{descripcion}}</li>
+            {{/each}}
+        </ul>
+        <h6>
+            <b>Medio de pago: </b>
+        </h6>
+        <i>{{egreso.medioDePago}}</i>
+        <h6>
+            <b>Documento comercial: </b>
+        </h6>
+        <i>{{egreso.documentoComercial}}</i>
+    </div>
+</div>
+{{/each}}-->
 
 </html>
 

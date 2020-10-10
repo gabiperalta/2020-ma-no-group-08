@@ -4,8 +4,8 @@ import dominio.categorizacion.CriterioDeCategorizacion;
 import dominio.categorizacion.RepositorioCategorizacion;
 import dominio.categorizacion.exceptions.CategorizacionException;
 import dominio.cuentasUsuarios.CuentaUsuario;
-import dominio.entidades.Organizacion;
-import dominio.entidades.RepoOrganizaciones;
+import dominio.entidades.*;
+import dominio.entidades.calculadorFiscal.ETipoActividad;
 import dominio.operaciones.*;
 import dominio.operaciones.medioDePago.Efectivo;
 import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;
@@ -30,11 +30,39 @@ public class ServerDataMock {
         ingreso1.setMontoTotal(1000);
 
         OperacionIngreso ingreso2 = new OperacionIngreso();
-        ingreso1.setFecha(new Date());
-        ingreso1.setMontoTotal(2000);
+        ingreso2.setFecha(new Date());
+        ingreso2.setMontoTotal(2000);
+
+
+        OperacionIngreso ingreso3 = new OperacionIngreso();
+        ingreso3.setFecha(new Date());
+        ingreso3.setMontoTotal(3434.6);
+
+        OperacionIngreso ingreso4 = new OperacionIngreso();
+        ingreso4.setFecha(new Date());
+        ingreso4.setMontoTotal(565.3);
+
+        EntidadOperacion origen = new EntidadOperacion("Empresa 2","20-40678950-3","Av.Libertador 801");
+        EntidadOperacion destino = new EntidadOperacion("Empresa 1", "20-40678950-3", "Av.Corrientes 550");
+
+        ingreso1.setEntidadOrigen(origen);
+        ingreso1.setEntidadDestino(destino);
+
+        ingreso2.setEntidadOrigen(origen);
+        ingreso2.setEntidadDestino(destino);
+
+        ingreso3.setEntidadOrigen(origen);
+        ingreso3.setEntidadDestino(destino);
+
+        ingreso4.setEntidadOrigen(origen);
+        ingreso4.setEntidadDestino(destino);
 
         RepoOperacionesIngreso.getInstance().agregarIngreso(ingreso1);
         RepoOperacionesIngreso.getInstance().agregarIngreso(ingreso2);
+        RepoOperacionesIngreso.getInstance().agregarIngreso(ingreso3);
+        RepoOperacionesIngreso.getInstance().agregarIngreso(ingreso4);
+
+
     }
 
     private void cargarEgregos() throws Exception {
@@ -43,18 +71,23 @@ public class ServerDataMock {
         ArrayList<Item> items2 = new ArrayList<>();
         ArrayList<Item> items3 = new ArrayList<>();
         ArrayList<Item> items4 = new ArrayList<>();
+        ArrayList<Item> items5 = new ArrayList<>();
+
 
         Item resma = new Item(300,ETipoItem.ARTICULO,"Resma de hojas");
         Item flete = new Item(350, ETipoItem.SERVICIO, "Servicio de transporte de productos");
         Item tinta = new Item(500,ETipoItem.ARTICULO,"Cartucho de tinta");
         Item pc = new Item(50000,ETipoItem.ARTICULO,"computadora");
+        Item escritorio = new Item(456454,ETipoItem.ARTICULO,"Escritorio");
 
         items1.add(resma);
         items2.add(flete);
         items3.add(tinta);
         items4.add(pc);
+        items5.add(escritorio);
+        items5.add(pc);
 
-        Efectivo pesos = new Efectivo(200000,"Rapipago");
+        Efectivo pesos = new Efectivo(200000,"Rapipago", "Efectivo");
         DocumentoComercial documento = new DocumentoComercial(ETipoDoc.FACTURA, 2000);
         Date fecha = new Date();
         EntidadOperacion origen = new EntidadOperacion("Empresa 1","20-40678950-3","Av.Libertador 801");
@@ -92,11 +125,24 @@ public class ServerDataMock {
                 .agregarEntidadDestino(destino)
                 .agregarPresupuestosNecesarios(presupuestosNecesarios).build();
 
+        OperacionEgreso egreso5 = builderEgreso.agregarItems(items5)
+                .agregarMedioDePago(pesos)
+                .agregarDocComercial(documento)
+                .agregarFecha(fecha)
+                .agregarEntidadOrigen(origen)
+                .agregarEntidadDestino(destino)
+                .agregarPresupuestosNecesarios(presupuestosNecesarios).build();
+
         RepoOperacionesEgreso.getInstance().agregarOperacionEgreso(egreso1);
         RepoOperacionesEgreso.getInstance().agregarOperacionEgreso(egreso2);
         RepoOperacionesEgreso.getInstance().agregarOperacionEgreso(egreso3);
         RepoOperacionesEgreso.getInstance().agregarOperacionEgreso(egreso4);
+        RepoOperacionesEgreso.getInstance().agregarOperacionEgreso(egreso5);
+
+
     }
+
+
 
     private void cargarCategorias() throws CategorizacionException {
         CriterioDeCategorizacion criterioDePrueba1 = new CriterioDeCategorizacion("CriterioDePrueba-1");
@@ -116,11 +162,19 @@ public class ServerDataMock {
     }
 
     private void cargarOrganizaciones(){
-        RepoOrganizaciones.getInstance().agregarOrganizacion("Organizacion1");
-        RepoOrganizaciones.getInstance().agregarOrganizacion("Organizacion2");
+
+        ArrayList<EntidadJuridica> entidades = new ArrayList<>();
+
+        entidades.add(new Empresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa 1", "Empresa 1", "20-40678950-3", "200", "Av.Libertador 801",false));
+
+
+        RepoOrganizaciones.getInstance().agregarOrganizacion("Organizacion1", entidades);
+        RepoOrganizaciones.getInstance().agregarOrganizacion("Organizacion2", entidades);
     }
 
     private void cargarEntidades(){
+
+        RepoEntidadesJuridicas.getInstance().agregarEntidadEmpresa(new Empresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa 1", "Empresa 1", "20-40678950-3", "200", "Av.Libertador 801",false));
 
     }
 

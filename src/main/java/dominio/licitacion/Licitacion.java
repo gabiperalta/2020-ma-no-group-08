@@ -36,6 +36,7 @@ public class Licitacion {
 
 	public void agregarPresupuesto(Presupuesto presup) {
 		if(presup.esValido(compra)) {
+			presup.setEntidadOrigen(this.compra.getEntidadOrigen());
 			presup.setIdentificador(Objects.toString(this.getIdentificador(),"") + "-P" + ultimoIdentificadorPresupuesto);
 			this.presupuestos.add(presup);
 			ultimoIdentificadorPresupuesto++;

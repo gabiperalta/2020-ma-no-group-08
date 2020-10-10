@@ -3,6 +3,7 @@ package dominio.operaciones;
 import dominio.entidades.Organizacion;
 
 import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class OperacionIngreso implements Operacion {
@@ -50,12 +51,26 @@ public class OperacionIngreso implements Operacion {
 		return fecha;
 	}
 
+	public String getFechaString() {
+		SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yy");
+
+		return formateador.format(fecha);
+	}
+
+
 	public boolean esIngreso() {
 		return true;
 	}
 
 	public EntidadOperacion getEntidadDestino() {
 		return entidadDestino;
+	}
+
+	public void setEntidadDestino(EntidadOperacion entidadDestino) {
+		this.entidadDestino = entidadDestino;
+	}
+	public void setEntidadOrigen(EntidadOperacion entidadOrigen) {
+		this.entidadOrigen = entidadOrigen;
 	}
 
 	public void setMontoTotal(double montoTotal) {

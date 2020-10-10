@@ -21,9 +21,9 @@ public class RepoOrganizaciones {
 
     public RepoOrganizaciones() {
 
-        Organizacion organizacion1 = new Organizacion("org1");
-        Organizacion organizacion2 = new Organizacion("org2");
-        Organizacion organizacion3 = new Organizacion("org3");
+        Organizacion organizacion1 = new Organizacion("org1", null);
+        Organizacion organizacion2 = new Organizacion("org2",null);
+        Organizacion organizacion3 = new Organizacion("org3",null);
 
         organizaciones = new ArrayList<Organizacion>();
 
@@ -32,9 +32,9 @@ public class RepoOrganizaciones {
         organizaciones.add(organizacion3);
     }
 
-    public void agregarOrganizacion(String nombreOrganizacion) {
+    public void agregarOrganizacion(String nombreOrganizacion, ArrayList<EntidadJuridica> entidades) {
         if (!this.existeLaOrganizacion(nombreOrganizacion)) {
-            Organizacion organizacion = new Organizacion(nombreOrganizacion);
+            Organizacion organizacion = new Organizacion(nombreOrganizacion,entidades);
             organizaciones.add(organizacion);
         }
     }

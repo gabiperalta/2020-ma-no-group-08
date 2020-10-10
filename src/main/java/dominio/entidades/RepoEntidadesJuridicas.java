@@ -37,11 +37,16 @@ public class RepoEntidadesJuridicas {
         EntidadJuridica entidad2 = new OSC("0002", "ficticia3", "23131", "111", "obligado 11");
         EntidadJuridica entidad3 = new Empresa(ETipoEmpresa.MICRO, 1, ETipoActividad.COMERCIO, 100.00, "0001", "ficticia2", "4453456", "200", "silveyra 4343",true);
 
+        EntidadJuridica entidad4 = new Empresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa 1", "Empresa 1", "20-40678950-3", "200", "Av.Libertador 801",false);
+
+
         entidadesJuridicas = new ArrayList<EntidadJuridica>();
 
         entidadesJuridicas.add(entidad1);
         entidadesJuridicas.add(entidad2);
         entidadesJuridicas.add(entidad3);
+        entidadesJuridicas.add(entidad4);
+
     }
 
 

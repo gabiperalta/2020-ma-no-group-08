@@ -1,19 +1,31 @@
 package servidor.controladores;
 
 import dominio.cuentasUsuarios.CuentaUsuario;
+import dominio.entidades.ETipoEmpresa;
+import dominio.entidades.Empresa;
+import dominio.entidades.EntidadJuridica;
 import dominio.entidades.Organizacion;
+import dominio.entidades.calculadorFiscal.ETipoActividad;
+import dominio.licitacion.Licitacion;
+import dominio.licitacion.Presupuesto;
+import dominio.licitacion.RepoLicitaciones;
 import dominio.operaciones.*;
 import dominio.operaciones.medioDePago.*;
+import org.json.JSONArray;
 import servicio.abOperaciones.ServicioABOperaciones;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
+import java.text.SimpleDateFormat;
+
 import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+
+import java.lang.reflect.Array;
+import java.util.*;
+import java.util.stream.Collectors;
+
 
 public class EgresoController extends Controller{
 
@@ -35,24 +47,61 @@ public class EgresoController extends Controller{
 
         ArrayList<OperacionEgreso> egresosPaginados = new ArrayList<>();
 
-        ArrayList<OperacionEgreso> egresos = servicioOperaciones.listarOperaciones(org);
+        ArrayList<OperacionEgreso> egresos = servicioOperaciones.listarOperaciones();
 
-        Integer numeroPagina = req.queryParams("query_num_pagina")!= null ? Integer.valueOf(req.queryParams("query_num_pagina")) : 1;
 
-        for(int i =0; i < egresos.size() ; i++){
-            if((numeroPagina*10)-10 < i  && i < numeroPagina*10 ){
-                egresosPaginados.add(egresos.get(i));
+        int egresosPorPagina = 3;
 
+        String pagina = req.queryParams("pagina");
+
+        if(pagina == null){
+            if(egresos.size() > egresosPorPagina){ // 3 egresos por pagina
+                res.redirect("/egresos?pagina=1"); // redirecciona a la pagina 1
+                return null;
             }
+
+            //OUTPUT
+            Map<String, Object> map = new HashMap<>();
+            map.put("egresos",egresos);
+            map.put("user", req.session().attribute("user"));
+            String mensajeE = Objects.toString(req.queryParams("error"),"");
+            if(mensajeE.equals("licitacionFinalizada"))
+                parameters.put("error","No puede agregarse el presupuesto debido a que la licitacion a finalizado");
+
+
+            return new ModelAndView(map,"egresos2.hbs");
+        }
+        else{
+            int numeroPagina = Integer.parseInt(pagina);
+            int indiceInicial = Math.min((numeroPagina - 1) * egresosPorPagina,egresos.size());
+            int indiceFinal = Math.min(numeroPagina * egresosPorPagina,egresos.size());
+            List<OperacionEgreso> egresosSubLista = egresos.subList(indiceInicial,indiceFinal);
+
+            //OUTPUT
+            Map<String, Object> map = new HashMap<>();
+            map.put("egresos",egresosSubLista);
+
+            int cantidadPaginas = (int) Math.ceil((double)egresos.size()/egresosPorPagina);
+            ArrayList<Integer> listaCantidadPaginas = new ArrayList<>();
+            for(int i = 1;i<=cantidadPaginas; i++){
+                listaCantidadPaginas.add(i);
+            }
+            map.put("cantidad_paginas",listaCantidadPaginas);
+            if(numeroPagina > 1)
+                map.put("pagina_anterior",numeroPagina - 1);
+            if(numeroPagina * egresosPorPagina < egresos.size())
+                map.put("pagina_siguiente",numeroPagina + 1);
+
+            map.put("user", req.session().attribute("user"));
+
+            String mensajeE = Objects.toString(req.queryParams("error"),"");
+            if(mensajeE.equals("licitacionFinalizada"))
+                parameters.put("error","No puede agregarse el presupuesto debido a que la licitacion a finalizado");
+
+
+            return new ModelAndView(map,"egresos2.hbs");
         }
 
-        parameters.put("egresos", egresosPaginados);
-
-        OperacionEgreso egreso1 = egresos.get(0);
-        System.out.println(egresos);
-        System.out.println(egreso1.getIdentificador());
-
-        return new ModelAndView(parameters, "egresos.hbs");
     }
 
 
@@ -67,35 +116,48 @@ public class EgresoController extends Controller{
     }
 
 
+    public ModelAndView deleteEgreso(Request request, Response response){
+        Map<String, Object> parameters = new HashMap<>();
+
+        String identificador = request.params("identificador");
+
+
+        RepoOperacionesEgreso.getInstance().eliminarOperacionEgresoPorIdentificador(identificador);
+
+        response.redirect("/egresos");
+
+        return null;
+    }
+
+
     public ModelAndView crearEgreso(Request req, Response res) throws Exception {
 
         try {
-
             MedioDePago medioDePagoFinal;
             String monto;
             String nombre;
             String numero;
 
-            if(req.queryParams("tarjeta-credito-num") != null){
+            if(!req.queryParams("tarjeta-credito-num").isEmpty()){
                 nombre = req.queryParams("tarjeta-credito-nombre-apellido");
                 String cuotas = req.queryParams("tarjeta-credito-cantidad");
                 numero = req.queryParams("tarjeta-credito-num");
                 medioDePagoFinal = new TarjetaDeCredito(Integer.valueOf(cuotas), nombre, numero);
             }
             else{
-                if(req.queryParams("tarjeta-debito-num") != null){
+                if(!req.queryParams("tarjeta-debito-num").isEmpty()){
                     nombre = req.queryParams("tarjeta-debito-nombre-apellido");
                     numero = req.queryParams("tarjeta-debito-num");
                     medioDePagoFinal = new TarjetaDeDebito(nombre, numero);
                 }
                 else {
-                    if(req.queryParams("efectivo-monto") != null){
+                    if(!req.queryParams("efectivo-monto").isEmpty()){
                         monto = req.queryParams("efectivo-monto");
                         String puntoDePago = req.queryParams("efectivo-punto-de-pago");
-                        medioDePagoFinal = new Efectivo(Double.valueOf(monto), puntoDePago);
+                        medioDePagoFinal = new Efectivo(Double.valueOf(monto), puntoDePago, "Efectivo");
                     }
                     else{
-                        if(req.queryParams("dinero-cuenta-monto") != null){
+                        if(!req.queryParams("dinero-cuenta-monto").isEmpty()){
                             monto = req.queryParams("dinero-cuenta-monto");
                             nombre = req.queryParams("dinero-cuenta-nombre-apellido");
                             medioDePagoFinal = new DineroEnCuenta(Double.valueOf(monto), nombre);
@@ -136,14 +198,20 @@ public class EgresoController extends Controller{
 
             }
 
+            CuentaUsuario usuario = req.session().attribute("user");
+
+            Organizacion org = usuario.getOrganizacion();
+
 
             String EONombre = req.queryParams("query_EO_nombre");
-            String EOCuil = req.queryParams("query_EO_cuil");
-            String EODireccion = req.queryParams("query_EO_direccion");
+
+            EntidadJuridica entidadJuridica = org.buscarEntidad(EONombre);
+
+            String EOCuil = entidadJuridica.getCuit();
+            String EODireccion = entidadJuridica.getDireccionPostal();
 
             EntidadOperacion entidadOrigen = new EntidadOperacion(EONombre, EOCuil, EODireccion);
 
-            // TODO, debe verificarse que la entidad origen sea perteneciente a la org del usuario
 
             String EDNombre = req.queryParams("query_ED_nombre");
             String EDCuil = req.queryParams("query_ED_cuil");
@@ -153,14 +221,19 @@ public class EgresoController extends Controller{
 
             String presupuestosNecesarios = req.queryParams("presupuestos-necesarios-num");
 
-            OperacionEgreso egreso = new OperacionEgreso(items,medioDePagoFinal , documento, new Date(fecha), entidadOrigen, entidadDestino, Integer.valueOf(presupuestosNecesarios));
+            Date parsed=new SimpleDateFormat("yyyy-MM-dd").parse(fecha);
+
+            OperacionEgreso egreso = new OperacionEgreso(items,medioDePagoFinal , documento, parsed, entidadOrigen, entidadDestino, Integer.valueOf(presupuestosNecesarios));
+
+            RepoOperacionesEgreso.getInstance().agregarOperacionEgreso(egreso);
+
 
         }
         catch(NullPointerException e){
             mensajeError = "Null error: " + e.getMessage();
             return new ModelAndView(this, "fallaCreacionEgreso.hbs"); }
         catch (Exception e) {
-            mensajeError = "Error desconocido: " + e.getMessage() + req.queryMap();
+            mensajeError = "Error desconocido: " + e.getMessage();
             return new ModelAndView(this, "fallaCreacionEgreso.hbs");
         }
 
@@ -178,10 +251,6 @@ public class EgresoController extends Controller{
 
         parameters.put("user", req.session().attribute("user"));
         parameters.put("egreso", egreso);
-
-        String date = egreso.getFecha().toString();
-
-        parameters.put("date", egreso.getFecha().toString());
 
         Date fecha = egreso.getFecha();
 
@@ -213,7 +282,7 @@ public class EgresoController extends Controller{
                     if(!req.queryParams("efectivo-monto").isEmpty()){
                         monto = req.queryParams("efectivo-monto");
                         String puntoDePago = req.queryParams("efectivo-punto-de-pago");
-                        medioDePagoFinal = new Efectivo(Double.valueOf(monto), puntoDePago);
+                        medioDePagoFinal = new Efectivo(Double.valueOf(monto), puntoDePago, "Efectivo");
                     }
                     else{
                         if(!req.queryParams("dinero-cuenta-monto").isEmpty()){

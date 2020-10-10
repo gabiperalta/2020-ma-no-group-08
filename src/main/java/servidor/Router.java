@@ -52,13 +52,16 @@ public class Router {
 		get("/", homec::showHomePage, engine);
 		get("/presupuestos",licitacionc::mostrarPresupuestos,engine);
 		post("/presupuesto",licitacionc::agregarPresupuesto);
-		post("/presupuesto/categorizar",licitacionc::categorizarPresupuesto);
 		post("/licitacion",licitacionc::realizarLicitacion);
+		get("/licitacion",licitacionc::obtenerLicitacionPorEgreso);
 		get("/licitacion/:licitacion_id",licitacionc::resultadoLicitacion,licitacionc.getGson()::toJson);
 		get("/egreso", egresoC::showEgreso, engine);
 		post("/egreso", egresoC::crearEgreso, engine);
 		get("/egreso/:id", egresoC::showModificarEgreso, engine);
 		post("/egreso/:id", egresoC::modificarEgreso, engine);
+		get("/egresos/:egreso", egresoC::showEgreso, engine);
+		delete("/egresos/:identificador", egresoC::deleteEgreso, engine);
+		
 		get("/egresos", egresoC::mostrarEgresos, engine);
 
 		get("/ingreso", ingresoC::showIngreso, engine);
@@ -66,17 +69,19 @@ public class Router {
 
 		get("/categorizar", categorizacionesC::showCategorizacionesPage, engine);
 		post("/categorizar", categorizacionesC::Categorizar, engine);
-
-		//get("/archivo",licitacionc::agregarArchivo,engine);
+		
 		get("/vinculaciones",vinculacionesC::seleccionarOperaciones,engine);
 		post("/vinculaciones",vinculacionesC::vincular);
 
 
-		/*before("/*", (request, response) -> {
-			if (isProtected(request.uri()) && request.session().attribute("user") == null) {
+		before("/*", (request, response) -> {
+			if(request.uri().startsWith("/licitacion") && request.session().attribute("user") == null){
+				halt(401,"Debe loguearse");
+			}
+			else if (isProtected(request.uri()) && request.session().attribute("user") == null) {
 				response.redirect("/login", 302);
 			}
-		});*/
+		});
 
 		//request.session().attribute("user");
 	}
@@ -84,7 +89,6 @@ public class Router {
 	private static boolean isProtected(String uri) {
 		ArrayList<String> urlNoProtegidas = new ArrayList<>();
 		urlNoProtegidas.add("/login");
-		urlNoProtegidas.add("/licitacion");
 
 		return urlNoProtegidas.stream().noneMatch(uri::startsWith);
 	}

@@ -4,7 +4,12 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
+import com.sun.xml.internal.bind.v2.runtime.reflect.Lister;
+import dominio.entidades.ETipoEmpresa;
+import dominio.entidades.Empresa;
+import dominio.entidades.EntidadJuridica;
 import dominio.entidades.Organizacion;
+import dominio.entidades.calculadorFiscal.ETipoActividad;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,7 +33,11 @@ public class ServicioABMUsuariosTest {
 		
 		abmUsuarios = new ServicioABMUsuarios();
 
-		organizacion = new Organizacion("Organizacion 1");
+		ArrayList<EntidadJuridica> entidades = new ArrayList<>();
+
+		entidades.add(new Empresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa 1", "Empresa 1", "20-40678950-3", "200", "Av.Libertador 801",false));
+
+		organizacion = new Organizacion("Organizacion 1",entidades);
 		
 		listaDeRoles = new ArrayList<String>();
 		

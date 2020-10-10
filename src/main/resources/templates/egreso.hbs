@@ -8,6 +8,7 @@
 
     <style>
         body {
+
             padding-top: 5rem;
         }
     </style>
@@ -155,9 +156,9 @@
         </div>
         <div class="container mt-4">
             {{#if egreso}}
-                <h4>2 - Seleccionar documento comercial y entidades</h4>
+                <h4>2 - Seleccionar documento comercial</h4>
             {{else}}
-                <h4>3 - Seleccionar documento comercial y entidades</h4>
+                <h4>3 - Seleccionar documento comercial</h4>
             {{/if}}
             <div class="row">
                 <div class="form-group">
@@ -176,26 +177,47 @@
                     <label for="documento-num">Numero Documento:</label>
                     <input type="number" class="form-control" id="documento-num" name="documento-num" {{#if egreso}} value="{{egreso.documento.numero}}" {{/if}}>
                 </div>
-                <div class="form-group">
-                    <label for="entidad-origen-select">Seleccionar entidad de origen:</label>
-                    <select class="custom-select" name="entidad-origen" id="entidad-origen-select">
-                        <option value="none" selected disabled hidden>--Entidad origen--</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="entidad-destino-select">Seleccionar entidad de destino:</label>
-                    <select class="custom-select" name="entidad-destino" id="entidad-destino-select">
-                        <option value="none" selected disabled hidden>--Entidad destino--</option>
-                    </select>
-                </div>
             </div>
         </div>
 
         <div class="container mt-4">
             {{#if egreso}}
-                <h4>3 - Agregar datos finales</h4>
+                <h4>3 - Ingresar entidades</h4>
             {{else}}
+                <h4>4 - Ingresar entidades</h4>
+            {{/if}}
+            <div class="row">
+                <div class="form-group">
+                    <label for="query_ED_nombre">Nombre destino:  </label>
+                    <input type="text" class="form-control" id="query_ED_nombre" name="query_ED_nombre">
+
+                </div>
+                <div class="form-group">
+                    <label for="query_ED_cuil">Cuil destino:    </label>
+                    <input type="number" class="form-control" id="query_ED_cuil" name="query_ED_cuil">
+                </div>
+                &nbsp
+                <div class="form-group">
+                    <label for="query_ED_direccion">Direccion destino:   </label>
+                    <input type="text" class="form-control" id="query_ED_direccion" name="query_ED_direccion">
+                </div>
+                   <div class="form-group">
+                       {{#each user.organizacion.entidades}}
+                              <label for="query_EO_nombre">Entidad de origen:</label>
+                                <select class="custom-select" name="query_EO_nombre" id="query_EO_nombre">
+                                   <option value="">--Entidad Origen--</option>
+                                   <option value="{{this.razonSocial}}">{{this.razonSocial}}</option>
+                               </select>
+                       {{/each}}
+                   </div>
+            </div>
+        </div>
+
+        <div class="container mt-4">
+            {{#if egreso}}
                 <h4>4 - Agregar datos finales</h4>
+            {{else}}
+                <h4>5 - Agregar datos finales</h4>
             {{/if}}
             <div class="row">
                 <div class="form-group">

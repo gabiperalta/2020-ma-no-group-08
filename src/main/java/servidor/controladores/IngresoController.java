@@ -10,10 +10,7 @@ import spark.Request;
 import spark.Response;
 import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class IngresoController extends Controller{
 
@@ -31,20 +28,47 @@ public class IngresoController extends Controller{
 
         ArrayList<OperacionIngreso> ingresos = servicioOperaciones.listarIngresosPorOrg(org);
 
-        ArrayList<OperacionIngreso> ingresosPaginados = new ArrayList<>();
+        int ingresosPorPagina = 3;
 
-        Integer numeroPagina = req.queryParams("query_num_pagina")!= null ? Integer.valueOf(req.queryParams("query_num_pagina")) : 1;
+        String pagina = req.queryParams("pagina");
 
-        for(int i =0; i < ingresos.size() ; i++){
-            if((numeroPagina*10)-10 < i  && i < numeroPagina*10 ){
-                ingresosPaginados.add(ingresos.get(i));
-
+        if(pagina == null){
+            if(ingresos.size() > ingresosPorPagina){ // 3 egresos por pagina
+                res.redirect("/ingresos?pagina=1"); // redirecciona a la pagina 1
+                return null;
             }
+
+            //OUTPUT
+            Map<String, Object> map = new HashMap<>();
+            map.put("ingresos",ingresos);
+            map.put("user", req.session().attribute("user"));
+            return new ModelAndView(map,"ingresos.hbs");
         }
+        else{
+            int numeroPagina = Integer.parseInt(pagina);
+            int indiceInicial = Math.min((numeroPagina - 1) * ingresosPorPagina,ingresos.size());
+            int indiceFinal = Math.min(numeroPagina * ingresosPorPagina,ingresos.size());
+            List<OperacionIngreso> ingresossSubLista = ingresos.subList(indiceInicial,indiceFinal);
 
-        parameters.put("ingresos", ingresosPaginados);
+            //OUTPUT
+            Map<String, Object> map = new HashMap<>();
+            map.put("ingresos",ingresossSubLista);
 
-        return new ModelAndView(parameters, "ingresos.hbs");
+            int cantidadPaginas = (int) Math.ceil((double)ingresos.size()/ingresosPorPagina);
+            ArrayList<Integer> listaCantidadPaginas = new ArrayList<>();
+            for(int i = 1;i<=cantidadPaginas; i++){
+                listaCantidadPaginas.add(i);
+            }
+            map.put("cantidad_paginas",listaCantidadPaginas);
+            if(numeroPagina > 1)
+                map.put("pagina_anterior",numeroPagina - 1);
+            if(numeroPagina * ingresosPorPagina < ingresos.size())
+                map.put("pagina_siguiente",numeroPagina + 1);
+
+            map.put("user", req.session().attribute("user"));
+
+            return new ModelAndView(map,"ingresos.hbs");
+        }
     }
 
 

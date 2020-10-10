@@ -3,19 +3,20 @@ package dominio.operaciones.medioDePago;
 public class Efectivo implements MedioDePago {
     double monto;
     String puntoDePago;
+    String nombre;
 
-    public Efectivo(double monto,String puntoDePago){
+    public Efectivo(double monto,String puntoDePago, String nombre){
         this.monto = monto;
         this.puntoDePago = puntoDePago;
+        this.nombre = nombre;
     }
 
-	public void informacionARegistrar() {
-
+    public String getNombre(){
+        return nombre;
     }
 
-    @Override
-    public String getNombre() {
-        return null;
+    public void informacionARegistrar() {
+
     }
 
     @Override

@@ -49,4 +49,8 @@ public class EntidadCategorizable {
 		this.categoriasAsociadas.remove(unaCategoria);
 		unaCategoria.seDesasociaUnaEntidad();
 	}
+
+	public Operacion getOperacion() {
+		return operacion;
+	}
 }
