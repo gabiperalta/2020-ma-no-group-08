@@ -15,6 +15,7 @@
 </head>
 
 <body style="height: 90%">
+
     <form method="POST" action="/vinculaciones">
         <div class="tablas-vinculacion">
             <table>
@@ -26,8 +27,13 @@
                 <tbody>
                     {{#each ingresos}}
                         <tr>
-                            <td><input type="checkbox" id={{identificador}} name={{identificador}}></td>
-                            <td><label for="ingreso">{{identificador}}</label></td>
+                            <td>
+                                <label for="ingresos"></label><input type="checkbox" id="ingresos" name="{{identificador}}" value="{{identificador}}" onclick="updateIngresos(this.value)">
+                            </td>
+                            <td>
+                                <label for="ingreso" id="ingreso">{{identificador}}</label>
+                            </td>
+
                         </tr>
                     {{/each}}
                 </tbody>
@@ -42,29 +48,67 @@
                 <tbody>
                     {{#each egresos}}
                     <tr>
-                        <td><input type="checkbox" id={{identificador}} name={{identificador}}></td>
-                        <td><label for="egreso">{{identificador}}</label></td>
+                        <td><label for=></label><input type="checkbox" id="egresos" name="{{identificador}}" value="{{identificador}}" onclick="updateEgresos(this.value)"></td>
+                        <td><label for="egreso" id="egreso"> {{identificador}} </label></td>
                     </tr>
                     {{/each}}
                 </tbody>
             </table>
+            <label for="seleccion-criterios">Elige tu criterio:</label>
+
+            <select name="criterio" id="seleccion-criterios">
+                <option value="Fecha_Egreso">Fecha Egreso</option>
+                <option value="Valor_Ingreso">Valor Ingreso</option>
+                <option value="Valor_Egreso">Valor Egreso</option>
+            </select>
+
+            <label for="rangoDias">Rango de dias</label>
+            <input type="number" name="rangoDias" min="0" id="rangoDias" value={{number}}>
+            <div class="d-none">
+                <input name="ingresosId" id="ingresosId">
+            </div>
+            <div class="d-none">
+                <input name="egresosId" id="egresosId">
+            </div>
+            <div>
+                <button class="btn btn-primary px-3 rounded" type="submit">Vincular</button>
+            </div>
         </div>
-        <label for="seleccion-criterios">Elige tu criterio:</label>
 
-        <select name="criterio" id="seleccion-criterios">
-            <option value="Fecha_Egreso">Fecha Egreso</option>
-            <option value="Valor_Ingreso">Valor Ingreso</option>
-            <option value="Valor_Egreso">Valor Egreso</option>
-        </select>
-
-        <label for="number">Rango de dias</label>
-        <input type="number" name="rangoDias" min="0" id="rangoDias" value={{number}}>
-
-        <div>
-            <button class="btn btn-primary px-3 rounded" type="submit">Vincular</button>
-        </div>
     </form>
 
-</body>
+    <script type="text/javascript">
+        var ingresosId = [];
+        var egresosId = [];
+        function updateIngresos(identificador) {
+            if (ingresosId.includes(identificador)) {
+                /*for (var i =0; i&lt;ingresosId.length; i++) {
+                    if (ingresosId[i] === identificador) {
+                        ingresosId.splice(i, 1);
+                        break;
+                    }
+                }*/
+            } else {
+                ingresosId.push(identificador);
+            }
+            $("#ingresosId").val(ingresosId);
 
+        }
+
+        function updateEgresos(identificador) {
+            if (egresosId.includes(identificador)) {
+                /*for (var i =0; i&lt;egresosId.length; i++) {
+                    if (egresosId[i] === identificador) {
+                        egresosId.splice(i, 1);
+                        break;
+                    }
+                }*/
+            } else {
+                egresosId.push(identificador);
+            }
+            $("#egresosId").val(egresosId);
+
+        }
+    </script>
+</body>
 </html>

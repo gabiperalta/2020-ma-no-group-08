@@ -21,7 +21,7 @@ public class Vinculador {
         return shared;
     }
 
-    private Vinculador(){}
+    public Vinculador(){}
 
     public ResultadoVinculado vincular(ArrayList<OperacionVinculable> unosIngresos, ArrayList<OperacionVinculable> unosEgresos,
                                        ArrayList<CriterioVinculacion> unosCriterios) {

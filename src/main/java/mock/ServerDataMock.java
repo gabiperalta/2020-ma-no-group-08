@@ -30,8 +30,8 @@ public class ServerDataMock {
         ingreso1.setMontoTotal(1000);
 
         OperacionIngreso ingreso2 = new OperacionIngreso();
-        ingreso1.setFecha(new Date());
-        ingreso1.setMontoTotal(2000);
+        ingreso2.setFecha(new Date());
+        ingreso2.setMontoTotal(2000);
 
         RepoOperacionesIngreso.getInstance().agregarIngreso(ingreso1);
         RepoOperacionesIngreso.getInstance().agregarIngreso(ingreso2);
