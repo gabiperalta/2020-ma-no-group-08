@@ -32,7 +32,6 @@ public class LicitacionController{
 
     public LicitacionController(){
         gson = new Gson();
-        //initRepoPrueba();
     }
 
     public Gson getGson(){

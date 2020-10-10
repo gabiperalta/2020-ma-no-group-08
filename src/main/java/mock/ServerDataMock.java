@@ -27,6 +27,7 @@ public class ServerDataMock {
         cargarOrganizaciones();
         cargarEntidades();
         cargarUsuarios();
+        cargarPresupuestos();
     }
 
     private void cargarIngresos() throws Exception {
@@ -213,36 +214,30 @@ public class ServerDataMock {
         listaItems.add(new Item(100, ETipoItem.ARTICULO, "Item2"));
 
         licitacion1 = new Licitacion(RepoOperacionesEgreso.getInstance().buscarOperacionEgresoPorIdenticadorOperacionEgreso("OE-1"), NotificadorSuscriptores.getInstance());
-        licitacion2 = new Licitacion(RepoOperacionesEgreso.getInstance().buscarOperacionEgresoPorIdenticadorOperacionEgreso("OE-3"), NotificadorSuscriptores.getInstance());
+        licitacion2 = new Licitacion(RepoOperacionesEgreso.getInstance().buscarOperacionEgresoPorIdenticadorOperacionEgreso("OE-5"), NotificadorSuscriptores.getInstance());
 
         licitacion1.agregarCriterioSeleccionDeProveedor(new CriterioMenorPrecio());
         licitacion2.agregarCriterioSeleccionDeProveedor(new CriterioMenorPrecio());
 
         ArrayList<Item> listaItems1 = new ArrayList<>();
-        listaItems1.add(new Item(50, ETipoItem.ARTICULO, "Item1"));
-        listaItems1.add(new Item(100, ETipoItem.ARTICULO, "Item2"));
+        listaItems1.add(new Item(350, ETipoItem.ARTICULO, "Resma de hojas"));
 
         ArrayList<Item> listaItems2 = new ArrayList<>();
-        listaItems2.add(new Item(200, ETipoItem.ARTICULO, "Item3"));
-        listaItems2.add(new Item(150, ETipoItem.ARTICULO, "Item4"));
+        listaItems2.add(new Item(45032, ETipoItem.ARTICULO, "Escritorio"));
+        listaItems2.add(new Item(65000, ETipoItem.ARTICULO, "computadora"));
 
         ArrayList<Item> listaItems3 = new ArrayList<>();
-        listaItems3.add(new Item(500, ETipoItem.ARTICULO, "Item1"));
-        listaItems3.add(new Item(1020, ETipoItem.ARTICULO, "Item2"));
+        listaItems3.add(new Item(456454, ETipoItem.ARTICULO, "Escritorio"));
+        listaItems3.add(new Item(50000, ETipoItem.ARTICULO, "computadora"));
 
-        ArrayList<Item> listaItems4 = new ArrayList<>();
-        listaItems4.add(new Item(10, ETipoItem.ARTICULO, "Item1"));
-        listaItems4.add(new Item(30, ETipoItem.ARTICULO, "Item2"));
-
-        proveedor1 = new EntidadOperacion("Operacion compra 1","20-40678950-4","Av.Libertador 800");
-        proveedor2 = new EntidadOperacion("Operacion compra 2","20-40678950-3","Av.Libertador 100");
+        proveedor1 = new EntidadOperacion("Empresa 1","20-40678950-3","Av.Libertador 801");
 
         presup1 = new Presupuesto(proveedor1,listaItems1);
-        presup2 = new Presupuesto(proveedor2,listaItems2);
+        presup2 = new Presupuesto(proveedor1,listaItems2);
         presup3 = new Presupuesto(proveedor1,listaItems3);
 
         licitacion1.agregarPresupuesto(presup1);
-        licitacion2.agregarPresupuesto(presup1);
+        licitacion2.agregarPresupuesto(presup2);
         licitacion2.agregarPresupuesto(presup3);
 
         RepoLicitaciones.getInstance().agregarLicitacion(licitacion1);
