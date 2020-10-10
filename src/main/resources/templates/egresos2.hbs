@@ -187,6 +187,7 @@ body {
                     <div class="form-group">
                         <input type="file" name="archivojson" class="form-control-file" id="exampleFormControlFile1">
                         <input type="text" name="identificador_egreso" class="d-none" id="inputIdentificadorEgreso">
+                        <input type="text" name="url_egresos" class="d-none" id="inputUrlEgreso">
                     </div>
                 </form>
                 <p id="pIdLicitacion" class="font-italic"></p>
@@ -205,6 +206,7 @@ body {
     function obtenerEgreso(identificadorEgreso) {
         $('#modalAgregarPresupuestoTitulo').text("Agregar presupuesto al egreso " + identificadorEgreso);
         $('#inputIdentificadorEgreso').val(identificadorEgreso);
+        $('#inputUrlEgreso').val(window.location.href);
 
         $.get("/licitacion?idEgreso=" + identificadorEgreso, function (data) {
             if(data.length > 0)
