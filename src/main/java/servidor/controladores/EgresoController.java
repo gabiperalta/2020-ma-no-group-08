@@ -56,6 +56,7 @@ public class EgresoController extends Controller{
 
         String pagina = req.queryParams("pagina");
         String filtro = req.queryParams("filtro");
+        String mensajeE = Objects.toString(req.queryParams("error"),"");
 
         if(filtro != null){
             String[] nombreCategoriaCriterio= filtro.split("_");
@@ -73,6 +74,13 @@ public class EgresoController extends Controller{
             parameters.put("filtroPaginado","&filtro="+filtro);
         }
 
+        if(mensajeE.length() > 0){
+            if(href.equals("/egresos"))
+                href = href.concat("?error=" + mensajeE);
+            else
+                href = href.concat("&error=" + mensajeE);
+        }
+
         if(pagina == null){
             if(egresos.size() > egresosPorPagina){ // 3 egresos por pagina
                 if(href.equals("/egresos"))
@@ -85,10 +93,6 @@ public class EgresoController extends Controller{
 
             parameters.put("egresos",egresos);
             parameters.put("user", req.session().attribute("user"));
-            String mensajeE = Objects.toString(req.queryParams("error"),"");
-            if(mensajeE.equals("licitacionFinalizada"))
-                parameters.put("error","No puede agregarse el presupuesto debido a que la licitacion a finalizado");
-
         }
         else{
             int numeroPagina = Integer.parseInt(pagina);
@@ -110,11 +114,16 @@ public class EgresoController extends Controller{
                 parameters.put("pagina_siguiente",numeroPagina + 1);
 
             parameters.put("user", req.session().attribute("user"));
+        }
 
-            String mensajeE = Objects.toString(req.queryParams("error"),"");
-            if(mensajeE.equals("licitacionFinalizada"))
+        switch (mensajeE){
+            case "licitacionFinalizada":
                 parameters.put("error","No puede agregarse el presupuesto debido a que la licitacion a finalizado");
-
+                break;
+            case "presupuestoNoAgregado":
+                parameters.put("error","Los items del presupuesto no coinciden con los items del egreso");
+            default:
+                break;
         }
 
         parameters.put("criteriosDeCategorizacion",RepositorioCategorizacion.getInstance().getCriteriosDeCategorizacion());
