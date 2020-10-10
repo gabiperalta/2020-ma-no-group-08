@@ -1,9 +1,11 @@
 package servicio.abm_entidades;
 
+import datos.RepoEntidadesJuridicas;
+import datos.RepoOrganizaciones;
 import dominio.cuentasUsuarios.CuentaUsuario;
 import dominio.entidades.*;
 import dominio.entidades.calculadorFiscal.ETipoActividad;
-import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;
+import datos.RepositorioUsuarios;
 
 
 public class ServicioABMEntidadesJuridicas {

@@ -1,7 +1,7 @@
 package servicio.ab_organizaciones;
 
 import dominio.entidades.EntidadJuridica;
-import dominio.entidades.RepoOrganizaciones;
+import datos.RepoOrganizaciones;
 
 import java.util.ArrayList;
 

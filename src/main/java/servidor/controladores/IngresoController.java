@@ -1,15 +1,13 @@
 package servidor.controladores;
 
-import dominio.categorizacion.RepositorioCategorizacion;
+import datos.RepositorioCategorizacion;
 import dominio.cuentasUsuarios.CuentaUsuario;
 import dominio.entidades.Organizacion;
 import dominio.operaciones.*;
-import dominio.operaciones.medioDePago.*;
 import servicio.abOperaciones.ServicioABOperaciones;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
-import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;
 
 import java.util.*;
 import java.util.stream.Collectors;

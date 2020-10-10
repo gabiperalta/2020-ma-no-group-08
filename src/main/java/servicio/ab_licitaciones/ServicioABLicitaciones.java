@@ -1,12 +1,18 @@
 package servicio.ab_licitaciones;
 
 import dominio.cuentasUsuarios.CuentaUsuario;
+import dominio.entidades.Organizacion;
 import dominio.licitacion.Licitacion;
 import dominio.licitacion.Presupuesto;
+import datos.RepoLicitaciones;
 import dominio.notificador_suscriptores.NotificadorSuscriptores;
 import dominio.operaciones.OperacionEgreso;
+import dominio.operaciones.OperacionIngreso;
 import seguridad.sesion.exceptions.PermisoDenegadoException;
-import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;
+import datos.RepositorioUsuarios;
+
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class ServicioABLicitaciones {
 
@@ -42,4 +48,11 @@ public class ServicioABLicitaciones {
 
 	}
 
+	public ArrayList<Licitacion> listarLicitacionesOrg(Organizacion organizacion){
+		return new ArrayList<>(this.listarLicitaciones().stream().filter(licitacion -> licitacion.getOperacionEgreso().esDeLaOrganizacion(organizacion)).collect(Collectors.toList()));
+	}
+
+	public ArrayList<Licitacion> listarLicitaciones(){
+		return RepoLicitaciones.getInstance().getLicitaciones();
+	}
 }

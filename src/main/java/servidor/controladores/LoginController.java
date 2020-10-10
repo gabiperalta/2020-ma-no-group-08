@@ -1,14 +1,11 @@
 package servidor.controladores;
 
 import dominio.cuentasUsuarios.CuentaUsuario;
-import net.sf.json.JSONException;
-import net.sf.json.JSONObject;
 import servicio.Sesiones.ServicioSesiones;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
-import temporal.dominio.repositorioSesiones.RepositorioSesiones;
-import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;
+import datos.RepositorioUsuarios;
 
 import java.util.HashMap;
 import java.util.Map;

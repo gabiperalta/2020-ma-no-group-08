@@ -1,4 +1,4 @@
-package temporal.dominio.repositorioSesiones;
+package datos;
 
 import java.util.ArrayList;
 import java.util.UUID;

@@ -8,10 +8,9 @@ import dominio.cuentasUsuarios.perfil.Perfil;
 import dominio.cuentasUsuarios.perfil.PerfilAdministrador;
 import dominio.cuentasUsuarios.perfil.PerfilEstandar;
 import dominio.entidades.Organizacion;
-import dominio.operaciones.EntidadOperacion;
 import seguridad.HashPassword;
 import seguridad.ValidadorContrasenia;
-import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;
+import datos.RepositorioUsuarios;
 import temporal.seguridad.repositorioUsuarios.exceptions.CredencialesNoValidasException;
 import temporal.seguridad.repositorioUsuarios.exceptions.UsuarioYaExistenteException;
 

@@ -1,5 +1,9 @@
-package dominio.entidades;
+package datos;
 
+
+import dominio.entidades.EntidadBase;
+import dominio.entidades.EntidadJuridica;
+import dominio.entidades.OSC;
 
 import java.util.ArrayList;
 
