@@ -9,6 +9,7 @@ import datos.RepoOperacionesEgreso;
 import datos.RepoOperacionesIngreso;
 import dominio.cuentasUsuarios.CuentaUsuario;
 import dominio.operaciones.*;
+import servicio.abOperaciones.ServicioABOperaciones;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -21,8 +22,9 @@ public class VinculacionesController {
 
         CuentaUsuario usuario = request.session().attribute("user");
 
-        ArrayList<OperacionIngreso> ingresos = RepoOperacionesIngreso.getInstance().getIngresos();
-        ArrayList<OperacionEgreso> egresos = RepoOperacionesEgreso.getInstance().getOperacionesEgreso();
+        ServicioABOperaciones servicioABOperaciones = new ServicioABOperaciones();
+        ArrayList<OperacionIngreso> ingresos = servicioABOperaciones.listarIngresosPorOrg(usuario.getOrganizacion());
+        ArrayList<OperacionEgreso> egresos = servicioABOperaciones.listarOperaciones(usuario.getOrganizacion());
         Map<String, Object> parameters = new HashMap<>();
 
         parameters.put("user", usuario);
