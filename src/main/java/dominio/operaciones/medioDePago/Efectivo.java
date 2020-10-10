@@ -18,4 +18,43 @@ public class Efectivo implements MedioDePago {
     public void informacionARegistrar() {
 
     }
+
+    @Override
+    public double getMonto() {
+        return monto;
+    }
+
+    public String getPuntoDePago() {
+        return puntoDePago;
+    }
+
+    @Override
+    public int getCuotas() {
+        return 0;
+    }
+
+    @Override
+    public String getNumero() {
+        return null;
+    }
+
+    @Override
+    public boolean getEsDineroEnCuenta() {
+        return false;
+    }
+
+    @Override
+    public boolean getEsEfectivo() {
+        return true;
+    }
+
+    @Override
+    public boolean getEsTarjetaDeCredito() {
+        return false;
+    }
+
+    @Override
+    public boolean getEsTarjetaDeDebito() {
+        return false;
+    }
 }

@@ -45,7 +45,7 @@ public class CategorizacionesController {
             mensajeError = "Error desconocido: " + e.getMessage() + request.queryMap();
             return new ModelAndView(this, "fallaCategorizacion.hbs");
         }
-        response.redirect("/home");
+        response.redirect("/");
 
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("user", request.session().attribute("user"));

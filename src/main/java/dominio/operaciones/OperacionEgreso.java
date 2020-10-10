@@ -31,6 +31,7 @@ public class OperacionEgreso implements Operacion {
 	public void agregarItem(Item item) {
 		this.items.add(item);
 	}
+
 	public ArrayList<Item> getItems() {
 		return items;
 	}
@@ -101,5 +102,13 @@ public class OperacionEgreso implements Operacion {
 	@Override
 	public boolean esDeLaOrganizacion(Organizacion unaOrganizacion) {
 		return unaOrganizacion.existeLaEntidad(this.entidadOrigen.getNombre());
+	}
+
+	public void modificarse(MedioDePago medioDePagoFinal, DocumentoComercial unDocumento, Date unaFecha, EntidadOperacion unaEntidadOrigen, EntidadOperacion unaEntidadDestino){
+		medioDePago = medioDePagoFinal;
+		documento = unDocumento;
+		fecha = unaFecha;
+		entidadOrigen = unaEntidadOrigen;
+		entidadDestino = unaEntidadDestino;
 	}
 }
