@@ -3,6 +3,7 @@ package dominio.operaciones;
 import dominio.entidades.Organizacion;
 
 import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class OperacionIngreso implements Operacion {
@@ -49,6 +50,13 @@ public class OperacionIngreso implements Operacion {
 	public Date getFecha() {
 		return fecha;
 	}
+
+	public String getFechaString() {
+		SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yy");
+
+		return formateador.format(fecha);
+	}
+
 
 	public boolean esIngreso() {
 		return true;

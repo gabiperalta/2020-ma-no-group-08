@@ -33,8 +33,17 @@ public class ServerDataMock {
         ingreso2.setFecha(new Date());
         ingreso2.setMontoTotal(2000);
 
-        EntidadOperacion origen = new EntidadOperacion("Empresa 1","20-40678950-3","Av.Libertador 801");
-        EntidadOperacion destino = new EntidadOperacion("Empresa 2", "20-40678950-3", "Av.Corrientes 550");
+
+        OperacionIngreso ingreso3 = new OperacionIngreso();
+        ingreso3.setFecha(new Date());
+        ingreso3.setMontoTotal(3434.6);
+
+        OperacionIngreso ingreso4 = new OperacionIngreso();
+        ingreso4.setFecha(new Date());
+        ingreso4.setMontoTotal(565.3);
+
+        EntidadOperacion origen = new EntidadOperacion("Empresa 2","20-40678950-3","Av.Libertador 801");
+        EntidadOperacion destino = new EntidadOperacion("Empresa 1", "20-40678950-3", "Av.Corrientes 550");
 
         ingreso1.setEntidadOrigen(origen);
         ingreso1.setEntidadDestino(destino);
@@ -42,8 +51,18 @@ public class ServerDataMock {
         ingreso2.setEntidadOrigen(origen);
         ingreso2.setEntidadDestino(destino);
 
+        ingreso3.setEntidadOrigen(origen);
+        ingreso3.setEntidadDestino(destino);
+
+        ingreso4.setEntidadOrigen(origen);
+        ingreso4.setEntidadDestino(destino);
+
         RepoOperacionesIngreso.getInstance().agregarIngreso(ingreso1);
         RepoOperacionesIngreso.getInstance().agregarIngreso(ingreso2);
+        RepoOperacionesIngreso.getInstance().agregarIngreso(ingreso3);
+        RepoOperacionesIngreso.getInstance().agregarIngreso(ingreso4);
+
+
     }
 
     private void cargarEgregos() throws Exception {
