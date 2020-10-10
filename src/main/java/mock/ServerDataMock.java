@@ -151,7 +151,7 @@ public class ServerDataMock {
                 .agregarEntidadDestino(destino)
                 .agregarPresupuestosNecesarios(presupuestosNecesarios).build();
 
-        OperacionEgreso egreso6 = builderEgreso.agregarItems(items5)
+        OperacionEgreso egreso6 = builderEgreso.agregarItems(items2)
                 .agregarMedioDePago(pesos)
                 .agregarDocComercial(documento)
                 .agregarFecha(fecha)
@@ -159,7 +159,7 @@ public class ServerDataMock {
                 .agregarEntidadDestino(origen)
                 .agregarPresupuestosNecesarios(presupuestosNecesarios).build();
 
-        OperacionEgreso egreso7 = builderEgreso.agregarItems(items4)
+        OperacionEgreso egreso7 = builderEgreso.agregarItems(items3)
                 .agregarMedioDePago(pesos)
                 .agregarDocComercial(documento)
                 .agregarFecha(fecha)
