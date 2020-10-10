@@ -61,6 +61,8 @@ public class EgresoController extends Controller{
 
         parameters.put("user", request.session().attribute("user"));
 
+
+
         return new ModelAndView(parameters, "egreso.hbs");
     }
 
@@ -69,7 +71,6 @@ public class EgresoController extends Controller{
 
         try {
 
-            String medioDePago = req.queryParams("query_medio_de_pago");
             MedioDePago medioDePagoFinal;
             String monto;
             String nombre;
@@ -169,6 +170,99 @@ public class EgresoController extends Controller{
         return null;
 
 
+    }
+
+    public ModelAndView showModificarEgreso(Request req, Response res){
+        Map<String, Object> parameters = new HashMap<>();
+        OperacionEgreso egreso = servicioOperaciones.buscarEgreso(req.params("id"));
+
+        parameters.put("user", req.session().attribute("user"));
+        parameters.put("egreso", egreso);
+
+        return new ModelAndView(parameters, "egreso.hbs");
+    }
+
+    public ModelAndView modificarEgreso(Request req, Response res){
+
+        try {
+
+            MedioDePago medioDePagoFinal;
+            String monto;
+            String nombre;
+            String numero;
+
+            if(req.queryParams("tarjeta-credito-num") != null){
+                nombre = req.queryParams("tarjeta-credito-nombre-apellido");
+                String cuotas = req.queryParams("tarjeta-credito-cantidad");
+                numero = req.queryParams("tarjeta-credito-num");
+                medioDePagoFinal = new TarjetaDeCredito(Integer.valueOf(cuotas), nombre, numero);
+            }
+            else{
+                if(req.queryParams("tarjeta-debito-num") != null){
+                    nombre = req.queryParams("tarjeta-debito-nombre-apellido");
+                    numero = req.queryParams("tarjeta-debito-num");
+                    medioDePagoFinal = new TarjetaDeDebito(nombre, numero);
+                }
+                else {
+                    if(req.queryParams("efectivo-monto") != null){
+                        monto = req.queryParams("efectivo-monto");
+                        String puntoDePago = req.queryParams("efectivo-punto-de-pago");
+                        medioDePagoFinal = new Efectivo(Double.valueOf(monto), puntoDePago);
+                    }
+                    else{
+                        if(req.queryParams("dinero-cuenta-monto") != null){
+                            monto = req.queryParams("dinero-cuenta-monto");
+                            nombre = req.queryParams("dinero-cuenta-nombre-apellido");
+                            medioDePagoFinal = new DineroEnCuenta(Double.valueOf(monto), nombre);
+                        }
+                        else{
+                            throw new Exception("no hay medio de pago válido");
+                        }
+                    }
+                }
+            }
+
+            String documentoComercialNumero = req.queryParams("documento-num");
+
+            ETipoDoc Etipo =  tipoDeDocumento.get(req.queryParams("tipo-documento"));
+
+
+            DocumentoComercial documento = new DocumentoComercial(Etipo, Integer.valueOf(documentoComercialNumero));
+
+
+            String fecha = req.queryParams("operacion-egreso-date");
+
+            String EONombre = req.queryParams("query_EO_nombre");
+            String EOCuil = req.queryParams("query_EO_cuil");
+            String EODireccion = req.queryParams("query_EO_direccion");
+
+            EntidadOperacion entidadOrigen = new EntidadOperacion(EONombre, EOCuil, EODireccion);
+
+            // TODO, debe verificarse que la entidad origen sea perteneciente a la org del usuario
+
+            String EDNombre = req.queryParams("query_ED_nombre");
+            String EDCuil = req.queryParams("query_ED_cuil");
+            String EDDireccion = req.queryParams("query_ED_direccion");
+
+            EntidadOperacion entidadDestino = new EntidadOperacion(EDNombre, EDCuil, EDDireccion);
+
+            OperacionEgreso egreso = servicioOperaciones.buscarEgreso(req.params("id"));
+
+            // Modificar Egreso
+            egreso.modificarse(medioDePagoFinal , documento, new Date(fecha), entidadOrigen, entidadDestino);
+
+        }
+        catch(NullPointerException e){
+            mensajeError = "Null error: " + e.getMessage();
+            return new ModelAndView(this, "fallaCreacionEgreso.hbs"); }
+        catch (Exception e) {
+            mensajeError = "Error desconocido: " + e.getMessage() + req.queryMap();
+            return new ModelAndView(this, "fallaCreacionEgreso.hbs");
+        }
+
+        /* Si no se pone el redirect, igual va a ir a esa uri por que esta en la action de la form. Pero el metodo va a ser post, entonces cada vez que se recargue la pagina se vuelve a agregar la prenda. El redirect es un get de la uri.*/
+        res.redirect("/egresos");
+        return null;
     }
 
     public String getMensajeError() {

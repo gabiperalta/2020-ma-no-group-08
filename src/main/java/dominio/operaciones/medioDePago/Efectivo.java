@@ -12,4 +12,28 @@ public class Efectivo implements MedioDePago {
 	public void informacionARegistrar() {
 
     }
+
+    @Override
+    public String getNombre() {
+        return null;
+    }
+
+    @Override
+    public double getMonto() {
+        return monto;
+    }
+
+    public String getPuntoDePago() {
+        return puntoDePago;
+    }
+
+    @Override
+    public int getCuotas() {
+        return 0;
+    }
+
+    @Override
+    public String getNumero() {
+        return null;
+    }
 }

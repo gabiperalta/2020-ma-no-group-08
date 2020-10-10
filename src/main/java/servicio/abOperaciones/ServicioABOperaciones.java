@@ -43,4 +43,8 @@ public class ServicioABOperaciones {
         return new ArrayList<OperacionEgreso>(this.listarOperaciones().stream().
                 filter(egreso -> egreso.esDeLaOrganizacion(unaOrganizacion)).collect(Collectors.toList()));
     }
+
+    public OperacionEgreso buscarEgreso(String identificadorEgreso){
+        return RepoOperacionesEgreso.getInstance().buscarOperacionEgresoPorIdentificador(identificadorEgreso);
+    }
 }

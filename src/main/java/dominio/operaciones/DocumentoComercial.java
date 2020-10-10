@@ -8,4 +8,12 @@ public class DocumentoComercial {
         this.tipo = tipo;
         this.numero = numero;
     }
+
+    public ETipoDoc getTipo() {
+        return tipo;
+    }
+
+    public int getNumero() {
+        return numero;
+    }
 }

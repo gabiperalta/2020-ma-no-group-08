@@ -49,8 +49,7 @@ public class Router {
 		get("/login", loginc::login, engine);
 		post("/login", loginc::loguear);
 		get("/logout", loginc::logout);
-		get("/", (request, response) -> { return "hola";});
-		get("/home", homec::showHomePage, engine);
+		get("/", homec::showHomePage, engine);
 		get("/presupuestos",licitacionc::mostrarPresupuestos,engine);
 		post("/presupuesto",licitacionc::agregarPresupuesto);
 		post("/presupuesto/categorizar",licitacionc::categorizarPresupuesto);
@@ -58,6 +57,8 @@ public class Router {
 		get("/licitacion/:licitacion_id",licitacionc::resultadoLicitacion,licitacionc.getGson()::toJson);
 		get("/egreso", egresoC::showEgreso, engine);
 		post("/egreso", egresoC::crearEgreso, engine);
+		get("/egreso/:id", egresoC::showModificarEgreso, engine);
+		post("/egreso/:id", egresoC::modificarEgreso, engine);
 		get("/egresos", egresoC::mostrarEgresos, engine);
 
 		get("/ingreso", ingresoC::showIngreso, engine);

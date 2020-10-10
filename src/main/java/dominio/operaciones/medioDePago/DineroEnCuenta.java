@@ -12,4 +12,27 @@ public class DineroEnCuenta implements MedioDePago {
     public void informacionARegistrar() {
 
     }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public double getMonto() {
+        return monto;
+    }
+
+    @Override
+    public String getPuntoDePago() {
+        return null;
+    }
+
+    @Override
+    public int getCuotas() {
+        return 0;
+    }
+
+    @Override
+    public String getNumero() {
+        return null;
+    }
 }
