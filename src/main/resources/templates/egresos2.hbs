@@ -38,7 +38,25 @@ body {
     </div>
 {{/if}}
 
+
 <main role="main" class="container" >
+
+    <div class="form-group">
+        <div class="row">
+            <select id="selectCategorias" class="custom-select" name="categoria-elegida" style="max-width: 300px">
+                <option selected value="_">Seleccione una categoria</option>
+                {{#each criteriosDeCategorizacion}}
+                    {{#each this.categorias}}
+                        <option value="{{../nombre}}_{{nombre}}"> {{../nombre}} - {{nombre}} </option>
+                    {{/each}}
+                {{/each}}
+            </select>
+            <div class="mx-3">
+                <button type="button" class="btn btn-primary px-3 rounded" onclick="obtenerCategoria()">Filtrar</button>
+            </div>
+            <p class="font-italic my-auto">{{infoFiltroActual}}</p>
+        </div>
+    </div>
 
     <div id="accordion">
 
@@ -114,11 +132,11 @@ body {
                 {{else}}
                     <li class="page-item disabled">
                 {{/if}}
-                    <a class="page-link" href="/egresos?pagina={{pagina_anterior}}" tabindex="-1">Anterior</a>
+                    <a class="page-link" href="/egresos?pagina={{pagina_anterior}}{{filtroPaginado}}" tabindex="-1">Anterior</a>
                 </li>
 
                 {{#each cantidad_paginas}}
-                    <li class="page-item"><a class="page-link" href="/egresos?pagina={{this}}">{{this}}</a></li>
+                    <li class="page-item"><a class="page-link" href="/egresos?pagina={{this}}{{filtroPaginado}}">{{this}}</a></li>
                 {{/each}}
 
                 {{#if pagina_siguiente}}
@@ -126,7 +144,7 @@ body {
                 {{else}}
                     <li class="page-item disabled">
                 {{/if}}
-                    <a class="page-link" href="/egresos?pagina={{pagina_siguiente}}">Siguiente</a>
+                    <a class="page-link" href="/egresos?pagina={{pagina_siguiente}}{{filtroPaginado}}">Siguiente</a>
                 </li>
             </ul>
         </nav>
@@ -170,6 +188,10 @@ body {
                 $("#pIdLicitacion").text("Los presupuestos se agregaran a la licitacion " + data);
             }
         );
+    }
+
+    function obtenerCategoria(){
+        window.location.href = "/egresos?filtro=" + $("#selectCategorias").val()
     }
 </script>
 

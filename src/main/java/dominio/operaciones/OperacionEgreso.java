@@ -90,6 +90,7 @@ public class OperacionEgreso implements Operacion {
 		return getValorOperacion();
 	}
 
+	@Override
 	public Date getFecha() {
 		return fecha;
 	}

@@ -33,7 +33,6 @@ public class ServerDataMock {
         ingreso2.setFecha(new Date());
         ingreso2.setMontoTotal(2000);
 
-
         OperacionIngreso ingreso3 = new OperacionIngreso();
         ingreso3.setFecha(new Date());
         ingreso3.setMontoTotal(3434.6);

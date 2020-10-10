@@ -47,6 +47,7 @@ public class OperacionIngreso implements Operacion {
 		return descripcion;
 	}
 
+	@Override
 	public Date getFecha() {
 		return fecha;
 	}

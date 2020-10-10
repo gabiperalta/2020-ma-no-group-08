@@ -1,6 +1,7 @@
 package dominio.licitacion;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import dominio.entidades.Organizacion;
 import dominio.operaciones.EntidadOperacion;
@@ -68,6 +69,11 @@ public class Presupuesto implements Operacion {
 	@Override
 	public boolean esIngreso() {
 		return false;
+	}
+
+	@Override
+	public Date getFecha() {
+		return null;
 	}
 
 	@Override

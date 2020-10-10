@@ -1,5 +1,6 @@
 package servidor.controladores;
 
+import dominio.categorizacion.RepositorioCategorizacion;
 import dominio.cuentasUsuarios.CuentaUsuario;
 import dominio.entidades.ETipoEmpresa;
 import dominio.entidades.Empresa;
@@ -34,6 +35,7 @@ public class EgresoController extends Controller{
     private String mensajeError;
 
     public ModelAndView mostrarEgresos(Request req, Response res) {
+        String href = "/egresos";
 
         Map<String, Object> parameters = new HashMap<>();
 
@@ -53,23 +55,40 @@ public class EgresoController extends Controller{
         int egresosPorPagina = 3;
 
         String pagina = req.queryParams("pagina");
+        String filtro = req.queryParams("filtro");
+
+        if(filtro != null){
+            String[] nombreCategoriaCriterio= filtro.split("_");
+
+            try{
+                egresos = (ArrayList<OperacionEgreso>) RepositorioCategorizacion.getInstance().filtrarPresupuestosDeLaCategoria(nombreCategoriaCriterio[1],nombreCategoriaCriterio[0], org).stream().map(entidadCategorizable -> (OperacionEgreso)entidadCategorizable.getOperacion()).collect(Collectors.toList());
+                parameters.put("infoFiltroActual","Filtrado por " + nombreCategoriaCriterio[0] + " - " + nombreCategoriaCriterio[1]);
+            }catch (NullPointerException e){
+                egresos = null;
+            }catch (ArrayIndexOutOfBoundsException e){
+                //egresos = servicioOperaciones.listarOperaciones();
+            }
+
+            href = href.concat("?filtro=" + filtro);
+            parameters.put("filtroPaginado","&filtro="+filtro);
+        }
 
         if(pagina == null){
             if(egresos.size() > egresosPorPagina){ // 3 egresos por pagina
-                res.redirect("/egresos?pagina=1"); // redirecciona a la pagina 1
+                if(href.equals("/egresos"))
+                    href = href.concat("?pagina=1");
+                else
+                    href = href.concat("&pagina=1");
+                res.redirect(href); // redirecciona a la pagina 1
                 return null;
             }
 
-            //OUTPUT
-            Map<String, Object> map = new HashMap<>();
-            map.put("egresos",egresos);
-            map.put("user", req.session().attribute("user"));
+            parameters.put("egresos",egresos);
+            parameters.put("user", req.session().attribute("user"));
             String mensajeE = Objects.toString(req.queryParams("error"),"");
             if(mensajeE.equals("licitacionFinalizada"))
                 parameters.put("error","No puede agregarse el presupuesto debido a que la licitacion a finalizado");
 
-
-            return new ModelAndView(map,"egresos2.hbs");
         }
         else{
             int numeroPagina = Integer.parseInt(pagina);
@@ -77,31 +96,29 @@ public class EgresoController extends Controller{
             int indiceFinal = Math.min(numeroPagina * egresosPorPagina,egresos.size());
             List<OperacionEgreso> egresosSubLista = egresos.subList(indiceInicial,indiceFinal);
 
-            //OUTPUT
-            Map<String, Object> map = new HashMap<>();
-            map.put("egresos",egresosSubLista);
+            parameters.put("egresos",egresosSubLista);
 
             int cantidadPaginas = (int) Math.ceil((double)egresos.size()/egresosPorPagina);
             ArrayList<Integer> listaCantidadPaginas = new ArrayList<>();
             for(int i = 1;i<=cantidadPaginas; i++){
                 listaCantidadPaginas.add(i);
             }
-            map.put("cantidad_paginas",listaCantidadPaginas);
+            parameters.put("cantidad_paginas",listaCantidadPaginas);
             if(numeroPagina > 1)
-                map.put("pagina_anterior",numeroPagina - 1);
+                parameters.put("pagina_anterior",numeroPagina - 1);
             if(numeroPagina * egresosPorPagina < egresos.size())
-                map.put("pagina_siguiente",numeroPagina + 1);
+                parameters.put("pagina_siguiente",numeroPagina + 1);
 
-            map.put("user", req.session().attribute("user"));
+            parameters.put("user", req.session().attribute("user"));
 
             String mensajeE = Objects.toString(req.queryParams("error"),"");
             if(mensajeE.equals("licitacionFinalizada"))
                 parameters.put("error","No puede agregarse el presupuesto debido a que la licitacion a finalizado");
 
-
-            return new ModelAndView(map,"egresos2.hbs");
         }
 
+        parameters.put("criteriosDeCategorizacion",RepositorioCategorizacion.getInstance().getCriteriosDeCategorizacion());
+        return new ModelAndView(parameters,"egresos2.hbs");
     }
 
 

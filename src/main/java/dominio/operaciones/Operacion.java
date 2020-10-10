@@ -10,5 +10,6 @@ public interface Operacion {
     public boolean esLaOperacion(String identificadorEntidadCategorizable);
     public double getMontoTotal();
     public boolean esIngreso();
+    public Date getFecha();
     public boolean esDeLaOrganizacion(Organizacion unaOrganizacion);
 }
