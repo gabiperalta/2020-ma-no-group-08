@@ -48,9 +48,7 @@ public class LicitacionController{
 
         request.attribute("org.eclipse.jetty.multipartConfig", new MultipartConfigElement("/temp"));
         try (InputStream is = request.raw().getPart("archivojson").getInputStream()) {
-            // Use the input stream to create a file
             String textoArchivo = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8)).lines().collect(Collectors.joining(""));
-            //System.out.println(texto);
 
             if(textoArchivo.startsWith("[")) {
                 jsonArrayArchivo = JsonParser.parseString(textoArchivo).getAsJsonArray();
@@ -59,7 +57,6 @@ public class LicitacionController{
                 jsonObjectArchivo = JsonParser.parseString(textoArchivo).getAsJsonObject();
             }
             else{
-                // manejar el error con algun response
                 System.out.println("Archivo erroneo o no respeta la sintaxis JSON");
             }
         } catch (ServletException | IOException e) {
@@ -77,7 +74,6 @@ public class LicitacionController{
         else if (jsonObjectArchivo != null){
             presupuestos.add(jsonAPresupuesto(jsonObjectArchivo));
         }
-
 
         Licitacion licitacion = RepoLicitaciones.getInstance().buscarLicitacionPorOperacionEgreso(egresoId);
         ServicioABLicitaciones servicioABLicitaciones = new ServicioABLicitaciones();
@@ -97,16 +93,13 @@ public class LicitacionController{
         }
 
         response.status(200);
-        //response.body("licitacion_id=2");
-        //response.type("application/json");
-
         response.redirect("/egresos");
-        //return licitacion.getIdentificador(); // retorno el id de la licitacion creada
+
         return null;
     }
 
     public Object realizarLicitacion(Request request,Response response){
-        String licitacionId = request.queryParams("licitacion_id"); // podria ponerse tambien (como opcion) el id del egreso
+        String licitacionId = request.queryParams("licitacion_id");
         Licitacion licitacionEncontrada = RepoLicitaciones.getInstance().buscarLicitacionPorIdentificador(licitacionId);
         if(licitacionEncontrada == null){
             response.status(404);
@@ -146,27 +139,24 @@ public class LicitacionController{
         List<Presupuesto> presupuestos = licitaciones.stream().flatMap(licitacion -> licitacion.getPresupuestos().stream()).collect(Collectors.toList());
 
         if(filtro != null){
-
             String[] nombreCategoriaCriterio= filtro.split("_");
-
             CuentaUsuario usuario = request.session().attribute("user");
+
             try{
                 presupuestos = RepositorioCategorizacion.getInstance().filtrarPresupuestosDeLaCategoria(nombreCategoriaCriterio[1],nombreCategoriaCriterio[0], usuario.getOrganizacion()).stream().map(entidadCategorizable -> (Presupuesto)entidadCategorizable.getOperacion()).collect(Collectors.toList());
                 map.put("infoFiltroActual","Filtrado por " + nombreCategoriaCriterio[0] + " - " + nombreCategoriaCriterio[1]);
             }catch (NullPointerException e){
                 presupuestos = null;
-            }catch (ArrayIndexOutOfBoundsException e){
+            }catch (ArrayIndexOutOfBoundsException ignored){
 
             }
-            //presupuestos = RepositorioCategorizacion.getInstance().filtrarPresupuestosDeLaCategoria(nombreCategoriaCriterio[0],nombreCategoriaCriterio[1], usuario.getOrganizacion()).stream().map(entidadCategorizable -> (Presupuesto)entidadCategorizable.getOperacion()).collect(Collectors.toList());
+
             href = href.concat("?filtro=" + filtro);
             map.put("filtroPaginado","&filtro="+filtro);
         }
 
         if(pagina == null){
-            if(presupuestos.size() > presupuestosPorPagina){ // 3 presupuestos por pagina
-                System.out.println(request.uri() + "?pagina=1");
-                System.out.println(request.url() + "?pagina=1");
+            if(presupuestos.size() > presupuestosPorPagina){
                 if(href.equals("/presupuestos"))
                     href = href.concat("?pagina=1");
                 else
@@ -174,12 +164,7 @@ public class LicitacionController{
                 response.redirect(href); // redirecciona a la pagina 1
                 return null;
             }
-
-            //OUTPUT
-            //Map<String, Object> map = new HashMap<>();
             map.put("presupuestos",presupuestos);
-            map.put("user", request.session().attribute("user"));
-
         }
         else{
             int numeroPagina = Integer.parseInt(pagina);
@@ -187,12 +172,7 @@ public class LicitacionController{
             int indiceFinal = Math.min(numeroPagina * presupuestosPorPagina,presupuestos.size());
             List<Presupuesto> presupuestosSubLista = presupuestos.subList(indiceInicial,indiceFinal);
 
-            //OUTPUT
-            //Map<String, Object> map = new HashMap<>();
-            //map.put("licitaciones", licitaciones);
             map.put("presupuestos",presupuestosSubLista);
-            //map.put("pagina_anterior",0);
-            //map.put("pagina_siguiente",0);
             int cantidadPaginas = (int) Math.ceil((double)presupuestos.size()/presupuestosPorPagina);
             ArrayList<Integer> listaCantidadPaginas = new ArrayList<>();
             for(int i = 1;i<=cantidadPaginas; i++){
@@ -204,16 +184,11 @@ public class LicitacionController{
             if(numeroPagina * presupuestosPorPagina < presupuestos.size())
                 map.put("pagina_siguiente",numeroPagina + 1);
 
-            map.put("user", request.session().attribute("user"));
         }
+        map.put("user", request.session().attribute("user"));
 
         map.put("criteriosDeCategorizacion",RepositorioCategorizacion.getInstance().getCriteriosDeCategorizacion());
         return new ModelAndView(map,"presupuestos.hbs");
-    }
-
-    public ModelAndView agregarEgreso(Request request,Response response){
-        Map<String,Object> map = new HashMap<>();
-        return new ModelAndView(map,"egreso.hbs");
     }
 
     public Object obtenerLicitacionPorEgreso(Request request,Response response){

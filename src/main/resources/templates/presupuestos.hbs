@@ -35,7 +35,7 @@ body {
     <div class="form-group">
         <div class="row">
             <select id="selectCategorias" class="custom-select" name="categoria-elegida" style="max-width: 300px">
-                <option selected value=" _ ">Seleccione una categoria</option>
+                <option selected value="_">Seleccione una categoria</option>
                 {{#each criteriosDeCategorizacion}}
                     {{#each this.categorias}}
                         <option value="{{../nombre}}_{{nombre}}"> {{../nombre}} - {{nombre}} </option>
@@ -113,32 +113,6 @@ body {
         </nav>
     </div>
 
-    <!-- Modal -->
-    <!--
-
-
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Categorizar</button>
-
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    ...
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" onclick="categorizarPresupuesto('L-1-P01')">Aceptar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    -->
 </main><!-- /.container -->
 
 <script type="text/javascript">
@@ -155,9 +129,6 @@ body {
         window.location.href = "/presupuestos?filtro=" + $("#selectCategorias").val()
     }
 
-    //function categorizarPresupuesto(presupuesto_id){
-    //    console.log("Se a categorizado el presupuesto " + presupuesto_id);
-    //}
 </script>
 
 </body>

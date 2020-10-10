@@ -38,7 +38,25 @@ body {
     </div>
 {{/if}}
 
+
 <main role="main" class="container" >
+
+    <div class="form-group">
+        <div class="row">
+            <select id="selectCategorias" class="custom-select" name="categoria-elegida" style="max-width: 300px">
+                <option selected value="_">Seleccione una categoria</option>
+                {{#each criteriosDeCategorizacion}}
+                    {{#each this.categorias}}
+                        <option value="{{../nombre}}_{{nombre}}"> {{../nombre}} - {{nombre}} </option>
+                    {{/each}}
+                {{/each}}
+            </select>
+            <div class="mx-3">
+                <button type="button" class="btn btn-primary px-3 rounded" onclick="obtenerCategoria()">Filtrar</button>
+            </div>
+            <p class="font-italic my-auto">{{infoFiltroActual}}</p>
+        </div>
+    </div>
 
     <div id="accordion">
 
@@ -170,6 +188,10 @@ body {
                 $("#pIdLicitacion").text("Los presupuestos se agregaran a la licitacion " + data);
             }
         );
+    }
+
+    function obtenerCategoria(){
+        window.location.href = "/egresos?filtro=" + $("#selectCategorias").val()
     }
 </script>
 
