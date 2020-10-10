@@ -108,12 +108,22 @@ public class LicitacionController{
 
     public Object realizarLicitacion(Request request,Response response){
         String licitacionId = request.queryParams("licitacion_id");
+        CuentaUsuario usuario = request.session().attribute("user");
+        ServicioABLicitaciones servicioABLicitaciones = new ServicioABLicitaciones();
         Licitacion licitacionEncontrada = RepoLicitaciones.getInstance().buscarLicitacionPorIdentificador(licitacionId);
         if(licitacionEncontrada == null){
             response.status(404);
             return "Licitacion inexistente";
         }
-        licitacionEncontrada.licitar();
+
+        try{
+            servicioABLicitaciones.licitar(licitacionEncontrada,usuario.getUserName());
+        } catch (Exception e) {
+            response.status(401);
+            return "El usuario no tiene permiso para licitar";
+        }
+
+        //licitacionEncontrada.licitar();
         return licitacionEncontrada.getIdentificador();
     }
 

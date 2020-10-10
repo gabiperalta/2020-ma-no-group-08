@@ -207,7 +207,6 @@ public class ServerDataMock {
         Presupuesto presup2;
         Presupuesto presup3;
         EntidadOperacion proveedor1;
-        EntidadOperacion proveedor2;
 
         ArrayList<Item> listaItems = new ArrayList<Item>();
         listaItems.add(new Item(50, ETipoItem.ARTICULO, "Item1"));
