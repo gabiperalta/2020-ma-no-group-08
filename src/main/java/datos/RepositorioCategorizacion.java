@@ -1,17 +1,17 @@
-package dominio.categorizacion;
+package datos;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
+import dominio.categorizacion.Categoria;
+import dominio.categorizacion.CriterioDeCategorizacion;
+import dominio.categorizacion.EntidadCategorizable;
 import dominio.categorizacion.exceptions.CategorizacionException;
 import dominio.entidades.Organizacion;
 import dominio.licitacion.Licitacion;
 import dominio.licitacion.Presupuesto;
-import dominio.licitacion.RepoLicitaciones;
 import dominio.operaciones.OperacionEgreso;
 import dominio.operaciones.OperacionIngreso;
-import dominio.operaciones.RepoOperacionesEgreso;
-import dominio.operaciones.RepoOperacionesIngreso;
 
 public class RepositorioCategorizacion {
 	

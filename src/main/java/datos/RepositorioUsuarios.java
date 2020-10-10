@@ -1,11 +1,10 @@
-package temporal.seguridad.repositorioUsuarios;
+package datos;
 
 import java.util.ArrayList;
 
 import dominio.cuentasUsuarios.CuentaUsuario;
 import dominio.cuentasUsuarios.Roles.Privilegio;
 import dominio.cuentasUsuarios.Roles.Rol;
-import dominio.operaciones.EntidadOperacion;
 import temporal.seguridad.repositorioUsuarios.exceptions.CredencialesNoValidasException;
 
 // SINGLETON

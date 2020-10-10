@@ -9,7 +9,7 @@ import dominio.notificador_suscriptores.NotificadorSuscriptores;
 import dominio.operaciones.OperacionEgreso;
 import dominio.operaciones.OperacionIngreso;
 import seguridad.sesion.exceptions.PermisoDenegadoException;
-import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;
+import datos.RepositorioUsuarios;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;

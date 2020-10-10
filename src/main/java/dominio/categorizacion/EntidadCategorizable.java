@@ -10,7 +10,7 @@ public class EntidadCategorizable {
 	private Operacion operacion;
 	private ArrayList<Categoria> categoriasAsociadas;
 	
-	EntidadCategorizable(Operacion unaOperacion){
+	public EntidadCategorizable(Operacion unaOperacion){
 		operacion = unaOperacion;
 		categoriasAsociadas = new ArrayList<Categoria>();
 	}

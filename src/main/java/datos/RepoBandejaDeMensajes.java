@@ -1,6 +1,7 @@
-package dominio.notificador_suscriptores.bandeja_de_mensajes;
+package datos;
 
 import dominio.cuentasUsuarios.CuentaUsuario;
+import dominio.notificador_suscriptores.bandeja_de_mensajes.BandejaDeMensajes;
 
 import java.util.ArrayList;
 

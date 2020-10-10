@@ -1,6 +1,6 @@
-package dominio.licitacion;
+package datos;
 
-import net.sf.ezmorph.object.IdentityObjectMorpher;
+import dominio.licitacion.Licitacion;
 
 import java.util.ArrayList;
 
@@ -9,10 +9,10 @@ public class RepoLicitaciones {
     private static int ultimoIdentificador;
 
     private static class RepositorioLicitacionesHolder {
-        static final dominio.licitacion.RepoLicitaciones singleInstanceRepositorioLicitaciones = new dominio.licitacion.RepoLicitaciones();
+        static final RepoLicitaciones singleInstanceRepositorioLicitaciones = new RepoLicitaciones();
     }
 
-    public static dominio.licitacion.RepoLicitaciones getInstance() {
+    public static RepoLicitaciones getInstance() {
         return RepoLicitaciones.RepositorioLicitacionesHolder.singleInstanceRepositorioLicitaciones;
     }
 

@@ -3,7 +3,7 @@ package dominio.notificador_suscriptores;
 import java.util.ArrayList;
 
 import dominio.cuentasUsuarios.CuentaUsuario;
-import dominio.notificador_suscriptores.bandeja_de_mensajes.RepoBandejaDeMensajes;
+import datos.RepoBandejaDeMensajes;
 
 public class NotificadorSuscriptores {
 

@@ -1,4 +1,6 @@
-package dominio.operaciones;
+package datos;
+
+import dominio.operaciones.OperacionIngreso;
 
 import java.util.ArrayList;
 

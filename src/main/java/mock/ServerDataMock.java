@@ -1,7 +1,7 @@
 package mock;
 
+import datos.*;
 import dominio.categorizacion.CriterioDeCategorizacion;
-import dominio.categorizacion.RepositorioCategorizacion;
 import dominio.categorizacion.exceptions.CategorizacionException;
 import dominio.cuentasUsuarios.CuentaUsuario;
 import dominio.entidades.*;
@@ -13,7 +13,7 @@ import dominio.licitacion.criterioSeleccion.CriterioMenorPrecio;
 import dominio.notificador_suscriptores.NotificadorSuscriptores;
 import dominio.operaciones.*;
 import dominio.operaciones.medioDePago.Efectivo;
-import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;
+import datos.RepositorioUsuarios;
 
 import java.util.ArrayList;
 import java.util.Date;

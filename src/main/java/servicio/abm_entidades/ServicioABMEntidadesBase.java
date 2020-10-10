@@ -1,5 +1,6 @@
 package servicio.abm_entidades;
 
+import datos.RepoEntidadesBase;
 import dominio.entidades.*;
 
 

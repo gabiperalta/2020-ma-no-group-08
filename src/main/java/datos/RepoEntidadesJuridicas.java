@@ -1,10 +1,10 @@
-package dominio.entidades;
+package datos;
 
-import dominio.cuentasUsuarios.CuentaUsuario;
-import dominio.cuentasUsuarios.perfil.PerfilAdministrador;
+import dominio.entidades.ETipoEmpresa;
+import dominio.entidades.Empresa;
+import dominio.entidades.EntidadJuridica;
+import dominio.entidades.OSC;
 import dominio.entidades.calculadorFiscal.ETipoActividad;
-import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;
-import temporal.seguridad.repositorioUsuarios.exceptions.CredencialesNoValidasException;
 
 
 import java.util.ArrayList;
