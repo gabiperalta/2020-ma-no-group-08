@@ -1,13 +1,12 @@
 package servidor.controladores;
 
 import com.google.gson.*;
-import dominio.categorizacion.CriterioDeCategorizacion;
-import dominio.categorizacion.RepositorioCategorizacion;
+import datos.RepoOperacionesEgreso;
+import datos.RepositorioCategorizacion;
 import dominio.cuentasUsuarios.CuentaUsuario;
-import dominio.entidades.Organizacion;
 import dominio.licitacion.Licitacion;
 import dominio.licitacion.Presupuesto;
-import dominio.licitacion.RepoLicitaciones;
+import datos.RepoLicitaciones;
 import dominio.licitacion.criterioSeleccion.CriterioMenorPrecio;
 import dominio.notificador_suscriptores.NotificadorSuscriptores;
 import dominio.operaciones.*;
@@ -16,7 +15,6 @@ import servicio.ab_licitaciones.ServicioABLicitaciones;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
-import spark.Spark.*;
 
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletException;

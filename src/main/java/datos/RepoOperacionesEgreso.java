@@ -1,7 +1,7 @@
-package dominio.operaciones;
+package datos;
 
-import dominio.categorizacion.EntidadCategorizable;
 import dominio.entidades.Organizacion;
+import dominio.operaciones.OperacionEgreso;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;

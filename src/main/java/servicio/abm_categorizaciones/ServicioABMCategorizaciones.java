@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import dominio.categorizacion.Categoria;
 import dominio.categorizacion.CriterioDeCategorizacion;
 import dominio.categorizacion.EntidadCategorizable;
-import dominio.categorizacion.RepositorioCategorizacion;
+import datos.RepositorioCategorizacion;
 import dominio.categorizacion.exceptions.CategorizacionException;
 import dominio.entidades.Organizacion;
 

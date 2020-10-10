@@ -6,7 +6,7 @@ import dominio.licitacion.Presupuesto;
 import dominio.notificador_suscriptores.NotificadorSuscriptores;
 import dominio.operaciones.OperacionEgreso;
 import seguridad.sesion.exceptions.PermisoDenegadoException;
-import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;
+import datos.RepositorioUsuarios;
 
 public class ServicioABLicitaciones {
 

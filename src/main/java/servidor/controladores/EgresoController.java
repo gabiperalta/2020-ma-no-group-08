@@ -1,30 +1,20 @@
 package servidor.controladores;
 
-import dominio.categorizacion.RepositorioCategorizacion;
+import datos.RepoOperacionesEgreso;
+import datos.RepositorioCategorizacion;
 import dominio.cuentasUsuarios.CuentaUsuario;
-import dominio.entidades.ETipoEmpresa;
-import dominio.entidades.Empresa;
 import dominio.entidades.EntidadJuridica;
 import dominio.entidades.Organizacion;
-import dominio.entidades.calculadorFiscal.ETipoActividad;
-import dominio.licitacion.Licitacion;
-import dominio.licitacion.Presupuesto;
-import dominio.licitacion.RepoLicitaciones;
 import dominio.operaciones.*;
 import dominio.operaciones.medioDePago.*;
-import org.json.JSONArray;
 import servicio.abOperaciones.ServicioABOperaciones;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import java.text.SimpleDateFormat;
 
-import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;
-
 import java.util.*;
 
-import java.lang.reflect.Array;
-import java.util.*;
 import java.util.stream.Collectors;
 
 

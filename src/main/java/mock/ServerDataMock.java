@@ -1,14 +1,14 @@
 package mock;
 
+import datos.*;
 import dominio.categorizacion.CriterioDeCategorizacion;
-import dominio.categorizacion.RepositorioCategorizacion;
 import dominio.categorizacion.exceptions.CategorizacionException;
 import dominio.cuentasUsuarios.CuentaUsuario;
 import dominio.entidades.*;
 import dominio.entidades.calculadorFiscal.ETipoActividad;
 import dominio.operaciones.*;
 import dominio.operaciones.medioDePago.Efectivo;
-import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;
+import datos.RepositorioUsuarios;
 
 import java.util.ArrayList;
 import java.util.Date;

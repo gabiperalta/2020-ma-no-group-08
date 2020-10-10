@@ -5,8 +5,7 @@ import java.util.ArrayList;
 
 import dominio.cuentasUsuarios.CuentaUsuario;
 import dominio.entidades.Organizacion;
-import dominio.operaciones.EntidadOperacion;
-import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;
+import datos.RepositorioUsuarios;
 import temporal.seguridad.repositorioUsuarios.exceptions.CredencialesNoValidasException;
 import temporal.seguridad.repositorioUsuarios.exceptions.RolInvalidoException;
 import temporal.seguridad.repositorioUsuarios.exceptions.UsuarioYaExistenteException;
