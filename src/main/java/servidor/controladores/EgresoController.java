@@ -142,17 +142,13 @@ public class EgresoController extends Controller{
     }
 
 
-    public ModelAndView deleteEgreso(Request request, Response response){
-        Map<String, Object> parameters = new HashMap<>();
-
+    public Object deleteEgreso(Request request, Response response){
         String identificador = request.params("identificador");
-
-
         RepoOperacionesEgreso.getInstance().eliminarOperacionEgresoPorIdentificador(identificador);
+        //response.redirect("/egresos");
+        response.status(200);
 
-        response.redirect("/egresos");
-
-        return null;
+        return "Eliminacion existosa";
     }
 
 
