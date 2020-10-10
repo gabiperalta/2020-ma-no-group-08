@@ -83,16 +83,28 @@ public class LicitacionController{
         }
         Licitacion finalLicitacion = licitacion;
 
+        int cantidadPresupuestosAnterior = licitacion.getPresupuestos().size();
+        String urlEgresos = request.queryParams("url_egresos");
+        if(urlEgresos.contains("?"))
+            urlEgresos = urlEgresos.concat("&");
+        else
+            urlEgresos = urlEgresos.concat("?");
+
         if(!licitacion.estaFinalizada()) {
             presupuestos.forEach(presupuesto -> servicioABLicitaciones.altaPresupuesto(finalLicitacion, presupuesto));
-            response.redirect("/egresos");
+            //response.redirect("/egresos");
+            //if(cantidadPresupuestosAnterior == licitacion.getPresupuestos().size())
+            //    response.redirect("/egresos?error=presupuestoNoAgregado"); // no se agrego el presupuesto por no coincidir con los items del egreso
+            if(cantidadPresupuestosAnterior == licitacion.getPresupuestos().size())
+                response.redirect(urlEgresos + "error=presupuestoNoAgregado"); // no se agrego el presupuesto por no coincidir con los items del egreso
+            else
+                response.redirect(urlEgresos);
         }
         else{
-            response.redirect("/egresos?error=licitacionFinalizada");
+            response.redirect(urlEgresos + "error=licitacionFinalizada");
         }
 
         response.status(200);
-        response.redirect("/egresos");
 
         return null;
     }

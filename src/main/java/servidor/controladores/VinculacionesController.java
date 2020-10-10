@@ -47,7 +47,7 @@ public class VinculacionesController {
                             generarOperacionesVinculables(egresosIds, false),
                             criterios);
 
-        response.redirect("/home", 302);
+        response.redirect("/", 302);
         return response;
     }
 
