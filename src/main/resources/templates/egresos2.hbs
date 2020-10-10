@@ -132,11 +132,11 @@ body {
                 {{else}}
                     <li class="page-item disabled">
                 {{/if}}
-                    <a class="page-link" href="/egresos?pagina={{pagina_anterior}}" tabindex="-1">Anterior</a>
+                    <a class="page-link" href="/egresos?pagina={{pagina_anterior}}{{filtroPaginado}}" tabindex="-1">Anterior</a>
                 </li>
 
                 {{#each cantidad_paginas}}
-                    <li class="page-item"><a class="page-link" href="/egresos?pagina={{this}}">{{this}}</a></li>
+                    <li class="page-item"><a class="page-link" href="/egresos?pagina={{this}}{{filtroPaginado}}">{{this}}</a></li>
                 {{/each}}
 
                 {{#if pagina_siguiente}}
@@ -144,7 +144,7 @@ body {
                 {{else}}
                     <li class="page-item disabled">
                 {{/if}}
-                    <a class="page-link" href="/egresos?pagina={{pagina_siguiente}}">Siguiente</a>
+                    <a class="page-link" href="/egresos?pagina={{pagina_siguiente}}{{filtroPaginado}}">Siguiente</a>
                 </li>
             </ul>
         </nav>

@@ -1,5 +1,6 @@
 package servidor.controladores;
 
+import dominio.categorizacion.RepositorioCategorizacion;
 import dominio.cuentasUsuarios.CuentaUsuario;
 import dominio.entidades.Organizacion;
 import dominio.operaciones.*;
@@ -11,13 +12,14 @@ import spark.Response;
 import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class IngresoController extends Controller{
 
     ServicioABOperaciones servicioOperaciones = new ServicioABOperaciones();
 
     public ModelAndView mostrarIngresos(Request req, Response res) {
-
+        String href = "/ingresos";
         Map<String, Object> parameters = new HashMap<>();
 
         parameters.put("user", req.session().attribute("user"));
@@ -31,18 +33,36 @@ public class IngresoController extends Controller{
         int ingresosPorPagina = 3;
 
         String pagina = req.queryParams("pagina");
+        String filtro = req.queryParams("filtro");
+
+        if(filtro != null){
+            String[] nombreCategoriaCriterio= filtro.split("_");
+
+            try{
+                ingresos = (ArrayList<OperacionIngreso>) RepositorioCategorizacion.getInstance().filtrarPresupuestosDeLaCategoria(nombreCategoriaCriterio[1],nombreCategoriaCriterio[0], org).stream().map(entidadCategorizable -> (OperacionIngreso)entidadCategorizable.getOperacion()).collect(Collectors.toList());
+                parameters.put("infoFiltroActual","Filtrado por " + nombreCategoriaCriterio[0] + " - " + nombreCategoriaCriterio[1]);
+            }catch (NullPointerException e){
+                ingresos = null;
+            }catch (ArrayIndexOutOfBoundsException ignored){
+                //ingresos = servicioOperaciones.listarIngresosPorOrg(org);
+            }
+
+            href = href.concat("?filtro=" + filtro);
+            parameters.put("filtroPaginado","&filtro="+filtro);
+        }
 
         if(pagina == null){
             if(ingresos.size() > ingresosPorPagina){ // 3 egresos por pagina
-                res.redirect("/ingresos?pagina=1"); // redirecciona a la pagina 1
+                if(href.equals("/ingresos"))
+                    href = href.concat("?pagina=1");
+                else
+                    href = href.concat("&pagina=1");
+                res.redirect(href); // redirecciona a la pagina 1
                 return null;
             }
 
-            //OUTPUT
-            Map<String, Object> map = new HashMap<>();
-            map.put("ingresos",ingresos);
-            map.put("user", req.session().attribute("user"));
-            return new ModelAndView(map,"ingresos.hbs");
+            parameters.put("ingresos",ingresos);
+            parameters.put("user", req.session().attribute("user"));
         }
         else{
             int numeroPagina = Integer.parseInt(pagina);
@@ -50,25 +70,24 @@ public class IngresoController extends Controller{
             int indiceFinal = Math.min(numeroPagina * ingresosPorPagina,ingresos.size());
             List<OperacionIngreso> ingresossSubLista = ingresos.subList(indiceInicial,indiceFinal);
 
-            //OUTPUT
-            Map<String, Object> map = new HashMap<>();
-            map.put("ingresos",ingresossSubLista);
+            parameters.put("ingresos",ingresossSubLista);
 
             int cantidadPaginas = (int) Math.ceil((double)ingresos.size()/ingresosPorPagina);
             ArrayList<Integer> listaCantidadPaginas = new ArrayList<>();
             for(int i = 1;i<=cantidadPaginas; i++){
                 listaCantidadPaginas.add(i);
             }
-            map.put("cantidad_paginas",listaCantidadPaginas);
+            parameters.put("cantidad_paginas",listaCantidadPaginas);
             if(numeroPagina > 1)
-                map.put("pagina_anterior",numeroPagina - 1);
+                parameters.put("pagina_anterior",numeroPagina - 1);
             if(numeroPagina * ingresosPorPagina < ingresos.size())
-                map.put("pagina_siguiente",numeroPagina + 1);
+                parameters.put("pagina_siguiente",numeroPagina + 1);
 
-            map.put("user", req.session().attribute("user"));
-
-            return new ModelAndView(map,"ingresos.hbs");
+            parameters.put("user", req.session().attribute("user"));
         }
+        
+        parameters.put("criteriosDeCategorizacion",RepositorioCategorizacion.getInstance().getCriteriosDeCategorizacion());
+        return new ModelAndView(parameters,"ingresos.hbs");
     }
 
 
