@@ -121,6 +121,7 @@ public class RepositorioCategorizacion {
 						throw new CategorizacionException("Identificador de Entidad Categorizable INVALIDO");
 				}
 		}
+		this.entidadesCategorizables.add(unaEntidadCategorizable);
 		return unaEntidadCategorizable;
 	}
 	

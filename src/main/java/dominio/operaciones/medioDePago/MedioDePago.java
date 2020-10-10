@@ -7,4 +7,8 @@ public interface MedioDePago {
     public String getPuntoDePago();
     public int getCuotas();
     public String getNumero();
+    public boolean getEsDineroEnCuenta();
+    public boolean getEsEfectivo();
+    public boolean getEsTarjetaDeCredito();
+    public boolean getEsTarjetaDeDebito();
 }

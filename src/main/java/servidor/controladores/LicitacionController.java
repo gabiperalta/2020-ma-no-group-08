@@ -1,7 +1,7 @@
 package servidor.controladores;
 
 import com.google.gson.*;
-import com.sun.tools.javac.file.SymbolArchive;
+// import com.sun.tools.javac.file.SymbolArchive;
 import dominio.categorizacion.RepositorioCategorizacion;
 import dominio.cuentasUsuarios.CuentaUsuario;
 import dominio.entidades.Organizacion;
@@ -34,7 +34,7 @@ public class LicitacionController{
 
     public LicitacionController(){
         gson = new Gson();
-        //initRepoPrueba();
+        initRepoPrueba();
     }
 
     public Gson getGson(){

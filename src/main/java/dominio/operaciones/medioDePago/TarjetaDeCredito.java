@@ -41,4 +41,24 @@ public class TarjetaDeCredito implements MedioDePago {
     public String getNumero() {
         return numero;
     }
+
+    @Override
+    public boolean getEsDineroEnCuenta() {
+        return false;
+    }
+
+    @Override
+    public boolean getEsEfectivo() {
+        return false;
+    }
+
+    @Override
+    public boolean getEsTarjetaDeCredito() {
+        return true;
+    }
+
+    @Override
+    public boolean getEsTarjetaDeDebito() {
+        return false;
+    }
 }

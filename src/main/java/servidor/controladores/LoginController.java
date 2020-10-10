@@ -19,7 +19,7 @@ public class LoginController extends Controller{
 	
 	public ModelAndView login(Request request, Response response) {
 		if (usuarioAutenticado(request))
-			response.redirect("/home");
+			response.redirect("/");
 
 		Map<String, String> parameters = new HashMap<>();
 
@@ -74,7 +74,7 @@ public class LoginController extends Controller{
 			response.cookie("CredencialesNoValidas", "true");
 		}
 
-		response.redirect("/home", 302);
+		response.redirect("/", 302);
 
 		return response;
 	}

@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
-import com.sun.xml.internal.bind.v2.runtime.reflect.Lister;
+//import com.sun.xml.internal.bind.v2.runtime.reflect.Lister;
 import dominio.entidades.ETipoEmpresa;
 import dominio.entidades.Empresa;
 import dominio.entidades.EntidadJuridica;

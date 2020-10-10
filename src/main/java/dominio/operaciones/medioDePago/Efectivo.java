@@ -37,4 +37,24 @@ public class Efectivo implements MedioDePago {
     public String getNumero() {
         return null;
     }
+
+    @Override
+    public boolean getEsDineroEnCuenta() {
+        return false;
+    }
+
+    @Override
+    public boolean getEsEfectivo() {
+        return true;
+    }
+
+    @Override
+    public boolean getEsTarjetaDeCredito() {
+        return false;
+    }
+
+    @Override
+    public boolean getEsTarjetaDeDebito() {
+        return false;
+    }
 }

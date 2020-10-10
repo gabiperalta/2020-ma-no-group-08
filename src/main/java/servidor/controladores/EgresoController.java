@@ -249,7 +249,7 @@ public class EgresoController extends Controller{
         Map<String, Object> parameters = new HashMap<>();
         OperacionEgreso egreso = servicioOperaciones.buscarEgreso(req.params("id"));
         Date fecha = egreso.getFecha();
-        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yy");
+        SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd");
         String fechaFormateada = formateador.format(fecha);
 
         parameters.put("user", req.session().attribute("user"));
