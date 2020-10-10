@@ -1,6 +1,10 @@
 package servidor.controladores;
 
 import com.google.gson.*;
+import com.sun.tools.javac.file.SymbolArchive;
+import dominio.categorizacion.RepositorioCategorizacion;
+import dominio.cuentasUsuarios.CuentaUsuario;
+import dominio.entidades.Organizacion;
 import dominio.licitacion.Licitacion;
 import dominio.licitacion.Presupuesto;
 import dominio.licitacion.RepoLicitaciones;
@@ -30,7 +34,7 @@ public class LicitacionController{
 
     public LicitacionController(){
         gson = new Gson();
-        initRepoPrueba();
+        //initRepoPrueba();
     }
 
     public Gson getGson(){
@@ -132,19 +136,42 @@ public class LicitacionController{
 
     public ModelAndView mostrarPresupuestos(Request request,Response response){
         int presupuestosPorPagina = 3;
+        String href = "/presupuestos";
+        Map<String, Object> map = new HashMap<>();
 
         String pagina = request.queryParams("pagina");
+        String filtro = request.queryParams("filtro");
         ArrayList<Licitacion> licitaciones = RepoLicitaciones.getInstance().getLicitaciones();
         List<Presupuesto> presupuestos = licitaciones.stream().flatMap(licitacion -> licitacion.getPresupuestos().stream()).collect(Collectors.toList());
 
+        if(filtro != null){
+            String[] nombreCategoriaCriterio= filtro.split("_");
+            // las dos lineas de abajo solo estan comentadas para prueba
+            CuentaUsuario usuario = request.session().attribute("user");
+            try{
+                presupuestos = RepositorioCategorizacion.getInstance().filtrarPresupuestosDeLaCategoria(nombreCategoriaCriterio[1],nombreCategoriaCriterio[0], usuario.getOrganizacion()).stream().map(entidadCategorizable -> (Presupuesto)entidadCategorizable.getOperacion()).collect(Collectors.toList());
+            }catch (NullPointerException e){
+                presupuestos = null;
+            }
+            //presupuestos = RepositorioCategorizacion.getInstance().filtrarPresupuestosDeLaCategoria(nombreCategoriaCriterio[0],nombreCategoriaCriterio[1], usuario.getOrganizacion()).stream().map(entidadCategorizable -> (Presupuesto)entidadCategorizable.getOperacion()).collect(Collectors.toList());
+            href = href.concat("?filtro=" + filtro);
+            map.put("filtroPaginado","&filtro="+filtro);
+        }
+
         if(pagina == null){
             if(presupuestos.size() > presupuestosPorPagina){ // 3 presupuestos por pagina
-                response.redirect("/presupuestos?pagina=1"); // redirecciona a la pagina 1
+                System.out.println(request.uri() + "?pagina=1");
+                System.out.println(request.url() + "?pagina=1");
+                if(href.equals("/presupuestos"))
+                    href = href.concat("?pagina=1");
+                else
+                    href = href.concat("&pagina=1");
+                response.redirect(href); // redirecciona a la pagina 1
                 return null;
             }
 
             //OUTPUT
-            Map<String, Object> map = new HashMap<>();
+            //Map<String, Object> map = new HashMap<>();
             map.put("presupuestos",presupuestos);
             map.put("user", request.session().attribute("user"));
 
@@ -157,7 +184,7 @@ public class LicitacionController{
             List<Presupuesto> presupuestosSubLista = presupuestos.subList(indiceInicial,indiceFinal);
 
             //OUTPUT
-            Map<String, Object> map = new HashMap<>();
+            //Map<String, Object> map = new HashMap<>();
             //map.put("licitaciones", licitaciones);
             map.put("presupuestos",presupuestosSubLista);
             //map.put("pagina_anterior",0);
@@ -175,6 +202,9 @@ public class LicitacionController{
 
             map.put("user", request.session().attribute("user"));
             //return new ModelAndView(map,"presupuestos.hbs");
+
+            map.put("criteriosDeCategorizacion",RepositorioCategorizacion.getInstance().getCriteriosDeCategorizacion());
+
             return new ModelAndView(map,"presupuestos.hbs");
         }
     }

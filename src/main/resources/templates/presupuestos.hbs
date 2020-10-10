@@ -28,6 +28,25 @@ body {
 
 <main role="main" class="container" >
 
+    <div class="form-group">
+        <div class="row">
+            <select id="selectCategorias" class="custom-select" name="categoria-elegida" style="max-width: 300px">
+                <option selected>Seleccione una categoria</option>
+                {{#each criteriosDeCategorizacion}}
+                    {{#each this.categorias}}
+                        <option value="{{../nombre}}_{{nombre}}"> {{../nombre}}-{{nombre}} </option>
+                    {{/each}}
+                {{/each}}
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+            </select>
+            <div class="mx-3">
+                <button type="button" class="btn btn-primary px-3 rounded" onclick="obtenerCategoria()">Filtrar</button>
+            </div>
+        </div>
+    </div>
+
     <div id="accordion">
 
         {{#each presupuestos}}
@@ -73,11 +92,11 @@ body {
                 {{else}}
                     <li class="page-item disabled">
                 {{/if}}
-                    <a class="page-link" href="/presupuestos?pagina={{pagina_anterior}}" tabindex="-1">Anterior</a>
+                    <a class="page-link" href="/presupuestos?pagina={{pagina_anterior}}{{filtroPaginado}}" tabindex="-1">Anterior</a>
                 </li>
 
                 {{#each cantidad_paginas}}
-                    <li class="page-item"><a class="page-link" href="/presupuestos?pagina={{this}}">{{this}}</a></li>
+                    <li class="page-item"><a class="page-link" href="/presupuestos?pagina={{this}}{{filtroPaginado}}">{{this}}</a></li>
                 {{/each}}
 
                 {{#if pagina_siguiente}}
@@ -85,7 +104,7 @@ body {
                 {{else}}
                     <li class="page-item disabled">
                 {{/if}}
-                    <a class="page-link" href="/presupuestos?pagina={{pagina_siguiente}}">Siguiente</a>
+                    <a class="page-link" href="/presupuestos?pagina={{pagina_siguiente}}{{filtroPaginado}}">Siguiente</a>
                 </li>
             </ul>
         </nav>
@@ -128,6 +147,10 @@ body {
         return accum;
     });
     */
+
+    function obtenerCategoria(){
+        window.location.href = "/presupuestos?filtro=" + $("#selectCategorias").val()
+    }
 
     //function categorizarPresupuesto(presupuesto_id){
     //    console.log("Se a categorizado el presupuesto " + presupuesto_id);
