@@ -8,7 +8,7 @@ import dominio.entidades.*;
 import dominio.entidades.calculadorFiscal.ETipoActividad;
 import dominio.licitacion.Licitacion;
 import dominio.licitacion.Presupuesto;
-import dominio.licitacion.RepoLicitaciones;
+import datos.RepoLicitaciones;
 import dominio.licitacion.criterioSeleccion.CriterioMenorPrecio;
 import dominio.notificador_suscriptores.NotificadorSuscriptores;
 import dominio.operaciones.*;

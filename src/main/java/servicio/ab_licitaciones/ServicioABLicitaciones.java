@@ -4,7 +4,7 @@ import dominio.cuentasUsuarios.CuentaUsuario;
 import dominio.entidades.Organizacion;
 import dominio.licitacion.Licitacion;
 import dominio.licitacion.Presupuesto;
-import dominio.licitacion.RepoLicitaciones;
+import datos.RepoLicitaciones;
 import dominio.notificador_suscriptores.NotificadorSuscriptores;
 import dominio.operaciones.OperacionEgreso;
 import dominio.operaciones.OperacionIngreso;
