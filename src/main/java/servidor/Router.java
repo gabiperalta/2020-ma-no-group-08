@@ -59,6 +59,8 @@ public class Router {
 		get("/egreso", egresoC::showEgreso, engine);
 		post("/egreso", egresoC::crearEgreso, engine);
 		get("/egresos/:egreso", egresoC::showEgreso, engine);
+		delete("/egresos/:identificador", egresoC::deleteEgreso, engine);
+
 		get("/egresos", egresoC::mostrarEgresos, engine);
 
 		get("/ingreso", ingresoC::showIngreso, engine);

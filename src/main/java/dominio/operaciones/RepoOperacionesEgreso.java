@@ -36,6 +36,11 @@ public class RepoOperacionesEgreso {
         operacionesEgreso.remove(operacionEgreso);
     }
 
+    public void eliminarOperacionEgresoPorIdentificador(String identificadorOperacionEgreso) {
+        OperacionEgreso egresoAEliminar = buscarOperacionEgresoPorIdenticadorOperacionEgreso(identificadorOperacionEgreso);
+        operacionesEgreso.remove(egresoAEliminar);
+    }
+
     public static OperacionEgreso buscarOperacionEgreso(OperacionEgreso operacionEgreso){
         return operacionesEgreso.stream().filter(operacion -> operacion.equals(operacionEgreso)).findFirst().get(); // si no encuentra nada, tira NoSuchElementException
     }
