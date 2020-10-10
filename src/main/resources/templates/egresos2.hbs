@@ -228,14 +228,18 @@ body {
     
     function confirmarEliminacion(identificadorEgreso){
         //console.log("Se esta eliminando un egreso");
-        $.ajax({
-            url:"/egreso/" + identificadorEgreso,
-            type: "DELETE",
-            success:function (){
-                //console.log("El egreso a sido EXTERMINADO");
-                location.reload();
-            }
-        });
+
+        var r = confirm("¿Esta seguro que desea eliminar el egreso " + identificadorEgreso + "?");
+        if (r) {
+            $.ajax({
+                url: "/egreso/" + identificadorEgreso,
+                type: "DELETE",
+                success: function () {
+                    //console.log("El egreso a sido EXTERMINADO");
+                    location.reload();
+                }
+            });
+        }
     }
 </script>
 

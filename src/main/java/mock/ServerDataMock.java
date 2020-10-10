@@ -6,6 +6,11 @@ import dominio.categorizacion.exceptions.CategorizacionException;
 import dominio.cuentasUsuarios.CuentaUsuario;
 import dominio.entidades.*;
 import dominio.entidades.calculadorFiscal.ETipoActividad;
+import dominio.licitacion.Licitacion;
+import dominio.licitacion.Presupuesto;
+import dominio.licitacion.RepoLicitaciones;
+import dominio.licitacion.criterioSeleccion.CriterioMenorPrecio;
+import dominio.notificador_suscriptores.NotificadorSuscriptores;
 import dominio.operaciones.*;
 import dominio.operaciones.medioDePago.Efectivo;
 import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;
@@ -192,5 +197,55 @@ public class ServerDataMock {
         CuentaUsuario usuarioClienteMaestroPruebasWeb = new CuentaUsuario("UsuarioWeb2", organizacion2, listaDeRolesClienteMaestro, "1234");
         RepositorioUsuarios.getInstance().agregarUsuarioEstandar(usuarioClientePruebasWeb);
         RepositorioUsuarios.getInstance().agregarUsuarioEstandar(usuarioClienteMaestroPruebasWeb);
+    }
+
+    private void cargarPresupuestos(){
+        Licitacion licitacion1;
+        Licitacion licitacion2;
+        Presupuesto presup1;
+        Presupuesto presup2;
+        Presupuesto presup3;
+        EntidadOperacion proveedor1;
+        EntidadOperacion proveedor2;
+
+        ArrayList<Item> listaItems = new ArrayList<Item>();
+        listaItems.add(new Item(50, ETipoItem.ARTICULO, "Item1"));
+        listaItems.add(new Item(100, ETipoItem.ARTICULO, "Item2"));
+
+        licitacion1 = new Licitacion(RepoOperacionesEgreso.getInstance().buscarOperacionEgresoPorIdenticadorOperacionEgreso("OE-1"), NotificadorSuscriptores.getInstance());
+        licitacion2 = new Licitacion(RepoOperacionesEgreso.getInstance().buscarOperacionEgresoPorIdenticadorOperacionEgreso("OE-3"), NotificadorSuscriptores.getInstance());
+
+        licitacion1.agregarCriterioSeleccionDeProveedor(new CriterioMenorPrecio());
+        licitacion2.agregarCriterioSeleccionDeProveedor(new CriterioMenorPrecio());
+
+        ArrayList<Item> listaItems1 = new ArrayList<>();
+        listaItems1.add(new Item(50, ETipoItem.ARTICULO, "Item1"));
+        listaItems1.add(new Item(100, ETipoItem.ARTICULO, "Item2"));
+
+        ArrayList<Item> listaItems2 = new ArrayList<>();
+        listaItems2.add(new Item(200, ETipoItem.ARTICULO, "Item3"));
+        listaItems2.add(new Item(150, ETipoItem.ARTICULO, "Item4"));
+
+        ArrayList<Item> listaItems3 = new ArrayList<>();
+        listaItems3.add(new Item(500, ETipoItem.ARTICULO, "Item1"));
+        listaItems3.add(new Item(1020, ETipoItem.ARTICULO, "Item2"));
+
+        ArrayList<Item> listaItems4 = new ArrayList<>();
+        listaItems4.add(new Item(10, ETipoItem.ARTICULO, "Item1"));
+        listaItems4.add(new Item(30, ETipoItem.ARTICULO, "Item2"));
+
+        proveedor1 = new EntidadOperacion("Operacion compra 1","20-40678950-4","Av.Libertador 800");
+        proveedor2 = new EntidadOperacion("Operacion compra 2","20-40678950-3","Av.Libertador 100");
+
+        presup1 = new Presupuesto(proveedor1,listaItems1);
+        presup2 = new Presupuesto(proveedor2,listaItems2);
+        presup3 = new Presupuesto(proveedor1,listaItems3);
+
+        licitacion1.agregarPresupuesto(presup1);
+        licitacion2.agregarPresupuesto(presup1);
+        licitacion2.agregarPresupuesto(presup3);
+
+        RepoLicitaciones.getInstance().agregarLicitacion(licitacion1);
+        RepoLicitaciones.getInstance().agregarLicitacion(licitacion2);
     }
 }

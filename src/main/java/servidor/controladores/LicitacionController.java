@@ -34,7 +34,7 @@ public class LicitacionController{
 
     public LicitacionController(){
         gson = new Gson();
-        initRepoPrueba();
+        //initRepoPrueba();
     }
 
     public Gson getGson(){
@@ -146,12 +146,13 @@ public class LicitacionController{
 
         String pagina = request.queryParams("pagina");
         String filtro = request.queryParams("filtro");
-        ArrayList<Licitacion> licitaciones = RepoLicitaciones.getInstance().getLicitaciones();
+        CuentaUsuario usuario = request.session().attribute("user");
+        ServicioABLicitaciones servicioABLicitaciones = new ServicioABLicitaciones();
+        ArrayList<Licitacion> licitaciones = servicioABLicitaciones.listarLicitacionesOrg(usuario.getOrganizacion());
         List<Presupuesto> presupuestos = licitaciones.stream().flatMap(licitacion -> licitacion.getPresupuestos().stream()).collect(Collectors.toList());
 
         if(filtro != null){
             String[] nombreCategoriaCriterio= filtro.split("_");
-            CuentaUsuario usuario = request.session().attribute("user");
 
             try{
                 presupuestos = RepositorioCategorizacion.getInstance().filtrarPresupuestosDeLaCategoria(nombreCategoriaCriterio[1],nombreCategoriaCriterio[0], usuario.getOrganizacion()).stream().map(entidadCategorizable -> (Presupuesto)entidadCategorizable.getOperacion()).collect(Collectors.toList());
@@ -216,91 +217,5 @@ public class LicitacionController{
         ArrayList<Item> items = new ArrayList<>();
         jsonArrayItems.forEach(jsonElement -> items.add(gson.fromJson(jsonElement,Item.class)));
         return new Presupuesto(entidadOperacion,items);
-    }
-
-    public static void initRepoPrueba(){
-        OperacionEgresoBuilder builderCompra;
-        OperacionEgreso compra;
-        Licitacion licitacion1;
-        Licitacion licitacion2;
-        Licitacion licitacion3;
-        Presupuesto presup1;
-        Presupuesto presup2;
-        Presupuesto presup3;
-        Presupuesto presup4;
-        EntidadOperacion proveedor1;
-        EntidadOperacion proveedor2;
-
-        Efectivo pesos = new Efectivo(200000,"Rapipago", "Efectivo");
-        DocumentoComercial documento = new DocumentoComercial(ETipoDoc.FACTURA, 2000);
-        Date fecha = new Date();
-        EntidadOperacion origen = new EntidadOperacion("Empresa 1","20-40678950-4","Av.Libertador 800");
-        EntidadOperacion destino = new EntidadOperacion("Operacion compra 1", "20-40678950-4", "Av.Corrientes 550");
-
-        ArrayList<Item> listaItemsCompra = new ArrayList<Item>();
-        listaItemsCompra.add(new Item(50, ETipoItem.ARTICULO, "Item1"));
-        listaItemsCompra.add(new Item(100, ETipoItem.ARTICULO, "Item2"));
-
-        builderCompra = new OperacionEgresoBuilder();
-
-        compra = builderCompra.agregarItems(listaItemsCompra)
-                .agregarMedioDePago(pesos)
-                .agregarDocComercial(documento)
-                .agregarFecha(fecha)
-                .agregarEntidadOrigen(origen)
-                .agregarEntidadDestino(destino)
-                .agregarPresupuestosNecesarios(2)
-                .build();
-
-        licitacion1 = new Licitacion(compra, NotificadorSuscriptores.getInstance());
-        licitacion2 = new Licitacion(compra, NotificadorSuscriptores.getInstance());
-        licitacion3 = new Licitacion(compra, NotificadorSuscriptores.getInstance());
-
-        licitacion1.agregarCriterioSeleccionDeProveedor(new CriterioMenorPrecio());
-        licitacion2.agregarCriterioSeleccionDeProveedor(new CriterioMenorPrecio());
-        licitacion3.agregarCriterioSeleccionDeProveedor(new CriterioMenorPrecio());
-
-        ArrayList<Item> listaItems1 = new ArrayList<>();
-        listaItems1.add(new Item(50, ETipoItem.ARTICULO, "Item1"));
-        listaItems1.add(new Item(100, ETipoItem.ARTICULO, "Item2"));
-
-        ArrayList<Item> listaItems2 = new ArrayList<>();
-        listaItems2.add(new Item(200, ETipoItem.ARTICULO, "Item3"));
-        listaItems2.add(new Item(150, ETipoItem.ARTICULO, "Item4"));
-
-        ArrayList<Item> listaItems3 = new ArrayList<>();
-        listaItems3.add(new Item(500, ETipoItem.ARTICULO, "Item1"));
-        listaItems3.add(new Item(1020, ETipoItem.ARTICULO, "Item2"));
-
-        ArrayList<Item> listaItems4 = new ArrayList<>();
-        listaItems4.add(new Item(10, ETipoItem.ARTICULO, "Item1"));
-        listaItems4.add(new Item(30, ETipoItem.ARTICULO, "Item2"));
-
-        proveedor1 = new EntidadOperacion("Operacion compra 1","20-40678950-4","Av.Libertador 800");
-        proveedor2 = new EntidadOperacion("Operacion compra 2","20-40678950-3","Av.Libertador 100");
-
-        presup1 = new Presupuesto(proveedor1,listaItems1);
-        presup2 = new Presupuesto(proveedor2,listaItems2);
-        presup3 = new Presupuesto(proveedor1,listaItems3);
-        presup4 = new Presupuesto(proveedor2,listaItems4);
-
-        licitacion1.agregarPresupuesto(presup1);
-        licitacion1.agregarPresupuesto(presup3);
-        licitacion2.agregarPresupuesto(presup1);
-        licitacion2.agregarPresupuesto(presup3);
-        licitacion3.agregarPresupuesto(presup1);
-        licitacion3.agregarPresupuesto(presup3);
-
-        try{
-            RepoOperacionesEgreso.getInstance().agregarOperacionEgreso(compra);
-            RepoLicitaciones.getInstance().agregarLicitacion(licitacion1);
-            RepoLicitaciones.getInstance().agregarLicitacion(licitacion2);
-            RepoLicitaciones.getInstance().agregarLicitacion(licitacion3);
-            //System.out.println(compra.getIdentificador());
-            //System.out.println("Estado repo egreso: " + RepoOperacionesEgreso.getInstance().getOperacionesEgreso().size());
-        }
-        catch (Exception e){
-
-        }
     }
 }
