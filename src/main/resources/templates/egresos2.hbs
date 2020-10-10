@@ -94,8 +94,31 @@ body {
                                  </ul>
                                 Medio de pago:
                                 <ul>
-                                   <li>{{medioDePago.nombre}}</li>
+                                <div class="entry">
+                                {{#if this.medioDePago.esEfectivo}}
+                                <li>Efectivo</li>
+                                {{/if}}
+                                {{#if this.medioDePago.esTarjetaDeCredito}}
+                                <li>Tarjeta de Credito</li>
+                                {{/if}}
+                                {{#if this.medioDePago.esTarjetaDeDebito}}
+                                <li>Tarjeta de Debito</li>
+                                {{/if}}
+                                {{#if this.medioDePago.esDineroEnCuenta}}
+                                <li>Dinero en Cuenta</li>
+                                {{/if}}
+                                </div>
                                 </ul>
+
+                                Documento Comercial:
+                                <ul>
+                                    <li> <font style="text-transform: lowercase;"> {{ this.documento.tipo }} </font></li>
+                                </ul>
+                                Fecha:
+                                <ul>
+                                   <li>{{this.fechaString}}</li>
+                                </ul>
+
 
                             </div>
                             <div class="card-body d-flex justify-content-between align-items-center">

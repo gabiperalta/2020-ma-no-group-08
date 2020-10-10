@@ -3,6 +3,7 @@ package dominio.operaciones;
 import dominio.entidades.Organizacion;
 import dominio.operaciones.medioDePago.MedioDePago;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -89,7 +90,11 @@ public class OperacionEgreso implements Operacion {
 	public double getMontoTotal() {
 		return getValorOperacion();
 	}
+	public String getFechaString() {
+		SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yy");
 
+		return formateador.format(fecha);
+	}
 	@Override
 	public Date getFecha() {
 		return fecha;
