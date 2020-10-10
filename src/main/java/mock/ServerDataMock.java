@@ -22,7 +22,6 @@ public class ServerDataMock {
 
     public void cargarMock() throws Exception {
         cargarOrganizaciones();
-        cargarEntidades();
         cargarIngresos();
         cargarEgregos();
         cargarCategorias();
@@ -168,19 +167,17 @@ public class ServerDataMock {
 
     private void cargarOrganizaciones(){
 
-        ArrayList<EntidadJuridica> entidades = new ArrayList<>();
+        ArrayList<EntidadJuridica> entidades1 = new ArrayList<>();
+        ArrayList<EntidadJuridica> entidades2 = new ArrayList<>();
 
-        entidades.add(new Empresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa 1", "Empresa 1", "20-40678950-3", "200", "Av.Libertador 801",false));
+        EntidadJuridica entidad1 = new Empresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa 1", "Empresa 1", "20-40678950-3", "200", "Av.Libertador 801",false);
+        EntidadJuridica entidad2 = new Empresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa 2", "Empresa 2", "20-40678950-4", "203", "Av.Libertador 200",false);
 
+        entidades1.add(entidad1);
+        entidades2.add(entidad2);
 
-        RepoOrganizaciones.getInstance().agregarOrganizacion("Organizacion1", entidades);
-        RepoOrganizaciones.getInstance().agregarOrganizacion("Organizacion2", entidades);
-    }
-
-    private void cargarEntidades(){
-
-        RepoEntidadesJuridicas.getInstance().agregarEntidadEmpresa(new Empresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa 1", "Empresa 1", "20-40678950-3", "200", "Av.Libertador 801",false));
-
+        RepoOrganizaciones.getInstance().agregarOrganizacion("Organizacion1", entidades1);
+        RepoOrganizaciones.getInstance().agregarOrganizacion("Organizacion2", entidades2);
     }
 
     private void cargarUsuarios(){
