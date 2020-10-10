@@ -234,7 +234,7 @@ public class LicitacionController{
         Efectivo pesos = new Efectivo(200000,"Rapipago", "Efectivo");
         DocumentoComercial documento = new DocumentoComercial(ETipoDoc.FACTURA, 2000);
         Date fecha = new Date();
-        EntidadOperacion origen = new EntidadOperacion("Operacion compra 1","20-40678950-4","Av.Libertador 800");
+        EntidadOperacion origen = new EntidadOperacion("Empresa 1","20-40678950-4","Av.Libertador 800");
         EntidadOperacion destino = new EntidadOperacion("Operacion compra 1", "20-40678950-4", "Av.Corrientes 550");
 
         ArrayList<Item> listaItemsCompra = new ArrayList<Item>();
