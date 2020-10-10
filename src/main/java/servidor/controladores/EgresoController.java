@@ -20,9 +20,12 @@ import java.text.SimpleDateFormat;
 
 import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;
 
+import java.util.*;
+
 import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collectors;
+
 
 public class EgresoController extends Controller{
 
@@ -44,7 +47,8 @@ public class EgresoController extends Controller{
 
         ArrayList<OperacionEgreso> egresosPaginados = new ArrayList<>();
 
-        ArrayList<OperacionEgreso> egresos = servicioOperaciones.listarOperaciones(org);
+        ArrayList<OperacionEgreso> egresos = servicioOperaciones.listarOperaciones();
+
 
         int egresosPorPagina = 3;
 
@@ -61,8 +65,11 @@ public class EgresoController extends Controller{
             map.put("egresos",egresos);
             map.put("user", req.session().attribute("user"));
 
-            return new ModelAndView(map,"egresos2.hbs");
-        }
+            String mensajeError = Objects.toString(req.queryParams("error"),"");
+            if(mensajeError.equals("licitacionFinalizada"))
+                parameters.put("error","No puede agregarse el presupuesto debido a que la licitacion a finalizado");
+
+            return new ModelAndView(parameters, "egresos2.hbs");        }
         else{
             int numeroPagina = Integer.parseInt(pagina);
             int indiceInicial = Math.min((numeroPagina - 1) * egresosPorPagina,egresos.size());
@@ -85,9 +92,13 @@ public class EgresoController extends Controller{
                 map.put("pagina_siguiente",numeroPagina + 1);
 
             map.put("user", req.session().attribute("user"));
-            return new ModelAndView(map,"egresos2.hbs");
-        }
 
+            String mensajeError = Objects.toString(req.queryParams("error"),"");
+            if(mensajeError.equals("licitacionFinalizada"))
+                parameters.put("error","No puede agregarse el presupuesto debido a que la licitacion a finalizado");
+
+            return new ModelAndView(parameters, "egresos2.hbs");        }
+        
     }
 
 
