@@ -21,11 +21,11 @@ import java.util.Date;
 public class ServerDataMock {
 
     public void cargarMock() throws Exception {
+        cargarOrganizaciones();
+        cargarEntidades();
         cargarIngresos();
         cargarEgregos();
         cargarCategorias();
-        cargarOrganizaciones();
-        cargarEntidades();
         cargarUsuarios();
         cargarPresupuestos();
     }
