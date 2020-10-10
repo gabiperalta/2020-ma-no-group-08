@@ -38,7 +38,6 @@ public class VinculacionesController {
         String[] ingresosIds = request.queryParams("ingresosId").split(",", 99);
         String[] egresosIds = request.queryParams("egresosId").split(",", 99);
 
-        //TODO: cambiar por un array de criterios
         CriterioVinculacion criterio = generarCriterio(request);
         ArrayList<CriterioVinculacion> criterios = new ArrayList<>();
         criterios.add(criterio);
@@ -47,8 +46,6 @@ public class VinculacionesController {
         vinculador.vincular(generarOperacionesVinculables(ingresosIds, true),
                             generarOperacionesVinculables(egresosIds, false),
                             criterios);
-
-        //        TODO: falta descargar el json
 
         response.redirect("/home", 302);
         return response;

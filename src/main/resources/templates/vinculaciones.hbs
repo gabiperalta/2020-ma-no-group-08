@@ -81,14 +81,7 @@
         var ingresosId = [];
         var egresosId = [];
         function updateIngresos(identificador) {
-            if (ingresosId.includes(identificador)) {
-                for (var i =0; i&lt;ingresosId.length; i++) {
-                    if (ingresosId[i] === identificador) {
-                        ingresosId.splice(i, 1);
-                        break;
-                    }
-                }
-            } else {
+            if (!ingresosId.includes(identificador)) {
                 ingresosId.push(identificador);
             }
             $("#ingresosId").val(ingresosId);
@@ -96,14 +89,7 @@
         }
 
         function updateEgresos(identificador) {
-            if (egresosId.includes(identificador)) {
-                for (var i =0; i&lt;egresosId.length; i++) {
-                    if (egresosId[i] === identificador) {
-                        egresosId.splice(i, 1);
-                        break;
-                    }
-                }
-            } else {
+            if (!egresosId.includes(identificador)) {
                 egresosId.push(identificador);
             }
             $("#egresosId").val(egresosId);
