@@ -6,6 +6,9 @@ import dominio.entidades.Empresa;
 import dominio.entidades.EntidadJuridica;
 import dominio.entidades.Organizacion;
 import dominio.entidades.calculadorFiscal.ETipoActividad;
+import dominio.licitacion.Licitacion;
+import dominio.licitacion.Presupuesto;
+import dominio.licitacion.RepoLicitaciones;
 import dominio.operaciones.*;
 import dominio.operaciones.medioDePago.*;
 import org.json.JSONArray;
@@ -18,10 +21,8 @@ import java.text.SimpleDateFormat;
 import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class EgresoController extends Controller{
 
@@ -45,19 +46,48 @@ public class EgresoController extends Controller{
 
         ArrayList<OperacionEgreso> egresos = servicioOperaciones.listarOperaciones(org);
 
+        int egresosPorPagina = 3;
 
-        Integer numeroPagina = req.queryParams("query_num_pagina")!= null ? Integer.valueOf(req.queryParams("query_num_pagina")) : 1;
+        String pagina = req.queryParams("pagina");
 
-        for(int i =0; i < egresos.size() ; i++){
-            if((numeroPagina*10)-10 < i  && i < numeroPagina*10 ){
-                egresosPaginados.add(egresos.get(i));
-
+        if(pagina == null){
+            if(egresos.size() > egresosPorPagina){ // 3 egresos por pagina
+                res.redirect("/egresos?pagina=1"); // redirecciona a la pagina 1
+                return null;
             }
+
+            //OUTPUT
+            Map<String, Object> map = new HashMap<>();
+            map.put("egresos",egresos);
+            map.put("user", req.session().attribute("user"));
+
+            return new ModelAndView(map,"egresos2.hbs");
+        }
+        else{
+            int numeroPagina = Integer.parseInt(pagina);
+            int indiceInicial = Math.min((numeroPagina - 1) * egresosPorPagina,egresos.size());
+            int indiceFinal = Math.min(numeroPagina * egresosPorPagina,egresos.size());
+            List<OperacionEgreso> egresosSubLista = egresos.subList(indiceInicial,indiceFinal);
+
+            //OUTPUT
+            Map<String, Object> map = new HashMap<>();
+            map.put("egresos",egresosSubLista);
+
+            int cantidadPaginas = (int) Math.ceil((double)egresos.size()/egresosPorPagina);
+            ArrayList<Integer> listaCantidadPaginas = new ArrayList<>();
+            for(int i = 1;i<=cantidadPaginas; i++){
+                listaCantidadPaginas.add(i);
+            }
+            map.put("cantidad_paginas",listaCantidadPaginas);
+            if(numeroPagina > 1)
+                map.put("pagina_anterior",numeroPagina - 1);
+            if(numeroPagina * egresosPorPagina < egresos.size())
+                map.put("pagina_siguiente",numeroPagina + 1);
+
+            map.put("user", req.session().attribute("user"));
+            return new ModelAndView(map,"egresos2.hbs");
         }
 
-        parameters.put("egresos", egresosPaginados);
-
-        return new ModelAndView(parameters, "egresos2.hbs");
     }
 
 

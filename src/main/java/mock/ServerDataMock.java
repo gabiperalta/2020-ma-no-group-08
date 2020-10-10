@@ -52,16 +52,21 @@ public class ServerDataMock {
         ArrayList<Item> items2 = new ArrayList<>();
         ArrayList<Item> items3 = new ArrayList<>();
         ArrayList<Item> items4 = new ArrayList<>();
+        ArrayList<Item> items5 = new ArrayList<>();
+
 
         Item resma = new Item(300,ETipoItem.ARTICULO,"Resma de hojas");
         Item flete = new Item(350, ETipoItem.SERVICIO, "Servicio de transporte de productos");
         Item tinta = new Item(500,ETipoItem.ARTICULO,"Cartucho de tinta");
         Item pc = new Item(50000,ETipoItem.ARTICULO,"computadora");
+        Item escritorio = new Item(456454,ETipoItem.ARTICULO,"Escritorio");
 
         items1.add(resma);
         items2.add(flete);
         items3.add(tinta);
         items4.add(pc);
+        items5.add(escritorio);
+        items5.add(pc);
 
         Efectivo pesos = new Efectivo(200000,"Rapipago", "Efectivo");
         DocumentoComercial documento = new DocumentoComercial(ETipoDoc.FACTURA, 2000);
@@ -101,10 +106,21 @@ public class ServerDataMock {
                 .agregarEntidadDestino(destino)
                 .agregarPresupuestosNecesarios(presupuestosNecesarios).build();
 
+        OperacionEgreso egreso5 = builderEgreso.agregarItems(items5)
+                .agregarMedioDePago(pesos)
+                .agregarDocComercial(documento)
+                .agregarFecha(fecha)
+                .agregarEntidadOrigen(origen)
+                .agregarEntidadDestino(destino)
+                .agregarPresupuestosNecesarios(presupuestosNecesarios).build();
+
         RepoOperacionesEgreso.getInstance().agregarOperacionEgreso(egreso1);
         RepoOperacionesEgreso.getInstance().agregarOperacionEgreso(egreso2);
         RepoOperacionesEgreso.getInstance().agregarOperacionEgreso(egreso3);
         RepoOperacionesEgreso.getInstance().agregarOperacionEgreso(egreso4);
+        RepoOperacionesEgreso.getInstance().agregarOperacionEgreso(egreso5);
+
+
     }
 
 
