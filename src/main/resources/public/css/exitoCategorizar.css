@@ -1,0 +1,34 @@
+body {
+    background-color: #FAF7E6;
+    /*background: url(images/background.png) no-repeat center center;*/
+    background-size: cover;
+}
+
+
+.center_alert{
+    justify-content:center;
+    width: 600px;
+    position: absolute;
+    left: 33rem;
+    right: 33rem;
+    top: 10rem;
+}
+
+.navbar_style{
+    background-color: #33FF64;
+}
+
+
+#button_plus{
+    border: none;
+    background: transparent;
+    outline: none;
+    margin-top: 33%;
+}
+
+#button_cerrar_sesion{
+    border: none;
+    background: transparent;
+    outline: none;
+    height: 10px;
+}
