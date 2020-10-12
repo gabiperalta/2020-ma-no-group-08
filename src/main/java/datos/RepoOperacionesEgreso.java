@@ -58,7 +58,19 @@ public class RepoOperacionesEgreso {
     }
 
     public OperacionEgreso buscarOperacionEgresoPorIdentificador(String identificadorEntidadCategorizable) {
-        return operacionesEgreso.stream().filter(operacion -> operacion.esLaOperacion(identificadorEntidadCategorizable)).findFirst().get();
+        if (operacionesEgreso.stream().anyMatch(operacion -> operacion.esLaOperacion(identificadorEntidadCategorizable))) {
+            return operacionesEgreso.stream().filter(operacion -> operacion.esLaOperacion(identificadorEntidadCategorizable)).findFirst().get();
+        } else {
+            return null;
+        }
+    }
+
+    public OperacionEgreso buscarOperacionEgresoPorIdentificadorYOrganizacion(String identificadorEntidadCategorizable, Organizacion unaOrganizacion) {
+        if (operacionesEgreso.stream().anyMatch(operacion -> operacion.esLaOperacion(identificadorEntidadCategorizable) && operacion.esDeLaOrganizacion(unaOrganizacion))) {
+            return operacionesEgreso.stream().filter(operacion -> operacion.esLaOperacion(identificadorEntidadCategorizable) && operacion.esDeLaOrganizacion(unaOrganizacion)).findFirst().get();
+        } else {
+            return null;
+        }
     }
 }
 

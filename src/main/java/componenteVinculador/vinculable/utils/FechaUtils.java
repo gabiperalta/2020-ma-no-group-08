@@ -25,7 +25,7 @@ public class FechaUtils {
     }
 
     public static boolean estaDentroDelRango(Date fechaInicial, Date fechaBuscada, int rangoDias) {
-        return FechaUtils.obtenerFechaDiasAtras(fechaInicial, rangoDias).before(fechaBuscada) &&
+        return FechaUtils.obtenerFechaDiasAtras(fechaInicial, rangoDias).before(fechaBuscada) ||
                 FechaUtils.obtenerFechaDiasAdelante(fechaInicial, rangoDias).after(fechaBuscada);
 
 

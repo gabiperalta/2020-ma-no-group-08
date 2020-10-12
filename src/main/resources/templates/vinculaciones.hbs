@@ -19,42 +19,22 @@
 
     <form method="POST" action="/vinculaciones">
         <div class="tablas-vinculacion">
-            <table>
-                <thead>
-                <tr>
-                    <th colspan="2">Seleccionar ingreso:</th>
-                </tr>
-                </thead>
-                <tbody>
-                    {{#each ingresos}}
-                        <tr>
-                            <td>
-                                <label for="ingresos"></label><input type="checkbox" id="ingresos" name="{{identificador}}" value="{{identificador}}" onclick="updateIngresos(this.value)">
-                            </td>
-                            <td>
-                                <label for="ingreso" id="ingreso">{{identificador}}</label>
-                            </td>
+            <div>
+                <label for="ingresos-id">Ingrese los id de los ingresos separados por espacios. EJ: 1 2 3 4 5</label>
+            </div>
 
-                        </tr>
-                    {{/each}}
-                </tbody>
-            </table>
+            <div>
+                <input  name="ingresosIds" id="ingresosIds" value={{value}}>
+            </div>
 
-            <table>
-                <thead>
-                <tr>
-                    <th colspan="2">Seleccionar egreso:</th>
-                </tr>
-                </thead>
-                <tbody>
-                    {{#each egresos}}
-                    <tr>
-                        <td><label for="egresos"></label><input type="checkbox" id="egresos" name="{{identificador}}" value="{{identificador}}" onclick="updateEgresos(this.value)"></td>
-                        <td><label for="egreso" id="egreso"> {{identificador}}  </label></td>
-                    </tr>
-                    {{/each}}
-                </tbody>
-            </table>
+            <div>
+                <label for="egresos-id">Ingrese los id de los egresos separados por espacios. EJ: 1 2 3 4 5</label>
+            </div>
+
+            <div>
+                <input  name="egresosIds" id="egresosIds" value={{value}}>
+            </div>
+
             <label for="seleccion-criterios">Elige tu criterio:</label>
 
             <select name="criterio" id="seleccion-criterios">
@@ -63,8 +43,11 @@
                 <option value="Valor_Egreso">Valor Egreso</option>
             </select>
 
-            <label for="rangoDias">Rango de dias</label>
-            <input type="number" name="rangoDias" min="0" id="rangoDias" value={{number}}>
+            <div>
+                <label for="rangoDias">Rango de dias</label>
+                <input type="number" name="rangoDias" min="0" id="rangoDias" value="0">
+            </div>
+
             <div class="d-none">
                 <input name="ingresosId" id="ingresosId">
             </div>
