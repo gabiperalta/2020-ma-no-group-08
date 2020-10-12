@@ -35,7 +35,7 @@ public class VinculacionesController {
         return new ModelAndView(parameters, "vinculaciones.hbs");
     }
 
-    public Response vincular(Request request, Response response) throws Exception {
+    public String vincular(Request request, Response response) throws Exception {
         Map<String, Object> parameters = new HashMap<>();
         Set<String> queryP = request.queryParams();
 
@@ -54,8 +54,9 @@ public class VinculacionesController {
                             generarOperacionesVinculables(egresosIds, false, usuario.getOrganizacion()),
                             criterios);
 
-        response.redirect("/", 302);
-        return response;
+        response.type("application/json");
+
+        return vinculador.getVinculacionJsonString();
     }
 
     private CriterioVinculacion generarCriterio (Request request) throws Exception {
