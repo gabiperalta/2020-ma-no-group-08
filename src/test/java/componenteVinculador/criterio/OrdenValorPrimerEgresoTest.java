@@ -51,11 +51,11 @@ public class OrdenValorPrimerEgresoTest {
         ArrayList<Vinculacion> vinculaciones = target.ejecutar(ingresos,egresos);
 
         Vinculacion resultado1 = new Vinculacion(ingreso1);
-        resultado1.vincularNuevoEgreso(egreso2);
+        resultado1.vincularNuevoEgreso(egreso1);
         resultado1.vincularNuevoEgreso(egreso3);
 
         Vinculacion resultado2 = new Vinculacion(ingreso2);
-        resultado2.vincularNuevoEgreso(egreso1);
+        resultado2.vincularNuevoEgreso(egreso2);
 
         assertTrue(resultado1.equals(vinculaciones.get(0)) && resultado2.equals(vinculaciones.get(1)));
     }
