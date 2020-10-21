@@ -31,23 +31,6 @@ public class IngresoController extends Controller{
         int ingresosPorPagina = 3;
 
         String pagina = req.queryParams("pagina");
-        String filtro = req.queryParams("filtro");
-
-        if(filtro != null){
-            String[] nombreCategoriaCriterio= filtro.split("_");
-
-            try{
-                ingresos = (ArrayList<OperacionIngreso>) RepositorioCategorizacion.getInstance().filtrarIngresosDeLaCategoria(nombreCategoriaCriterio[1],nombreCategoriaCriterio[0], org).stream().map(entidadCategorizable -> (OperacionIngreso)entidadCategorizable.getOperacion()).collect(Collectors.toList());
-                parameters.put("infoFiltroActual","Filtrado por " + nombreCategoriaCriterio[0] + " - " + nombreCategoriaCriterio[1]);
-            }catch (NullPointerException e){
-                ingresos = null;
-            }catch (ArrayIndexOutOfBoundsException ignored){
-                //ingresos = servicioOperaciones.listarIngresosPorOrg(org);
-            }
-
-            href = href.concat("?filtro=" + filtro);
-            parameters.put("filtroPaginado","&filtro="+filtro);
-        }
 
         if(pagina == null){
             if(ingresos.size() > ingresosPorPagina){ // 3 egresos por pagina
