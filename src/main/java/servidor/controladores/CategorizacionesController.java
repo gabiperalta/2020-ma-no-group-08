@@ -29,13 +29,47 @@ public class CategorizacionesController {
         return new ModelAndView(parameters, "categorizacion.hbs");
     }
 
-    public ModelAndView Categorizar(Request request, Response response) {
+    public ModelAndView categorizar(Request request, Response response) {
         try{
             String idEntidadCategorizable = request.queryParams("id-entidad-categorizable");
             String nombreCriterioCategorizacion = request.queryParams("criterio");
             String nombreCategoria = request.queryParams("categoria");
 
             categorizacionesService.asociarCategoriaAEntidadCategorizable(idEntidadCategorizable, nombreCategoria, nombreCriterioCategorizacion);
+        }
+        catch(CategorizacionException e){
+            mensajeError = "Null error: " + e.getMessage();
+            return new ModelAndView(this, "fallaCategorizacion.hbs");
+        }
+        catch (Exception e) {
+            mensajeError = "Error desconocido: " + e.getMessage() + request.queryMap();
+            return new ModelAndView(this, "fallaCategorizacion.hbs");
+        }
+
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("user", request.session().attribute("user"));
+
+        return new ModelAndView(parameters, "exitoCategorizar.hbs");
+    }
+
+    public ModelAndView showDescategorizacionesPage(Request request, Response response){
+        Map<String, Object> parameters = new HashMap<>();
+
+        parameters.put("user", request.session().attribute("user"));
+        parameters.put("id-entidad-categorizable", request.queryParams("id-entidad-categorizable"));
+        parameters.put("criterios-de-categorizacion", categorizacionesService.listarCriteriosDeCategorizacion());
+        parameters.put("esDescategorizacion", true);
+
+        return new ModelAndView(parameters, "categorizacion.hbs");
+    }
+
+    public ModelAndView descategorizar(Request request, Response response) {
+        try{
+            String idEntidadCategorizable = request.queryParams("id-entidad-categorizable");
+            String nombreCriterioCategorizacion = request.queryParams("criterio");
+            String nombreCategoria = request.queryParams("categoria");
+
+            categorizacionesService.desasociarCategoriaAEntidadCategorizable(idEntidadCategorizable, nombreCategoria, nombreCriterioCategorizacion);
         }
         catch(CategorizacionException e){
             mensajeError = "Null error: " + e.getMessage();

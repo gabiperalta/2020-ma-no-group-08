@@ -24,7 +24,7 @@
 
 </head>
 <body>
-    <form class="rounded mx-3 my-4" method="POST" action="/categorizar">
+<form class="rounded mx-3 my-4" method="POST" {{#if esDescategorizacion}} action="/descategorizar" {{else}} action="/categorizar" {{/if}}>
         <div class="container">
             <input class="invisible" name="id-entidad-categorizable" id="id-entidad-categorizable" value="{{id-entidad-categorizable}}">
             <h4>{{id-entidad-categorizable}}</h4>
@@ -53,7 +53,7 @@
                 </div>
             </div>
             <div class="mx-3 my-4">
-                <button type="submit" class="btn btn-primary px-3 rounded" >Categorizar</button>
+                <button type="submit" class="btn btn-primary px-3 rounded" >{{#if esDescategorizacion}} Descategorizar {{else}} Categorizar {{/if}}</button>
             </div>
         </div>
     </form>
