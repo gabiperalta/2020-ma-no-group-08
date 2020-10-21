@@ -7,7 +7,10 @@ import dominio.entidades.EntidadJuridica;
 import dominio.entidades.Organizacion;
 import dominio.operaciones.*;
 import dominio.operaciones.medioDePago.*;
+import dominio.utils.RestClientML;
 import servicio.abOperaciones.ServicioABOperaciones;
+import servicio.ServiceMercadoLibre;
+
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -21,6 +24,9 @@ import java.util.stream.Collectors;
 public class EgresoController extends Controller{
 
     ServicioABOperaciones servicioOperaciones = new ServicioABOperaciones();
+
+    ServiceMercadoLibre serviceMeli = ServiceMercadoLibre.INSTANCE;
+
 
     private String mensajeError;
 
@@ -120,12 +126,12 @@ public class EgresoController extends Controller{
     }
 
 
-    public ModelAndView showEgreso(Request request, Response response){
+    public ModelAndView showEgreso(Request request, Response response) throws  Exception{
         Map<String, Object> parameters = new HashMap<>();
 
         parameters.put("user", request.session().attribute("user"));
 
-
+        parameters.put("medioDePagoMeli", serviceMeli.getMediosDePago());
 
         return new ModelAndView(parameters, "egreso.hbs");
     }

@@ -1,6 +1,7 @@
 package servidor;
 import dominio.cuentasUsuarios.CuentaUsuario;
 import servidor.controladores.*;
+import servicio.*;
 
 import spark.Spark;
 import spark.template.handlebars.HandlebarsTemplateEngine;
@@ -37,6 +38,7 @@ public class Router {
 		VinculacionesController vinculacionesC = new VinculacionesController();
 		EgresoController egresoC = new EgresoController();
 		IngresoController ingresoC = new IngresoController();
+		ServiceMercadoLibre serviceMeli = ServiceMercadoLibre.INSTANCE;
 
 		CategorizacionesController categorizacionesC = new CategorizacionesController();
 
@@ -62,6 +64,8 @@ public class Router {
 
 		get("/ingreso", ingresoC::showIngreso, engine);
 		get("/ingresos", ingresoC::mostrarIngresos, engine);
+
+
 
 		get("/categorizar", categorizacionesC::showCategorizacionesPage, engine);
 		post("/categorizar", categorizacionesC::categorizar, engine);

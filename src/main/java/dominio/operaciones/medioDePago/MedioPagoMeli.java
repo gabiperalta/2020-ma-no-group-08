@@ -15,6 +15,18 @@ public class MedioPagoMeli {
     public String getPayment_type_id() { return payment_type_id; }
     public void getPayment_type_id(String value) { this.payment_type_id = value; }
 
+    public boolean esTarjetaDeCredito(){
+        return this.payment_type_id.equals("credit_card");
+    }
+
+    public boolean esTarjetaDeDebito(){
+        return this.payment_type_id.equals("debit_card");
+    }
+
+    public boolean esEfectivo(){
+        return this.payment_type_id.equals("ticket");
+    }
+
     public String getThumbnail() { return thumbnail; }
     public void setThumbnail(String value) { this.thumbnail = value; }
 }
