@@ -48,7 +48,6 @@ public class IngresoController extends Controller{
             href = href.concat("?filtro=" + filtro);
             parameters.put("filtroPaginado","&filtro="+filtro);
         }
-
         if(pagina == null){
             if(ingresos.size() > ingresosPorPagina){ // 3 egresos por pagina
                 if(href.equals("/ingresos"))

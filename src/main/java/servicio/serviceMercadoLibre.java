@@ -1,6 +1,7 @@
 package servicio;
 
 
+import com.mercadolibre.restclient.http.Header;
 import com.mercadolibre.restclient.http.Headers;
 import dominio.utils.*;
 
@@ -59,6 +60,19 @@ public enum serviceMercadoLibre {
     public JSONObject getCountryWithZipCode(String country, String zipCodeInit, String zipCodeFinal) throws Exception {
         String url = "https://api.mercadolibre.com/country/"+country+"/zip_codes/search_between?zip_code_from="+zipCodeInit+"&zip_code_to="+zipCodeFinal;
         return JsonUtils.getLinkedHashMapToJson(restClient.get(url, new Headers()));
+    }
+
+    public JSONObject getMediosDePago() throws Exception {
+        String url = "https://api.mercadopago.com/v1/payment_methods";
+        return JsonUtils.getLinkedHashMapToJson(restClient.get(url, headersMeli()));
+    }
+
+    public static Headers headersMeli() throws Exception {
+        Headers headers = new Headers();
+        headers.add(new Header("Content-Type", "application/json"));
+        headers.add(new Header("Authorization", "Basic TEST-5529781788776149-102121-5a1e43ff1a729254de5c242630f84693-440217811"));
+
+        return headers;
     }
 
 }
