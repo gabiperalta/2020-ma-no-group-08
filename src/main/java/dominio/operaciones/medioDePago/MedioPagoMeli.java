@@ -27,6 +27,11 @@ public class MedioPagoMeli {
         return this.payment_type_id.equals("ticket");
     }
 
+    public boolean esDineroEnCuenta(){
+        return this.payment_type_id.equals("account_money");
+    }
+
+
     public String getThumbnail() { return thumbnail; }
     public void setThumbnail(String value) { this.thumbnail = value; }
 }
