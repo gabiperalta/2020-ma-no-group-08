@@ -8,6 +8,7 @@ import componenteVinculador.vinculador.Vinculador;
 import datos.RepoOperacionesEgreso;
 import datos.RepoOperacionesIngreso;
 import dominio.cuentasUsuarios.CuentaUsuario;
+import dominio.entidades.Organizacion;
 import dominio.operaciones.*;
 import servicio.abOperaciones.ServicioABOperaciones;
 import spark.ModelAndView;
@@ -34,24 +35,28 @@ public class VinculacionesController {
         return new ModelAndView(parameters, "vinculaciones.hbs");
     }
 
-    public Response vincular(Request request, Response response) throws Exception {
+    public String vincular(Request request, Response response) throws Exception {
         Map<String, Object> parameters = new HashMap<>();
         Set<String> queryP = request.queryParams();
 
-        String[] ingresosIds = request.queryParams("ingresosId").split(",", 99);
-        String[] egresosIds = request.queryParams("egresosId").split(",", 99);
+        CuentaUsuario usuario = request.session().attribute("user");
+
+        ArrayList ingresosIds = generateIds("OI-", request.queryParams("ingresosIds").split(" ", 99));
+
+        ArrayList egresosIds = generateIds("OE-", request.queryParams("egresosIds").split(" ", 99));
 
         CriterioVinculacion criterio = generarCriterio(request);
         ArrayList<CriterioVinculacion> criterios = new ArrayList<>();
         criterios.add(criterio);
 
         Vinculador vinculador = new Vinculador();
-        vinculador.vincular(generarOperacionesVinculables(ingresosIds, true),
-                            generarOperacionesVinculables(egresosIds, false),
+        vinculador.vincular(generarOperacionesVinculables(ingresosIds, true, usuario.getOrganizacion()),
+                            generarOperacionesVinculables(egresosIds, false, usuario.getOrganizacion()),
                             criterios);
 
-        response.redirect("/", 302);
-        return response;
+        response.type("application/json");
+
+        return vinculador.getVinculacionJsonString();
     }
 
     private CriterioVinculacion generarCriterio (Request request) throws Exception {
@@ -60,16 +65,19 @@ public class VinculacionesController {
         return GeneradorCriterio.generarCriterio(tipoCriterio,rangoDias);
     }
 
-    private ArrayList<OperacionVinculable> generarOperacionesVinculables (String[] ingresosIds , boolean esIngreso) {
+    private ArrayList<OperacionVinculable> generarOperacionesVinculables (ArrayList ingresosIds , boolean esIngreso, Organizacion organizacion) {
         ArrayList<Operacion> operaciones = new ArrayList<>();
-        for (String opId: ingresosIds) {
+        for (Object opId: ingresosIds) {
             Operacion operacion;
             if (esIngreso) {
-                operacion = RepoOperacionesIngreso.getInstance().buscarOperacionEgresoPorIdentificador(opId);
+                operacion = RepoOperacionesIngreso.getInstance().buscarOperacionEgresoPorIdentificadorYOrganizacion((String) opId, organizacion);
             } else {
-                operacion = RepoOperacionesEgreso.getInstance().buscarOperacionEgresoPorIdentificador(opId);
+                operacion = RepoOperacionesEgreso.getInstance().buscarOperacionEgresoPorIdentificadorYOrganizacion((String) opId, organizacion);
             }
-            operaciones.add(operacion);
+
+            if (operacion != null) {
+                operaciones.add(operacion);
+            }
         }
 
         ArrayList<OperacionVinculable> operacionesVinculables =  new ArrayList<>();
@@ -79,4 +87,11 @@ public class VinculacionesController {
         return operacionesVinculables;
     }
 
+    private ArrayList generateIds (String sufijo, String[] ids) {
+        ArrayList auxIds = new ArrayList();
+        for (String id:ids) {
+            auxIds.add(sufijo + id);
+        }
+        return auxIds;
+    }
 }

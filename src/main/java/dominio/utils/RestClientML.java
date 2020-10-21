@@ -28,19 +28,15 @@ public enum RestClientML {
             RESTPool pool = RESTPool.builder().withName(RESOURCE_NAME)
                     .withSocketTimeout(70000)
                     .withConnectionTimeout(25000)
-                    .withMaxTotal(Config.getInt("http.max.connections"))
-                    .withMaxPerRoute(Config.getInt("http.max.connections.per.route"))
-                    .withBaseURL(Config.getString("api.base.url"))
-                    .withRetryStrategy(new SimpleRetryStrategy(1, Config.getLong("http.retry.wait")))
+                    .withMaxTotal(1000)
+                    .withMaxPerRoute(1000)
                     .build();
 
             RESTPool poolQuery = RESTPool.builder().withName(RESOURCE_NAME)
                     .withSocketTimeout(70000)
                     .withConnectionTimeout(25000)
-                    .withMaxTotal(Config.getInt("http.max.connections"))
-                    .withMaxPerRoute(Config.getInt("http.max.connections.per.route"))
-                    .withBaseURL(Config.getString("api.base.url"))
-                    .withRetryStrategy(new SimpleRetryStrategy(1, Config.getLong("http.retry.wait")))
+                    .withMaxTotal(1000)
+                    .withMaxPerRoute(1000)
                     .build();
 
 

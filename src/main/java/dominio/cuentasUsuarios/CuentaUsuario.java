@@ -97,6 +97,10 @@ public class CuentaUsuario {
 	public boolean esAdministrador() {
 		return perfil.esUsuarioAdministrador();
 	}
+
+	public boolean getEsAdministrador() {
+		return perfil.esUsuarioAdministrador();
+	}
 	
 	public Organizacion getOrganizacion() {
 		return perfil.getOrganizacion();
