@@ -1,12 +1,16 @@
 package servicio;
 
 
-import com.mercadolibre.restclient.http.Header;
+import com.google.gson.Gson;
 import com.mercadolibre.restclient.http.Headers;
+import dominio.operaciones.medioDePago.*;
 import dominio.utils.*;
+import com.mercadolibre.restclient.http.Header;
+
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.omg.CORBA.OBJ_ADAPTER;
 
 
 public enum serviceMercadoLibre {
@@ -16,16 +20,11 @@ public enum serviceMercadoLibre {
     private RestClientML restClient = RestClientML.INSTANCE;
 
 
-    public JSONObject getMediosDePago() throws Exception {
-        String url = "https://api.mercadopago.com/v1/payment_methods";
-        return JsonUtils.getLinkedHashMapToJson(restClient.get(url, headersMeli()));
-    }
-
     public Object getMediosDePago() throws Exception {
         String url = "https://api.mercadopago.com/v1/payment_methods";
 
         Gson gson = new Gson();
-        return gson.fromJson(JsonUtils.getResponseJsonArray(restClient.get(url, new Headers())).toString(), Currency[].class);
+        return gson.fromJson(JsonUtils.getResponseJsonArray(restClient.get(url, headersMeli())).toString(), MedioPagoMeli[].class);
     }
 
     public static Headers headersMeli() throws Exception {
