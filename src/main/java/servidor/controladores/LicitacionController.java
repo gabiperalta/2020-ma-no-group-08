@@ -164,6 +164,11 @@ public class LicitacionController{
         ServicioABLicitaciones servicioABLicitaciones = new ServicioABLicitaciones();
         ArrayList<Licitacion> licitaciones = servicioABLicitaciones.listarLicitacionesOrg(usuario.getOrganizacion());
         List<Presupuesto> presupuestos = licitaciones.stream().flatMap(licitacion -> licitacion.getPresupuestos().stream()).collect(Collectors.toList());
+        List<HashMap<String,Object>> presupuestosCompuestoInicial = licitaciones.stream().flatMap(licitacion -> licitacion.getPresupuestos().stream().map(presupuesto -> new HashMap<String,Object>(){{
+            put("presupuesto",presupuesto);
+            put("id_egreso",licitacion.getOperacionEgreso().getIdentificador());
+        }})).collect(Collectors.toList());
+        List<HashMap<String,Object>> presupuestosCompuesto = new ArrayList<>();
 
         if(filtro != null){
             String[] nombreCategoriaCriterio= filtro.split("_");
@@ -190,7 +195,13 @@ public class LicitacionController{
                 response.redirect(href); // redirecciona a la pagina 1
                 return null;
             }
-            map.put("presupuestos",presupuestos);
+            //map.put("presupuestos",presupuestos);
+
+            for(HashMap<String,Object> presupuestoCompuestoInicial : presupuestosCompuestoInicial){
+                Presupuesto presupuestoInicial = (Presupuesto) presupuestoCompuestoInicial.get("presupuesto");
+                if(presupuestos.stream().anyMatch( presupuesto -> presupuesto.getIdentificador().equals(presupuestoInicial.getIdentificador())))
+                    presupuestosCompuesto.add(presupuestoCompuestoInicial);
+            }
         }
         else{
             int numeroPagina = Integer.parseInt(pagina);
@@ -198,7 +209,12 @@ public class LicitacionController{
             int indiceFinal = Math.min(numeroPagina * presupuestosPorPagina,presupuestos.size());
             List<Presupuesto> presupuestosSubLista = presupuestos.subList(indiceInicial,indiceFinal);
 
-            map.put("presupuestos",presupuestosSubLista);
+            for(HashMap<String,Object> presupuestoCompuestoInicial : presupuestosCompuestoInicial){
+                Presupuesto presupuestoInicial = (Presupuesto) presupuestoCompuestoInicial.get("presupuesto");
+                if(presupuestosSubLista.stream().anyMatch( presupuesto -> presupuesto.getIdentificador().equals(presupuestoInicial.getIdentificador())))
+                    presupuestosCompuesto.add(presupuestoCompuestoInicial);
+            }
+
             int cantidadPaginas = (int) Math.ceil((double)presupuestos.size()/presupuestosPorPagina);
             ArrayList<Integer> listaCantidadPaginas = new ArrayList<>();
             for(int i = 1;i<=cantidadPaginas; i++){
@@ -211,6 +227,7 @@ public class LicitacionController{
                 map.put("pagina_siguiente",numeroPagina + 1);
 
         }
+        map.put("presupuestos",presupuestosCompuesto);
         map.put("user", request.session().attribute("user"));
 
         map.put("criteriosDeCategorizacion",RepositorioCategorizacion.getInstance().getCriteriosDeCategorizacion());
