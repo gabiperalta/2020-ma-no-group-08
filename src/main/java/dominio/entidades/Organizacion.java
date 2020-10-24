@@ -3,12 +3,21 @@ package dominio.entidades;
 import dominio.cuentasUsuarios.CuentaUsuario;
 import dominio.operaciones.EntidadOperacion;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Transient;
 import java.util.ArrayList;
 
-public class Organizacion {
-    protected String nombre;
-    protected ArrayList<EntidadJuridica> entidades;
+@Entity
 
+public class Organizacion {
+    @Id
+    private String nombre;
+    @Transient //TODO: cambiar
+    private ArrayList<EntidadJuridica> entidades;
+
+    public Organizacion() {}
     public Organizacion(String nombre, ArrayList<EntidadJuridica> entidades){
         this.nombre = nombre;
         this.entidades= entidades;
