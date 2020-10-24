@@ -4,6 +4,8 @@ import datos.*;
 import dominio.categorizacion.CriterioDeCategorizacion;
 import dominio.categorizacion.exceptions.CategorizacionException;
 import dominio.cuentasUsuarios.CuentaUsuario;
+import dominio.cuentasUsuarios.Roles.Privilegio;
+import dominio.cuentasUsuarios.Roles.Rol;
 import dominio.entidades.*;
 import dominio.entidades.calculadorFiscal.ETipoActividad;
 import dominio.licitacion.Licitacion;
@@ -15,21 +17,32 @@ import dominio.operaciones.*;
 import dominio.operaciones.medioDePago.Efectivo;
 import datos.RepositorioUsuarios;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class ServerDataMock {
+    private static EntityManagerFactory entityManagerFactory;
 
-    public void cargarMock() throws Exception {
-        cargarOrganizaciones();
-        cargarIngresos();
-        cargarEgregos();
-        cargarCategorias();
-        cargarUsuarios();
-        cargarPresupuestos();
+    public static void main(String[] args) throws Exception {
+        entityManagerFactory =  Persistence.createEntityManagerFactory("db");
+        cargarMock();
     }
 
-    private void cargarIngresos() throws Exception {
+    public static void cargarMock() throws Exception {
+        cargarOrganizaciones();
+//        cargarRoles();
+//        cargarUsuarios();
+//        cargarIngresos();
+//        cargarEgregos();
+//        cargarCategorias();
+//        cargarPresupuestos();
+    }
+
+    private static void cargarIngresos() throws Exception {
         OperacionIngreso ingreso1 = new OperacionIngreso();
         ingreso1.setFecha(new Date());
         ingreso1.setMontoTotal(1000);
@@ -83,7 +96,7 @@ public class ServerDataMock {
         RepoOperacionesIngreso.getInstance().agregarIngreso(ingreso6);
     }
 
-    private void cargarEgregos() throws Exception {
+    private static void cargarEgregos() throws Exception {
         OperacionEgresoBuilder builderEgreso = new OperacionEgresoBuilder();
         ArrayList<Item> items1 = new ArrayList<>();
         ArrayList<Item> items2 = new ArrayList<>();
@@ -176,9 +189,7 @@ public class ServerDataMock {
         RepoOperacionesEgreso.getInstance().agregarOperacionEgreso(egreso7);
     }
 
-
-
-    private void cargarCategorias() throws CategorizacionException {
+    private static void cargarCategorias() throws CategorizacionException {
         CriterioDeCategorizacion criterioDePrueba1 = new CriterioDeCategorizacion("CriterioDePrueba-1");
         criterioDePrueba1.agregarCategoria("Categoria-1");
         criterioDePrueba1.agregarCategoria("Categoria-1.1", "Categoria-1");
@@ -195,7 +206,7 @@ public class ServerDataMock {
         RepositorioCategorizacion.getInstance().agregarCriterioDeCategorizacion(criterioDePrueba2);
     }
 
-    private void cargarOrganizaciones(){
+    private static void cargarOrganizaciones(){
 
         ArrayList<EntidadJuridica> entidades1 = new ArrayList<>();
         ArrayList<EntidadJuridica> entidades2 = new ArrayList<>();
@@ -206,11 +217,52 @@ public class ServerDataMock {
         entidades1.add(entidad1);
         entidades2.add(entidad2);
 
-        RepoOrganizaciones.getInstance().agregarOrganizacion("Organizacion1", entidades1);
-        RepoOrganizaciones.getInstance().agregarOrganizacion("Organizacion2", entidades2);
+
+
+        EntityManager em = getEntityManager();
+        RepoOrganizaciones repoOrganizaciones = new RepoOrganizaciones(em);
+
+        em.getTransaction().begin();
+        repoOrganizaciones.agregarOrganizacion("Organizacion1", entidades1);
+        repoOrganizaciones.agregarOrganizacion("Organizacion2", entidades2);
+        em.getTransaction().commit();
+
     }
 
-    private void cargarUsuarios(){
+    private static void cargarRoles(){
+        Privilegio privilegioABOrganizacion = new Privilegio("PRIVILEGIO_AB_ORGANIZACIONES");
+        Privilegio privilegioABMUsuarios = new Privilegio("PRIVILEGIO_ABM_USUARIOS");
+        Privilegio privilegioABMEntidadesJuridicas = new Privilegio("PRIVILEGIO_ABM_ENTIDADES_JURIDICAS");
+        Privilegio privilegioABMEntidadesBase = new Privilegio("PRIVILEGIO_ABM_ENTIDADES_BASE");
+        Privilegio privilegioABOperacion = new Privilegio("PRIVILEGIO_AB_OPERACIONES");
+        Privilegio privilegioABLicitaciones = new Privilegio("PRIVILEGIO_AB_LICITACIONES");
+        Privilegio privilegioRevisor = new Privilegio("PRIVILEGIO_REVISOR");
+        Privilegio privilegioRecategorizador = new Privilegio("PRIVILEGIO_RECATEGORIZADOR");
+        Privilegio privilegioVinculador = new Privilegio("PRIVILEGIO_VINCULADOR");
+
+        ArrayList<Privilegio> privilegiosRolAdministradorSistema = new ArrayList<Privilegio>();
+        ArrayList<Privilegio> privilegiosRolAdministradorOrganizacion = new ArrayList<Privilegio>();
+        ArrayList<Privilegio> privilegiosRolEstandar = new ArrayList<Privilegio>();
+        ArrayList<Privilegio> privilegiosRolRevisor = new ArrayList<Privilegio>();
+
+        privilegiosRolAdministradorSistema.add(privilegioABOrganizacion);
+        privilegiosRolAdministradorSistema.add(privilegioABMUsuarios);
+        privilegiosRolAdministradorOrganizacion.add(privilegioABMEntidadesJuridicas);
+        privilegiosRolAdministradorOrganizacion.add(privilegioABMEntidadesBase);
+        privilegiosRolEstandar.add(privilegioABOperacion);
+        privilegiosRolEstandar.add(privilegioABLicitaciones);
+        privilegiosRolEstandar.add(privilegioRecategorizador);
+        privilegiosRolEstandar.add(privilegioVinculador);
+
+        privilegiosRolRevisor.add(privilegioRevisor);
+
+        Rol rolAdministradorSistema = new Rol("ROL_ADMINISTRADOR_SISTEMA", privilegiosRolAdministradorSistema);
+        Rol rolAdministradorOrganizacion = new Rol("ROL_ADMINISTRADOR_ORGANIZACION", privilegiosRolAdministradorOrganizacion);
+        Rol rolEstandar = new Rol("ROL_ESTANDAR", privilegiosRolEstandar);
+        Rol rolRevisor = new Rol("ROL_REVISOR", privilegiosRolRevisor);
+    }
+
+    private static void cargarUsuarios(){
         ArrayList<String> listaDeRolesCliente = new ArrayList<String>();
         listaDeRolesCliente.add("ROL_ESTANDAR");
         ArrayList<String> listaDeRolesClienteMaestro = new ArrayList<String>();
@@ -227,7 +279,7 @@ public class ServerDataMock {
         RepositorioUsuarios.getInstance().agregarUsuarioEstandar(usuarioClienteMaestroPruebasWeb);
     }
 
-    private void cargarPresupuestos(){
+    private static void cargarPresupuestos(){
         Licitacion licitacion1;
         Licitacion licitacion2;
         Presupuesto presup1;
@@ -268,5 +320,9 @@ public class ServerDataMock {
 
         RepoLicitaciones.getInstance().agregarLicitacion(licitacion1);
         RepoLicitaciones.getInstance().agregarLicitacion(licitacion2);
+    }
+
+    private static EntityManager getEntityManager() {
+        return entityManagerFactory.createEntityManager();
     }
 }
