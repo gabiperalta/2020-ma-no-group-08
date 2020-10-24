@@ -1,5 +1,6 @@
 package servidor.controladores;
 
+import datos.RepoLicitaciones;
 import datos.RepoOperacionesEgreso;
 import datos.RepositorioCategorizacion;
 import dominio.cuentasUsuarios.CuentaUsuario;
@@ -117,6 +118,8 @@ public class EgresoController extends Controller{
                 break;
             case "presupuestoNoAgregado":
                 parameters.put("error","Los items del presupuesto no coinciden con los items del egreso");
+            case "egresoNoBorrado":
+                parameters.put("error","El egreso no se pudo borrar debido a que tiene presupuestos asociados");
             default:
                 break;
         }
@@ -139,8 +142,13 @@ public class EgresoController extends Controller{
 
     public Object deleteEgreso(Request request, Response response){
         String identificador = request.params("identificador");
+
+        if(RepoLicitaciones.getInstance().buscarLicitacionPorOperacionEgreso(identificador)!=null){
+            response.status(406);
+            return "No se puede eliminar";
+        }
+
         RepoOperacionesEgreso.getInstance().eliminarOperacionEgresoPorIdentificador(identificador);
-        //response.redirect("/egresos");
         response.status(200);
 
         return "Eliminacion existosa";

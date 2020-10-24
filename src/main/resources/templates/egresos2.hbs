@@ -233,10 +233,14 @@ body {
         if (r) {
             $.ajax({
                 url: "/egreso/" + identificadorEgreso,
+                //url: "/egreso/" + identificadorEgreso + "?paginaActual=" + window.location.pathn    ame + window.location.search,
                 type: "DELETE",
                 success: function () {
-                    //console.log("El egreso a sido EXTERMINADO");
                     location.reload();
+                },
+                error: function () {
+                    if(window.location.search.length > 0)
+                        window.location.href = window.location.pathname + window.location.search +     "&error=egresoNoBorrado"
                 }
             });
         }
