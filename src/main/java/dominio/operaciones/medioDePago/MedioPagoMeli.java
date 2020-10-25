@@ -24,6 +24,10 @@ public class MedioPagoMeli {
         return this.payment_type_id.equals("debit_card");
     }
 
+    public boolean getEsImagenGrande(){
+        return this.id.equals("mercadopago_cc");
+    }
+
     public boolean getEsEfectivo(){
         return this.payment_type_id.equals("ticket");
     }

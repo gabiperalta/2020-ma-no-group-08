@@ -99,7 +99,11 @@
                         <div id="thumbs3">
                             {{#each medioDePagoMeli}}
                                 {{#if this.esTarjetaDeCredito}}
-                                    <img id="{{this.name}}" src="{{this.thumbnail}}">
+                                    {{#if this.esImagenGrande}}
+                                            <img id="{{this.name}}" src="{{this.thumbnail}}" width="35" height="20" >
+                                    {{else}}
+                                        <img id="{{this.name}}" src="{{this.thumbnail}}" >
+                                    {{/if}}
                                 {{/if}}
                             {{/each}}
                         </div>
