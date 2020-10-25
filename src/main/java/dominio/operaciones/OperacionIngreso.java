@@ -2,17 +2,28 @@ package dominio.operaciones;
 
 import dominio.entidades.Organizacion;
 
+import javax.persistence.*;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+@Entity
 public class OperacionIngreso implements Operacion {
+
+	@Id @GeneratedValue(strategy = GenerationType.AUTO)
 	private String identificadorOperacion;
 	private String descripcion;
 	private double montoTotal;
+
+	@Convert(converter = Date.class)
 	private Date fecha;
+
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	private EntidadOperacion entidadOrigen;
+
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	private EntidadOperacion entidadDestino;
+
 
 	public EntidadOperacion getEntidadOrigen() {
 		return entidadOrigen;
