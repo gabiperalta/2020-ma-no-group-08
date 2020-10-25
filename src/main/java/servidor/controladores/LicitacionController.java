@@ -75,9 +75,9 @@ public class LicitacionController{
             presupuestos.add(jsonAPresupuesto(jsonObjectArchivo));
         }
 
-        //Licitacion licitacion = RepoLicitaciones.getInstance().buscarLicitacionPorOperacionEgreso(egresoId);
         Licitacion licitacion = repoLicitaciones.buscarLicitacionPorOperacionEgreso(egresoId);
-        ServicioABLicitaciones servicioABLicitaciones = new ServicioABLicitaciones();
+        ServicioABLicitaciones servicioABLicitaciones = new ServicioABLicitaciones(entityManager);
+
         if(licitacion == null){
             licitacion = servicioABLicitaciones.altaLicitacion(operacionEgresoEncontrada, NotificadorSuscriptores.getInstance());
             licitacion.agregarCriterioSeleccionDeProveedor(new CriterioMenorPrecio());
@@ -111,10 +111,10 @@ public class LicitacionController{
         return null;
     }
 
-    public Object realizarLicitacion(Request request,Response response){
+    public Object realizarLicitacion(Request request,Response response, EntityManager entityManager){
         String licitacionId = request.queryParams("licitacion_id");
         CuentaUsuario usuario = request.session().attribute("user");
-        ServicioABLicitaciones servicioABLicitaciones = new ServicioABLicitaciones();
+        ServicioABLicitaciones servicioABLicitaciones = new ServicioABLicitaciones(entityManager);
         ArrayList<Licitacion> licitaciones = servicioABLicitaciones.listarLicitacionesOrg(usuario.getOrganizacion());
 
         Licitacion licitacionEncontrada = null;
@@ -161,7 +161,7 @@ public class LicitacionController{
         return jsonObject;
     }
 
-    public ModelAndView mostrarPresupuestos(Request request,Response response){
+    public ModelAndView mostrarPresupuestos(Request request, Response response, EntityManager entityManager){
         int presupuestosPorPagina = 3;
         String href = "/presupuestos";
         Map<String, Object> map = new HashMap<>();
@@ -169,7 +169,7 @@ public class LicitacionController{
         String pagina = request.queryParams("pagina");
         String filtro = request.queryParams("filtro");
         CuentaUsuario usuario = request.session().attribute("user");
-        ServicioABLicitaciones servicioABLicitaciones = new ServicioABLicitaciones();
+        ServicioABLicitaciones servicioABLicitaciones = new ServicioABLicitaciones(entityManager);
         ArrayList<Licitacion> licitaciones = servicioABLicitaciones.listarLicitacionesOrg(usuario.getOrganizacion());
         List<Presupuesto> presupuestos = licitaciones.stream().flatMap(licitacion -> licitacion.getPresupuestos().stream()).collect(Collectors.toList());
         List<HashMap<String,Object>> presupuestosCompuestoInicial = licitaciones.stream().flatMap(licitacion -> licitacion.getPresupuestos().stream().map(presupuesto -> new HashMap<String,Object>(){{

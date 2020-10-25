@@ -3,14 +3,11 @@ package dominio.entidades;
 import dominio.cuentasUsuarios.CuentaUsuario;
 import dominio.operaciones.EntidadOperacion;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.util.ArrayList;
 
 @Entity
-
+@Table(name = "Organizaciones")
 public class Organizacion {
     @Id
     private String nombre;

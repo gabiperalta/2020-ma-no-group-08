@@ -12,6 +12,8 @@ import spark.template.handlebars.HandlebarsTemplateEngine;
 import spark.utils.*;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import java.util.ArrayList;
 
 import static spark.Spark.*;
@@ -19,6 +21,16 @@ import static spark.Spark.*;
 public class Router {
 
 	private static HandlebarsTemplateEngine engine;
+	private static EntityManagerFactory entityManagerFactory;
+
+	public static void init() throws Exception {
+		Router.initEngine();
+		//Router.initPersistence();
+		String projectDir = System.getProperty("user.dir");
+		String staticDir = "/src/main/resources/public";
+		Spark.externalStaticFileLocation(projectDir + staticDir);
+		Router.configure();
+	}
 
 	private static void initEngine() {
 		Router.engine = HandlebarsTemplateEngineBuilder
@@ -27,13 +39,8 @@ public class Router {
 			.withHelper("isTrue", BooleanHelper.isTrue)
 			.build();
 	}
-	public static void init() throws Exception {
-		Router.initEngine();
-		String projectDir = System.getProperty("user.dir");
-		String staticDir = "/src/main/resources/public";
-		Spark.externalStaticFileLocation(projectDir + staticDir);
-		Router.configure();
-	}
+
+	private static void initPersistence(){ entityManagerFactory = Persistence.createEntityManagerFactory("db"); }
 
 	public static void configure() throws Exception {
 		LoginController loginc = new LoginController();
@@ -49,14 +56,12 @@ public class Router {
 
 
 		get("/login", loginc::login, engine);
-		post("/login", loginc::loguear);
+		post("/login", RouteWithTransaction(loginc::loguear));
 		get("/logout", loginc::logout);
 		get("/", homec::showHomePage, engine);
-		get("/presupuestos",licitacionc::mostrarPresupuestos,engine);
-		//post("/presupuesto",licitacionc::agregarPresupuesto);
+		get("/presupuestos",TemplWithTransaction(licitacionc::mostrarPresupuestos),engine);
 		post("/presupuesto",RouteWithTransaction(licitacionc::agregarPresupuesto));
-		post("/licitacion",licitacionc::realizarLicitacion);
-		//get("/licitacion",licitacionc::obtenerLicitacionPorEgreso);
+		post("/licitacion",RouteWithTransaction(licitacionc::realizarLicitacion));
 		get("/licitacion",RouteWithTransaction(licitacionc::obtenerLicitacionPorEgreso));
 		get("/licitacion/:licitacion_id",RouteWithTransaction(licitacionc::resultadoLicitacion),licitacionc.getGson()::toJson);
 		get("/egreso", egresoC::showEgreso, engine);
@@ -64,7 +69,7 @@ public class Router {
 		get("/egreso/:id", egresoC::showModificarEgreso, engine);
 		post("/egreso/:id", egresoC::modificarEgreso, engine);
 		get("/egresos/:egreso", egresoC::showEgreso, engine);
-		delete("/egreso/:identificador", egresoC::deleteEgreso);
+		delete("/egreso/:identificador", RouteWithTransaction(egresoC::deleteEgreso));
 
 		get("/egresos", egresoC::mostrarEgresos, engine);
 
@@ -117,7 +122,6 @@ public class Router {
 		return condicion1 && condicion2 ;
 	}
 
-
 	private static TemplateViewRoute  TemplWithTransaction(WithTransaction<ModelAndView> fn) {
 		TemplateViewRoute r = (req, res) -> {
 			EntityManager em = ServerDataMock.getEntityManager();
@@ -149,4 +153,5 @@ public class Router {
 		};
 		return r;
 	}
+
 }

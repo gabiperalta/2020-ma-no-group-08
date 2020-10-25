@@ -1,4 +1,4 @@
-package servicio.Sesiones;
+/*package servicio.Sesiones;
 
 import java.util.UUID;
 
@@ -70,4 +70,4 @@ public class ServicioSesiones {
 	public ServicioABLicitaciones abLicitaciones() throws PermisoDenegadoException {
 		return RepositorioSesiones.getInstance().buscarSesion(identificadorSesion).abLicitaciones();
 	}
-}
+}*/

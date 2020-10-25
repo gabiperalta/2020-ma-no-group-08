@@ -3,18 +3,35 @@ package dominio.operaciones;
 import dominio.entidades.Organizacion;
 import dominio.operaciones.medioDePago.MedioDePago;
 
+import javax.persistence.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+@Entity
 public class OperacionEgreso implements Operacion {
+
+	@Id @GeneratedValue(strategy = GenerationType.AUTO)
 	private String identificadorOperacion;
+
+	@OneToMany(cascade = CascadeType.PERSIST) @JoinColumn(name = "identificadorOperacion")
 	private ArrayList<Item> items;
+
+	@Convert(converter = MedioDePago.class)
 	private MedioDePago medioDePago;
+
+	@OneToOne(cascade = CascadeType.PERSIST)
 	private DocumentoComercial documento;
+
+	@Convert(converter = Date.class)
 	private Date fecha;
+
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	private EntidadOperacion entidadOrigen;
+
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	private EntidadOperacion entidadDestino;
+
 	private int presupuestosNecesarios;
 	
 	public OperacionEgreso(ArrayList<Item> items2, MedioDePago medioDePago2, DocumentoComercial documento2, Date fecha2,
@@ -28,7 +45,11 @@ public class OperacionEgreso implements Operacion {
 		this.presupuestosNecesarios = presupuestosNecesarios;
 		this.identificadorOperacion = null;
 	}
-	
+
+	public OperacionEgreso() {
+
+	}
+
 	public void agregarItem(Item item) {
 		this.items.add(item);
 	}

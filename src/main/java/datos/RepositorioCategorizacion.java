@@ -12,6 +12,7 @@ import dominio.licitacion.Licitacion;
 import dominio.licitacion.Presupuesto;
 import dominio.operaciones.OperacionEgreso;
 import dominio.operaciones.OperacionIngreso;
+import mock.ServerDataMock;
 
 public class RepositorioCategorizacion {
 	
@@ -110,9 +111,10 @@ public class RepositorioCategorizacion {
 				else{
 					if(identificadorEntidadCategorizable.startsWith("L")){
 						int largoIdentificador = identificadorEntidadCategorizable.length();
+						RepoLicitaciones repoLicitaciones = new RepoLicitaciones(ServerDataMock.getEntityManager());
 						String identificadorLicitacion = identificadorEntidadCategorizable.substring(0,largoIdentificador - 3);
 						String identificadorPresupuesto = identificadorEntidadCategorizable.substring(largoIdentificador - 2, largoIdentificador);
-						Licitacion licitacion = RepoLicitaciones.getInstance().buscarLicitacionPorIdentificador(identificadorLicitacion);
+						Licitacion licitacion = repoLicitaciones.buscarLicitacionPorIdentificador(identificadorLicitacion);
 						Presupuesto presupuesto = licitacion.getPresupuestos().stream().filter( unPresupuesto -> unPresupuesto.getIdentificador().endsWith(identificadorPresupuesto)).
 														findFirst().get();
 						unaEntidadCategorizable = new EntidadCategorizable(presupuesto);

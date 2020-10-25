@@ -9,13 +9,18 @@
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
 		<class>dominio.entidades.Organizacion</class>
-
+		<class>dominio.cuentasUsuarios.Roles.Rol</class>
+		<class>dominio.cuentasUsuarios.Roles.Privilegio</class>
+		<class>dominio.cuentasUsuarios.CuentaUsuario</class>
+		<class>dominio.cuentasUsuarios.perfil.PerfilAdministrador</class>
+		<class>dominio.cuentasUsuarios.perfil.PerfilEstandar</class>
+		<class>dominio.cuentasUsuarios.perfil.Perfil</class>
 
 		<properties>
 			<property name="hibernate.archive.autodetection" value="class" />
 
 			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
-			<property name="hibernate.connection.url" value="jdbc:mysql://localhost:3307/dds2?serverTimezone=UTC" />
+			<property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/dds2?serverTimezone=UTC" />
 			<property name="hibernate.connection.username" value="root" />
 			<property name="hibernate.connection.password" value="1234" />
 

@@ -3,34 +3,34 @@ package dominio.cuentasUsuarios.perfil;
 import dominio.entidades.Organizacion;
 import dominio.operaciones.EntidadOperacion;
 
-public class PerfilEstandar implements Perfil{
-	
-	private String nombre;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+@Entity
+public class PerfilEstandar extends Perfil {
+	@ManyToOne
 	private Organizacion organizacion;
 
+	public PerfilEstandar(){}
+
 	public PerfilEstandar(String unNombre, Organizacion unaOrganizacion) {
-		nombre = unNombre;
+		super(unNombre);
 		organizacion = unaOrganizacion;
 	}
-	
-	@Override
-	public boolean esUsuarioAdministrador() {
-		return false;
-	}
 
-	@Override
-	public void setNombre(String unNombre) {
-		nombre = unNombre;
-	}
-	
-	@Override
-	public String getNombre() {
-		return nombre;
+	public void setOrganizacion(Organizacion organizacion) {
+		this.organizacion = organizacion;
 	}
 
 	@Override
 	public Organizacion getOrganizacion() {
 		return organizacion;
+	}
+
+	@Override
+	public boolean esUsuarioAdministrador() {
+		return false;
 	}
 	
 }

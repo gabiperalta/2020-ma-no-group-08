@@ -15,6 +15,8 @@ import servicio.ServiceMercadoLibre;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
+
+import javax.persistence.EntityManager;
 import java.text.SimpleDateFormat;
 
 import java.util.*;
@@ -140,10 +142,11 @@ public class EgresoController extends Controller{
     }
 
 
-    public Object deleteEgreso(Request request, Response response){
+    public Object deleteEgreso(Request request, Response response, EntityManager entityManager){
         String identificador = request.params("identificador");
+        RepoLicitaciones repoLicitaciones = new RepoLicitaciones(entityManager);
 
-        if(RepoLicitaciones.getInstance().buscarLicitacionPorOperacionEgreso(identificador)!=null){
+        if(repoLicitaciones.buscarLicitacionPorOperacionEgreso(identificador)!=null){
             response.status(406);
             return "No se puede eliminar";
         }

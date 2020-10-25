@@ -1,9 +1,17 @@
 package dominio.operaciones;
 
+import javax.persistence.*;
+
+@Entity
 public class Item {
 	private int valor;
+
+	@Enumerated(EnumType.STRING)
 	private ETipoItem tipo;
+
+	@Id @GeneratedValue(strategy = GenerationType.AUTO)
 	private String descripcion;
+
 
 	public Item(int i, ETipoItem articulo, String string) {
 		this.valor = i;
@@ -11,7 +19,11 @@ public class Item {
 		this.descripcion = string;
 	}
 
-	public int getValor() {
+    public Item() {
+
+    }
+
+    public int getValor() {
 		return valor;
 	}
 

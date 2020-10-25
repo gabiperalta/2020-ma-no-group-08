@@ -1,4 +1,4 @@
-package seguridad.sesion;
+/*package seguridad.sesion;
 
 import java.util.UUID;
 
@@ -11,10 +11,13 @@ import servicio.abm_entidades.ServicioABMEntidadesJuridicas;
 import servicio.abm_entidades.ServicioABMEntidadesBase;
 import servicio.abm_usuarios.ServicioABMUsuarios;
 
+import javax.persistence.EntityManager;
+
 public class Sesion {
 	
 	UUID identificadorSesion;
 	CuentaUsuario cuentaUsuario;
+	EntityManager entityManager;
 	
 	public Sesion(CuentaUsuario unaCuentaUsuario) {
 		cuentaUsuario = unaCuentaUsuario;
@@ -82,3 +85,4 @@ public class Sesion {
 	
 	
 }
+*/

@@ -11,12 +11,19 @@ import dominio.operaciones.OperacionIngreso;
 import seguridad.sesion.exceptions.PermisoDenegadoException;
 import datos.RepositorioUsuarios;
 
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 public class ServicioABLicitaciones {
 
-	//Licitacion licitacion;
+	RepositorioUsuarios repositorioUsuarios;
+	RepoLicitaciones repoLicitaciones;
+
+	public ServicioABLicitaciones(EntityManager entityManager){
+		repositorioUsuarios = new RepositorioUsuarios(entityManager);
+		repoLicitaciones = new RepoLicitaciones(entityManager);
+	}
 
 	public Licitacion altaLicitacion(OperacionEgreso operacion, NotificadorSuscriptores notificadorSuscriptores) {
 		Licitacion licitacion = new Licitacion(operacion,notificadorSuscriptores);
@@ -39,7 +46,7 @@ public class ServicioABLicitaciones {
 	}
 
 	public void licitar(Licitacion licitacion,String nombreUsuario) throws Exception {
-		CuentaUsuario cuentaUsuario = RepositorioUsuarios.getInstance().buscarUsuario(nombreUsuario);
+		CuentaUsuario cuentaUsuario = repositorioUsuarios.buscarUsuario(nombreUsuario);
 		if (cuentaUsuario.puedeLicitar()) {
 			licitacion.licitar();
 		} else {
@@ -53,6 +60,6 @@ public class ServicioABLicitaciones {
 	}
 
 	public ArrayList<Licitacion> listarLicitaciones(){
-		return RepoLicitaciones.getInstance().getLicitaciones();
+		return repoLicitaciones.getLicitaciones();
 	}
 }
