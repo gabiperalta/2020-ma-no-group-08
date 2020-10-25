@@ -1,11 +1,20 @@
 package dominio.categorizacion;
 
+import javax.persistence.*;
 
+
+@Entity
 public class Categoria {
-	
+
+	@Id @GeneratedValue(strategy = GenerationType.AUTO)
 	private String nombre;
+
+	@OneToOne(cascade = CascadeType.PERSIST)
 	private Categoria categoriaPadre;
+
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	private CriterioDeCategorizacion criterioDeCategorizacion;
+
 	private int cantidadEntidadesCategorizablesAsociadas;
 	
 	public Categoria(String nombreCategoria, CriterioDeCategorizacion criterioDeCategorizacion, Categoria categoriaPadre){
@@ -13,7 +22,11 @@ public class Categoria {
 		this.categoriaPadre = categoriaPadre;
 		this.criterioDeCategorizacion = criterioDeCategorizacion;
 	}
-	
+
+	public Categoria() {
+
+	}
+
 	public String getNombre() {
 		return this.nombre;
 	}

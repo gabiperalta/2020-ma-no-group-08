@@ -4,14 +4,24 @@ import java.util.ArrayList;
 
 import dominio.categorizacion.exceptions.CategorizacionException;
 
+import javax.persistence.*;
+
+@Entity
 public class CriterioDeCategorizacion {
-	
+
+	@Id @GeneratedValue(strategy = GenerationType.AUTO)
 	private String nombre;
+
+	@OneToMany(cascade = CascadeType.PERSIST) @JoinColumn(name = "nombre")
 	private ArrayList<Categoria> categorias;
 	
 	public CriterioDeCategorizacion(String nombreCriterio) throws CategorizacionException{
 		this.nombre = nombreCriterio;
 		this.categorias = new ArrayList<Categoria>();
+	}
+
+	public CriterioDeCategorizacion() {
+
 	}
 
 	public ArrayList<Categoria> getCategorias(){

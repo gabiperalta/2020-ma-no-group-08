@@ -45,7 +45,11 @@ public class OperacionEgreso implements Operacion {
 		this.presupuestosNecesarios = presupuestosNecesarios;
 		this.identificadorOperacion = null;
 	}
-	
+
+	public OperacionEgreso() {
+
+	}
+
 	public void agregarItem(Item item) {
 		this.items.add(item);
 	}

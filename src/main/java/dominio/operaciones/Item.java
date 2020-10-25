@@ -1,8 +1,6 @@
 package dominio.operaciones;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.*;
 
 @Entity
 public class Item {
@@ -10,6 +8,8 @@ public class Item {
 
 	@Enumerated(EnumType.STRING)
 	private ETipoItem tipo;
+
+	@Id @GeneratedValue(strategy = GenerationType.AUTO)
 	private String descripcion;
 
 
@@ -19,7 +19,11 @@ public class Item {
 		this.descripcion = string;
 	}
 
-	public int getValor() {
+    public Item() {
+
+    }
+
+    public int getValor() {
 		return valor;
 	}
 
