@@ -6,13 +6,16 @@ public class TarjetaDeCredito implements MedioDePago {
     int cuotas;
     String nombre;
     String numero;
+    String entidadDePago;
 
-    public TarjetaDeCredito(int cuotas,String nombre,String numero){
+
+    public TarjetaDeCredito(int cuotas,String nombre,String numero, String entidadDePago){
         this.cuotas = cuotas;
         this.nombre = nombre;
         this.numero = numero;
-    }
+        this.entidadDePago = entidadDePago;
 
+    }
 
 
     public void informacionARegistrar() {
