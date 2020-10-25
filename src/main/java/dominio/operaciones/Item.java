@@ -1,9 +1,17 @@
 package dominio.operaciones;
 
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
+@Entity
 public class Item {
 	private int valor;
+
+	@Enumerated(EnumType.STRING)
 	private ETipoItem tipo;
 	private String descripcion;
+
 
 	public Item(int i, ETipoItem articulo, String string) {
 		this.valor = i;
