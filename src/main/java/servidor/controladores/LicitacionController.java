@@ -1,6 +1,7 @@
 package servidor.controladores;
 
 import com.google.gson.*;
+import com.sun.org.apache.regexp.internal.RE;
 import datos.RepoOperacionesEgreso;
 import datos.RepositorioCategorizacion;
 import dominio.cuentasUsuarios.CuentaUsuario;
@@ -16,6 +17,7 @@ import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 
+import javax.persistence.EntityManager;
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletException;
 import java.io.BufferedReader;
@@ -38,9 +40,11 @@ public class LicitacionController{
         return gson;
     }
 
-    public Object agregarPresupuesto(Request request, Response response){
+    public Object agregarPresupuesto(Request request, Response response, EntityManager entityManager){
         JsonObject jsonObjectArchivo = null;
         JsonArray jsonArrayArchivo = null;
+
+        RepoLicitaciones repoLicitaciones = new RepoLicitaciones(entityManager);
 
         request.attribute("org.eclipse.jetty.multipartConfig", new MultipartConfigElement("/temp"));
         try (InputStream is = request.raw().getPart("archivojson").getInputStream()) {
@@ -71,12 +75,13 @@ public class LicitacionController{
             presupuestos.add(jsonAPresupuesto(jsonObjectArchivo));
         }
 
-        Licitacion licitacion = RepoLicitaciones.getInstance().buscarLicitacionPorOperacionEgreso(egresoId);
+        //Licitacion licitacion = RepoLicitaciones.getInstance().buscarLicitacionPorOperacionEgreso(egresoId);
+        Licitacion licitacion = repoLicitaciones.buscarLicitacionPorOperacionEgreso(egresoId);
         ServicioABLicitaciones servicioABLicitaciones = new ServicioABLicitaciones();
         if(licitacion == null){
             licitacion = servicioABLicitaciones.altaLicitacion(operacionEgresoEncontrada, NotificadorSuscriptores.getInstance());
             licitacion.agregarCriterioSeleccionDeProveedor(new CriterioMenorPrecio());
-            RepoLicitaciones.getInstance().agregarLicitacion(licitacion);
+            repoLicitaciones.agregarLicitacion(licitacion);
         }
         Licitacion finalLicitacion = licitacion;
 
@@ -134,9 +139,12 @@ public class LicitacionController{
         return licitacionEncontrada.getIdentificador();
     }
 
-    public Object resultadoLicitacion(Request request,Response response){
+    public Object resultadoLicitacion(Request request,Response response, EntityManager entityManager){
+        RepoLicitaciones repoLicitaciones = new RepoLicitaciones(entityManager);
+
         String licitacionId = request.params("licitacion_id");
-        Licitacion licitacionEncontrada = RepoLicitaciones.getInstance().buscarLicitacionPorIdentificador(licitacionId);
+        //Licitacion licitacionEncontrada = RepoLicitaciones.getInstance().buscarLicitacionPorIdentificador(licitacionId);
+        Licitacion licitacionEncontrada = repoLicitaciones.buscarLicitacionPorIdentificador(licitacionId);
 
         String resultado;
         if(licitacionEncontrada.estaFinalizada())
@@ -234,8 +242,10 @@ public class LicitacionController{
         return new ModelAndView(map,"presupuestos.hbs");
     }
 
-    public Object obtenerLicitacionPorEgreso(Request request,Response response){
-        Licitacion licitacionEncontrada = RepoLicitaciones.getInstance().buscarLicitacionPorOperacionEgreso(request.queryParams("idEgreso"));
+    public Object obtenerLicitacionPorEgreso(Request request,Response response, EntityManager entityManager){
+        RepoLicitaciones repoLicitaciones = new RepoLicitaciones(entityManager);
+
+        Licitacion licitacionEncontrada = repoLicitaciones.buscarLicitacionPorOperacionEgreso(request.queryParams("idEgreso"));
         if(licitacionEncontrada == null)
             return "";
         else
