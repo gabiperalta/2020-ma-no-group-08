@@ -21,6 +21,10 @@ import seguridad.sesion.exceptions.PermisoDenegadoException;
 import temporal.seguridad.repositorioUsuarios.exceptions.RolInvalidoException;
 import temporal.seguridad.repositorioUsuarios.exceptions.UsuarioYaExistenteException;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
 public class ServicioABMUsuariosTest {
 
 	ServicioABMUsuarios abmUsuarios;
@@ -30,8 +34,12 @@ public class ServicioABMUsuariosTest {
 			
 	@Before
 	public void init() throws CredencialesNoValidasException, PermisoDenegadoException, UsuarioYaExistenteException {
-		
-		abmUsuarios = new ServicioABMUsuarios();
+
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("db");
+		EntityManager em = entityManagerFactory.createEntityManager();
+
+
+		abmUsuarios = new ServicioABMUsuarios(em);
 
 		ArrayList<EntidadJuridica> entidades = new ArrayList<>();
 

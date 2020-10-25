@@ -1,18 +1,16 @@
 package servidor.controladores;
 
 import dominio.cuentasUsuarios.CuentaUsuario;
-import servicio.Sesiones.ServicioSesiones;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import datos.RepositorioUsuarios;
 
+import javax.persistence.EntityManager;
 import java.util.HashMap;
 import java.util.Map;
 
 public class LoginController extends Controller{
-	
-	ServicioSesiones loginService;
 	
 	public ModelAndView login(Request request, Response response) {
 		if (usuarioAutenticado(request))
@@ -30,7 +28,9 @@ public class LoginController extends Controller{
 		return new ModelAndView(parameters, "login.hbs");
 	}
 
-	public Response loguear(Request request, Response response) {
+	public Response loguear(Request request, Response response, EntityManager entityManager) {
+		RepositorioUsuarios repositorioUsuarios = new RepositorioUsuarios(entityManager);
+
 		String password = request.queryParams("password");
 		String username = request.queryParams("username");
 
@@ -46,8 +46,8 @@ public class LoginController extends Controller{
 		}
 
 
-		if(RepositorioUsuarios.getInstance().existeElUsuario(username)){
-			CuentaUsuario usuario = RepositorioUsuarios.getInstance().buscarUsuario(username);
+		if(repositorioUsuarios.existeElUsuario(username)){
+			CuentaUsuario usuario = repositorioUsuarios.buscarUsuario(username);
 
 			if(!usuario.estaBloqueada()) {
 				if(usuario.verificarContrasenia(password)) {

@@ -3,11 +3,17 @@ import dominio.cuentasUsuarios.CuentaUsuario;
 import servidor.controladores.*;
 import servicio.*;
 
+import spark.ModelAndView;
+import spark.Route;
 import spark.Spark;
+import spark.TemplateViewRoute;
 import spark.template.handlebars.HandlebarsTemplateEngine;
 import spark.utils.BooleanHelper;
 import spark.utils.HandlebarsTemplateEngineBuilder;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import java.util.ArrayList;
 
 import static spark.Spark.*;
@@ -15,6 +21,16 @@ import static spark.Spark.*;
 public class Router {
 
 	private static HandlebarsTemplateEngine engine;
+	private static EntityManagerFactory entityManagerFactory;
+
+	public static void init() throws Exception {
+		Router.initEngine();
+		Router.initPersistence();
+		String projectDir = System.getProperty("user.dir");
+		String staticDir = "/src/main/resources/public";
+		Spark.externalStaticFileLocation(projectDir + staticDir);
+		Router.configure();
+	}
 
 	private static void initEngine() {
 		Router.engine = HandlebarsTemplateEngineBuilder
@@ -23,13 +39,8 @@ public class Router {
 			.withHelper("isTrue", BooleanHelper.isTrue)
 			.build();
 	}
-	public static void init() throws Exception {
-		Router.initEngine();
-		String projectDir = System.getProperty("user.dir");
-		String staticDir = "/src/main/resources/public";
-		Spark.externalStaticFileLocation(projectDir + staticDir);
-		Router.configure();
-	}
+
+	private static void initPersistence(){ entityManagerFactory = Persistence.createEntityManagerFactory("db"); }
 
 	public static void configure() throws Exception {
 		LoginController loginc = new LoginController();
@@ -45,12 +56,12 @@ public class Router {
 
 
 		get("/login", loginc::login, engine);
-		post("/login", loginc::loguear);
+		post("/login", routeWithTransaction(loginc::loguear));
 		get("/logout", loginc::logout);
 		get("/", homec::showHomePage, engine);
-		get("/presupuestos",licitacionc::mostrarPresupuestos,engine);
-		post("/presupuesto",licitacionc::agregarPresupuesto);
-		post("/licitacion",licitacionc::realizarLicitacion);
+		get("/presupuestos",templWithTransaction(licitacionc::mostrarPresupuestos),engine);
+		post("/presupuesto",routeWithTransaction(licitacionc::agregarPresupuesto));
+		post("/licitacion",routeWithTransaction(licitacionc::realizarLicitacion));
 		get("/licitacion",licitacionc::obtenerLicitacionPorEgreso);
 		get("/licitacion/:licitacion_id",licitacionc::resultadoLicitacion,licitacionc.getGson()::toJson);
 		get("/egreso", egresoC::showEgreso, engine);
@@ -109,6 +120,37 @@ public class Router {
 
 
 		return condicion1 && condicion2 ;
+	}
+
+	private static TemplateViewRoute  templWithTransaction(WithTransaction<ModelAndView> fn) {
+		TemplateViewRoute r = (req, res) -> {
+			EntityManager em = entityManagerFactory.createEntityManager();
+			em.getTransaction().begin();
+			try {
+				ModelAndView result = fn.method(req, res, em);
+				em.getTransaction().commit();
+				return result;
+			} catch (Exception ex) {
+				em.getTransaction().rollback();
+				throw ex;
+			}
+		};
+		return r;
+	}
+	private static Route routeWithTransaction(WithTransaction<Object> fn) {
+		Route r = (req, res) -> {
+			EntityManager em = entityManagerFactory.createEntityManager();
+			em.getTransaction().begin();
+			try {
+				Object result = fn.method(req, res, em);
+				em.getTransaction().commit();
+				return result;
+			} catch (Exception ex) {
+				em.getTransaction().rollback();
+				throw ex;
+			}
+		};
+		return r;
 	}
 
 }

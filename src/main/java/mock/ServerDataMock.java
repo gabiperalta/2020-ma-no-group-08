@@ -34,12 +34,105 @@ public class ServerDataMock {
 
     public static void cargarMock() throws Exception {
         cargarOrganizaciones();
-//        cargarRoles();
-//        cargarUsuarios();
+        cargarRoles();
+        cargarUsuarios();
 //        cargarIngresos();
 //        cargarEgregos();
 //        cargarCategorias();
 //        cargarPresupuestos();
+    }
+
+    private static void cargarOrganizaciones(){
+
+        ArrayList<EntidadJuridica> entidades1 = new ArrayList<>();
+        ArrayList<EntidadJuridica> entidades2 = new ArrayList<>();
+
+        EntidadJuridica entidad1 = new Empresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa 1", "Empresa 1", "20-40678950-3", "200", "Av.Libertador 801",false);
+        EntidadJuridica entidad2 = new Empresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa 2", "Empresa 2", "20-40678950-4", "203", "Av.Libertador 200",false);
+
+        entidades1.add(entidad1);
+        entidades2.add(entidad2);
+
+
+
+        EntityManager em = getEntityManager();
+        RepoOrganizaciones repoOrganizaciones = new RepoOrganizaciones(em);
+
+        em.getTransaction().begin();
+        repoOrganizaciones.agregarOrganizacion("Organizacion1", entidades1);
+        repoOrganizaciones.agregarOrganizacion("Organizacion2", entidades2);
+        em.getTransaction().commit();
+
+    }
+
+    private static void cargarRoles(){
+        Privilegio privilegioABOrganizacion = new Privilegio("PRIVILEGIO_AB_ORGANIZACIONES");
+        Privilegio privilegioABMUsuarios = new Privilegio("PRIVILEGIO_ABM_USUARIOS");
+        Privilegio privilegioABMEntidadesJuridicas = new Privilegio("PRIVILEGIO_ABM_ENTIDADES_JURIDICAS");
+        Privilegio privilegioABMEntidadesBase = new Privilegio("PRIVILEGIO_ABM_ENTIDADES_BASE");
+        Privilegio privilegioABOperacion = new Privilegio("PRIVILEGIO_AB_OPERACIONES");
+        Privilegio privilegioABLicitaciones = new Privilegio("PRIVILEGIO_AB_LICITACIONES");
+        Privilegio privilegioRevisor = new Privilegio("PRIVILEGIO_REVISOR");
+        Privilegio privilegioRecategorizador = new Privilegio("PRIVILEGIO_RECATEGORIZADOR");
+        Privilegio privilegioVinculador = new Privilegio("PRIVILEGIO_VINCULADOR");
+
+        ArrayList<Privilegio> privilegiosRolAdministradorSistema = new ArrayList<Privilegio>();
+        ArrayList<Privilegio> privilegiosRolAdministradorOrganizacion = new ArrayList<Privilegio>();
+        ArrayList<Privilegio> privilegiosRolEstandar = new ArrayList<Privilegio>();
+        ArrayList<Privilegio> privilegiosRolRevisor = new ArrayList<Privilegio>();
+
+        privilegiosRolAdministradorSistema.add(privilegioABOrganizacion);
+        privilegiosRolAdministradorSistema.add(privilegioABMUsuarios);
+        privilegiosRolAdministradorOrganizacion.add(privilegioABMEntidadesJuridicas);
+        privilegiosRolAdministradorOrganizacion.add(privilegioABMEntidadesBase);
+        privilegiosRolEstandar.add(privilegioABOperacion);
+        privilegiosRolEstandar.add(privilegioABLicitaciones);
+        privilegiosRolEstandar.add(privilegioRecategorizador);
+        privilegiosRolEstandar.add(privilegioVinculador);
+
+        privilegiosRolRevisor.add(privilegioRevisor);
+
+        Rol rolAdministradorSistema = new Rol("ROL_ADMINISTRADOR_SISTEMA", privilegiosRolAdministradorSistema);
+        Rol rolAdministradorOrganizacion = new Rol("ROL_ADMINISTRADOR_ORGANIZACION", privilegiosRolAdministradorOrganizacion);
+        Rol rolEstandar = new Rol("ROL_ESTANDAR", privilegiosRolEstandar);
+        Rol rolRevisor = new Rol("ROL_REVISOR", privilegiosRolRevisor);
+
+        EntityManager em = getEntityManager();
+        em.getTransaction().begin();
+
+        em.persist(rolAdministradorSistema);
+        em.persist(rolAdministradorOrganizacion);
+        em.persist(rolEstandar);
+        em.persist(rolRevisor);
+
+        em.getTransaction().commit();
+    }
+
+    private static void cargarUsuarios(){
+        ArrayList<String> listaDeRolesCliente = new ArrayList<String>();
+        listaDeRolesCliente.add("ROL_ESTANDAR");
+        ArrayList<String> listaDeRolesClienteMaestro = new ArrayList<String>();
+        listaDeRolesClienteMaestro.add("ROL_ADMINISTRADOR_ORGANIZACION");
+        listaDeRolesClienteMaestro.add("ROL_ESTANDAR");
+        listaDeRolesClienteMaestro.add("ROL_REVISOR");
+
+        EntityManager em = getEntityManager();
+        // Usuarios Administradores
+        em.getTransaction().begin();
+        RepositorioUsuarios repositorioUsuarios = new RepositorioUsuarios(em);
+        repositorioUsuarios.agregarUsuarioAdministrador("admin1", "1234");
+        repositorioUsuarios.agregarUsuarioAdministrador("admin2", "1234");
+        repositorioUsuarios.agregarUsuarioAdministrador("admin3", "1234");
+
+        // Usuarios Estandar
+        RepoOrganizaciones repoOrganizaciones = new RepoOrganizaciones(em);
+
+        Organizacion organizacion1 = repoOrganizaciones.buscarOrganizacion("Organizacion1");
+        Organizacion organizacion2 = repoOrganizaciones.buscarOrganizacion("Organizacion2");
+
+        repositorioUsuarios.agregarUsuarioEstandar("UsuarioWeb1", organizacion1, listaDeRolesCliente, "1234");
+        repositorioUsuarios.agregarUsuarioEstandar("UsuarioWeb2", organizacion2, listaDeRolesClienteMaestro, "1234");
+        em.getTransaction().commit();
     }
 
     private static void cargarIngresos() throws Exception {
@@ -204,79 +297,6 @@ public class ServerDataMock {
 
         RepositorioCategorizacion.getInstance().agregarCriterioDeCategorizacion(criterioDePrueba1);
         RepositorioCategorizacion.getInstance().agregarCriterioDeCategorizacion(criterioDePrueba2);
-    }
-
-    private static void cargarOrganizaciones(){
-
-        ArrayList<EntidadJuridica> entidades1 = new ArrayList<>();
-        ArrayList<EntidadJuridica> entidades2 = new ArrayList<>();
-
-        EntidadJuridica entidad1 = new Empresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa 1", "Empresa 1", "20-40678950-3", "200", "Av.Libertador 801",false);
-        EntidadJuridica entidad2 = new Empresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa 2", "Empresa 2", "20-40678950-4", "203", "Av.Libertador 200",false);
-
-        entidades1.add(entidad1);
-        entidades2.add(entidad2);
-
-
-
-        EntityManager em = getEntityManager();
-        RepoOrganizaciones repoOrganizaciones = new RepoOrganizaciones(em);
-
-        em.getTransaction().begin();
-        repoOrganizaciones.agregarOrganizacion("Organizacion1", entidades1);
-        repoOrganizaciones.agregarOrganizacion("Organizacion2", entidades2);
-        em.getTransaction().commit();
-
-    }
-
-    private static void cargarRoles(){
-        Privilegio privilegioABOrganizacion = new Privilegio("PRIVILEGIO_AB_ORGANIZACIONES");
-        Privilegio privilegioABMUsuarios = new Privilegio("PRIVILEGIO_ABM_USUARIOS");
-        Privilegio privilegioABMEntidadesJuridicas = new Privilegio("PRIVILEGIO_ABM_ENTIDADES_JURIDICAS");
-        Privilegio privilegioABMEntidadesBase = new Privilegio("PRIVILEGIO_ABM_ENTIDADES_BASE");
-        Privilegio privilegioABOperacion = new Privilegio("PRIVILEGIO_AB_OPERACIONES");
-        Privilegio privilegioABLicitaciones = new Privilegio("PRIVILEGIO_AB_LICITACIONES");
-        Privilegio privilegioRevisor = new Privilegio("PRIVILEGIO_REVISOR");
-        Privilegio privilegioRecategorizador = new Privilegio("PRIVILEGIO_RECATEGORIZADOR");
-        Privilegio privilegioVinculador = new Privilegio("PRIVILEGIO_VINCULADOR");
-
-        ArrayList<Privilegio> privilegiosRolAdministradorSistema = new ArrayList<Privilegio>();
-        ArrayList<Privilegio> privilegiosRolAdministradorOrganizacion = new ArrayList<Privilegio>();
-        ArrayList<Privilegio> privilegiosRolEstandar = new ArrayList<Privilegio>();
-        ArrayList<Privilegio> privilegiosRolRevisor = new ArrayList<Privilegio>();
-
-        privilegiosRolAdministradorSistema.add(privilegioABOrganizacion);
-        privilegiosRolAdministradorSistema.add(privilegioABMUsuarios);
-        privilegiosRolAdministradorOrganizacion.add(privilegioABMEntidadesJuridicas);
-        privilegiosRolAdministradorOrganizacion.add(privilegioABMEntidadesBase);
-        privilegiosRolEstandar.add(privilegioABOperacion);
-        privilegiosRolEstandar.add(privilegioABLicitaciones);
-        privilegiosRolEstandar.add(privilegioRecategorizador);
-        privilegiosRolEstandar.add(privilegioVinculador);
-
-        privilegiosRolRevisor.add(privilegioRevisor);
-
-        Rol rolAdministradorSistema = new Rol("ROL_ADMINISTRADOR_SISTEMA", privilegiosRolAdministradorSistema);
-        Rol rolAdministradorOrganizacion = new Rol("ROL_ADMINISTRADOR_ORGANIZACION", privilegiosRolAdministradorOrganizacion);
-        Rol rolEstandar = new Rol("ROL_ESTANDAR", privilegiosRolEstandar);
-        Rol rolRevisor = new Rol("ROL_REVISOR", privilegiosRolRevisor);
-    }
-
-    private static void cargarUsuarios(){
-        ArrayList<String> listaDeRolesCliente = new ArrayList<String>();
-        listaDeRolesCliente.add("ROL_ESTANDAR");
-        ArrayList<String> listaDeRolesClienteMaestro = new ArrayList<String>();
-        listaDeRolesClienteMaestro.add("ROL_ADMINISTRADOR_ORGANIZACION");
-        listaDeRolesClienteMaestro.add("ROL_ESTANDAR");
-        listaDeRolesClienteMaestro.add("ROL_REVISOR");
-
-        Organizacion organizacion1 = RepoOrganizaciones.buscarOrganizacion("Organizacion1");
-        Organizacion organizacion2 = RepoOrganizaciones.buscarOrganizacion("Organizacion2");
-
-        CuentaUsuario usuarioClientePruebasWeb = new CuentaUsuario("UsuarioWeb1", organizacion1, listaDeRolesCliente, "1234");
-        CuentaUsuario usuarioClienteMaestroPruebasWeb = new CuentaUsuario("UsuarioWeb2", organizacion2, listaDeRolesClienteMaestro, "1234");
-        RepositorioUsuarios.getInstance().agregarUsuarioEstandar(usuarioClientePruebasWeb);
-        RepositorioUsuarios.getInstance().agregarUsuarioEstandar(usuarioClienteMaestroPruebasWeb);
     }
 
     private static void cargarPresupuestos(){

@@ -3,9 +3,29 @@ package dominio.cuentasUsuarios.perfil;
 import dominio.entidades.Organizacion;
 import dominio.operaciones.EntidadOperacion;
 
-public interface Perfil {
-	public boolean esUsuarioAdministrador();
-	public void setNombre(String unNombre);
-	public String getNombre();
-	public Organizacion getOrganizacion();
+import javax.persistence.*;
+
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Table(name = "Perfiles")
+public abstract class Perfil {
+	@Id
+	private String nombre;
+
+	public Perfil(){}
+
+	public Perfil(String unNombre){
+		nombre = unNombre;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public abstract boolean esUsuarioAdministrador();
+	public abstract Organizacion getOrganizacion();
 }

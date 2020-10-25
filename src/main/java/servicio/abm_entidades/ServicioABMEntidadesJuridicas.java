@@ -1,4 +1,4 @@
-package servicio.abm_entidades;
+/*package servicio.abm_entidades;
 
 import datos.RepoEntidadesJuridicas;
 import datos.RepoOrganizaciones;
@@ -7,8 +7,16 @@ import dominio.entidades.*;
 import dominio.entidades.calculadorFiscal.ETipoActividad;
 import datos.RepositorioUsuarios;
 
+import javax.persistence.EntityManager;
+
 
 public class ServicioABMEntidadesJuridicas {
+
+    RepoOrganizaciones repoOrganizaciones;
+
+    public ServicioABMEntidadesJuridicas(EntityManager em){
+        repoOrganizaciones = new RepoOrganizaciones(em);
+    }
 
     public void crearEmpresa(Integer cantidadPersonal, ETipoEmpresa tipo, ETipoActividad actividad, Double promedioVentas, String razonSocial, String nombreFicticio, String cuit, String codigoIGJ, String direccionPostal, boolean esComisionista) throws Exception {
 
@@ -46,7 +54,7 @@ public class ServicioABMEntidadesJuridicas {
     }
 
     public void listarEntidadJuridica(String organizacion) throws Exception {
-        Organizacion org = RepoOrganizaciones.buscarOrganizacion(organizacion);
+        Organizacion org = repoOrganizaciones.buscarOrganizacion(organizacion);
         org.getEntidades();
     }
 
@@ -62,5 +70,5 @@ public class ServicioABMEntidadesJuridicas {
         }
     }
 
-}
+}*/
 

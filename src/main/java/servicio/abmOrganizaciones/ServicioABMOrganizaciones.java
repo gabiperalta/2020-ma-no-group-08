@@ -1,4 +1,4 @@
-package servicio.abmOrganizaciones;
+/*package servicio.abmOrganizaciones;
 
 import dominio.entidades.EntidadJuridica;
 import dominio.entidades.Organizacion;
@@ -23,4 +23,4 @@ public class ServicioABMOrganizaciones {
     public Organizacion buscarOrganizacion (String nombreOrganizacion) {
         return RepoOrganizaciones.getInstance().buscarOrganizacion(nombreOrganizacion);
     }
-}
+}*/
