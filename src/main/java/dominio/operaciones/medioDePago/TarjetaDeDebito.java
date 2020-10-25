@@ -5,10 +5,14 @@ import dominio.operaciones.medioDePago.MedioDePago;
 public class TarjetaDeDebito implements MedioDePago {
     String nombre;
     String numero;
+    String entidadDePago;
 
-    public TarjetaDeDebito(String nombre,String numero){
+
+    public TarjetaDeDebito(String nombre,String numero,     String entidadDePago){
         this.nombre = nombre;
         this.numero = numero;
+        this.entidadDePago = entidadDePago;
+
     }
 
     public void informacionARegistrar() {

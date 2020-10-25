@@ -4,11 +4,15 @@ public class Efectivo implements MedioDePago {
     double monto;
     String puntoDePago;
     String nombre;
+    String entidadDePago;
 
-    public Efectivo(double monto,String puntoDePago, String nombre){
+
+    public Efectivo(double monto,String puntoDePago, String nombre, String entidadDePago){
         this.monto = monto;
         this.puntoDePago = puntoDePago;
         this.nombre = nombre;
+        this.entidadDePago = entidadDePago;
+
     }
 
     public String getNombre(){
