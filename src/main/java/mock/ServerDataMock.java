@@ -42,6 +42,10 @@ public class ServerDataMock {
 //        cargarPresupuestos();
     }
 
+    public ServerDataMock(){
+        entityManagerFactory = Persistence.createEntityManagerFactory("db");
+    }
+
     private static void cargarIngresos() throws Exception {
         OperacionIngreso ingreso1 = new OperacionIngreso();
         ingreso1.setFecha(new Date());
@@ -322,7 +326,7 @@ public class ServerDataMock {
         RepoLicitaciones.getInstance().agregarLicitacion(licitacion2);
     }
 
-    private static EntityManager getEntityManager() {
+    public static EntityManager getEntityManager() {
         return entityManagerFactory.createEntityManager();
     }
 }

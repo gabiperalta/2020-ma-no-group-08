@@ -1,13 +1,17 @@
 package servidor;
 import dominio.cuentasUsuarios.CuentaUsuario;
+import mock.ServerDataMock;
 import servidor.controladores.*;
 import servicio.*;
 
+import spark.ModelAndView;
+import spark.Route;
 import spark.Spark;
+import spark.TemplateViewRoute;
 import spark.template.handlebars.HandlebarsTemplateEngine;
-import spark.utils.BooleanHelper;
-import spark.utils.HandlebarsTemplateEngineBuilder;
+import spark.utils.*;
 
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 
 import static spark.Spark.*;
@@ -49,10 +53,12 @@ public class Router {
 		get("/logout", loginc::logout);
 		get("/", homec::showHomePage, engine);
 		get("/presupuestos",licitacionc::mostrarPresupuestos,engine);
-		post("/presupuesto",licitacionc::agregarPresupuesto);
+		//post("/presupuesto",licitacionc::agregarPresupuesto);
+		post("/presupuesto",RouteWithTransaction(licitacionc::agregarPresupuesto));
 		post("/licitacion",licitacionc::realizarLicitacion);
-		get("/licitacion",licitacionc::obtenerLicitacionPorEgreso);
-		get("/licitacion/:licitacion_id",licitacionc::resultadoLicitacion,licitacionc.getGson()::toJson);
+		//get("/licitacion",licitacionc::obtenerLicitacionPorEgreso);
+		get("/licitacion",RouteWithTransaction(licitacionc::obtenerLicitacionPorEgreso));
+		get("/licitacion/:licitacion_id",RouteWithTransaction(licitacionc::resultadoLicitacion),licitacionc.getGson()::toJson);
 		get("/egreso", egresoC::showEgreso, engine);
 		post("/egreso", egresoC::crearEgreso, engine);
 		get("/egreso/:id", egresoC::showModificarEgreso, engine);
@@ -111,4 +117,36 @@ public class Router {
 		return condicion1 && condicion2 ;
 	}
 
+
+	private static TemplateViewRoute  TemplWithTransaction(WithTransaction<ModelAndView> fn) {
+		TemplateViewRoute r = (req, res) -> {
+			EntityManager em = ServerDataMock.getEntityManager();
+			em.getTransaction().begin();
+			try {
+				ModelAndView result = fn.method(req, res, em);
+				em.getTransaction().commit();
+				return result;
+			} catch (Exception ex) {
+				em.getTransaction().rollback();
+				throw ex;
+			}
+		};
+		return r;
+	}
+
+	private static Route RouteWithTransaction(WithTransaction<Object> fn) {
+		Route r = (req, res) -> {
+			EntityManager em = ServerDataMock.getEntityManager();
+			em.getTransaction().begin();
+			try {
+				Object result = fn.method(req, res, em);
+				em.getTransaction().commit();
+				return result;
+			} catch (Exception ex) {
+				em.getTransaction().rollback();
+				throw ex;
+			}
+		};
+		return r;
+	}
 }
