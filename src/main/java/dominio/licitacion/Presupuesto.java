@@ -2,6 +2,7 @@ package dominio.licitacion;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import dominio.entidades.Organizacion;
 import dominio.operaciones.EntidadOperacion;
@@ -9,19 +10,33 @@ import dominio.operaciones.Item;
 import dominio.operaciones.Operacion;
 import dominio.operaciones.OperacionEgreso;
 
+import javax.persistence.*;
+
+@Entity
 public class Presupuesto implements Operacion {
+	@OneToOne
 	private EntidadOperacion proveedor;
-	private final ArrayList<Item> items;
+
+	@OneToMany
+	@JoinColumn(name = "identificador")
+	private List<Item> items;
 	private double montoTotal;
 	private boolean esValido;
-	private String identificador;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private int identificador;
+	@Transient
 	private EntidadOperacion entidadOrigen;
-	
+
+	public Presupuesto(){
+
+	}
+
 	public Presupuesto(EntidadOperacion proveedor, ArrayList<Item> unosItems){
 		this.proveedor = proveedor;
 		items = new ArrayList<Item>();
 		this.esValido = true;
-		
+
 		unosItems.forEach(i->{
 			try {
 				this.agregarItem(i);
@@ -30,15 +45,15 @@ public class Presupuesto implements Operacion {
 				this.esValido = false;
 			}
 		});
-		
+
 		montoTotal = items.stream().map(item -> item.getValor()).reduce(0, (a, b) -> a + b);
-		
+
 	}
-	
+
 	public ArrayList<Item> getItems() {
-		return items;
+		return (ArrayList<Item>) items;
 	}
-	
+
 	private void agregarItem(Item item) throws Exception {
 		if(this.items.stream().anyMatch(i->i.getDescripcion() == item.getDescripcion())) {
 			throw new Exception("No se puede agregar item");
@@ -50,11 +65,7 @@ public class Presupuesto implements Operacion {
 	}
 
 	public String getIdentificador(){
-		return identificador;
-	}
-
-	public void setIdentificador(String identificador){
-		this.identificador = identificador;
+		return "P-" + identificador; // TODO revisar
 	}
 
 	public void setEntidadOrigen(EntidadOperacion entidadOrigen){
@@ -63,7 +74,8 @@ public class Presupuesto implements Operacion {
 
 	@Override
 	public boolean esLaOperacion(String identificadorEntidadCategorizable) {
-		return this.identificador.equals(identificadorEntidadCategorizable);
+		//return this.identificador.equals(identificadorEntidadCategorizable);
+		return true; //TODO revisar
 	}
 
 	@Override

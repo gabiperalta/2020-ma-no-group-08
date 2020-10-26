@@ -15,6 +15,10 @@
 		<class>dominio.cuentasUsuarios.perfil.PerfilAdministrador</class>
 		<class>dominio.cuentasUsuarios.perfil.PerfilEstandar</class>
 		<class>dominio.cuentasUsuarios.perfil.Perfil</class>
+		<class>dominio.licitacion.Presupuesto</class>
+		<class>dominio.licitacion.Licitacion</class>
+		<class>dominio.licitacion.criterioSeleccion.CriterioSeleccionDeProveedor</class>
+		<class>dominio.licitacion.criterioSeleccion.CriterioMenorPrecio</class>
 
 		<properties>
 			<property name="hibernate.archive.autodetection" value="class" />

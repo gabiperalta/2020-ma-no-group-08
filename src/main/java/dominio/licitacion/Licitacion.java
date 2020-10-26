@@ -1,25 +1,47 @@
 package dominio.licitacion;
 
 import java.util.ArrayList;
-import java.util.Objects;
+import java.util.List;
 
 import dominio.cuentasUsuarios.CuentaUsuario;
 import dominio.licitacion.criterioSeleccion.CriterioSeleccionDeProveedor;
 import dominio.notificador_suscriptores.NotificadorSuscriptores;
 import dominio.operaciones.OperacionEgreso;
 
-public class Licitacion {
-	private final OperacionEgreso compra;
-	private ArrayList<Presupuesto> presupuestos;
+import javax.persistence.*;
+
+@Entity
+public class Licitacion{
+	@OneToOne
+	private OperacionEgreso compra;
+
+	@OneToMany
+	private List<Presupuesto> presupuestos;
+
 	private boolean finalizada;
 	private boolean resultadoCantPresupCargada;
 	private boolean resultadoSeleccionDeProveedor;
 	private boolean resultadoPresupCorresp;
+
+	@OneToOne
 	private CriterioSeleccionDeProveedor criterioSeleccionDeProveedor;
-	private final NotificadorSuscriptores notificadorSuscriptores;
+
+	@Transient
+	private NotificadorSuscriptores notificadorSuscriptores;
+
+	@Transient
 	private ArrayList<CuentaUsuario> suscriptores;
-	public String identificadorLicitacion;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	public int identificadorLicitacion;
+
+	@Transient
 	private int ultimoIdentificadorPresupuesto;
+
+	public Licitacion(){
+
+	}
 
 	public Licitacion(OperacionEgreso compra, NotificadorSuscriptores notificadorSuscriptores){
 		this.compra = compra;
@@ -31,13 +53,13 @@ public class Licitacion {
 	}
 
 	public ArrayList<Presupuesto> getPresupuestos() {
-		return presupuestos;
+		return (ArrayList<Presupuesto>) presupuestos;
 	}
 
 	public void agregarPresupuesto(Presupuesto presup) {
 		if(presup.esValido(compra)) {
 			presup.setEntidadOrigen(this.compra.getEntidadOrigen());
-			presup.setIdentificador(Objects.toString(this.getIdentificador(),"") + "-P" + ultimoIdentificadorPresupuesto);
+			//presup.setIdentificador(Objects.toString(this.getIdentificador(),"") + "-P" + ultimoIdentificadorPresupuesto);
 			this.presupuestos.add(presup);
 			ultimoIdentificadorPresupuesto++;
 		}
@@ -66,7 +88,7 @@ public class Licitacion {
 				.get();
 
 		resultadoPresupCorresp = presupuestoCorrespondiente!=null;
-		resultadoSeleccionDeProveedor = criterioSeleccionDeProveedor.presupuestoElegido(presupuestos) == presupuestoCorrespondiente;
+		resultadoSeleccionDeProveedor = criterioSeleccionDeProveedor.presupuestoElegido(getPresupuestos()) == presupuestoCorrespondiente;
 		return resultadoPresupCorresp && resultadoSeleccionDeProveedor;
 	}
 
@@ -112,17 +134,17 @@ public class Licitacion {
 	}
 
 	public void setIdentificador(String identificadorLicitacion){
-		if(this.identificadorLicitacion == null) {
-			this.identificadorLicitacion = identificadorLicitacion;
-			presupuestos.forEach(presupuesto -> {
-				if(presupuesto.getIdentificador().startsWith("-"))
-					presupuesto.setIdentificador(this.getIdentificador() + presupuesto.getIdentificador());
-			});
-		}
+		//if(this.identificadorLicitacion == null) {
+		//	this.identificadorLicitacion = identificadorLicitacion;
+		//	presupuestos.forEach(presupuesto -> {
+		//		if(presupuesto.getIdentificador().startsWith("-"))
+		//			presupuesto.setIdentificador(this.getIdentificador() + presupuesto.getIdentificador());
+		//	});
+		//}
 	}
 
-	public String getIdentificador() {
-		return identificadorLicitacion;
+	public String getIdentificadorConEtiqueta() {
+		return "L-" + identificadorLicitacion;
 	}
 
 	public OperacionEgreso getOperacionEgreso(){

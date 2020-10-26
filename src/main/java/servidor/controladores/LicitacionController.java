@@ -119,8 +119,8 @@ public class LicitacionController{
 
         Licitacion licitacionEncontrada = null;
 
-        if(licitaciones.stream().anyMatch(licitacion -> licitacion.getIdentificador().equals(licitacionId))){
-            licitacionEncontrada = licitaciones.stream().filter(licitacion -> licitacion.getIdentificador().equals(licitacionId)).findFirst().get();
+        if(licitaciones.stream().anyMatch(licitacion -> licitacion.getIdentificadorConEtiqueta().equals(licitacionId))){
+            licitacionEncontrada = licitaciones.stream().filter(licitacion -> licitacion.getIdentificadorConEtiqueta().equals(licitacionId)).findFirst().get();
         }
 
         if(licitacionEncontrada == null){
@@ -136,14 +136,13 @@ public class LicitacionController{
         }
 
         //licitacionEncontrada.licitar();
-        return licitacionEncontrada.getIdentificador();
+        return licitacionEncontrada.getIdentificadorConEtiqueta();
     }
 
     public Object resultadoLicitacion(Request request,Response response, EntityManager entityManager){
         RepoLicitaciones repoLicitaciones = new RepoLicitaciones(entityManager);
 
         String licitacionId = request.params("licitacion_id");
-        //Licitacion licitacionEncontrada = RepoLicitaciones.getInstance().buscarLicitacionPorIdentificador(licitacionId);
         Licitacion licitacionEncontrada = repoLicitaciones.buscarLicitacionPorIdentificador(licitacionId);
 
         String resultado;
@@ -249,7 +248,7 @@ public class LicitacionController{
         if(licitacionEncontrada == null)
             return "";
         else
-            return licitacionEncontrada.getIdentificador();
+            return licitacionEncontrada.getIdentificadorConEtiqueta();
     }
 
     public static Presupuesto jsonAPresupuesto(JsonObject jsonPresupuesto){
