@@ -7,5 +7,5 @@ import javax.persistence.EntityManager;
 
 @FunctionalInterface
 public interface WithTransaction<E> {
-    E method(Request req, Response res, EntityManager em);
+    E method(Request req, Response res, EntityManager em) throws Exception;
 }

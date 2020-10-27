@@ -6,6 +6,9 @@ import dominio.entidades.Organizacion;
 import dominio.operaciones.*;
 import dominio.operaciones.medioDePago.MedioDePago;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.stream.Collectors;
@@ -38,7 +41,9 @@ public class ServicioABOperaciones {
     }
 
     public ArrayList<OperacionIngreso> listarIngresos(){
-        return RepoOperacionesIngreso.getInstance().getIngresos();
+        EntityManager entityManager = Persistence.createEntityManagerFactory("db").createEntityManager();
+        RepoOperacionesIngreso repoIngresos = new RepoOperacionesIngreso(entityManager);
+        return repoIngresos.getIngresos();
     }
 
     public ArrayList<OperacionEgreso> listarOperaciones(Organizacion unaOrganizacion){

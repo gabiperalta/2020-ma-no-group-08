@@ -85,6 +85,7 @@ public class Router {
 		
 		get("/vinculaciones",vinculacionesC::seleccionarOperaciones,engine);
 		post("/vinculaciones",vinculacionesC::vincular);
+//		post("/vinculaciones",RouteWithTransaction(vinculacionesC::vincular));
 
 
 		before("/*", (request, response) -> {

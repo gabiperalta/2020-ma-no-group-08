@@ -11,13 +11,9 @@ import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 
 public class RepoOperacionesIngreso {
-    private static ArrayList<OperacionIngreso> ingresos;
-    private static int ultimoIdentificador;
     private EntityManager entityManager;
 
     public RepoOperacionesIngreso() {
-        ingresos = new ArrayList<OperacionIngreso>();
-        ultimoIdentificador = 1;
     }
 
     public ArrayList<OperacionIngreso> getIngresos() {
