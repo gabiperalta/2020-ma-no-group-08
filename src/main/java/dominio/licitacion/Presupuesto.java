@@ -9,7 +9,7 @@ import dominio.operaciones.Item;
 import dominio.operaciones.Operacion;
 import dominio.operaciones.OperacionEgreso;
 
-public class Presupuesto implements Operacion {
+public class Presupuesto extends Operacion {
 	private EntidadOperacion proveedor;
 	private final ArrayList<Item> items;
 	private double montoTotal;

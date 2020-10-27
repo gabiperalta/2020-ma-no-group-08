@@ -1,15 +1,30 @@
 package dominio.categorizacion;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import dominio.entidades.Organizacion;
 import dominio.operaciones.Operacion;
 import dominio.categorizacion.exceptions.CategorizacionException;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "entidades_categorizables")
 public class EntidadCategorizable {
+	@Id
+	@OneToOne
+	@Column(name = "id")
 	private Operacion operacion;
-	private ArrayList<Categoria> categoriasAsociadas;
-	
+	@ManyToMany
+	@JoinTable(name = "entidad_categoria",
+			joinColumns = @JoinColumn(name = "operacion_id"),
+			inverseJoinColumns = {@JoinColumn(name = "nombre_categoria", referencedColumnName = "nombre" ),
+								@JoinColumn(name = "nombre_criterio", referencedColumnName = "nombre_criterio" )})
+	private List<Categoria> categoriasAsociadas;
+
+	public EntidadCategorizable(){}
+
 	public EntidadCategorizable(Operacion unaOperacion){
 		operacion = unaOperacion;
 		categoriasAsociadas = new ArrayList<Categoria>();
@@ -18,6 +33,8 @@ public class EntidadCategorizable {
 	public String getIdentificador() {
 		return this.operacion.getIdentificador();
 	}
+
+	public void setIdentificador() {}
 	
 	public boolean esLaEntidad(String identificadorEntidadCategorizable) {
 		return this.operacion.esLaOperacion(identificadorEntidadCategorizable);

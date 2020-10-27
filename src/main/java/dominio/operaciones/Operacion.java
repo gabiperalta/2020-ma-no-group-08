@@ -2,14 +2,24 @@ package dominio.operaciones;
 
 import dominio.entidades.Organizacion;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.Date;
 
-public interface Operacion {
+@Entity
+public abstract class Operacion {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    protected int id;
 
-    public String getIdentificador();
-    public boolean esLaOperacion(String identificadorEntidadCategorizable);
-    public double getMontoTotal();
-    public boolean esIngreso();
-    public Date getFecha();
-    public boolean esDeLaOrganizacion(Organizacion unaOrganizacion);
+    public Operacion(){}
+
+    public String getIdentificador(){ return Integer.toString(id); }
+    public abstract boolean esLaOperacion(String identificadorEntidadCategorizable);
+    public abstract double getMontoTotal();
+    public abstract boolean esIngreso();
+    public abstract Date getFecha();
+    public abstract boolean esDeLaOrganizacion(Organizacion unaOrganizacion);
 }

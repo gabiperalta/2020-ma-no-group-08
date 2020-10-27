@@ -3,6 +3,7 @@ package datos;
 import dominio.entidades.Organizacion;
 import dominio.operaciones.OperacionEgreso;
 
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
@@ -22,6 +23,10 @@ public class RepoOperacionesEgreso {
     public RepoOperacionesEgreso() {
         operacionesEgreso = new ArrayList<OperacionEgreso>();
         ultimoIdentificador = 1 ;
+    }
+
+    public RepoOperacionesEgreso(EntityManager em){
+        entityManager = em;
     }
 
     public void agregarOperacionEgreso(OperacionEgreso operacionEgreso) throws Exception {

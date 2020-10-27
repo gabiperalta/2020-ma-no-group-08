@@ -7,23 +7,24 @@ import javax.persistence.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
-public class OperacionEgreso implements Operacion {
-
-	@Id @GeneratedValue(strategy = GenerationType.AUTO)
-	private String identificadorOperacion;
+@Table(name = "operaciones_egreso")
+public class OperacionEgreso extends Operacion {
 
 	@OneToMany(cascade = CascadeType.PERSIST) @JoinColumn(name = "identificadorOperacion")
-	private ArrayList<Item> items;
+	private List<Item> items;
 
-	@Convert(converter = MedioDePago.class)
+	//@Convert(converter = MedioDePago.class)
+	//@OneToOne
+	@Transient
 	private MedioDePago medioDePago;
 
 	@OneToOne(cascade = CascadeType.PERSIST)
 	private DocumentoComercial documento;
 
-	@Convert(converter = Date.class)
+	//@Convert(converter = Date.class)
 	private Date fecha;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
@@ -33,9 +34,12 @@ public class OperacionEgreso implements Operacion {
 	private EntidadOperacion entidadDestino;
 
 	private int presupuestosNecesarios;
+
+	public OperacionEgreso(){}
 	
 	public OperacionEgreso(ArrayList<Item> items2, MedioDePago medioDePago2, DocumentoComercial documento2, Date fecha2,
 						   EntidadOperacion entidadOrigen2, EntidadOperacion entidadDestino2, int presupuestosNecesarios) {
+		super();
 		this.items = items2;
 		this.medioDePago = medioDePago2;
 		this.documento = documento2;
@@ -43,11 +47,6 @@ public class OperacionEgreso implements Operacion {
 		this.entidadOrigen = entidadOrigen2;
 		this.entidadDestino = entidadDestino2;
 		this.presupuestosNecesarios = presupuestosNecesarios;
-		this.identificadorOperacion = null;
-	}
-
-	public OperacionEgreso() {
-
 	}
 
 	public void agregarItem(Item item) {
@@ -55,7 +54,7 @@ public class OperacionEgreso implements Operacion {
 	}
 
 	public ArrayList<Item> getItems() {
-		return items;
+		return new ArrayList<>(items);
 	}
 
 	public void setItems(ArrayList<Item> items) {
@@ -82,21 +81,12 @@ public class OperacionEgreso implements Operacion {
 		return entidadDestino;
 	}
 	
-	public void setIdentificador(String identificadorOperacionEgreso) throws Exception {
-		if(this.identificadorOperacion == null) {
-			this.identificadorOperacion = identificadorOperacionEgreso;
-		}
-		else {
-			throw new Exception("Esta operacion ya tiene un identificador.");
-		}
-	}
-	
 	public String getIdentificador() {
-		return this.identificadorOperacion;
+		return "OE-" + super.getIdentificador();
 	}
 
 	public boolean esLaOperacion(String identificadorOperacionEgreso) {
-		return this.identificadorOperacion.contentEquals(identificadorOperacionEgreso);
+		return this.getIdentificador().contentEquals(identificadorOperacionEgreso);
 	}
 	
 	public MedioDePago getMedioDePago() {
