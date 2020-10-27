@@ -40,7 +40,7 @@ public class RepoLicitaciones {
         CriteriaBuilder cb = this.entityManager.getCriteriaBuilder();
         CriteriaQuery<Licitacion> consulta = cb.createQuery(Licitacion.class);
         Root<Licitacion> licitaciones = consulta.from(Licitacion.class);
-        Predicate condicion = cb.equal(licitaciones.get("compra_id"), idEgreso);
+        Predicate condicion = cb.equal(licitaciones.get("compra"), idEgreso);
         CriteriaQuery<Licitacion> where = consulta.select(licitaciones).where(condicion);
 
         List<Licitacion> listaLicitaciones = this.entityManager.createQuery(where).getResultList();

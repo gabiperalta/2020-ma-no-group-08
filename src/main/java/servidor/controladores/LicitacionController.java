@@ -172,13 +172,7 @@ public class LicitacionController{
         String filtro = request.queryParams("filtro");
         CuentaUsuario usuario = request.session().attribute("user");
         ServicioABLicitaciones servicioABLicitaciones = new ServicioABLicitaciones(entityManager);
-        //ArrayList<Licitacion> licitaciones = servicioABLicitaciones.listarLicitacionesOrg(usuario.getOrganizacion());
-
-        // SOLO PARA PROBAR
-
-        ArrayList<Licitacion> licitaciones = servicioABLicitaciones.listarLicitaciones();
-
-        ///////////////////
+        ArrayList<Licitacion> licitaciones = servicioABLicitaciones.listarLicitacionesOrg(usuario.getOrganizacion());
 
         List<Presupuesto> presupuestos = licitaciones.stream().flatMap(licitacion -> licitacion.getPresupuestos().stream()).collect(Collectors.toList());
         List<HashMap<String,Object>> presupuestosCompuestoInicial = licitaciones.stream().flatMap(licitacion -> licitacion.getPresupuestos().stream().map(presupuesto -> new HashMap<String,Object>(){{

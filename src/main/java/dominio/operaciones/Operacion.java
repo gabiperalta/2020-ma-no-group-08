@@ -12,6 +12,14 @@ public abstract class Operacion {
     @GeneratedValue(strategy = GenerationType.AUTO)
     protected int id;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public Operacion(){}
 
     public String getIdentificador(){ return Integer.toString(id); }

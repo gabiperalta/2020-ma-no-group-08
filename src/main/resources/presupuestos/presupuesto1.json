@@ -6,9 +6,9 @@
     },
     "item":[
         {
-            "valor":300,
+            "valor":350,
             "tipo":"ARTICULO",
-            "descripcion":"Servicio de transporte de productos"
+            "descripcion":"Resma de hojas"
         }
     ]
 }
