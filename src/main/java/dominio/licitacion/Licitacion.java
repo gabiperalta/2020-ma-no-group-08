@@ -2,6 +2,7 @@ package dominio.licitacion;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import dominio.cuentasUsuarios.CuentaUsuario;
 import dominio.licitacion.criterioSeleccion.CriterioSeleccionDeProveedor;
@@ -88,12 +89,22 @@ public class Licitacion{
 	}
 
 	private boolean cumpleCriterioCorrespondeYSeleccionDeProveedor(OperacionEgreso operacion) {
-		Presupuesto presupuestoCorrespondiente = presupuestos.stream().filter(p->p.esCorrespondiente(operacion))
-				.findFirst()
-				.get();
+		Presupuesto presupuestoCorrespondiente;
+
+		try{
+			presupuestoCorrespondiente= presupuestos.stream().filter(p->p.esCorrespondiente(operacion))
+					.findFirst()
+					.get();
+		}catch (NoSuchElementException e){
+			presupuestoCorrespondiente = null;
+		}
+
 
 		resultadoPresupCorresp = presupuestoCorrespondiente!=null;
-		resultadoSeleccionDeProveedor = criterioSeleccionDeProveedor.presupuestoElegido((ArrayList<Presupuesto>)getPresupuestos()) == presupuestoCorrespondiente;
+		if(presupuestoCorrespondiente != null)
+			resultadoSeleccionDeProveedor = criterioSeleccionDeProveedor.presupuestoElegido((ArrayList<Presupuesto>)getPresupuestos()) == presupuestoCorrespondiente;
+		else
+			resultadoSeleccionDeProveedor = false;
 		return resultadoPresupCorresp && resultadoSeleccionDeProveedor;
 	}
 
@@ -117,7 +128,13 @@ public class Licitacion{
 		this.cumpleCriterioCorrespondeYSeleccionDeProveedor(compra);
 		this.cumpleCriterioCantidadPresupuestos(compra);
 		this.finalizada = true;
-		notificadorSuscriptores.notificar(this.mensajeTexto(),this.suscriptores);
+		try {
+			notificadorSuscriptores.notificar(this.mensajeTexto(), this.suscriptores);
+		}
+		catch (NullPointerException e){
+
+		}
+
 	}
 
 	public boolean puedeLicitar() {

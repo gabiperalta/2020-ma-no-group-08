@@ -130,13 +130,13 @@ public class LicitacionController{
         }
 
         try{
-            servicioABLicitaciones.licitar(licitacionEncontrada,usuario.getUserName());
+            //servicioABLicitaciones.licitar(licitacionEncontrada,usuario.getUserName());
+            licitacionEncontrada.licitar();
         } catch (Exception e) {
             response.status(401);
             return "El usuario no tiene permiso para licitar";
         }
 
-        //licitacionEncontrada.licitar();
         return licitacionEncontrada.getIdentificadorConEtiqueta();
     }
 
@@ -146,6 +146,10 @@ public class LicitacionController{
         String licitacionId = request.params("licitacion_id");
         Licitacion licitacionEncontrada = repoLicitaciones.buscarLicitacionPorIdentificador(licitacionId);
 
+        if(licitacionEncontrada == null) {
+            response.status(404);
+            return "Licitacion no encontrada";
+        }
         String resultado;
         if(licitacionEncontrada.estaFinalizada())
             resultado = licitacionEncontrada.mensajeTexto();
