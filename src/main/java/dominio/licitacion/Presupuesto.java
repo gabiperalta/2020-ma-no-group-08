@@ -67,7 +67,7 @@ public class Presupuesto extends Operacion {
 	}
 
 	public String getIdentificador(){
-		return "P-" + super.getIdentificador(); // TODO revisar
+		return "P-" + super.getIdentificador() + Integer.toString(this.id); // TODO revisar
 	}
 
 	public void setEntidadOrigen(EntidadOperacion entidadOrigen){

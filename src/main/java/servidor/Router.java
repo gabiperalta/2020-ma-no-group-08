@@ -25,7 +25,7 @@ public class Router {
 
 	public static void init() throws Exception {
 		Router.initEngine();
-		//Router.initPersistence();
+		Router.initPersistence();
 		String projectDir = System.getProperty("user.dir");
 		String staticDir = "/src/main/resources/public";
 		Spark.externalStaticFileLocation(projectDir + staticDir);
@@ -125,7 +125,7 @@ public class Router {
 
 	private static TemplateViewRoute  TemplWithTransaction(WithTransaction<ModelAndView> fn) {
 		TemplateViewRoute r = (req, res) -> {
-			EntityManager em = ServerDataMock.getEntityManager();
+			EntityManager em = entityManagerFactory.createEntityManager();
 			em.getTransaction().begin();
 			try {
 				ModelAndView result = fn.method(req, res, em);
@@ -141,7 +141,7 @@ public class Router {
 
 	private static Route RouteWithTransaction(WithTransaction<Object> fn) {
 		Route r = (req, res) -> {
-			EntityManager em = ServerDataMock.getEntityManager();
+			EntityManager em = entityManagerFactory.createEntityManager();
 			em.getTransaction().begin();
 			try {
 				Object result = fn.method(req, res, em);

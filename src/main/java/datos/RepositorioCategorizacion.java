@@ -26,9 +26,9 @@ import javax.persistence.criteria.Root;
 
 public class RepositorioCategorizacion {
 	
-	private ArrayList<CriterioDeCategorizacion> criteriosDeCategorizacion;
+	//private ArrayList<CriterioDeCategorizacion> criteriosDeCategorizacion;
 	
-	private ArrayList<EntidadCategorizable> entidadesCategorizables;
+	//private ArrayList<EntidadCategorizable> entidadesCategorizables;
 
 	EntityManager entityManager;
 
@@ -46,8 +46,8 @@ public class RepositorioCategorizacion {
     }
 	
 	public RepositorioCategorizacion() {
-		this.criteriosDeCategorizacion = new ArrayList<CriterioDeCategorizacion>();
-		this.entidadesCategorizables = new ArrayList<EntidadCategorizable>();
+		//this.criteriosDeCategorizacion = new ArrayList<CriterioDeCategorizacion>();
+		//this.entidadesCategorizables = new ArrayList<EntidadCategorizable>();
 	}
 
 	public ArrayList<CriterioDeCategorizacion> getCriteriosDeCategorizacion(){
@@ -87,46 +87,59 @@ public class RepositorioCategorizacion {
 		return entityManager.contains(criterioDeCategorizacion);
 	}
 
-	private EntidadCategorizable buscarEntidadEntreLasYaCategorizadas(String identificadorEntidadCategorizable){
-		return entityManager.find(EntidadCategorizable.class, identificadorEntidadCategorizable);
+	private EntidadCategorizable buscarEntidadEntreLasYaCategorizadas(String identificadorEntidadCategorizable) throws CategorizacionException {
+		// TODO: CREO QUE DEBO RECORTAR LOS STRINGS DEPENDIENDO DE SI TIENEN OE, OI O L
+		int identificadorInt;
+		if(identificadorEntidadCategorizable.startsWith("OE")){
+			identificadorInt = Integer.parseInt(identificadorEntidadCategorizable.substring(3));
+		}
+		else{
+			if(identificadorEntidadCategorizable.startsWith("L")){
+				identificadorInt = Integer.parseInt(identificadorEntidadCategorizable.split("-")[1]);
+			}
+			else{
+				throw new CategorizacionException("Identificador de Entidad Categorizable INVALIDO");
+			}
+		}
+
+		return entityManager.find(EntidadCategorizable.class, identificadorInt);
 	}
 
-	private boolean existeEntidadEntreLasCategorizadas(String identificadorEntidadCategorizable) {
+	private boolean existeEntidadEntreLasCategorizadas(String identificadorEntidadCategorizable) throws CategorizacionException {
 		return entityManager.contains(this.buscarEntidadEntreLasYaCategorizadas(identificadorEntidadCategorizable));
 	}
 	
-	// Entidades Categorizables
+	// ENTIDADES CATEGORIZABLES
 	// TODO: Dependiendo de como terminemos normalizando la BD de Operaciones, vamos a tener que hacer la distincion entre OperacionEgreso y OperacionIngreso o no.
-	public EntidadCategorizable buscarEntidadCategorizable(String identificadorEntidadCategorizable) throws CategorizacionException {
+	private EntidadCategorizable buscarEntidadCategorizable(String identificadorEntidadCategorizable) throws CategorizacionException {
 		EntidadCategorizable unaEntidadCategorizable;
 		if(existeEntidadEntreLasCategorizadas(identificadorEntidadCategorizable)){
 			unaEntidadCategorizable = buscarEntidadEntreLasYaCategorizadas(identificadorEntidadCategorizable);
 		}
 		else {
 			if(identificadorEntidadCategorizable.startsWith("OE")) { // OE por Operacion Egreso
-				RepoOperacionesEgreso repoOperacionesEgreso = new RepoOperacionesEgreso(Persistence.createEntityManagerFactory("db").createEntityManager()) ;
+				RepoOperacionesEgreso repoOperacionesEgreso = new RepoOperacionesEgreso(entityManager) ;
 				OperacionEgreso operacionEgreso = repoOperacionesEgreso.buscarOperacionEgresoPorIdenticadorOperacionEgreso(identificadorEntidadCategorizable);
 				unaEntidadCategorizable = new EntidadCategorizable(operacionEgreso);
 			}
-			else
-			if(identificadorEntidadCategorizable.startsWith("L")){
-				int largoIdentificador = identificadorEntidadCategorizable.length();
-				RepoLicitaciones repoLicitaciones = new RepoLicitaciones(ServerDataMock.getEntityManager());
-				String identificadorLicitacion = identificadorEntidadCategorizable.substring(0,largoIdentificador - 3);
-				String identificadorPresupuesto = identificadorEntidadCategorizable.substring(largoIdentificador - 2, largoIdentificador);
-				Licitacion licitacion = repoLicitaciones.buscarLicitacionPorIdentificador(identificadorLicitacion);
-				Presupuesto presupuesto = licitacion.getPresupuestos().stream().filter( unPresupuesto -> unPresupuesto.getIdentificador().endsWith(identificadorPresupuesto)).
-						findFirst().get();
-				unaEntidadCategorizable = new EntidadCategorizable(presupuesto);
-			}
-			else
-				throw new CategorizacionException("Identificador de Entidad Categorizable INVALIDO");
+			else {
+				if (identificadorEntidadCategorizable.startsWith("L")) {
+
+					RepoLicitaciones repoLicitaciones = new RepoLicitaciones(entityManager);
+					String identificadorPresupuesto = identificadorEntidadCategorizable.split("-")[2];
+					Licitacion licitacion = repoLicitaciones.buscarLicitacionPorIdentificador(identificadorEntidadCategorizable);
+					Presupuesto presupuesto = licitacion.getPresupuestos().stream().filter(unPresupuesto -> unPresupuesto.getIdentificador().endsWith(identificadorPresupuesto)).
+							findFirst().get();
+					unaEntidadCategorizable = new EntidadCategorizable(presupuesto);
+				} else
+					throw new CategorizacionException("Identificador de Entidad Categorizable INVALIDO");
 				/*if(identificadorEntidadCategorizable.startsWith("OI")) { // OI por Operacion Ingreso
 					OperacionIngreso operacionIngreso = RepoOperacionesIngreso.getInstance().buscarOperacionEgresoPorIdentificador(identificadorEntidadCategorizable);
 					unaEntidadCategorizable = new EntidadCategorizable(operacionIngreso);
 				}
 				else{
 				}*/
+			}
 			entityManager.persist(unaEntidadCategorizable);
 		}
 		return unaEntidadCategorizable;
@@ -148,9 +161,8 @@ public class RepositorioCategorizacion {
 	public ArrayList<EntidadCategorizable> filtrarEntidadesDeLaCategoria(String nombreCategoria, String nombreCriterioDeCategorizacion, Organizacion unaOrganizacion){
 		Categoria unaCategoria = this.buscarCriterioDeCategorizacion(nombreCriterioDeCategorizacion).buscarCategoria(nombreCategoria);
 
-		String sql = "SELECT ec FROM entidades_categorizables ec JOIN entidad_categoria c ON c.nombre_categoria = " +
-						unaCategoria.getNombre() + " AND c.nombre_criterio = " + unaCategoria.getCriterioDeCategorizacion().getNombre() +
-						"WHERE ec.id = c.operacion_id";
+		String sql = "SELECT e FROM EntidadCategorizable e JOIN e.categoriasAsociadas ec ON ec.nombre ='" + unaCategoria.getNombre() +
+				"' AND ec.criterioDeCategorizacion.nombre = '" + unaCategoria.getCriterioDeCategorizacion().getNombre() + "'";
 
 		TypedQuery<EntidadCategorizable> consulta = entityManager.createQuery(sql, EntidadCategorizable.class);
 
