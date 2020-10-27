@@ -9,6 +9,7 @@
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
 		<class>dominio.entidades.Organizacion</class>
+		<class>dominio.entidades.Empresa</class>
 		<class>dominio.cuentasUsuarios.Roles.Rol</class>
 		<class>dominio.cuentasUsuarios.Roles.Privilegio</class>
 		<class>dominio.cuentasUsuarios.CuentaUsuario</class>
