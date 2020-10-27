@@ -9,18 +9,25 @@ import datos.RepositorioCategorizacion;
 import dominio.categorizacion.exceptions.CategorizacionException;
 import dominio.entidades.Organizacion;
 
+import javax.persistence.EntityManager;
+
 public class ServicioABMCategorizaciones {
-	
+
+	RepositorioCategorizacion repositorioCategorizacion;
+	public ServicioABMCategorizaciones(EntityManager entityManager){
+		this.repositorioCategorizacion = new RepositorioCategorizacion(entityManager);
+	}
+
 	public void altaCriterioCategorizacion(String nombreCriterioDeCategorizacion) throws CategorizacionException {
-		RepositorioCategorizacion.getInstance().agregarCriterioDeCategorizacion(new CriterioDeCategorizacion(nombreCriterioDeCategorizacion));
+		repositorioCategorizacion.agregarCriterioDeCategorizacion(new CriterioDeCategorizacion(nombreCriterioDeCategorizacion));
 	}
 	
 	public void bajaCriterioCategorizacion(String nombreCriterioDeCategorizacion) throws CategorizacionException {
-		RepositorioCategorizacion.getInstance().quitarCriterioDeCategorizacion(nombreCriterioDeCategorizacion);
+		repositorioCategorizacion.quitarCriterioDeCategorizacion(nombreCriterioDeCategorizacion);
 	}
 	
 	public CriterioDeCategorizacion buscarCriterioDeCategorizacion(String nombreCriterioDeCategorizacion) {
-		return RepositorioCategorizacion.getInstance().buscarCriterioDeCategorizacion(nombreCriterioDeCategorizacion);
+		return repositorioCategorizacion.buscarCriterioDeCategorizacion(nombreCriterioDeCategorizacion);
 	}
 	
 	public void agregarCategoria(String nombreCategoria, String nombreCriterioDeCategorizacion) throws CategorizacionException {
@@ -40,19 +47,19 @@ public class ServicioABMCategorizaciones {
 	}
 	
 	public void asociarCategoriaAEntidadCategorizable(String identificadorEntidadCategorizable, String nombreCategoria, String nombreCriterioDeCategorizacion) throws CategorizacionException {
-		RepositorioCategorizacion.getInstance().asociarCategoriaAEntidadCategorizable(identificadorEntidadCategorizable, nombreCategoria,nombreCriterioDeCategorizacion);
+		repositorioCategorizacion.asociarCategoriaAEntidadCategorizable(identificadorEntidadCategorizable, nombreCategoria,nombreCriterioDeCategorizacion);
 	}
 	
 	public void desasociarCategoriaAEntidadCategorizable(String identificadorEntidadCategorizable, String nombreCategoria, String nombreCriterioDeCategorizacion) throws CategorizacionException {
-		RepositorioCategorizacion.getInstance().desasociarCategoriaAEntidadCategorizable(identificadorEntidadCategorizable, nombreCategoria, nombreCriterioDeCategorizacion);
+		repositorioCategorizacion.desasociarCategoriaAEntidadCategorizable(identificadorEntidadCategorizable, nombreCategoria, nombreCriterioDeCategorizacion);
 	}
 	
 	public ArrayList<EntidadCategorizable> filtrarEntidadesDeLaCategoria(String nombreCategoria, String nombreCriterioDeCategorizacion, Organizacion unaOrganizacion){
-		return RepositorioCategorizacion.getInstance().filtrarEntidadesDeLaCategoria( nombreCategoria, nombreCriterioDeCategorizacion, unaOrganizacion);
+		return repositorioCategorizacion.filtrarEntidadesDeLaCategoria( nombreCategoria, nombreCriterioDeCategorizacion, unaOrganizacion);
 	}
 
 	public ArrayList<CriterioDeCategorizacion> listarCriteriosDeCategorizacion(){
-		return RepositorioCategorizacion.getInstance().getCriteriosDeCategorizacion();
+		return repositorioCategorizacion.getCriteriosDeCategorizacion();
 	}
 	
 }

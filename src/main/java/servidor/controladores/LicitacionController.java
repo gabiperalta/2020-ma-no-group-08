@@ -162,6 +162,8 @@ public class LicitacionController{
     }
 
     public ModelAndView mostrarPresupuestos(Request request, Response response, EntityManager entityManager){
+        RepositorioCategorizacion repositorioCategorizacion = new RepositorioCategorizacion(entityManager);
+
         int presupuestosPorPagina = 3;
         String href = "/presupuestos";
         Map<String, Object> map = new HashMap<>();
@@ -189,7 +191,7 @@ public class LicitacionController{
             String[] nombreCategoriaCriterio= filtro.split("_");
 
             try{
-                presupuestos = RepositorioCategorizacion.getInstance().filtrarPresupuestosDeLaCategoria(nombreCategoriaCriterio[1],nombreCategoriaCriterio[0], usuario.getOrganizacion()).stream().map(entidadCategorizable -> (Presupuesto)entidadCategorizable.getOperacion()).collect(Collectors.toList());
+                presupuestos = repositorioCategorizacion.filtrarPresupuestosDeLaCategoria(nombreCategoriaCriterio[1],nombreCategoriaCriterio[0], usuario.getOrganizacion()).stream().map(entidadCategorizable -> (Presupuesto)entidadCategorizable.getOperacion()).collect(Collectors.toList());
                 map.put("infoFiltroActual","Filtrado por " + nombreCategoriaCriterio[0] + " - " + nombreCategoriaCriterio[1]);
             }catch (NullPointerException e){
                 presupuestos = null;

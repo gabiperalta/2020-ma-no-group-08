@@ -71,17 +71,17 @@ public class Router {
 		get("/egresos/:egreso", egresoC::showEgreso, engine);
 		delete("/egreso/:identificador", RouteWithTransaction(egresoC::deleteEgreso));
 
-		get("/egresos", egresoC::mostrarEgresos, engine);
+		get("/egresos", TemplWithTransaction(egresoC::mostrarEgresos), engine);
 
 		get("/ingreso", ingresoC::showIngreso, engine);
-		get("/ingresos", ingresoC::mostrarIngresos, engine);
+		get("/ingresos", TemplWithTransaction(ingresoC::mostrarIngresos), engine);
 
 
 
-		get("/categorizar", categorizacionesC::showCategorizacionesPage, engine);
-		post("/categorizar", categorizacionesC::categorizar, engine);
-		get("/descategorizar", categorizacionesC::showDescategorizacionesPage, engine);
-		post("/descategorizar", categorizacionesC::descategorizar, engine);
+		get("/categorizar", TemplWithTransaction(categorizacionesC::showCategorizacionesPage), engine);
+		post("/categorizar", TemplWithTransaction(categorizacionesC::categorizar), engine);
+		get("/descategorizar", TemplWithTransaction(categorizacionesC::showDescategorizacionesPage), engine);
+		post("/descategorizar", TemplWithTransaction(categorizacionesC::descategorizar), engine);
 		
 		get("/vinculaciones",vinculacionesC::seleccionarOperaciones,engine);
 		post("/vinculaciones",vinculacionesC::vincular);

@@ -36,7 +36,7 @@ public class RepositorioCategorizacion {
 		entityManager = em;
 	}
 
-
+	/*
 	private static class RepositorioCategorizacionHolder {		
         static final RepositorioCategorizacion singleInstanceRepositorioCategorizacion = new RepositorioCategorizacion();
     }
@@ -44,6 +44,7 @@ public class RepositorioCategorizacion {
 	public static RepositorioCategorizacion getInstance() {
         return RepositorioCategorizacionHolder.singleInstanceRepositorioCategorizacion;
     }
+	 */
 	
 	public RepositorioCategorizacion() {
 		//this.criteriosDeCategorizacion = new ArrayList<CriterioDeCategorizacion>();

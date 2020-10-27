@@ -34,8 +34,10 @@ public class EgresoController extends Controller{
 
     private String mensajeError;
 
-    public ModelAndView mostrarEgresos(Request req, Response res) {
+    public ModelAndView mostrarEgresos(Request req, Response res, EntityManager entityManager) {
         String href = "/egresos";
+
+        RepositorioCategorizacion repositorioCategorizacion = new RepositorioCategorizacion(entityManager);
 
         Map<String, Object> parameters = new HashMap<>();
 
@@ -61,7 +63,7 @@ public class EgresoController extends Controller{
             String[] nombreCategoriaCriterio= filtro.split("_");
 
             try{
-                egresos = (ArrayList<OperacionEgreso>) RepositorioCategorizacion.getInstance().filtrarEgresosDeLaCategoria(nombreCategoriaCriterio[1],nombreCategoriaCriterio[0], org).stream().map(entidadCategorizable -> (OperacionEgreso)entidadCategorizable.getOperacion()).collect(Collectors.toList());
+                egresos = (ArrayList<OperacionEgreso>) repositorioCategorizacion.filtrarEgresosDeLaCategoria(nombreCategoriaCriterio[1],nombreCategoriaCriterio[0], org).stream().map(entidadCategorizable -> (OperacionEgreso)entidadCategorizable.getOperacion()).collect(Collectors.toList());
                 parameters.put("infoFiltroActual","Filtrado por " + nombreCategoriaCriterio[0] + " - " + nombreCategoriaCriterio[1]);
             }catch (NullPointerException e){
                 egresos = null;
@@ -127,7 +129,7 @@ public class EgresoController extends Controller{
                 break;
         }
 
-        parameters.put("criteriosDeCategorizacion",RepositorioCategorizacion.getInstance().getCriteriosDeCategorizacion());
+        parameters.put("criteriosDeCategorizacion",repositorioCategorizacion.getCriteriosDeCategorizacion());
         return new ModelAndView(parameters,"egresos2.hbs");
     }
 

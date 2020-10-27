@@ -9,6 +9,8 @@ import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 
+import javax.persistence.EntityManager;
+import javax.swing.text.html.parser.Entity;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -16,7 +18,9 @@ public class IngresoController extends Controller{
 
     ServicioABOperaciones servicioOperaciones = new ServicioABOperaciones();
 
-    public ModelAndView mostrarIngresos(Request req, Response res) {
+    public ModelAndView mostrarIngresos(Request req, Response res, EntityManager entityManager) {
+        RepositorioCategorizacion repositorioCategorizacion = new RepositorioCategorizacion(entityManager);
+
         String href = "/ingresos";
         Map<String, Object> parameters = new HashMap<>();
 
@@ -67,7 +71,7 @@ public class IngresoController extends Controller{
             parameters.put("user", req.session().attribute("user"));
         }
         
-        parameters.put("criteriosDeCategorizacion",RepositorioCategorizacion.getInstance().getCriteriosDeCategorizacion());
+        parameters.put("criteriosDeCategorizacion",repositorioCategorizacion.getCriteriosDeCategorizacion());
         return new ModelAndView(parameters,"ingresos.hbs");
     }
 

@@ -6,20 +6,22 @@ import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 
+import javax.persistence.EntityManager;
 import java.util.HashMap;
 import java.util.Map;
 
 public class CategorizacionesController {
 
-    ServicioABMCategorizaciones categorizacionesService;
+    //ServicioABMCategorizaciones categorizacionesService;
 
     private String mensajeError;
 
     public CategorizacionesController(){
-        categorizacionesService = new ServicioABMCategorizaciones();
+        //categorizacionesService = new ServicioABMCategorizaciones();
     }
 
-    public ModelAndView showCategorizacionesPage(Request request, Response response){
+    public ModelAndView showCategorizacionesPage(Request request, Response response, EntityManager entityManager){
+        ServicioABMCategorizaciones categorizacionesService = new ServicioABMCategorizaciones(entityManager);
         Map<String, Object> parameters = new HashMap<>();
 
         parameters.put("user", request.session().attribute("user"));
@@ -29,7 +31,8 @@ public class CategorizacionesController {
         return new ModelAndView(parameters, "categorizacion.hbs");
     }
 
-    public ModelAndView categorizar(Request request, Response response) {
+    public ModelAndView categorizar(Request request, Response response, EntityManager entityManager) {
+        ServicioABMCategorizaciones categorizacionesService = new ServicioABMCategorizaciones(entityManager);
         try{
             String idEntidadCategorizable = request.queryParams("id-entidad-categorizable");
             String nombreCriterioCategorizacion = request.queryParams("criterio");
@@ -52,7 +55,8 @@ public class CategorizacionesController {
         return new ModelAndView(parameters, "exitoCategorizar.hbs");
     }
 
-    public ModelAndView showDescategorizacionesPage(Request request, Response response){
+    public ModelAndView showDescategorizacionesPage(Request request, Response response, EntityManager entityManager){
+        ServicioABMCategorizaciones categorizacionesService = new ServicioABMCategorizaciones(entityManager);
         Map<String, Object> parameters = new HashMap<>();
 
         parameters.put("user", request.session().attribute("user"));
@@ -63,7 +67,8 @@ public class CategorizacionesController {
         return new ModelAndView(parameters, "categorizacion.hbs");
     }
 
-    public ModelAndView descategorizar(Request request, Response response) {
+    public ModelAndView descategorizar(Request request, Response response, EntityManager entityManager) {
+        ServicioABMCategorizaciones categorizacionesService = new ServicioABMCategorizaciones(entityManager);
         try{
             String idEntidadCategorizable = request.queryParams("id-entidad-categorizable");
             String nombreCriterioCategorizacion = request.queryParams("criterio");
