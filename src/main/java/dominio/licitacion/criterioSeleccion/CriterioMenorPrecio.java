@@ -10,10 +10,7 @@ import java.util.ArrayList;
 @Entity
 @DiscriminatorValue("menor_precio")
 //@Proxy(proxyClass = CriterioSeleccionDeProveedor.class)
-public class CriterioMenorPrecio implements CriterioSeleccionDeProveedor {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public int id;
+public class CriterioMenorPrecio extends CriterioSeleccionDeProveedor {
 
     @Override
     public int getId() {

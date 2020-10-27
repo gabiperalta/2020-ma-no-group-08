@@ -9,20 +9,25 @@ import dominio.operaciones.EntidadOperacion;
 import dominio.operaciones.Item;
 import dominio.operaciones.Operacion;
 import dominio.operaciones.OperacionEgreso;
+import org.hibernate.engine.internal.Cascade;
 
 import javax.persistence.*;
 
 @Entity
 public class Presupuesto extends Operacion {
-	@OneToOne
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	int id;
+
+	@OneToOne(cascade = CascadeType.ALL)
 	private EntidadOperacion proveedor;
 
-	@OneToMany
-	@JoinColumn(name = "identificador")
+	@OneToMany(cascade = CascadeType.ALL)
 	private List<Item> items;
 	private double montoTotal;
 	private boolean esValido;
-	@Transient
+
+	@OneToOne
 	private EntidadOperacion entidadOrigen;
 
 	public Presupuesto(){

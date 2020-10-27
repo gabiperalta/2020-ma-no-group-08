@@ -4,14 +4,16 @@ import javax.persistence.*;
 
 @Entity
 public class Item {
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	int id;
+
 	private int valor;
 
 	@Enumerated(EnumType.STRING)
 	private ETipoItem tipo;
 
-	@Id
 	private String descripcion;
-
 
 	public Item(int i, ETipoItem articulo, String string) {
 		this.valor = i;

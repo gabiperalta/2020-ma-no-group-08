@@ -7,6 +7,7 @@ import dominio.cuentasUsuarios.CuentaUsuario;
 import dominio.licitacion.criterioSeleccion.CriterioSeleccionDeProveedor;
 import dominio.notificador_suscriptores.NotificadorSuscriptores;
 import dominio.operaciones.OperacionEgreso;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 
@@ -15,7 +16,7 @@ public class Licitacion{
 	@OneToOne
 	private OperacionEgreso compra;
 
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL)
 	private List<Presupuesto> presupuestos;
 
 	private boolean finalizada;
@@ -23,7 +24,8 @@ public class Licitacion{
 	private boolean resultadoSeleccionDeProveedor;
 	private boolean resultadoPresupCorresp;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "criterio_id")
 	private CriterioSeleccionDeProveedor criterioSeleccionDeProveedor;
 
 	@Transient
@@ -52,8 +54,11 @@ public class Licitacion{
 		this.ultimoIdentificadorPresupuesto = 1;
 	}
 
-	public ArrayList<Presupuesto> getPresupuestos() {
-		return (ArrayList<Presupuesto>) presupuestos;
+	//public ArrayList<Presupuesto> getPresupuestos() {
+	//	return (ArrayList<Presupuesto>) presupuestos;
+	//}
+	public List<Presupuesto> getPresupuestos() {
+		return presupuestos;
 	}
 
 	public void agregarPresupuesto(Presupuesto presup) {
@@ -88,7 +93,7 @@ public class Licitacion{
 				.get();
 
 		resultadoPresupCorresp = presupuestoCorrespondiente!=null;
-		resultadoSeleccionDeProveedor = criterioSeleccionDeProveedor.presupuestoElegido(getPresupuestos()) == presupuestoCorrespondiente;
+		resultadoSeleccionDeProveedor = criterioSeleccionDeProveedor.presupuestoElegido((ArrayList<Presupuesto>)getPresupuestos()) == presupuestoCorrespondiente;
 		return resultadoPresupCorresp && resultadoSeleccionDeProveedor;
 	}
 

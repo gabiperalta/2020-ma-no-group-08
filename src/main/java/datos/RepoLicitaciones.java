@@ -29,10 +29,18 @@ public class RepoLicitaciones {
     }
 
     public Licitacion buscarLicitacionPorOperacionEgreso(String identificadorOperacionEgreso){
+        int idEgreso;
+        if(identificadorOperacionEgreso.startsWith("OE-")) {
+            idEgreso = Integer.parseInt(identificadorOperacionEgreso.split("-")[1]);
+        }
+        else{
+            idEgreso = Integer.parseInt(identificadorOperacionEgreso);
+        }
+
         CriteriaBuilder cb = this.entityManager.getCriteriaBuilder();
         CriteriaQuery<Licitacion> consulta = cb.createQuery(Licitacion.class);
         Root<Licitacion> licitaciones = consulta.from(Licitacion.class);
-        Predicate condicion = cb.equal(licitaciones.get("egreso_id"), identificadorOperacionEgreso); // deberia ser un int?
+        Predicate condicion = cb.equal(licitaciones.get("compra_id"), idEgreso);
         CriteriaQuery<Licitacion> where = consulta.select(licitaciones).where(condicion);
 
         List<Licitacion> listaLicitaciones = this.entityManager.createQuery(where).getResultList();
@@ -49,10 +57,16 @@ public class RepoLicitaciones {
     }
 
     public Licitacion buscarLicitacionPorIdentificador(String identificadorLicitacion){
+        int idLicitacion;
+        if(identificadorLicitacion.startsWith("L-"))
+            idLicitacion = Integer.parseInt(identificadorLicitacion.split("-")[1]);
+        else
+            idLicitacion = Integer.parseInt(identificadorLicitacion);
+
         CriteriaBuilder cb = this.entityManager.getCriteriaBuilder();
         CriteriaQuery<Licitacion> consulta = cb.createQuery(Licitacion.class);
         Root<Licitacion> licitaciones = consulta.from(Licitacion.class);
-        Predicate condicion = cb.equal(licitaciones.get("id"), identificadorLicitacion); // deberia ser un int?
+        Predicate condicion = cb.equal(licitaciones.get("identificadorLicitacion"), idLicitacion);
         CriteriaQuery<Licitacion> where = consulta.select(licitaciones).where(condicion);
 
         List<Licitacion> listaLicitaciones = this.entityManager.createQuery(where).getResultList();

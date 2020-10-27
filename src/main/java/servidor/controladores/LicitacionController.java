@@ -170,7 +170,14 @@ public class LicitacionController{
         String filtro = request.queryParams("filtro");
         CuentaUsuario usuario = request.session().attribute("user");
         ServicioABLicitaciones servicioABLicitaciones = new ServicioABLicitaciones(entityManager);
-        ArrayList<Licitacion> licitaciones = servicioABLicitaciones.listarLicitacionesOrg(usuario.getOrganizacion());
+        //ArrayList<Licitacion> licitaciones = servicioABLicitaciones.listarLicitacionesOrg(usuario.getOrganizacion());
+
+        // SOLO PARA PROBAR
+
+        ArrayList<Licitacion> licitaciones = servicioABLicitaciones.listarLicitaciones();
+
+        ///////////////////
+
         List<Presupuesto> presupuestos = licitaciones.stream().flatMap(licitacion -> licitacion.getPresupuestos().stream()).collect(Collectors.toList());
         List<HashMap<String,Object>> presupuestosCompuestoInicial = licitaciones.stream().flatMap(licitacion -> licitacion.getPresupuestos().stream().map(presupuesto -> new HashMap<String,Object>(){{
             put("presupuesto",presupuesto);
@@ -238,7 +245,7 @@ public class LicitacionController{
         map.put("presupuestos",presupuestosCompuesto);
         map.put("user", request.session().attribute("user"));
 
-        map.put("criteriosDeCategorizacion",RepositorioCategorizacion.getInstance().getCriteriosDeCategorizacion());
+        //map.put("criteriosDeCategorizacion",RepositorioCategorizacion.getInstance().getCriteriosDeCategorizacion());
         return new ModelAndView(map,"presupuestos.hbs");
     }
 

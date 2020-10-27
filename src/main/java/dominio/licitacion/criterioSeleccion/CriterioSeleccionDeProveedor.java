@@ -6,13 +6,22 @@ import javax.persistence.*;
 import java.util.ArrayList;
 
 @Entity
+@Table(name = "CriterioSeleccionDeProveedor")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "criterio")
-public interface CriterioSeleccionDeProveedor {
-    public Presupuesto presupuestoElegido(ArrayList<Presupuesto> presupuestos);
+public abstract class CriterioSeleccionDeProveedor {
+    public Presupuesto presupuestoElegido(ArrayList<Presupuesto> presupuestos) {
+        return null;
+    }
 
     @Id
-    public int getId();
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    public int id;
 
-    public void setId(int id);
+    public int getId() {
+        return 0;
+    }
+
+    public void setId(int id) {
+    }
 }

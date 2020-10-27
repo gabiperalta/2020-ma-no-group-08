@@ -39,7 +39,7 @@ public class ServerDataMock {
         cargarCategorias();
         cargarIngresos();
         cargarEgregos();
-//        cargarPresupuestos();
+        cargarPresupuestos();
     }
 
     public ServerDataMock() {
@@ -351,16 +351,16 @@ public class ServerDataMock {
         Presupuesto presup3;
         EntidadOperacion proveedor1;
 
-        RepoLicitaciones repoLicitaciones = new RepoLicitaciones(getEntityManager());
+        EntityManager entityManager = getEntityManager();
+        RepoLicitaciones repoLicitaciones = new RepoLicitaciones(entityManager);
 
-        ArrayList<Item> listaItems = new ArrayList<Item>();
+        ArrayList<Item> listaItems = new ArrayList<>();
         listaItems.add(new Item(50, ETipoItem.ARTICULO, "Item1"));
         listaItems.add(new Item(100, ETipoItem.ARTICULO, "Item2"));
 
-        EntityManager entityManager = getEntityManager();
         RepoOperacionesEgreso repoOperacionesEgreso = new RepoOperacionesEgreso(entityManager);
-        licitacion1 = new Licitacion(repoOperacionesEgreso.buscarOperacionEgresoPorIdenticadorOperacionEgreso("OE-1"), NotificadorSuscriptores.getInstance());
-        licitacion2 = new Licitacion(repoOperacionesEgreso.buscarOperacionEgresoPorIdenticadorOperacionEgreso("OE-5"), NotificadorSuscriptores.getInstance());
+        licitacion1 = new Licitacion(repoOperacionesEgreso.buscarOperacionEgresoPorIdenticadorOperacionEgreso("OE-7"), NotificadorSuscriptores.getInstance());
+        licitacion2 = new Licitacion(repoOperacionesEgreso.buscarOperacionEgresoPorIdenticadorOperacionEgreso("OE-16"), NotificadorSuscriptores.getInstance());
 
         licitacion1.agregarCriterioSeleccionDeProveedor(new CriterioMenorPrecio());
         licitacion2.agregarCriterioSeleccionDeProveedor(new CriterioMenorPrecio());
@@ -382,12 +382,14 @@ public class ServerDataMock {
         presup2 = new Presupuesto(proveedor1, listaItems2);
         presup3 = new Presupuesto(proveedor1, listaItems3);
 
+        entityManager.getTransaction().begin();
         licitacion1.agregarPresupuesto(presup1);
         licitacion2.agregarPresupuesto(presup2);
         licitacion2.agregarPresupuesto(presup3);
 
         repoLicitaciones.agregarLicitacion(licitacion1);
         repoLicitaciones.agregarLicitacion(licitacion2);
+        entityManager.getTransaction().commit();
     }
 
     public static EntityManager getEntityManager() {
