@@ -1,10 +1,16 @@
 package dominio.operaciones.medioDePago;
 
-public class DineroEnCuenta implements MedioDePago {
+import javax.persistence.Entity;
+
+//@Entity
+public class DineroEnCuenta extends MedioDePago {
     double monto;
     String nombre;
 
+    public DineroEnCuenta(){}
+
     public DineroEnCuenta(double monto,String nombre){
+        super();
         this.monto = monto;
         this.nombre = nombre;
     }

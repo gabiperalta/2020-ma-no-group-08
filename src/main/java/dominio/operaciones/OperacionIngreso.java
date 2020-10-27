@@ -8,14 +8,13 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Entity
-public class OperacionIngreso implements Operacion {
+@Table(name = "operaciones_ingreso")
+public class OperacionIngreso extends Operacion {
 
-	@Id @GeneratedValue(strategy = GenerationType.AUTO)
-	private String identificadorOperacion;
 	private String descripcion;
 	private double montoTotal;
 
-	@Convert(converter = Date.class)
+	//@Convert(converter = Date.class)
 	private Date fecha;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
@@ -36,22 +35,13 @@ public class OperacionIngreso implements Operacion {
 	public boolean puedenVincularse(List <OperacionEgreso> egresos) {
 		return true;
 	}
-	
-	public void setIdentificador(String identificadorOperacionIngreso) throws Exception {
-		if(this.identificadorOperacion == null) {
-			this.identificadorOperacion = identificadorOperacionIngreso;
-		}
-		else {
-			throw new Exception("Esta operacion ya tiene un identificador.");
-		}
-	}
-	
+
 	public String getIdentificador() {
-		return this.identificadorOperacion;
+		return "OI-" + super.getIdentificador();
 	}
 
 	public boolean esLaOperacion(String identificadorOperacionEgreso) {
-		return this.identificadorOperacion.contentEquals(identificadorOperacionEgreso);
+		return this.getIdentificador().contentEquals(identificadorOperacionEgreso);
 	}
 	
 	public String getDescripcion() {

@@ -1,11 +1,17 @@
 package dominio.operaciones.medioDePago;
 
-public class Efectivo implements MedioDePago {
+import javax.persistence.Entity;
+
+//@Entity
+public class Efectivo extends MedioDePago {
     double monto;
     String puntoDePago;
     String nombre;
 
+    public Efectivo(){}
+
     public Efectivo(double monto,String puntoDePago, String nombre){
+        super();
         this.monto = monto;
         this.puntoDePago = puntoDePago;
         this.nombre = nombre;

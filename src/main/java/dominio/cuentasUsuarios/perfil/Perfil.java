@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@Table(name = "Perfiles")
+@Table(name = "perfiles")
 public abstract class Perfil {
 	@Id
 	private String nombre;

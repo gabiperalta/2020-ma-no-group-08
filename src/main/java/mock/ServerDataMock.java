@@ -36,9 +36,9 @@ public class ServerDataMock {
         cargarOrganizaciones();
         cargarRoles();
         cargarUsuarios();
+        cargarCategorias();
 //        cargarIngresos();
 //        cargarEgregos();
-//        cargarCategorias();
 //        cargarPresupuestos();
     }
 
@@ -142,6 +142,28 @@ public class ServerDataMock {
 
         repositorioUsuarios.agregarUsuarioEstandar("UsuarioWeb1", organizacion1, listaDeRolesCliente, "1234");
         repositorioUsuarios.agregarUsuarioEstandar("UsuarioWeb2", organizacion2, listaDeRolesClienteMaestro, "1234");
+        em.getTransaction().commit();
+    }
+
+    private static void cargarCategorias() throws CategorizacionException {
+        EntityManager em = getEntityManager();
+        // Usuarios Administradores
+        em.getTransaction().begin();
+        RepositorioCategorizacion repositorioCategorizacion = new RepositorioCategorizacion(em);
+
+        CriterioDeCategorizacion criterioDePrueba1 = new CriterioDeCategorizacion("CriterioDePrueba-1");
+        repositorioCategorizacion.agregarCriterioDeCategorizacion(criterioDePrueba1);
+        criterioDePrueba1.agregarCategoria("Categoria-1");
+        criterioDePrueba1.agregarCategoria("Categoria-1.1", "Categoria-1");
+        criterioDePrueba1.agregarCategoria("Categoria-2");
+
+        CriterioDeCategorizacion criterioDePrueba2 = new CriterioDeCategorizacion("CriterioDePrueba-2");
+        repositorioCategorizacion.agregarCriterioDeCategorizacion(criterioDePrueba2);
+        criterioDePrueba2.agregarCategoria("Categoria-1");
+        criterioDePrueba2.agregarCategoria("Categoria-1.1", "Categoria-1");
+        criterioDePrueba2.agregarCategoria("Categoria-2");
+        criterioDePrueba2.agregarCategoria("Categoria-3");
+        criterioDePrueba2.agregarCategoria("Categoria-3.1", "Categoria-3");
         em.getTransaction().commit();
     }
 
@@ -290,23 +312,6 @@ public class ServerDataMock {
         RepoOperacionesEgreso.getInstance().agregarOperacionEgreso(egreso5);
         RepoOperacionesEgreso.getInstance().agregarOperacionEgreso(egreso6);
         RepoOperacionesEgreso.getInstance().agregarOperacionEgreso(egreso7);
-    }
-
-    private static void cargarCategorias() throws CategorizacionException {
-        CriterioDeCategorizacion criterioDePrueba1 = new CriterioDeCategorizacion("CriterioDePrueba-1");
-        criterioDePrueba1.agregarCategoria("Categoria-1");
-        criterioDePrueba1.agregarCategoria("Categoria-1.1", "Categoria-1");
-        criterioDePrueba1.agregarCategoria("Categoria-2");
-
-        CriterioDeCategorizacion criterioDePrueba2 = new CriterioDeCategorizacion("CriterioDePrueba-2");
-        criterioDePrueba2.agregarCategoria("Categoria-1");
-        criterioDePrueba2.agregarCategoria("Categoria-1.1", "Categoria-1");
-        criterioDePrueba2.agregarCategoria("Categoria-2");
-        criterioDePrueba2.agregarCategoria("Categoria-3");
-        criterioDePrueba2.agregarCategoria("Categoria-3.1", "Categoria-3");
-
-        RepositorioCategorizacion.getInstance().agregarCriterioDeCategorizacion(criterioDePrueba1);
-        RepositorioCategorizacion.getInstance().agregarCriterioDeCategorizacion(criterioDePrueba2);
     }
 
     private static void cargarPresupuestos(){

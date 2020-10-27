@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name="Roles")
+@Table(name="roles")
 public class Rol {
 	@Id
 	private String nombre;

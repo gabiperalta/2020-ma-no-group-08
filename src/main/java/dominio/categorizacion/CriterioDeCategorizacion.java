@@ -1,31 +1,30 @@
 package dominio.categorizacion;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import dominio.categorizacion.exceptions.CategorizacionException;
 
 import javax.persistence.*;
 
 @Entity
+@Table(name = "criterios_de_categorizacion")
 public class CriterioDeCategorizacion {
-
-	@Id @GeneratedValue(strategy = GenerationType.AUTO)
+	@Id
 	private String nombre;
 
-	@OneToMany(cascade = CascadeType.PERSIST) @JoinColumn(name = "nombre")
-	private ArrayList<Categoria> categorias;
-	
+	@OneToMany(cascade = CascadeType.ALL) @JoinColumn(name = "nombre_criterio")
+	private List<Categoria> categorias;
+
+	public CriterioDeCategorizacion() {}
+
 	public CriterioDeCategorizacion(String nombreCriterio) throws CategorizacionException{
 		this.nombre = nombreCriterio;
 		this.categorias = new ArrayList<Categoria>();
 	}
 
-	public CriterioDeCategorizacion() {
-
-	}
-
 	public ArrayList<Categoria> getCategorias(){
-		return this.categorias;
+		return new ArrayList<>(this.categorias);
 	}
 	
 	public Categoria buscarCategoria(String nombreCategoria) {

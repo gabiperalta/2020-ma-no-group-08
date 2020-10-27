@@ -2,12 +2,18 @@ package dominio.operaciones.medioDePago;
 
 import dominio.operaciones.medioDePago.MedioDePago;
 
-public class TarjetaDeCredito implements MedioDePago {
+import javax.persistence.Entity;
+
+//@Entity
+public class TarjetaDeCredito extends MedioDePago {
     int cuotas;
     String nombre;
     String numero;
 
+    public TarjetaDeCredito(){}
+
     public TarjetaDeCredito(int cuotas,String nombre,String numero){
+        super();
         this.cuotas = cuotas;
         this.nombre = nombre;
         this.numero = numero;

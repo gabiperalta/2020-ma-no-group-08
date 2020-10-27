@@ -4,27 +4,27 @@ import javax.persistence.*;
 
 
 @Entity
+@Table(name = "categorias")
 public class Categoria {
-
-	@Id @GeneratedValue(strategy = GenerationType.AUTO)
+	@Id
 	private String nombre;
 
 	@OneToOne(cascade = CascadeType.PERSIST)
 	private Categoria categoriaPadre;
 
+	@Id
 	@ManyToOne(cascade = CascadeType.PERSIST)
+	@Column(name = "nombre_criterio")
 	private CriterioDeCategorizacion criterioDeCategorizacion;
 
 	private int cantidadEntidadesCategorizablesAsociadas;
+
+	public Categoria() {}
 	
 	public Categoria(String nombreCategoria, CriterioDeCategorizacion criterioDeCategorizacion, Categoria categoriaPadre){
 		this.nombre = nombreCategoria;
 		this.categoriaPadre = categoriaPadre;
 		this.criterioDeCategorizacion = criterioDeCategorizacion;
-	}
-
-	public Categoria() {
-
 	}
 
 	public String getNombre() {

@@ -20,7 +20,7 @@ import temporal.seguridad.repositorioUsuarios.exceptions.UsuarioYaExistenteExcep
 import javax.persistence.*;
 
 @Entity
-@Table(name = "CuentasUsuarios")
+@Table(name = "cuentas_usuarios")
 public class CuentaUsuario implements Serializable {
 	@Id
 	@OneToOne

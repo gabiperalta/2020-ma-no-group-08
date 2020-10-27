@@ -13,7 +13,7 @@ import dominio.operaciones.OperacionEgreso;
 import javax.persistence.*;
 
 @Entity
-public class Presupuesto implements Operacion {
+public class Presupuesto extends Operacion {
 	@OneToOne
 	private EntidadOperacion proveedor;
 
