@@ -17,6 +17,7 @@ import dominio.operaciones.OperacionIngreso;
 import mock.ServerDataMock;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -103,7 +104,8 @@ public class RepositorioCategorizacion {
 		}
 		else {
 			if(identificadorEntidadCategorizable.startsWith("OE")) { // OE por Operacion Egreso
-				OperacionEgreso operacionEgreso = RepoOperacionesEgreso.getInstance().buscarOperacionEgresoPorIdenticadorOperacionEgreso(identificadorEntidadCategorizable);
+				RepoOperacionesEgreso repoOperacionesEgreso = new RepoOperacionesEgreso(Persistence.createEntityManagerFactory("db").createEntityManager()) ;
+				OperacionEgreso operacionEgreso = repoOperacionesEgreso.buscarOperacionEgresoPorIdenticadorOperacionEgreso(identificadorEntidadCategorizable);
 				unaEntidadCategorizable = new EntidadCategorizable(operacionEgreso);
 			}
 			else

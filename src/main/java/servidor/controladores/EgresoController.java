@@ -152,14 +152,15 @@ public class EgresoController extends Controller{
             return "No se puede eliminar";
         }
 
-        RepoOperacionesEgreso.getInstance().eliminarOperacionEgresoPorIdentificador(identificador);
+        RepoOperacionesEgreso repoOperacionesEgreso = new RepoOperacionesEgreso(entityManager);
+        repoOperacionesEgreso.eliminarOperacionEgresoPorIdentificador(identificador);
         response.status(200);
 
         return "Eliminacion existosa";
     }
 
 
-    public ModelAndView crearEgreso(Request req, Response res) throws Exception {
+    public ModelAndView crearEgreso(Request req, Response res, EntityManager entityManager) throws Exception {
 
         try {
             MedioDePago medioDePagoFinal;
@@ -253,8 +254,8 @@ public class EgresoController extends Controller{
             Date parsed=new SimpleDateFormat("yyyy-MM-dd").parse(fecha);
 
             OperacionEgreso egreso = new OperacionEgreso(items,medioDePagoFinal , documento, parsed, entidadOrigen, entidadDestino, Integer.valueOf(presupuestosNecesarios));
-
-            RepoOperacionesEgreso.getInstance().agregarOperacionEgreso(egreso);
+            RepoOperacionesEgreso repoOperacionesEgreso = new RepoOperacionesEgreso(entityManager);
+            repoOperacionesEgreso.agregarOperacionEgreso(egreso);
 
 
         }

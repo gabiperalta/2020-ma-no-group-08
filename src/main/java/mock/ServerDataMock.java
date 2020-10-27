@@ -357,8 +357,10 @@ public class ServerDataMock {
         listaItems.add(new Item(50, ETipoItem.ARTICULO, "Item1"));
         listaItems.add(new Item(100, ETipoItem.ARTICULO, "Item2"));
 
-        licitacion1 = new Licitacion(RepoOperacionesEgreso.getInstance().buscarOperacionEgresoPorIdenticadorOperacionEgreso("OE-1"), NotificadorSuscriptores.getInstance());
-        licitacion2 = new Licitacion(RepoOperacionesEgreso.getInstance().buscarOperacionEgresoPorIdenticadorOperacionEgreso("OE-5"), NotificadorSuscriptores.getInstance());
+        EntityManager entityManager = getEntityManager();
+        RepoOperacionesEgreso repoOperacionesEgreso = new RepoOperacionesEgreso(entityManager);
+        licitacion1 = new Licitacion(repoOperacionesEgreso.buscarOperacionEgresoPorIdenticadorOperacionEgreso("OE-1"), NotificadorSuscriptores.getInstance());
+        licitacion2 = new Licitacion(repoOperacionesEgreso.buscarOperacionEgresoPorIdenticadorOperacionEgreso("OE-5"), NotificadorSuscriptores.getInstance());
 
         licitacion1.agregarCriterioSeleccionDeProveedor(new CriterioMenorPrecio());
         licitacion2.agregarCriterioSeleccionDeProveedor(new CriterioMenorPrecio());

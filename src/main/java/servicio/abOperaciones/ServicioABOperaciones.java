@@ -24,7 +24,8 @@ public class ServicioABOperaciones {
                 .agregarEntidadOrigen(entidadOrigen)
                 .agregarEntidadDestino(entidadDestino);
 
-        RepoOperacionesEgreso.getInstance().agregarOperacionEgreso(operacionEgresoBuilder.build());
+        RepoOperacionesEgreso repoOperacionesEgreso = new RepoOperacionesEgreso(getEntityManager());
+        repoOperacionesEgreso.agregarOperacionEgreso(operacionEgresoBuilder.build());
     }
 
 
@@ -33,11 +34,13 @@ public class ServicioABOperaciones {
                 filter(ingreso -> ingreso.esDeLaOrganizacion(organizacion)).collect(Collectors.toList()));    }
 
     public void bajaOperacion(OperacionEgreso operacionEgreso){
-        RepoOperacionesEgreso.getInstance().eliminarOperacionEgreso(operacionEgreso);
+        RepoOperacionesEgreso repoOperacionesEgreso = new RepoOperacionesEgreso(getEntityManager());
+        repoOperacionesEgreso.eliminarOperacionEgreso(operacionEgreso);
     }
 
     public ArrayList<OperacionEgreso> listarOperaciones(){
-        return RepoOperacionesEgreso.getInstance().getOperacionesEgreso();
+        RepoOperacionesEgreso repoOperacionesEgreso = new RepoOperacionesEgreso(getEntityManager());
+        return repoOperacionesEgreso.getOperacionesEgreso();
     }
 
     public ArrayList<OperacionIngreso> listarIngresos(){
@@ -52,6 +55,11 @@ public class ServicioABOperaciones {
     }
 
     public OperacionEgreso buscarEgreso(String identificadorEgreso){
-        return RepoOperacionesEgreso.getInstance().buscarOperacionEgresoPorIdenticadorOperacionEgreso(identificadorEgreso);
+        RepoOperacionesEgreso repoOperacionesEgreso = new RepoOperacionesEgreso(getEntityManager());
+        return repoOperacionesEgreso.buscarOperacionEgresoPorIdenticadorOperacionEgreso(identificadorEgreso);
+    }
+
+    private EntityManager getEntityManager() {
+        return Persistence.createEntityManagerFactory("db").createEntityManager();
     }
 }

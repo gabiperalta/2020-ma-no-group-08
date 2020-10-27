@@ -64,7 +64,8 @@ public class LicitacionController{
         }
 
         String egresoId = request.queryParams("identificador_egreso");
-        OperacionEgreso operacionEgresoEncontrada = RepoOperacionesEgreso.getInstance().buscarOperacionEgresoPorIdenticadorOperacionEgreso(egresoId);
+        RepoOperacionesEgreso repoOperacionesEgreso = new RepoOperacionesEgreso(entityManager);
+        OperacionEgreso operacionEgresoEncontrada = repoOperacionesEgreso.buscarOperacionEgresoPorIdenticadorOperacionEgreso(egresoId);
 
         ArrayList<Presupuesto> presupuestos = new ArrayList<>();
 

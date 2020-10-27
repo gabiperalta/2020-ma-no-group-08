@@ -14,9 +14,6 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 public class RepoOperacionesEgreso {
-
-    private static ArrayList<OperacionEgreso> operacionesEgreso;
-    private static int ultimoIdentificador;
     private EntityManager entityManager;
 
     private static class RepositorioOperacionesEgresoHolder {

@@ -65,7 +65,7 @@ public class Router {
 		get("/licitacion",RouteWithTransaction(licitacionc::obtenerLicitacionPorEgreso));
 		get("/licitacion/:licitacion_id",RouteWithTransaction(licitacionc::resultadoLicitacion),licitacionc.getGson()::toJson);
 		get("/egreso", egresoC::showEgreso, engine);
-		post("/egreso", egresoC::crearEgreso, engine);
+		post("/egreso", TemplWithTransaction(egresoC::crearEgreso), engine);
 		get("/egreso/:id", egresoC::showModificarEgreso, engine);
 		post("/egreso/:id", egresoC::modificarEgreso, engine);
 		get("/egresos/:egreso", egresoC::showEgreso, engine);
