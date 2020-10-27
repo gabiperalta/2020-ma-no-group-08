@@ -15,9 +15,6 @@ import javax.persistence.*;
 
 @Entity
 public class Presupuesto extends Operacion {
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	int id;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	private EntidadOperacion proveedor;
@@ -52,8 +49,8 @@ public class Presupuesto extends Operacion {
 
 	}
 
-	public ArrayList<Item> getItems() {
-		return (ArrayList<Item>) items;
+	public List<Item> getItems() {
+		return items;
 	}
 
 	private void agregarItem(Item item) throws Exception {
@@ -76,8 +73,7 @@ public class Presupuesto extends Operacion {
 
 	@Override
 	public boolean esLaOperacion(String identificadorEntidadCategorizable) {
-		//return this.identificador.equals(identificadorEntidadCategorizable);
-		return true; //TODO revisar
+		return this.getIdentificador().equals(identificadorEntidadCategorizable);
 	}
 
 	@Override
