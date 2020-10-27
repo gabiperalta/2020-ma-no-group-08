@@ -54,6 +54,38 @@ public class ServerDataMock {
         Empresa entidad1 = new Empresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa 1", "Empresa 1", "20-40678950-3", "200", "Av.Libertador 801", false);
         Empresa entidad2 = new Empresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa 2", "Empresa 2", "20-40678950-4", "203", "Av.Libertador 200", false);
 
+        Empresa entidadO1 = new Empresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa Origen 1", "Empresa 1", "20-40678950-3", "200", "Av.Libertador 801", false);
+        Empresa entidadO2 = new Empresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa Origen 2", "Empresa 1", "20-40678950-3", "200", "Av.Libertador 801", false);
+        Empresa entidadO3 = new Empresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa Origen 3", "Empresa 1", "20-40678950-3", "200", "Av.Libertador 801", false);
+        Empresa entidadO4 = new Empresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa Origen 4", "Empresa 1", "20-40678950-3", "200", "Av.Libertador 801", false);
+        Empresa entidadO5 = new Empresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa Origen 5", "Empresa 1", "20-40678950-3", "200", "Av.Libertador 801", false);
+        Empresa entidadO6 = new Empresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa Origen 6", "Empresa 1", "20-40678950-3", "200", "Av.Libertador 801", false);
+        Empresa entidadO7 = new Empresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa Origen 7", "Empresa 1", "20-40678950-3", "200", "Av.Libertador 801", false);
+
+        Empresa entidadD1 = new Empresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa Destino 1", "Empresa 1", "20-40678950-3", "200", "Av.Libertador 801", false);
+        Empresa entidadD2 = new Empresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa Destino 2", "Empresa 1", "20-40678950-3", "200", "Av.Libertador 801", false);
+        Empresa entidadD3 = new Empresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa Destino 3", "Empresa 1", "20-40678950-3", "200", "Av.Libertador 801", false);
+        Empresa entidadD4 = new Empresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa Destino 4", "Empresa 1", "20-40678950-3", "200", "Av.Libertador 801", false);
+        Empresa entidadD5 = new Empresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa Destino 5", "Empresa 1", "20-40678950-3", "200", "Av.Libertador 801", false);
+        Empresa entidadD6 = new Empresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa Destino 6", "Empresa 1", "20-40678950-3", "200", "Av.Libertador 801", false);
+        Empresa entidadD7 = new Empresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa Destino 7", "Empresa 1", "20-40678950-3", "200", "Av.Libertador 801", false);
+
+        entidades1.add(entidadO1);
+        entidades1.add(entidadO2);
+        entidades1.add(entidadO3);
+        entidades1.add(entidadO4);
+        entidades1.add(entidadD1);
+        entidades1.add(entidadD2);
+        entidades1.add(entidadD3);
+
+        entidades2.add(entidadO5);
+        entidades2.add(entidadO6);
+        entidades2.add(entidadO7);
+        entidades2.add(entidadD4);
+        entidades2.add(entidadD5);
+        entidades2.add(entidadD6);
+        entidades2.add(entidadD7);
+
         entidades1.add(entidad1);
         entidades2.add(entidad2);
 
@@ -263,6 +295,7 @@ public class ServerDataMock {
         EntidadOperacion origen5 = new EntidadOperacion("Empresa Origen 5", "20-40678950-3", "Av.Libertador 801");
         EntidadOperacion origen6 = new EntidadOperacion("Empresa Origen 6", "20-40678950-3", "Av.Libertador 801");
         EntidadOperacion origen7 = new EntidadOperacion("Empresa Origen 7", "20-40678950-3", "Av.Libertador 801");
+
 
         EntidadOperacion destino1 = new EntidadOperacion("Empresa Destino 1", "27-40678950-5", "Av.Cordoba 550");
         EntidadOperacion destino2 = new EntidadOperacion("Empresa Destino 2", "27-40678950-5", "Av.Cordoba 550");
