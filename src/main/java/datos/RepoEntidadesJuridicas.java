@@ -5,7 +5,6 @@ import dominio.entidades.calculadorFiscal.ETipoActividad;
 
 
 import javax.persistence.EntityManager;
-import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 public class RepoEntidadesJuridicas {
@@ -20,23 +19,9 @@ public class RepoEntidadesJuridicas {
         }
     }
 
-
-    private static class RepositorioEntidadesJuridicasHolder {
-        static final RepoEntidadesJuridicas singleInstanceRepositorioEntidadesJuridicas = new RepoEntidadesJuridicas();
-    }
-
-    public static RepoEntidadesJuridicas getInstance() {
-        return RepoEntidadesJuridicas.RepositorioEntidadesJuridicasHolder.singleInstanceRepositorioEntidadesJuridicas;
-    }
-
     public RepoEntidadesJuridicas(EntityManager em) {
         entityManager = em;
     }
-
-    public RepoEntidadesJuridicas() {
-//        TODO: eliminar
-    }
-
 
     public void agregarEntidadEmpresa(ETipoEmpresa tipo, Integer cantidadPersonal, ETipoActividad actividad, Double promedioVentas, String razonSocial,
                                       String nombreFicticio, String cuit, String codigoIGJ, String direccionPostal, boolean esComisionista) {
