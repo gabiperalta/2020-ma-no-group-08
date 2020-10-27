@@ -8,7 +8,7 @@ import javax.persistence.Id;
 @Entity
 public class EntidadOperacion {
 
-	@Id @GeneratedValue(strategy = GenerationType.AUTO)
+	@Id
 	String nombre;
 	String cuil;
 	String direccion;
@@ -35,5 +35,17 @@ public class EntidadOperacion {
 	}
 	public boolean correspondeEntidad(EntidadOperacion entidad) {
 		return this.nombre.equals(entidad.getNombre()) && this.cuil.equals(entidad.getCuil()) && this.direccion.equals(entidad.getDireccion());
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public void setCuil(String cuil) {
+		this.cuil = cuil;
+	}
+
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
 	}
 }

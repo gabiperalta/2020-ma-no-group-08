@@ -1,5 +1,6 @@
 package datos;
 
+import dominio.entidades.Empresa;
 import dominio.entidades.EntidadJuridica;
 import dominio.entidades.Organizacion;
 
@@ -34,7 +35,7 @@ public class RepoOrganizaciones {
 //        organizaciones.add(organizacion3);
     }
 
-    public void agregarOrganizacion(String nombreOrganizacion, ArrayList<EntidadJuridica> entidades) {
+    public void agregarOrganizacion(String nombreOrganizacion, ArrayList<Empresa> entidades) {
         if (!this.existeLaOrganizacion(nombreOrganizacion)) {
             Organizacion organizacion = new Organizacion(nombreOrganizacion, entidades);
             entityManager.persist(organizacion);

@@ -4,6 +4,7 @@ import datos.RepoLicitaciones;
 import datos.RepoOperacionesEgreso;
 import datos.RepositorioCategorizacion;
 import dominio.cuentasUsuarios.CuentaUsuario;
+import dominio.entidades.Empresa;
 import dominio.entidades.EntidadJuridica;
 import dominio.entidades.Organizacion;
 import dominio.operaciones.*;
@@ -233,7 +234,7 @@ public class EgresoController extends Controller{
 
             String EONombre = req.queryParams("query_EO_nombre");
 
-            EntidadJuridica entidadJuridica = org.buscarEntidad(EONombre);
+            Empresa entidadJuridica = org.buscarEntidad(EONombre);
 
             String EOCuil = entidadJuridica.getCuit();
             String EODireccion = entidadJuridica.getDireccionPostal();

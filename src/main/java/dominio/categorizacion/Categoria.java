@@ -1,11 +1,12 @@
 package dominio.categorizacion;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 
 @Entity
 @Table(name = "categorias")
-public class Categoria {
+public class Categoria implements Serializable {
 	@Id
 	private String nombre;
 
@@ -14,7 +15,6 @@ public class Categoria {
 
 	@Id
 	@ManyToOne(cascade = CascadeType.PERSIST)
-	@Column(name = "nombre_criterio")
 	private CriterioDeCategorizacion criterioDeCategorizacion;
 
 	private int cantidadEntidadesCategorizablesAsociadas;

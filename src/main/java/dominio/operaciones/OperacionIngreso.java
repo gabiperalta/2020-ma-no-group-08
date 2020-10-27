@@ -87,4 +87,8 @@ public class OperacionIngreso extends Operacion {
 	public boolean esDeLaOrganizacion(Organizacion unaOrganizacion) {
 		return unaOrganizacion.existeLaEntidad(this.entidadDestino.getNombre());
 	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
 }

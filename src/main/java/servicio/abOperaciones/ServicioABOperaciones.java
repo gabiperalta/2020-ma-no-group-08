@@ -47,6 +47,6 @@ public class ServicioABOperaciones {
     }
 
     public OperacionEgreso buscarEgreso(String identificadorEgreso){
-        return RepoOperacionesEgreso.getInstance().buscarOperacionEgresoPorIdentificador(identificadorEgreso);
+        return RepoOperacionesEgreso.getInstance().buscarOperacionEgresoPorIdenticadorOperacionEgreso(identificadorEgreso);
     }
 }

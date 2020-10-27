@@ -5,27 +5,29 @@ import dominio.operaciones.EntidadOperacion;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "Organizaciones")
 public class Organizacion {
     @Id
     private String nombre;
-    @Transient //TODO: cambiar
-    private ArrayList<EntidadJuridica> entidades;
+    @OneToMany (cascade = CascadeType.ALL)
+    @JoinColumn (name = "nombre_organizacion")
+    private List<Empresa> entidades;
 
     public Organizacion() {}
-    public Organizacion(String nombre, ArrayList<EntidadJuridica> entidades){
+    public Organizacion(String nombre, ArrayList<Empresa> entidades){
         this.nombre = nombre;
         this.entidades= entidades;
 
     }
 
-    public void agregarEntidad(EntidadJuridica entidad) {
+    public void agregarEntidad(Empresa entidad) {
         this.entidades.add(entidad);
     }
 
-    public void quitarEntidad(EntidadJuridica entidad) {
+    public void quitarEntidad(Empresa entidad) {
         this.entidades.remove(entidad);
     }
 
@@ -37,8 +39,8 @@ public class Organizacion {
         this.nombre = nombre;
     }
 
-    public ArrayList<EntidadJuridica> getEntidades() {
-        return entidades;
+    public ArrayList<Empresa> getEntidades() {
+        return new ArrayList<>(entidades);
     }
 
     public boolean existeLaEntidad(String razonSocial) {
@@ -53,17 +55,17 @@ public class Organizacion {
         return existeLaEntidad;
     }
 
-    public EntidadJuridica buscarEntidad(String razonSocial){
-        EntidadJuridica unaEntidadJuridica = entidades.stream().filter( entidad -> entidad.getRazonSocial().equals(razonSocial)).findFirst().get();
+    public Empresa buscarEntidad(String razonSocial){
+        Empresa unaEntidadJuridica = entidades.stream().filter( entidad -> entidad.getRazonSocial().equals(razonSocial)).findFirst().get();
         return unaEntidadJuridica;
     }
-    public EntidadJuridica buscarEntidadPorCuit(String cuit){
-        EntidadJuridica unaEntidadJuridica = entidades.stream().filter( entidad -> entidad.getCuit().equals(cuit)).findFirst().get();
+    public Empresa buscarEntidadPorCuit(String cuit){
+        Empresa unaEntidadJuridica = entidades.stream().filter( entidad -> entidad.getCuit().equals(cuit)).findFirst().get();
         return unaEntidadJuridica;
     }
 
 
-    public void setEntidades(ArrayList<EntidadJuridica> entidades) {
+    public void setEntidades(ArrayList<Empresa> entidades) {
         this.entidades = entidades;
     }
 }

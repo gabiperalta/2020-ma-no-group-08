@@ -7,11 +7,10 @@ import dominio.operaciones.EntidadOperacion;
 import javax.persistence.*;
 
 @Entity
-public class Empresa extends EntidadJuridica {
+public class Empresa {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long razon_social;
+    protected String razonSocial;
 
     @Enumerated(EnumType.STRING)
     protected ETipoEmpresa tipo;
@@ -23,6 +22,10 @@ public class Empresa extends EntidadJuridica {
 
     protected double promedioVentas;
     protected boolean esComisionista;
+    protected String nombreFicticio;
+    protected String cuit;
+    protected String codigoIGJ;
+    protected String direccionPostal;
 
     @OneToOne
     private EntidadOperacion entidadOperacion;
@@ -51,6 +54,18 @@ public class Empresa extends EntidadJuridica {
         tipo = categorizadorFiscal.recategorizar(actividad, esComisionista, cantidadPersonalNuevo, ventasPromedioNuevo);
         cantidadPersonal = cantidadPersonalNuevo;
         promedioVentas = ventasPromedioNuevo;
+    }
+
+    public String getRazonSocial() {
+        return razonSocial;
+    }
+
+    public String getCuit(){
+        return cuit;
+    }
+
+    public String getDireccionPostal(){
+        return direccionPostal;
     }
 
 }

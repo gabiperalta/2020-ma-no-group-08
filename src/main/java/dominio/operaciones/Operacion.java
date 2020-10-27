@@ -2,13 +2,11 @@ package dominio.operaciones;
 
 import dominio.entidades.Organizacion;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Operacion {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

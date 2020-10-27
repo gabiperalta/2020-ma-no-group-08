@@ -1,5 +1,6 @@
 package servicio.ab_organizaciones;
 
+import dominio.entidades.Empresa;
 import dominio.entidades.EntidadJuridica;
 import datos.RepoOrganizaciones;
 
@@ -14,7 +15,7 @@ public class ServicioABOrganizaciones {
 		repoOrganizaciones = new RepoOrganizaciones(em);
 	}
 	
-	public void altaOrganizacion(String nombreOrganizacion, ArrayList<EntidadJuridica> entidades) {
+	public void altaOrganizacion(String nombreOrganizacion, ArrayList<Empresa> entidades) {
 		repoOrganizaciones.agregarOrganizacion(nombreOrganizacion, entidades);
 	}
 	

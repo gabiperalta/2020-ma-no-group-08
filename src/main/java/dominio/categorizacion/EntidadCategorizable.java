@@ -1,5 +1,6 @@
 package dominio.categorizacion;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,16 +12,16 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "entidades_categorizables")
-public class EntidadCategorizable {
+public class EntidadCategorizable implements Serializable {
 	@Id
 	@OneToOne
-	@Column(name = "id")
 	private Operacion operacion;
 	@ManyToMany
-	@JoinTable(name = "entidad_categoria",
-			joinColumns = @JoinColumn(name = "operacion_id"),
-			inverseJoinColumns = {@JoinColumn(name = "nombre_categoria", referencedColumnName = "nombre" ),
-								@JoinColumn(name = "nombre_criterio", referencedColumnName = "nombre_criterio" )})
+	@JoinTable(name = "entidad_categoria")
+//	@JoinTable(name = "entidad_categoria",
+//			joinColumns = @JoinColumn(name = "operacion_id"),
+//			inverseJoinColumns = {@JoinColumn(name = "nombre_categoria", referencedColumnName = "nombre" ),
+//								@JoinColumn(name = "nombre_criterio", referencedColumnName = "nombre_criterio" )})
 	private List<Categoria> categoriasAsociadas;
 
 	public EntidadCategorizable(){}

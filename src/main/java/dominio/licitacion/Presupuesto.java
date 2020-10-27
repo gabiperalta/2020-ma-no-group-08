@@ -22,9 +22,6 @@ public class Presupuesto extends Operacion {
 	private List<Item> items;
 	private double montoTotal;
 	private boolean esValido;
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int identificador;
 	@Transient
 	private EntidadOperacion entidadOrigen;
 
@@ -65,7 +62,7 @@ public class Presupuesto extends Operacion {
 	}
 
 	public String getIdentificador(){
-		return "P-" + identificador; // TODO revisar
+		return "P-" + super.getIdentificador(); // TODO revisar
 	}
 
 	public void setEntidadOrigen(EntidadOperacion entidadOrigen){

@@ -27,10 +27,10 @@ public class OperacionEgreso extends Operacion {
 	//@Convert(converter = Date.class)
 	private Date fecha;
 
-	@ManyToOne(cascade = CascadeType.PERSIST)
+	@ManyToOne
 	private EntidadOperacion entidadOrigen;
 
-	@ManyToOne(cascade = CascadeType.PERSIST)
+	@ManyToOne
 	private EntidadOperacion entidadDestino;
 
 	private int presupuestosNecesarios;
@@ -126,5 +126,29 @@ public class OperacionEgreso extends Operacion {
 		fecha = unaFecha;
 		entidadOrigen = unaEntidadOrigen;
 		entidadDestino = unaEntidadDestino;
+	}
+
+	public void setItems(List<Item> items) {
+		this.items = items;
+	}
+
+	public void setMedioDePago(MedioDePago medioDePago) {
+		this.medioDePago = medioDePago;
+	}
+
+	public void setDocumento(DocumentoComercial documento) {
+		this.documento = documento;
+	}
+
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
+
+	public void setEntidadOrigen(EntidadOperacion entidadOrigen) {
+		this.entidadOrigen = entidadOrigen;
+	}
+
+	public void setEntidadDestino(EntidadOperacion entidadDestino) {
+		this.entidadDestino = entidadDestino;
 	}
 }

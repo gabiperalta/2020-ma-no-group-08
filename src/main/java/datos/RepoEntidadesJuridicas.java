@@ -41,8 +41,8 @@ public class RepoEntidadesJuridicas {
     public void agregarEntidadEmpresa(ETipoEmpresa tipo, Integer cantidadPersonal, ETipoActividad actividad, Double promedioVentas, String razonSocial,
                                       String nombreFicticio, String cuit, String codigoIGJ, String direccionPostal, boolean esComisionista) {
 
-        if (this.buscarEntidadJuridica(razonSocial) == null) {
-            Empresa empresa = new Empresa(tipo, cantidadPersonal, actividad, promedioVentas, razonSocial, nombreFicticio, cuit, codigoIGJ, direccionPostal, esComisionista);
+        Empresa empresa = new Empresa(tipo, cantidadPersonal, actividad, promedioVentas, razonSocial, nombreFicticio, cuit, codigoIGJ, direccionPostal, esComisionista);
+        if (!entityManager.contains(empresa)) {
             entityManager.persist(empresa);
         }
     }
@@ -55,13 +55,13 @@ public class RepoEntidadesJuridicas {
 
 
     public void eliminarEntidadJuridica(String razonSocial) {
-        EntidadJuridica entidadABorrar = buscarEntidadJuridica(razonSocial);
+        Empresa entidadABorrar = buscarEntidadJuridica(razonSocial);
         if (entidadABorrar != null) {
             entityManager.remove(entidadABorrar);
         }
     }
 
-    public EntidadJuridica buscarEntidadJuridica(String razonSocial) {
+    public Empresa buscarEntidadJuridica(String razonSocial) {
         return entityManager.find(Empresa.class, razonSocial);
     }
 

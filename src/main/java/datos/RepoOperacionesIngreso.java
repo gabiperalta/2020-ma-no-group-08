@@ -1,13 +1,19 @@
 package datos;
 
 import dominio.entidades.Organizacion;
+import dominio.operaciones.OperacionEgreso;
 import dominio.operaciones.OperacionIngreso;
 
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 
 public class RepoOperacionesIngreso {
     private static ArrayList<OperacionIngreso> ingresos;
     private static int ultimoIdentificador;
+    private EntityManager entityManager;
 
     public RepoOperacionesIngreso() {
         ingresos = new ArrayList<OperacionIngreso>();
@@ -15,7 +21,10 @@ public class RepoOperacionesIngreso {
     }
 
     public ArrayList<OperacionIngreso> getIngresos() {
-        return ingresos;
+        CriteriaBuilder cb = this.entityManager.getCriteriaBuilder();
+        CriteriaQuery<OperacionIngreso> consulta = cb.createQuery(OperacionIngreso.class);
+        Root<OperacionIngreso> operacionesIngresoC = consulta.from(OperacionIngreso.class);
+        return new ArrayList<>(this.entityManager.createQuery(consulta.select(operacionesIngresoC)).getResultList());
     }
 
     private static class RepositorioOperacionesIngresoHolder {
@@ -26,30 +35,27 @@ public class RepoOperacionesIngreso {
         return RepositorioOperacionesIngresoHolder.singleInstanceRepositorioOperacionesIngreso;
     }
 
+    public RepoOperacionesIngreso(EntityManager em){
+        entityManager = em;
+    }
+
     public void agregarIngreso(OperacionIngreso ingreso) throws Exception {
-        String identificador = "OI-";
-        ingreso.setIdentificador(identificador + ultimoIdentificador);
-        ultimoIdentificador++;
-        ingresos.add(ingreso);
+        if (!existeEgreso(ingreso)) {
+            entityManager.persist(ingreso);
+        }
+    }
+
+    private boolean existeEgreso(OperacionIngreso operacionIngreso) {
+        return entityManager.contains(operacionIngreso);
     }
 
     public void eliminarIngreso(OperacionIngreso ingreso) {
-        ingresos.remove(ingreso);
+        entityManager.remove(ingreso);
     }
 
-    public OperacionIngreso buscarOperacionEgresoPorIdentificador(String identificadorEntidadCategorizable) {
-        if (ingresos.stream().anyMatch(operacion -> operacion.esLaOperacion(identificadorEntidadCategorizable))) {
-            return ingresos.stream().filter(operacion -> operacion.esLaOperacion(identificadorEntidadCategorizable)).findFirst().get();
-        } else {
-            return null;
-        }
-    }
-
-    public OperacionIngreso buscarOperacionEgresoPorIdentificadorYOrganizacion(String identificadorEntidadCategorizable, Organizacion unaOrganizacion) {
-        if (ingresos.stream().anyMatch(operacion -> operacion.esLaOperacion(identificadorEntidadCategorizable) && operacion.esDeLaOrganizacion(unaOrganizacion))) {
-            return ingresos.stream().filter(operacion -> operacion.esLaOperacion(identificadorEntidadCategorizable) && operacion.esDeLaOrganizacion(unaOrganizacion)).findFirst().get();
-        } else {
-            return null;
-        }
+    public OperacionIngreso buscarOperacionIngresoPorIdentificador(String identificadorIngreso) {
+        String identificadorAcotado = identificadorIngreso.substring(3);
+        int identificador = Integer.parseInt(identificadorAcotado);
+        return entityManager.find(OperacionIngreso.class, identificador);
     }
 }

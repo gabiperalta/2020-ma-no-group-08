@@ -70,9 +70,9 @@ public class VinculacionesController {
         for (Object opId: ingresosIds) {
             Operacion operacion;
             if (esIngreso) {
-                operacion = RepoOperacionesIngreso.getInstance().buscarOperacionEgresoPorIdentificadorYOrganizacion((String) opId, organizacion);
+                operacion = RepoOperacionesIngreso.getInstance().buscarOperacionIngresoPorIdentificador((String) opId);
             } else {
-                operacion = RepoOperacionesEgreso.getInstance().buscarOperacionEgresoPorIdentificadorYOrganizacion((String) opId, organizacion);
+                operacion = RepoOperacionesEgreso.getInstance().buscarOperacionEgresoPorIdenticadorOperacionEgreso((String) opId);
             }
 
             if (operacion != null) {

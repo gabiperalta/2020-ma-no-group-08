@@ -1,9 +1,15 @@
 package datos;
 
+import dominio.categorizacion.CriterioDeCategorizacion;
 import dominio.entidades.Organizacion;
+import dominio.operaciones.EntidadOperacion;
 import dominio.operaciones.OperacionEgreso;
 
+import javax.persistence.Entity;
 import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
@@ -11,6 +17,7 @@ public class RepoOperacionesEgreso {
 
     private static ArrayList<OperacionEgreso> operacionesEgreso;
     private static int ultimoIdentificador;
+    private EntityManager entityManager;
 
     private static class RepositorioOperacionesEgresoHolder {
         static final RepoOperacionesEgreso singleInstanceRepositorioOperacionesEgreso = new RepoOperacionesEgreso();
@@ -20,62 +27,48 @@ public class RepoOperacionesEgreso {
         return RepositorioOperacionesEgresoHolder.singleInstanceRepositorioOperacionesEgreso;
     }
 
-    public RepoOperacionesEgreso() {
-        operacionesEgreso = new ArrayList<OperacionEgreso>();
-        ultimoIdentificador = 1 ;
-    }
-
     public RepoOperacionesEgreso(EntityManager em){
         entityManager = em;
     }
-
+    public RepoOperacionesEgreso(){}
     public void agregarOperacionEgreso(OperacionEgreso operacionEgreso) throws Exception {
-        String identificador = "OE-";
-        operacionEgreso.setIdentificador(identificador + ultimoIdentificador);
-        ultimoIdentificador ++ ;
-        operacionesEgreso.add(operacionEgreso);
+        if (!existeEgreso(operacionEgreso)) {
+            cargarEntidadOperacion(operacionEgreso.getEntidadOrigen());
+            cargarEntidadOperacion(operacionEgreso.getEntidadDestino());
+            entityManager.persist(operacionEgreso);
+        }
+    }
+
+    private void cargarEntidadOperacion(EntidadOperacion entidadOperacion) {
+        if (!entityManager.contains(entidadOperacion)) {
+            entityManager.persist(entidadOperacion);
+        }
+    }
+
+    private boolean existeEgreso(OperacionEgreso operacionEgreso) {
+        return entityManager.contains(operacionEgreso);
     }
 
     public void eliminarOperacionEgreso(OperacionEgreso operacionEgreso) {
-        buscarOperacionEgreso(operacionEgreso);
-        operacionesEgreso.remove(operacionEgreso);
+        entityManager.remove(operacionEgreso);
     }
 
     public void eliminarOperacionEgresoPorIdentificador(String identificadorOperacionEgreso) {
         OperacionEgreso egresoAEliminar = buscarOperacionEgresoPorIdenticadorOperacionEgreso(identificadorOperacionEgreso);
-        operacionesEgreso.remove(egresoAEliminar);
-    }
-
-    public static OperacionEgreso buscarOperacionEgreso(OperacionEgreso operacionEgreso){
-        return operacionesEgreso.stream().filter(operacion -> operacion.equals(operacionEgreso)).findFirst().get(); // si no encuentra nada, tira NoSuchElementException
+        entityManager.remove(egresoAEliminar);
     }
 
     public OperacionEgreso buscarOperacionEgresoPorIdenticadorOperacionEgreso(String identifacdorOperacionEgreso){
-        return operacionesEgreso.stream().filter(operacion -> operacion.getIdentificador().equals(identifacdorOperacionEgreso)).findFirst().get(); // si no encuentra nada, tira NoSuchElementException
+        String identificadorAcotado = identifacdorOperacionEgreso.substring(3);
+        int identificador = Integer.parseInt(identificadorAcotado);
+        return entityManager.find(OperacionEgreso.class, identificador);
     }
 
     public ArrayList<OperacionEgreso> getOperacionesEgreso(){
-        return operacionesEgreso;
-    }
-
-    public ArrayList<OperacionEgreso> getOperacionesEgresoDeLaOrganizacion(Organizacion unaOrganizacion){
-        return new ArrayList< OperacionEgreso >(this.getOperacionesEgreso().stream().filter(egreso -> egreso.esDeLaOrganizacion(unaOrganizacion)).collect(Collectors.toList()));
-    }
-
-    public OperacionEgreso buscarOperacionEgresoPorIdentificador(String identificadorEntidadCategorizable) {
-        if (operacionesEgreso.stream().anyMatch(operacion -> operacion.esLaOperacion(identificadorEntidadCategorizable))) {
-            return operacionesEgreso.stream().filter(operacion -> operacion.esLaOperacion(identificadorEntidadCategorizable)).findFirst().get();
-        } else {
-            return null;
-        }
-    }
-
-    public OperacionEgreso buscarOperacionEgresoPorIdentificadorYOrganizacion(String identificadorEntidadCategorizable, Organizacion unaOrganizacion) {
-        if (operacionesEgreso.stream().anyMatch(operacion -> operacion.esLaOperacion(identificadorEntidadCategorizable) && operacion.esDeLaOrganizacion(unaOrganizacion))) {
-            return operacionesEgreso.stream().filter(operacion -> operacion.esLaOperacion(identificadorEntidadCategorizable) && operacion.esDeLaOrganizacion(unaOrganizacion)).findFirst().get();
-        } else {
-            return null;
-        }
+        CriteriaBuilder cb = this.entityManager.getCriteriaBuilder();
+        CriteriaQuery<OperacionEgreso> consulta = cb.createQuery(OperacionEgreso.class);
+        Root<OperacionEgreso> operacionesEgresoC = consulta.from(OperacionEgreso.class);
+        return new ArrayList<>(this.entityManager.createQuery(consulta.select(operacionesEgresoC)).getResultList());
     }
 }
 

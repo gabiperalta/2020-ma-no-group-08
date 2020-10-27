@@ -9,7 +9,7 @@ public class Item {
 	@Enumerated(EnumType.STRING)
 	private ETipoItem tipo;
 
-	@Id @GeneratedValue(strategy = GenerationType.AUTO)
+	@Id
 	private String descripcion;
 
 

@@ -25,9 +25,9 @@ import javax.persistence.criteria.Root;
 
 public class RepositorioCategorizacion {
 	
-	//private ArrayList<CriterioDeCategorizacion> criteriosDeCategorizacion;
+	private ArrayList<CriterioDeCategorizacion> criteriosDeCategorizacion;
 	
-	//private ArrayList<EntidadCategorizable> entidadesCategorizables;
+	private ArrayList<EntidadCategorizable> entidadesCategorizables;
 
 	EntityManager entityManager;
 
@@ -35,7 +35,7 @@ public class RepositorioCategorizacion {
 		entityManager = em;
 	}
 
-	/*// singleton
+
 	private static class RepositorioCategorizacionHolder {		
         static final RepositorioCategorizacion singleInstanceRepositorioCategorizacion = new RepositorioCategorizacion();
     }
@@ -47,7 +47,7 @@ public class RepositorioCategorizacion {
 	public RepositorioCategorizacion() {
 		this.criteriosDeCategorizacion = new ArrayList<CriterioDeCategorizacion>();
 		this.entidadesCategorizables = new ArrayList<EntidadCategorizable>();
-	}*/
+	}
 
 	public ArrayList<CriterioDeCategorizacion> getCriteriosDeCategorizacion(){
 		CriteriaBuilder cb = this.entityManager.getCriteriaBuilder();
@@ -87,7 +87,6 @@ public class RepositorioCategorizacion {
 	}
 
 	private EntidadCategorizable buscarEntidadEntreLasYaCategorizadas(String identificadorEntidadCategorizable){
-		// TODO: VER DONDE SE USA ESTA FUNCION
 		return entityManager.find(EntidadCategorizable.class, identificadorEntidadCategorizable);
 	}
 
@@ -104,7 +103,7 @@ public class RepositorioCategorizacion {
 		}
 		else {
 			if(identificadorEntidadCategorizable.startsWith("OE")) { // OE por Operacion Egreso
-				OperacionEgreso operacionEgreso = RepoOperacionesEgreso.getInstance().buscarOperacionEgresoPorIdentificador(identificadorEntidadCategorizable);
+				OperacionEgreso operacionEgreso = RepoOperacionesEgreso.getInstance().buscarOperacionEgresoPorIdenticadorOperacionEgreso(identificadorEntidadCategorizable);
 				unaEntidadCategorizable = new EntidadCategorizable(operacionEgreso);
 			}
 			else

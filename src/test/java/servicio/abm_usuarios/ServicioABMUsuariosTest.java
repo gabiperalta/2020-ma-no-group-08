@@ -41,7 +41,7 @@ public class ServicioABMUsuariosTest {
 
 		abmUsuarios = new ServicioABMUsuarios(em);
 
-		ArrayList<EntidadJuridica> entidades = new ArrayList<>();
+		ArrayList<Empresa> entidades = new ArrayList<>();
 
 		entidades.add(new Empresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa 1", "Empresa 1", "20-40678950-3", "200", "Av.Libertador 801",false));
 
