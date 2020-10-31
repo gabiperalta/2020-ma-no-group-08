@@ -17,6 +17,7 @@ import spark.Request;
 import spark.Response;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
 import java.util.*;
 
 public class VinculacionesController {
@@ -38,10 +39,7 @@ public class VinculacionesController {
     }
 
     public String vincular(Request request, Response response) throws Exception {
-//        public String vincular(Request request, Response response, EntityManager entityManager) throws Exception {
-
-            Map<String, Object> parameters = new HashMap<>();
-        Set<String> queryP = request.queryParams();
+        EntityManager entityManager = Persistence.createEntityManagerFactory("db").createEntityManager();
 
         CuentaUsuario usuario = request.session().attribute("user");
 
@@ -54,13 +52,13 @@ public class VinculacionesController {
         criterios.add(criterio);
 
         Vinculador vinculador = new Vinculador();
-        vinculador.vincular(generarOperacionesVinculables(ingresosIds, true, usuario.getOrganizacion()),
-                            generarOperacionesVinculables(egresosIds, false, usuario.getOrganizacion()),
+        vinculador.vincular(generarOperacionesVinculables(ingresosIds, true, usuario.getOrganizacion(), entityManager),
+                            generarOperacionesVinculables(egresosIds, false, usuario.getOrganizacion(), entityManager),
                             criterios);
 
-//        vinculador.vincular(generarOperacionesVinculables(ingresosIds, true, usuario.getOrganizacion(), entityManager),
-//                generarOperacionesVinculables(egresosIds, false, usuario.getOrganizacion(), entityManager),
-//                criterios);
+        vinculador.vincular(generarOperacionesVinculables(ingresosIds, true, usuario.getOrganizacion(), entityManager),
+                generarOperacionesVinculables(egresosIds, false, usuario.getOrganizacion(), entityManager),
+                criterios);
         response.type("application/json");
 
         return vinculador.getVinculacionJsonString();
@@ -72,25 +70,19 @@ public class VinculacionesController {
         return GeneradorCriterio.generarCriterio(tipoCriterio,rangoDias);
     }
 
-    private ArrayList<OperacionVinculable> generarOperacionesVinculables (ArrayList ingresosIds , boolean esIngreso, Organizacion organizacion) {
-//        private ArrayList<OperacionVinculable> generarOperacionesVinculables (ArrayList ingresosIds , boolean esIngreso, Organizacion organizacion, EntityManager entityManager) {
+    private ArrayList<OperacionVinculable> generarOperacionesVinculables (ArrayList ingresosIds , boolean esIngreso, Organizacion organizacion, EntityManager entityManager) {
 
-            ArrayList<Operacion> operaciones = new ArrayList<>();
+        ArrayList<Operacion> operaciones = new ArrayList<>();
         for (Object opId: ingresosIds) {
             Operacion operacion;
-            if (esIngreso) {
-                operacion = RepoOperacionesIngreso.getInstance().buscarOperacionIngresoPorIdentificador((String) opId);
-            } else {
-                operacion = RepoOperacionesEgreso.getInstance().buscarOperacionEgresoPorIdenticadorOperacionEgreso((String) opId);
-            }
 
-//            if (esIngreso) {
-//                RepoOperacionesIngreso repoOperacionesIngreso = new RepoOperacionesIngreso(entityManager);
-//                operacion = repoOperacionesIngreso.buscarOperacionIngresoPorIdentificador((String) opId);
-//            } else {
-//                RepoOperacionesEgreso repoOperacionesEgreso = new RepoOperacionesEgreso(entityManager);
-//                operacion = repoOperacionesEgreso.buscarOperacionEgresoPorIdenticadorOperacionEgreso((String) opId);
-//            }
+            if (esIngreso) {
+                RepoOperacionesIngreso repoOperacionesIngreso = new RepoOperacionesIngreso(entityManager);
+                operacion = repoOperacionesIngreso.buscarOperacionIngresoPorIdentificador((String) opId);
+            } else {
+                RepoOperacionesEgreso repoOperacionesEgreso = new RepoOperacionesEgreso(entityManager);
+                operacion = repoOperacionesEgreso.buscarOperacionEgresoPorIdenticadorOperacionEgreso((String) opId);
+            }
 
             if (operacion != null) {
                 operaciones.add(operacion);
