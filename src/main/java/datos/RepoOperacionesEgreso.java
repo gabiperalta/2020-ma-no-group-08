@@ -16,18 +16,10 @@ import java.util.stream.Collectors;
 public class RepoOperacionesEgreso {
     private EntityManager entityManager;
 
-    private static class RepositorioOperacionesEgresoHolder {
-        static final RepoOperacionesEgreso singleInstanceRepositorioOperacionesEgreso = new RepoOperacionesEgreso();
-    }
-
-    public static RepoOperacionesEgreso getInstance() {
-        return RepositorioOperacionesEgresoHolder.singleInstanceRepositorioOperacionesEgreso;
-    }
-
     public RepoOperacionesEgreso(EntityManager em){
         entityManager = em;
     }
-    public RepoOperacionesEgreso(){}
+
     public void agregarOperacionEgreso(OperacionEgreso operacionEgreso) throws Exception {
         if (!existeEgreso(operacionEgreso)) {
             cargarEntidadOperacion(operacionEgreso.getEntidadOrigen());

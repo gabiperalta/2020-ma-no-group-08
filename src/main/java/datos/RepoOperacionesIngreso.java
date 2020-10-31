@@ -13,22 +13,11 @@ import java.util.ArrayList;
 public class RepoOperacionesIngreso {
     private EntityManager entityManager;
 
-    public RepoOperacionesIngreso() {
-    }
-
     public ArrayList<OperacionIngreso> getIngresos() {
         CriteriaBuilder cb = this.entityManager.getCriteriaBuilder();
         CriteriaQuery<OperacionIngreso> consulta = cb.createQuery(OperacionIngreso.class);
         Root<OperacionIngreso> operacionesIngresoC = consulta.from(OperacionIngreso.class);
         return new ArrayList<>(this.entityManager.createQuery(consulta.select(operacionesIngresoC)).getResultList());
-    }
-
-    private static class RepositorioOperacionesIngresoHolder {
-        static final RepoOperacionesIngreso singleInstanceRepositorioOperacionesIngreso = new RepoOperacionesIngreso();
-    }
-
-    public static RepoOperacionesIngreso getInstance() {
-        return RepositorioOperacionesIngresoHolder.singleInstanceRepositorioOperacionesIngreso;
     }
 
     public RepoOperacionesIngreso(EntityManager em){
