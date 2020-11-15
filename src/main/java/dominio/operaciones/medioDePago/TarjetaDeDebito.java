@@ -8,13 +8,16 @@ import javax.persistence.Entity;
 public class TarjetaDeDebito extends MedioDePago {
     String nombre;
     String numero;
+    String entidadDePago;
 
     public TarjetaDeDebito(){}
 
-    public TarjetaDeDebito(String nombre,String numero){
+    public TarjetaDeDebito(String nombre,String numero,String entidadDePago){
         super();
         this.nombre = nombre;
         this.numero = numero;
+        this.entidadDePago = entidadDePago;
+
     }
 
     public void informacionARegistrar() {

@@ -174,19 +174,24 @@ public class EgresoController extends Controller{
                 nombre = req.queryParams("tarjeta-credito-nombre-apellido");
                 String cuotas = req.queryParams("tarjeta-credito-cantidad");
                 numero = req.queryParams("tarjeta-credito-num");
-                medioDePagoFinal = new TarjetaDeCredito(Integer.valueOf(cuotas), nombre, numero);
+                String entidadDePago = req.queryParams("banco-elegido");
+
+                medioDePagoFinal = new TarjetaDeCredito(Integer.valueOf(cuotas), nombre, numero, entidadDePago);
             }
             else{
                 if(!req.queryParams("tarjeta-debito-num").isEmpty()){
                     nombre = req.queryParams("tarjeta-debito-nombre-apellido");
                     numero = req.queryParams("tarjeta-debito-num");
-                    medioDePagoFinal = new TarjetaDeDebito(nombre, numero);
+                    String entidadDePago = req.queryParams("banco-elegido");
+
+                    medioDePagoFinal = new TarjetaDeDebito(nombre, numero, entidadDePago);
                 }
                 else {
                     if(!req.queryParams("efectivo-monto").isEmpty()){
                         monto = req.queryParams("efectivo-monto");
                         String puntoDePago = req.queryParams("efectivo-punto-de-pago");
-                        medioDePagoFinal = new Efectivo(Double.valueOf(monto), puntoDePago, "Efectivo");
+                        String entidadDePago = req.queryParams("banco-elegido");
+                        medioDePagoFinal = new Efectivo(Double.valueOf(monto), puntoDePago, "Efectivo", entidadDePago);
                     }
                     else{
                         if(!req.queryParams("dinero-cuenta-monto").isEmpty()){
@@ -200,6 +205,8 @@ public class EgresoController extends Controller{
                     }
                 }
             }
+
+
 
             String documentoComercialNumero = req.queryParams("documento-num");
 
@@ -277,7 +284,7 @@ public class EgresoController extends Controller{
 
     }
 
-    public ModelAndView showModificarEgreso(Request req, Response res){
+    public ModelAndView showModificarEgreso(Request req, Response res) throws Exception{
         Map<String, Object> parameters = new HashMap<>();
         OperacionEgreso egreso = servicioOperaciones.buscarEgreso(req.params("id"));
         Date fecha = egreso.getFecha();
@@ -287,6 +294,8 @@ public class EgresoController extends Controller{
         parameters.put("user", req.session().attribute("user"));
         parameters.put("egreso", egreso);
         parameters.put("fecha", fechaFormateada);
+
+        parameters.put("medioDePagoMeli", serviceMeli.getMediosDePago());
 
         return new ModelAndView(parameters, "egreso.hbs");
     }
@@ -304,19 +313,25 @@ public class EgresoController extends Controller{
                 nombre = req.queryParams("tarjeta-credito-nombre-apellido");
                 String cuotas = req.queryParams("tarjeta-credito-cantidad");
                 numero = req.queryParams("tarjeta-credito-num");
-                medioDePagoFinal = new TarjetaDeCredito(Integer.valueOf(cuotas), nombre, numero);
+                String entidadDePago = req.queryParams("banco-elegido");
+
+                medioDePagoFinal = new TarjetaDeCredito(Integer.valueOf(cuotas), nombre, numero, entidadDePago);
             }
             else{
                 if(!req.queryParams("tarjeta-debito-num").isEmpty()){
                     nombre = req.queryParams("tarjeta-debito-nombre-apellido");
                     numero = req.queryParams("tarjeta-debito-num");
-                    medioDePagoFinal = new TarjetaDeDebito(nombre, numero);
+                    String entidadDePago = req.queryParams("banco-elegido");
+
+                    medioDePagoFinal = new TarjetaDeDebito(nombre, numero, entidadDePago);
                 }
                 else {
                     if(!req.queryParams("efectivo-monto").isEmpty()){
                         monto = req.queryParams("efectivo-monto");
                         String puntoDePago = req.queryParams("efectivo-punto-de-pago");
-                        medioDePagoFinal = new Efectivo(Double.valueOf(monto), puntoDePago, "Efectivo");
+                        String entidadDePago = req.queryParams("banco-elegido");
+
+                        medioDePagoFinal = new Efectivo(Double.valueOf(monto), puntoDePago, "Efectivo",entidadDePago);
                     }
                     else{
                         if(!req.queryParams("dinero-cuenta-monto").isEmpty()){

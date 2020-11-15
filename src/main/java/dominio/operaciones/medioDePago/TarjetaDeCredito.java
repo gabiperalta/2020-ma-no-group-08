@@ -9,16 +9,18 @@ public class TarjetaDeCredito extends MedioDePago {
     int cuotas;
     String nombre;
     String numero;
+    String entidadDePago;
 
     public TarjetaDeCredito(){}
 
-    public TarjetaDeCredito(int cuotas,String nombre,String numero){
+    public TarjetaDeCredito(int cuotas,String nombre,String numero, String entidadDePago){
         super();
         this.cuotas = cuotas;
         this.nombre = nombre;
         this.numero = numero;
-    }
+        this.entidadDePago = entidadDePago;
 
+    }
 
 
     public void informacionARegistrar() {

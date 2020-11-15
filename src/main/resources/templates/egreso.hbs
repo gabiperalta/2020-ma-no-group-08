@@ -93,6 +93,34 @@
                 <div {{#if egreso.medioDePago.esTarjedaDeCredito}} class="tab-pane fade show active" {{else}} class="tab-pane fade" {{/if}}
                         id="nav-tarjeta-credito" role="tabpanel" aria-labelledby="nav-tarjeta-credito-tab">
                     <div class="col-6">
+                        <label >Entidad de Pago:</label>
+
+
+                        <div id="thumbs3">
+                            {{#each medioDePagoMeli}}
+                                {{#if this.esTarjetaDeCredito}}
+                                    {{#if this.esImagenGrande}}
+                                            <img id="{{this.name}}" src="{{this.thumbnail}}" width="35" height="20" >
+                                    {{else}}
+                                        <img id="{{this.name}}" src="{{this.thumbnail}}" >
+                                    {{/if}}
+                                {{/if}}
+                            {{/each}}
+                        </div>
+
+                        <select id="selectBanco" class="custom-select" name="banco-elegido" style="max-width: 300px">
+                            <option selected value="_">Seleccione una entidad de pago</option>
+
+                            {{#each medioDePagoMeli}}
+                                {{#if this.esTarjetaDeCredito}}
+                                    <option value="{{this.name}}"> {{this.name}} </option>
+                                {{/if}}
+                            {{/each}}
+
+                        </select>
+
+
+
                         <div class="form-group">
                             <label for="tarjeta-credito-num">Número de tarjeta</label>
                             <input type="text" class="form-control" name="tarjeta-credito-num" id="tarjeta-credito-num" placeholder="Ingrese el numero"
@@ -113,6 +141,27 @@
                 <div {{#if egreso.medioDePago.esTarjetaDeDebito}} class="tab-pane fade show active" {{else}} class="tab-pane fade" {{/if}}
                         id="nav-tarjeta-debito" role="tabpanel" aria-labelledby="nav-tarjeta-debito-tab">
                     <div class="col-6">
+                        <label >Entidad de Pago:</label>
+
+                        <div id="thumbs2">
+                            {{#each medioDePagoMeli}}
+                                {{#if this.esTarjetaDeDebito}}
+                                    <img id="{{this.name}}" src="{{this.thumbnail}}">
+                                {{/if}}
+                            {{/each}}
+                        </div>
+
+                        <select id="selectBanco" class="custom-select" name="banco-elegido" style="max-width: 300px">
+                            <option selected value="_">Seleccione una entidad de pago</option>
+
+                            {{#each medioDePagoMeli}}
+                                {{#if this.esTarjetaDeDebito}}
+                                    <option value="{{this.name}}"> {{this.name}} </option>
+                                {{/if}}
+                            {{/each}}
+
+                        </select>
+
                         <div class="form-group">
                             <label for="tarjeta-debito-num">Número de tarjeta</label>
                             <input type="text" class="form-control" name="tarjeta-debito-num" id="tarjeta-debito-num" placeholder="Ingrese el numero"
@@ -127,7 +176,31 @@
                 </div>
                 <div {{#if egreso.medioDePago.esEfectivo}} class="tab-pane fade show active" {{else}} class="tab-pane fade" {{/if}}
                         id="nav-efectivo" role="tabpanel" aria-labelledby="nav-efectivo-tab">
+
                     <div class="col-6">
+                        <label >Entidad de Pago:</label>
+
+                         <div id="thumbs">
+                                {{#each medioDePagoMeli}}
+                                    {{#if this.esEfectivo}}
+                                        <img id="{{this.name}}" src="{{this.thumbnail}}">
+                                    {{/if}}
+                                {{/each}}
+                            </div>
+
+                        <div class="form-group">
+
+                        <select id="selectBanco" class="custom-select" name="banco-elegido" style="max-width: 300px">
+                            <option selected value="_">Seleccione una entidad de pago</option>
+
+                            {{#each medioDePagoMeli}}
+                                {{#if this.esEfectivo}}
+                                    <option value="{{this.name}}"> {{this.name}} </option>
+                                {{/if}}
+                            {{/each}}
+
+                        </select>
+                        </div>
                         <div class="form-group">
                             <label for="efectivo-monto">Monto</label>
                             <input type="number" min="0" class="form-control" name="efectivo-monto" id="efectivo-monto" placeholder="Ingrese un número"
@@ -283,6 +356,33 @@
         $("#cantidad-items").val(ultimoItem);
     }
 
+    $('#thumbs').delegate('img', 'click', function() {
+
+        var $this = $(this);
+
+
+        // Changes the value of the form field "prod" to the value of img.id
+        $('[name="banco-elegido"]').val($this.attr('id')) });
+
+
+    $('#thumbs2').delegate('img', 'click', function() {
+
+        var $this = $(this);
+
+
+        // Changes the value of the form field "prod" to the value of img.id
+        $('[name="banco-elegido"]').val($this.attr('id')) });
+
+
+    $('#thumbs3').delegate('img', 'click', function() {
+
+        var $this = $(this);
+
+        // Changes the value of the form field "prod" to the value of img.id
+        $('[name="banco-elegido"]').val($this.attr('id')) });
+
 </script>
+
+
 
 </html>

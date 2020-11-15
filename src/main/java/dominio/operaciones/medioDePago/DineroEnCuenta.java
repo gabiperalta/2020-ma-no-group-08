@@ -13,6 +13,7 @@ public class DineroEnCuenta extends MedioDePago {
         super();
         this.monto = monto;
         this.nombre = nombre;
+
     }
 
     public void informacionARegistrar() {

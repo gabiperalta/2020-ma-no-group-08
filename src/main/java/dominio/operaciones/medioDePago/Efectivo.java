@@ -7,14 +7,17 @@ public class Efectivo extends MedioDePago {
     double monto;
     String puntoDePago;
     String nombre;
+    String entidadDePago;
 
     public Efectivo(){}
 
-    public Efectivo(double monto,String puntoDePago, String nombre){
+    public Efectivo(double monto,String puntoDePago, String nombre, String entidadDePago){
         super();
         this.monto = monto;
         this.puntoDePago = puntoDePago;
         this.nombre = nombre;
+        this.entidadDePago = entidadDePago;
+
     }
 
     public String getNombre(){
