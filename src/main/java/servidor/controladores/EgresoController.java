@@ -63,7 +63,7 @@ public class EgresoController extends Controller{
             String[] nombreCategoriaCriterio= filtro.split("_");
 
             try{
-                egresos = (ArrayList<OperacionEgreso>) repositorioCategorizacion.filtrarEgresosDeLaCategoria(nombreCategoriaCriterio[1],nombreCategoriaCriterio[0], org).stream().map(entidadCategorizable -> (OperacionEgreso)entidadCategorizable.getOperacion()).collect(Collectors.toList());
+                egresos = repositorioCategorizacion.filtrarEgresosDeLaCategoria(nombreCategoriaCriterio[1],nombreCategoriaCriterio[0], org);
                 parameters.put("infoFiltroActual","Filtrado por " + nombreCategoriaCriterio[0] + " - " + nombreCategoriaCriterio[1]);
             }catch (NullPointerException e){
                 egresos = null;

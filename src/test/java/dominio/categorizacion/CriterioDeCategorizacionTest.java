@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.NoSuchElementException;
 
+import dominio.operaciones.OperacionEgreso;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,7 +24,7 @@ public class CriterioDeCategorizacionTest {
 		criterioDePrueba.agregarCategoria("Categoria2");
 		criterioDePrueba.agregarCategoria("CategoriaAQuitarPrueba");
 		criterioDePrueba.agregarCategoria("CategoriaPadreDePrueba");
-		entidadDePrueba = new EntidadCategorizable(null);
+		entidadDePrueba = new OperacionEgreso();
 	}
 	
 	@Test

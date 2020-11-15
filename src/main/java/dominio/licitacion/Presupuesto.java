@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import dominio.categorizacion.EntidadCategorizable;
 import dominio.entidades.Organizacion;
 import dominio.operaciones.EntidadOperacion;
 import dominio.operaciones.Item;
@@ -14,7 +15,7 @@ import org.hibernate.engine.internal.Cascade;
 import javax.persistence.*;
 
 @Entity
-public class Presupuesto extends Operacion {
+public class Presupuesto extends EntidadCategorizable {
 
 	@OneToOne(cascade = CascadeType.ALL)
 	private EntidadOperacion proveedor;
@@ -32,6 +33,7 @@ public class Presupuesto extends Operacion {
 	}
 
 	public Presupuesto(EntidadOperacion proveedor, ArrayList<Item> unosItems){
+		super();
 		this.proveedor = proveedor;
 		items = new ArrayList<Item>();
 		this.esValido = true;
@@ -73,15 +75,13 @@ public class Presupuesto extends Operacion {
 
 	@Override
 	public boolean esLaOperacion(String identificadorEntidadCategorizable) {
-		return this.getIdentificador().equals(identificadorEntidadCategorizable);
+		return this.getIdentificador().contentEquals(identificadorEntidadCategorizable);
 	}
 
-	@Override
-	public boolean esIngreso() {
-		return false;
-	}
+//	public boolean esIngreso() {
+//		return false;
+//	}
 
-	@Override
 	public Date getFecha() {
 		return null;
 	}

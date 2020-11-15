@@ -11,39 +11,33 @@ import dominio.categorizacion.exceptions.CategorizacionException;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "entidades_categorizables")
-public class EntidadCategorizable implements Serializable {
+// todo determinar la estrategia de herencia
+public abstract class EntidadCategorizable {
 	@Id
-	@OneToOne
-	private Operacion operacion;
-	@ManyToMany
-	@JoinTable(name = "entidad_categoria")
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	protected int id;
+
 //	@JoinTable(name = "entidad_categoria",
 //			joinColumns = @JoinColumn(name = "operacion_id"),
 //			inverseJoinColumns = {@JoinColumn(name = "nombre_categoria", referencedColumnName = "nombre" ),
 //								@JoinColumn(name = "nombre_criterio", referencedColumnName = "nombre_criterio" )})
+	@ManyToMany
+	@JoinTable(name = "entidad_categoria")
 	private List<Categoria> categoriasAsociadas;
 
 	public EntidadCategorizable(){}
 
 	public EntidadCategorizable(Operacion unaOperacion){
-		operacion = unaOperacion;
 		categoriasAsociadas = new ArrayList<Categoria>();
 	}
-	
+
 	public String getIdentificador() {
-		return this.operacion.getIdentificador();
+		return Integer.toString(this.id);
 	}
 
-	public void setIdentificador() {}
-	
-	public boolean esLaEntidad(String identificadorEntidadCategorizable) {
-		return this.operacion.esLaOperacion(identificadorEntidadCategorizable);
-	}
+	public abstract boolean esLaOperacion(String identificadorEntidadCategorizable);
 
-	public boolean esDeLaOrganizacion(Organizacion unaOrganizacion){
-		return this.operacion.esDeLaOrganizacion(unaOrganizacion);
-	}
+	public abstract boolean esDeLaOrganizacion(Organizacion unaOrganizacion);
 
 	public boolean esDeLaCategoria(Categoria unaCategoria) {
 		return this.categoriasAsociadas.contains(unaCategoria) || 
@@ -68,7 +62,11 @@ public class EntidadCategorizable implements Serializable {
 		unaCategoria.seDesasociaUnaEntidad();
 	}
 
-	public Operacion getOperacion() {
-		return operacion;
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 }
