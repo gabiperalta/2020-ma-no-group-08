@@ -1,5 +1,6 @@
 package dominio.operaciones;
 
+import dominio.categorizacion.EntidadCategorizable;
 import dominio.entidades.Organizacion;
 import dominio.operaciones.medioDePago.MedioDePago;
 
@@ -11,7 +12,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "operaciones_egreso")
-public class OperacionEgreso extends Operacion {
+public class OperacionEgreso extends EntidadCategorizable implements Operacion{
+
+	@Id @GeneratedValue
+	private String id;
 
 	@OneToMany(cascade = CascadeType.PERSIST) @JoinColumn(name = "identificadorOperacion")
 	private List<Item> items;
@@ -24,7 +28,7 @@ public class OperacionEgreso extends Operacion {
 	@OneToOne(cascade = CascadeType.PERSIST)
 	private DocumentoComercial documento;
 
-	//@Convert(converter = Date.class)
+	@Temporal(TemporalType.DATE)
 	private Date fecha;
 
 	@ManyToOne
@@ -85,6 +89,7 @@ public class OperacionEgreso extends Operacion {
 		return "OE-" + super.getIdentificador();
 	}
 
+	@Override
 	public boolean esLaOperacion(String identificadorOperacionEgreso) {
 		return this.getIdentificador().contentEquals(identificadorOperacionEgreso);
 	}

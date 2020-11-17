@@ -1,8 +1,15 @@
 package datos;
 
 import dominio.entidades.Empresa;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import dominio.entidades.EntidadJuridica;
 import dominio.entidades.Organizacion;
+import java.util.List;
+
+
 
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
@@ -32,6 +39,18 @@ public class RepoOrganizaciones {
     }
 
     public Organizacion buscarOrganizacion(String nombreOrganizacion) {
-        return entityManager.find(Organizacion.class, nombreOrganizacion);
+
+        CriteriaBuilder cb = this.entityManager.getCriteriaBuilder();
+        CriteriaQuery<Organizacion> consulta = cb.createQuery(Organizacion.class);
+        Root<Organizacion> organizaciones = consulta.from(Organizacion.class);
+        Predicate condicion = cb.equal(organizaciones.get("nombre"), nombreOrganizacion);
+        CriteriaQuery<Organizacion> where = consulta.select(organizaciones).where(condicion);
+
+        List<Organizacion> listaOrganizaciones = this.entityManager.createQuery(where).getResultList();
+
+        if(listaOrganizaciones.size() > 0)
+            return listaOrganizaciones.get(0);
+        else
+            return null;
     }
 }

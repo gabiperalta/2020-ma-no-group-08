@@ -61,7 +61,20 @@ public class RepositorioCategorizacion {
 	
 	// Criterios De Categorizacion
 	public CriterioDeCategorizacion buscarCriterioDeCategorizacion(String nombreCriterioDeCategorizacion) {
-		return entityManager.find(CriterioDeCategorizacion.class, nombreCriterioDeCategorizacion);
+
+		CriteriaBuilder cb = this.entityManager.getCriteriaBuilder();
+		CriteriaQuery<CriterioDeCategorizacion> consulta = cb.createQuery(CriterioDeCategorizacion.class);
+		Root<CriterioDeCategorizacion> criterios = consulta.from(CriterioDeCategorizacion.class);
+		Predicate condicion = cb.equal(criterios.get("nombre"), nombreCriterioDeCategorizacion);
+		CriteriaQuery<CriterioDeCategorizacion> where = consulta.select(criterios).where(condicion);
+
+		List<CriterioDeCategorizacion> listacriterios = this.entityManager.createQuery(where).getResultList();
+
+		if(listacriterios.size() > 0)
+			return listacriterios.get(0);
+		else
+			return null;
+
 	}
 	
 	public void agregarCriterioDeCategorizacion(CriterioDeCategorizacion criterioDeCategorizacion) throws CategorizacionException {
@@ -90,7 +103,6 @@ public class RepositorioCategorizacion {
 	}
 
 	private EntidadCategorizable buscarEntidadEntreLasYaCategorizadas(String identificadorEntidadCategorizable) throws CategorizacionException {
-		// TODO: CREO QUE DEBO RECORTAR LOS STRINGS DEPENDIENDO DE SI TIENEN OE, OI O L
 		int identificadorInt;
 		if(identificadorEntidadCategorizable.startsWith("OE")){
 			identificadorInt = Integer.parseInt(identificadorEntidadCategorizable.substring(3));
@@ -112,17 +124,15 @@ public class RepositorioCategorizacion {
 	}
 	
 	// ENTIDADES CATEGORIZABLES
-	// TODO: Dependiendo de como terminemos normalizando la BD de Operaciones, vamos a tener que hacer la distincion entre OperacionEgreso y OperacionIngreso o no.
 	private EntidadCategorizable buscarEntidadCategorizable(String identificadorEntidadCategorizable) throws CategorizacionException {
 		EntidadCategorizable unaEntidadCategorizable;
 		if(existeEntidadEntreLasCategorizadas(identificadorEntidadCategorizable)){
 			unaEntidadCategorizable = buscarEntidadEntreLasYaCategorizadas(identificadorEntidadCategorizable);
 		}
-		else {
+		else { // TODO, VERIFICAR, CREO QUE NUNCA ENTRARIA AQUI
 			if(identificadorEntidadCategorizable.startsWith("OE")) { // OE por Operacion Egreso
 				RepoOperacionesEgreso repoOperacionesEgreso = new RepoOperacionesEgreso(entityManager) ;
-				OperacionEgreso operacionEgreso = repoOperacionesEgreso.buscarOperacionEgresoPorIdenticadorOperacionEgreso(identificadorEntidadCategorizable);
-				unaEntidadCategorizable = new EntidadCategorizable(operacionEgreso);
+				unaEntidadCategorizable = repoOperacionesEgreso.buscarOperacionEgresoPorIdenticadorOperacionEgreso(identificadorEntidadCategorizable);
 			}
 			else {
 				if (identificadorEntidadCategorizable.startsWith("L")) {
@@ -130,19 +140,11 @@ public class RepositorioCategorizacion {
 					RepoLicitaciones repoLicitaciones = new RepoLicitaciones(entityManager);
 					String identificadorPresupuesto = identificadorEntidadCategorizable.split("-")[2];
 					Licitacion licitacion = repoLicitaciones.buscarLicitacionPorIdentificador(identificadorEntidadCategorizable);
-					Presupuesto presupuesto = licitacion.getPresupuestos().stream().filter(unPresupuesto -> unPresupuesto.getIdentificador().endsWith(identificadorPresupuesto)).
+					unaEntidadCategorizable = licitacion.getPresupuestos().stream().filter(unPresupuesto -> unPresupuesto.getIdentificador().endsWith(identificadorPresupuesto)).
 							findFirst().get();
-					unaEntidadCategorizable = new EntidadCategorizable(presupuesto);
 				} else
 					throw new CategorizacionException("Identificador de Entidad Categorizable INVALIDO");
-				/*if(identificadorEntidadCategorizable.startsWith("OI")) { // OI por Operacion Ingreso
-					OperacionIngreso operacionIngreso = RepoOperacionesIngreso.getInstance().buscarOperacionEgresoPorIdentificador(identificadorEntidadCategorizable);
-					unaEntidadCategorizable = new EntidadCategorizable(operacionIngreso);
-				}
-				else{
-				}*/
 			}
-			entityManager.persist(unaEntidadCategorizable);
 		}
 		return unaEntidadCategorizable;
 	}
@@ -175,19 +177,14 @@ public class RepositorioCategorizacion {
 		return listaRetornable;
 	}
 
-	public ArrayList<EntidadCategorizable> filtrarEgresosDeLaCategoria(String nombreCategoria, String nombreCriterioDeCategorizacion, Organizacion unaOrganizacion){
-		return new ArrayList<EntidadCategorizable>(this.filtrarEntidadesDeLaCategoria(nombreCategoria, nombreCriterioDeCategorizacion, unaOrganizacion).stream().
-						filter( entidad -> entidad.getIdentificador().startsWith("OE")).collect(Collectors.toList()));
+	public ArrayList<OperacionEgreso> filtrarEgresosDeLaCategoria(String nombreCategoria, String nombreCriterioDeCategorizacion, Organizacion unaOrganizacion){
+		return new ArrayList<OperacionEgreso>(this.filtrarEntidadesDeLaCategoria(nombreCategoria, nombreCriterioDeCategorizacion, unaOrganizacion).stream().
+						filter( entidad -> entidad.getIdentificador().startsWith("OE")).map( egreso -> (OperacionEgreso)egreso ).collect(Collectors.toList()));
 	}
 
-	public ArrayList<EntidadCategorizable> filtrarIngresosDeLaCategoria(String nombreCategoria, String nombreCriterioDeCategorizacion, Organizacion unaOrganizacion){
-		return new ArrayList<EntidadCategorizable>(this.filtrarEntidadesDeLaCategoria(nombreCategoria, nombreCriterioDeCategorizacion, unaOrganizacion).stream().
-						filter( entidad -> entidad.getIdentificador().startsWith("OI")).collect(Collectors.toList()));
-	}
-
-	public ArrayList<EntidadCategorizable> filtrarPresupuestosDeLaCategoria(String nombreCategoria, String nombreCriterioDeCategorizacion, Organizacion unaOrganizacion){
-		return new ArrayList<EntidadCategorizable>(this.filtrarEntidadesDeLaCategoria(nombreCategoria, nombreCriterioDeCategorizacion, unaOrganizacion).stream().
-				filter( entidad -> entidad.getIdentificador().startsWith("L")).collect(Collectors.toList()));
+	public ArrayList<Presupuesto> filtrarPresupuestosDeLaCategoria(String nombreCategoria, String nombreCriterioDeCategorizacion, Organizacion unaOrganizacion){
+		return new ArrayList<Presupuesto>(this.filtrarEntidadesDeLaCategoria(nombreCategoria, nombreCriterioDeCategorizacion, unaOrganizacion).stream().
+				filter( entidad -> entidad.getIdentificador().startsWith("L")).map( presupuesto -> (Presupuesto)presupuesto ).collect(Collectors.toList()));
 	}
 
 	public List<HashMap<String,Object>> filtrarPresupuestosDeLaCategoria(String nombreCategoria, String nombreCriterioDeCategorizacion, Organizacion unaOrganizacion,int limite, int base){

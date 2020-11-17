@@ -2,9 +2,15 @@ package datos;
 
 import dominio.entidades.*;
 import dominio.entidades.calculadorFiscal.ETipoActividad;
+import dominio.licitacion.Licitacion;
 
 
 import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 public class RepoEntidadesJuridicas {
@@ -47,7 +53,20 @@ public class RepoEntidadesJuridicas {
     }
 
     public Empresa buscarEntidadJuridica(String razonSocial) {
-        return entityManager.find(Empresa.class, razonSocial);
+
+        CriteriaBuilder cb = this.entityManager.getCriteriaBuilder();
+        CriteriaQuery<Empresa> consulta = cb.createQuery(Empresa.class);
+        Root<Empresa> empresas = consulta.from(Empresa.class);
+        Predicate condicion = cb.equal(empresas.get("razonSocial"), razonSocial);
+        CriteriaQuery<Empresa> where = consulta.select(empresas).where(condicion);
+
+        List<Empresa> listaEmpresas = this.entityManager.createQuery(where).getResultList();
+
+        if(listaEmpresas.size() > 0)
+            return listaEmpresas.get(0);
+        else
+            return null;
+
     }
 
 }

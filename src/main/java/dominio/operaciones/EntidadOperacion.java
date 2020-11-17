@@ -8,7 +8,9 @@ import javax.persistence.Id;
 @Entity
 public class EntidadOperacion {
 
-	@Id
+	@Id @GeneratedValue
+	private String id;
+
 	String nombre;
 	String cuil;
 	String direccion;

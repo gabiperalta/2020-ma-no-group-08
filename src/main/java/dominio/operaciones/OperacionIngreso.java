@@ -9,12 +9,15 @@ import java.util.List;
 
 @Entity
 @Table(name = "operaciones_ingreso")
-public class OperacionIngreso extends Operacion {
+public class OperacionIngreso implements Operacion {
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	protected int id;
 
 	private String descripcion;
 	private double montoTotal;
 
-	//@Convert(converter = Date.class)
+	@Temporal(TemporalType.DATE)
 	private Date fecha;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
@@ -37,7 +40,7 @@ public class OperacionIngreso extends Operacion {
 	}
 
 	public String getIdentificador() {
-		return "OI-" + super.getIdentificador();
+		return "OI-" + Integer.toString(this.id);
 	}
 
 	public boolean esLaOperacion(String identificadorOperacionEgreso) {
