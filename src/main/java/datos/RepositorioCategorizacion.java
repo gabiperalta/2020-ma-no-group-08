@@ -1,6 +1,7 @@
 package datos;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,20 +10,20 @@ import dominio.categorizacion.CriterioDeCategorizacion;
 import dominio.categorizacion.EntidadCategorizable;
 import dominio.categorizacion.exceptions.CategorizacionException;
 import dominio.cuentasUsuarios.CuentaUsuario;
+import dominio.entidades.Empresa;
 import dominio.entidades.Organizacion;
 import dominio.licitacion.Licitacion;
 import dominio.licitacion.Presupuesto;
+import dominio.operaciones.Operacion;
 import dominio.operaciones.OperacionEgreso;
 import dominio.operaciones.OperacionIngreso;
 import mock.ServerDataMock;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
+import javax.persistence.Tuple;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 
 public class RepositorioCategorizacion {
 	
@@ -188,4 +189,78 @@ public class RepositorioCategorizacion {
 		return new ArrayList<EntidadCategorizable>(this.filtrarEntidadesDeLaCategoria(nombreCategoria, nombreCriterioDeCategorizacion, unaOrganizacion).stream().
 				filter( entidad -> entidad.getIdentificador().startsWith("L")).collect(Collectors.toList()));
 	}
+
+	public List<HashMap<String,Object>> filtrarPresupuestosDeLaCategoria(String nombreCategoria, String nombreCriterioDeCategorizacion, Organizacion unaOrganizacion,int limite, int base){
+		Categoria unaCategoria = this.buscarCriterioDeCategorizacion(nombreCriterioDeCategorizacion).buscarCategoria(nombreCategoria);
+
+		CriteriaBuilder cb = this.entityManager.getCriteriaBuilder();
+		CriteriaQuery<Tuple> tupla = cb.createTupleQuery();
+		Root<EntidadCategorizable> entidadCategorizableRoot = tupla.from(EntidadCategorizable.class);
+		Join<Object,Object> categorias = entidadCategorizableRoot.join("categoriasAsociadas",JoinType.INNER);
+		Join<Object,Object> operaciones = entidadCategorizableRoot.join("operacion",JoinType.INNER);
+		Join<Object,Object> criteriosDeCategorizacion = categorias.join("criterioDeCategorizacion",JoinType.INNER);
+		Root<Licitacion> licitaciones = tupla.from(Licitacion.class);
+		Join<Object,Object> presupuestos = licitaciones.join("presupuestos",JoinType.INNER);
+
+		tupla.select(cb.tuple(licitaciones,operaciones)).where(
+				cb.and(cb.equal(operaciones.type(),cb.literal(Presupuesto.class)),
+						cb.equal(categorias.get("nombre"),unaCategoria.getNombre()),
+						cb.equal(criteriosDeCategorizacion.get("nombre"),unaCategoria.getCriterioDeCategorizacion().getNombre()),
+						cb.equal(presupuestos.get("id"),operaciones.get("id"))));
+
+		List<Tuple> resultadoTupla = this.entityManager.createQuery(tupla).setFirstResult(base).setMaxResults(limite).getResultList();
+		List<HashMap<String,Object>> resultadoHashMap = new ArrayList<>();
+
+		for(Tuple t : resultadoTupla){
+			HashMap<String,Object> presupuestoConEgresoId = new HashMap<>();
+			presupuestoConEgresoId.put("presupuesto",t.get(1));
+			Licitacion licitacionTupla = (Licitacion) t.get(0);
+			presupuestoConEgresoId.put("id_egreso",licitacionTupla.getOperacionEgreso().getIdentificador());
+			resultadoHashMap.add(presupuestoConEgresoId);
+		}
+
+		return resultadoHashMap;
+	}
+
+	public long filtrarPresupuestosDeLaCategoriaCantidad(String nombreCategoria, String nombreCriterioDeCategorizacion, Organizacion unaOrganizacion){
+		Categoria unaCategoria = this.buscarCriterioDeCategorizacion(nombreCriterioDeCategorizacion).buscarCategoria(nombreCategoria);
+
+		CriteriaBuilder cb = this.entityManager.getCriteriaBuilder();
+		CriteriaQuery<Long> cantidadOperaciones = cb.createQuery(Long.class);
+		Root<EntidadCategorizable> entidadCategorizableRoot = cantidadOperaciones.from(EntidadCategorizable.class);
+		Join<Object,Object> categorias = entidadCategorizableRoot.join("categoriasAsociadas",JoinType.INNER);
+		Join<Object,Object> operaciones = entidadCategorizableRoot.join("operacion",JoinType.INNER);
+		Join<Object,Object> criteriosDeCategorizacion = categorias.join("criterioDeCategorizacion",JoinType.INNER);
+
+		cantidadOperaciones.select(cb.count(operaciones)).where(
+				cb.and(cb.equal(operaciones.type(),cb.literal(Presupuesto.class)),
+						cb.equal(categorias.get("nombre"),unaCategoria.getNombre()),
+						cb.equal(criteriosDeCategorizacion.get("nombre"),unaCategoria.getCriterioDeCategorizacion().getNombre())));
+
+		return this.entityManager.createQuery(cantidadOperaciones).getSingleResult();
+	}
+
+	// PRUEBA
+	/*
+	public List<Licitacion> filtrarPresupuestosDeLaCategoriaPrueba(String nombreCategoria, String nombreCriterioDeCategorizacion, Organizacion unaOrganizacion,int limite, int base){
+		Categoria unaCategoria = this.buscarCriterioDeCategorizacion(nombreCriterioDeCategorizacion).buscarCategoria(nombreCategoria);
+
+		CriteriaBuilder cb = this.entityManager.getCriteriaBuilder();
+		CriteriaQuery<Licitacion> tupla = cb.createQuery(Licitacion.class);
+		Root<EntidadCategorizable> entidadCategorizableRoot = tupla.from(EntidadCategorizable.class);
+		Join<Object,Object> categorias = entidadCategorizableRoot.join("categoriasAsociadas",JoinType.INNER);
+		Join<Object,Object> operaciones = entidadCategorizableRoot.join("operacion",JoinType.INNER);
+		Join<Object,Object> criteriosDeCategorizacion = categorias.join("criterioDeCategorizacion",JoinType.INNER);
+		Root<Licitacion> licitaciones = tupla.from(Licitacion.class);
+		//Join<Object,Object> presupuestos = licitaciones.join("presupuestos",JoinType.INNER);
+
+		tupla.select(licitaciones).where(
+				cb.and(cb.equal(operaciones.type(),cb.literal(OperacionEgreso.class)),
+						cb.equal(categorias.get("nombre"),unaCategoria.getNombre()),
+						cb.equal(criteriosDeCategorizacion.get("nombre"),unaCategoria.getCriterioDeCategorizacion().getNombre()),
+						cb.equal(licitaciones.get("compra"),operaciones.get("id"))));
+
+		return this.entityManager.createQuery(tupla).getResultList();
+	}
+	*/
 }
