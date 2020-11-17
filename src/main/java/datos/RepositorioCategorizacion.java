@@ -61,7 +61,20 @@ public class RepositorioCategorizacion {
 	
 	// Criterios De Categorizacion
 	public CriterioDeCategorizacion buscarCriterioDeCategorizacion(String nombreCriterioDeCategorizacion) {
-		return entityManager.find(CriterioDeCategorizacion.class, nombreCriterioDeCategorizacion);
+
+		CriteriaBuilder cb = this.entityManager.getCriteriaBuilder();
+		CriteriaQuery<CriterioDeCategorizacion> consulta = cb.createQuery(CriterioDeCategorizacion.class);
+		Root<CriterioDeCategorizacion> criterios = consulta.from(CriterioDeCategorizacion.class);
+		Predicate condicion = cb.equal(criterios.get("nombre"), nombreCriterioDeCategorizacion);
+		CriteriaQuery<CriterioDeCategorizacion> where = consulta.select(criterios).where(condicion);
+
+		List<CriterioDeCategorizacion> listacriterios = this.entityManager.createQuery(where).getResultList();
+
+		if(listacriterios.size() > 0)
+			return listacriterios.get(0);
+		else
+			return null;
+
 	}
 	
 	public void agregarCriterioDeCategorizacion(CriterioDeCategorizacion criterioDeCategorizacion) throws CategorizacionException {
