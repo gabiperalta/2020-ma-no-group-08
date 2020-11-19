@@ -1,4 +1,9 @@
 package servidor;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
+import com.mongodb.client.MongoDatabase;
+import dev.morphia.Datastore;
+import dev.morphia.Morphia;
 import dominio.cuentasUsuarios.CuentaUsuario;
 import mock.ServerDataMock;
 import servidor.controladores.*;
@@ -22,8 +27,11 @@ public class Router {
 
 	private static HandlebarsTemplateEngine engine;
 	private static EntityManagerFactory entityManagerFactory;
+//	private static Morphia m
+
 
 	public static void init() throws Exception {
+		Router.initAudit();
 		Router.initEngine();
 		Router.initPersistence();
 		String projectDir = System.getProperty("user.dir");
@@ -42,6 +50,10 @@ public class Router {
 
 	private static void initPersistence(){ entityManagerFactory = Persistence.createEntityManagerFactory("db"); }
 
+	private static void initAudit(){
+
+	}
+
 	public static void configure() throws Exception {
 		LoginController loginc = new LoginController();
 		HomeController homec = new HomeController();
@@ -49,6 +61,7 @@ public class Router {
 		VinculacionesController vinculacionesC = new VinculacionesController();
 		EgresoController egresoC = new EgresoController();
 		IngresoController ingresoC = new IngresoController();
+		AuditoriaController auditoriaController = new AuditoriaController();
 		ServiceMercadoLibre serviceMeli = ServiceMercadoLibre.INSTANCE;
 
 		CategorizacionesController categorizacionesC = new CategorizacionesController();
@@ -86,6 +99,7 @@ public class Router {
 		get("/vinculaciones",vinculacionesC::seleccionarOperaciones,engine);
 		post("/vinculaciones",vinculacionesC::vincular);
 
+		get("/auditoria/:entidad_auditada/:operacion", auditoriaController::showAuditorias);
 
 		before("/*", (request, response) -> {
 			CuentaUsuario cuentaUsuario = request.session().attribute("user");
@@ -153,5 +167,20 @@ public class Router {
 		};
 		return r;
 	}
+
+	public static Datastore getDatastore(){
+		MongoClientURI uri = new MongoClientURI(
+				"mongodb+srv://mongodb:0AnE83904LltBfkF@cluster0.8pqel.mongodb.net/operations_audit?retryWrites=true&w=majority");
+
+		MongoClient mongoClient = new MongoClient(uri);
+		MongoDatabase database = mongoClient.getDatabase("test");
+
+		Morphia morphia = new Morphia();
+		morphia.mapPackage("auditoria");
+
+		Datastore datastore = morphia.createDatastore(mongoClient, "operations_audit");
+		datastore.ensureIndexes();
+        return datastore;
+    }
 
 }

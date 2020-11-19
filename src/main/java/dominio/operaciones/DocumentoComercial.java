@@ -5,7 +5,8 @@ import javax.persistence.*;
 @Entity
 public class DocumentoComercial {
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Enumerated(EnumType.STRING)
@@ -13,7 +14,23 @@ public class DocumentoComercial {
 
     int numero;
 
-    public DocumentoComercial(ETipoDoc tipo,int numero){
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setTipo(ETipoDoc tipo) {
+        this.tipo = tipo;
+    }
+
+    public void setNumero(int numero) {
+        this.numero = numero;
+    }
+
+    public DocumentoComercial(ETipoDoc tipo, int numero){
         this.tipo = tipo;
         this.numero = numero;
     }

@@ -17,13 +17,21 @@ public class OperacionIngreso implements Operacion {
 	private String descripcion;
 	private double montoTotal;
 
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	//@Convert(converter = Date.class)
 	private Date fecha;
 
-	@ManyToOne(cascade = CascadeType.PERSIST)
+	@ManyToOne(cascade = CascadeType.REMOVE)
 	private EntidadOperacion entidadOrigen;
 
-	@ManyToOne(cascade = CascadeType.PERSIST)
+	@ManyToOne(cascade = CascadeType.REMOVE)
 	private EntidadOperacion entidadDestino;
 
 
@@ -74,6 +82,7 @@ public class OperacionIngreso implements Operacion {
 	public void setEntidadDestino(EntidadOperacion entidadDestino) {
 		this.entidadDestino = entidadDestino;
 	}
+
 	public void setEntidadOrigen(EntidadOperacion entidadOrigen) {
 		this.entidadOrigen = entidadOrigen;
 	}

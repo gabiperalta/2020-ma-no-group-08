@@ -1,6 +1,11 @@
 package mock;
 
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
+import com.mongodb.client.MongoDatabase;
 import datos.*;
+import dev.morphia.Datastore;
+import dev.morphia.Morphia;
 import dominio.categorizacion.CriterioDeCategorizacion;
 import dominio.categorizacion.exceptions.CategorizacionException;
 import dominio.cuentasUsuarios.CuentaUsuario;
@@ -26,9 +31,21 @@ import java.util.Date;
 
 public class ServerDataMock {
     private static EntityManagerFactory entityManagerFactory;
+//    private static MongoClient mongoClient;
+//    private static Morphia morphia;
 
     public static void main(String[] args) throws Exception {
         entityManagerFactory = Persistence.createEntityManagerFactory("db");
+
+//        MongoClientURI uri = new MongoClientURI(
+//                "mongodb+srv://mongodb:0AnE83904LltBfkF@cluster0.8pqel.mongodb.net/operations_audit?retryWrites=true&w=majority");
+//
+//        mongoClient = new MongoClient(uri);
+//        MongoDatabase database = mongoClient.getDatabase("test");
+//
+//        morphia = new Morphia();
+//        morphia.mapPackage("auditoria");
+
         cargarMock();
     }
 
@@ -39,7 +56,7 @@ public class ServerDataMock {
         cargarCategorias();
         cargarIngresos();
         cargarEgregos();
-        cargarPresupuestos();
+        //cargarPresupuestos();
     }
 
     public ServerDataMock() {
@@ -230,8 +247,8 @@ public class ServerDataMock {
         ingreso6.setMontoTotal(565.3);
         ingreso6.setDescripcion("ingreso6");
 
-        EntidadOperacion origen = new EntidadOperacion("Empresa 2", "20-40678950-3", "Av.Libertador 801");
-        EntidadOperacion destino = new EntidadOperacion("Empresa 1", "20-40678950-3", "Av.Corrientes 550");
+        EntidadOperacion origen = new EntidadOperacion("Empresa 1", "20-40678950-3", "Av.Libertador 801");
+        EntidadOperacion destino = new EntidadOperacion("Empresa 2", "20-40678950-3", "Av.Corrientes 550");
 
         ingreso1.setEntidadOrigen(origen);
         ingreso1.setEntidadDestino(destino);
@@ -255,6 +272,9 @@ public class ServerDataMock {
         RepoOperacionesIngreso repoIngreso = new RepoOperacionesIngreso(em);
         em.getTransaction().begin();
         repoIngreso.agregarIngreso(ingreso1);
+        em.getTransaction().commit();
+
+        em.getTransaction().begin();
         repoIngreso.agregarIngreso(ingreso2);
         repoIngreso.agregarIngreso(ingreso3);
         repoIngreso.agregarIngreso(ingreso4);
@@ -364,20 +384,23 @@ public class ServerDataMock {
                 .agregarEntidadDestino(origen7)
                 .agregarPresupuestosNecesarios(presupuestosNecesarios).build();
 
+
         EntityManager em = getEntityManager();
         RepoOperacionesEgreso repoEgresos = new RepoOperacionesEgreso(em);
         em.getTransaction().begin();
-        repoEgresos.agregarOperacionEgreso(egreso1);
-        repoEgresos.agregarOperacionEgreso(egreso2);
-        repoEgresos.agregarOperacionEgreso(egreso3);
-        repoEgresos.agregarOperacionEgreso(egreso4);
-        repoEgresos.agregarOperacionEgreso(egreso5);
-        repoEgresos.agregarOperacionEgreso(egreso6);
-        repoEgresos.agregarOperacionEgreso(egreso7);
+        repoEgresos.agregarOperacionEgreso(egreso1, "ServerDataMock", getDatastore());
+        repoEgresos.agregarOperacionEgreso(egreso2, "ServerDataMock", getDatastore());
+        repoEgresos.agregarOperacionEgreso(egreso3, "ServerDataMock", getDatastore());
+        repoEgresos.agregarOperacionEgreso(egreso4, "ServerDataMock", getDatastore());
+        repoEgresos.agregarOperacionEgreso(egreso5, "ServerDataMock", getDatastore());
+        repoEgresos.agregarOperacionEgreso(egreso6, "ServerDataMock", getDatastore());
+        repoEgresos.agregarOperacionEgreso(egreso7, "ServerDataMock", getDatastore());
         em.getTransaction().commit();
+
+        cargarPresupuestos(egreso1, egreso5);
     }
 
-    private static void cargarPresupuestos() {
+    private static void cargarPresupuestos(OperacionEgreso egreso1, OperacionEgreso egreso5) {
         Licitacion licitacion1;
         Licitacion licitacion2;
         Presupuesto presup1;
@@ -393,8 +416,12 @@ public class ServerDataMock {
         listaItems.add(new Item(100, ETipoItem.ARTICULO, "Item2"));
 
         RepoOperacionesEgreso repoOperacionesEgreso = new RepoOperacionesEgreso(entityManager);
-        licitacion1 = new Licitacion(repoOperacionesEgreso.buscarOperacionEgresoPorIdenticadorOperacionEgreso("OE-7"), NotificadorSuscriptores.getInstance());
-        licitacion2 = new Licitacion(repoOperacionesEgreso.buscarOperacionEgresoPorIdenticadorOperacionEgreso("OE-16"), NotificadorSuscriptores.getInstance());
+//        licitacion1 = new Licitacion(repoOperacionesEgreso.buscarOperacionEgresoPorIdenticadorOperacionEgreso("OE-7"), NotificadorSuscriptores.getInstance());
+//        licitacion2 = new Licitacion(repoOperacionesEgreso.buscarOperacionEgresoPorIdenticadorOperacionEgreso("OE-16"), NotificadorSuscriptores.getInstance());
+
+        // Tuve que modificarlo porque no usan los mismos identificadores
+        licitacion1 = new Licitacion(egreso1, NotificadorSuscriptores.getInstance());
+        licitacion2 = new Licitacion(egreso5, NotificadorSuscriptores.getInstance());
 
         licitacion1.agregarCriterioSeleccionDeProveedor(new CriterioMenorPrecio());
         licitacion2.agregarCriterioSeleccionDeProveedor(new CriterioMenorPrecio());
@@ -426,7 +453,22 @@ public class ServerDataMock {
         entityManager.getTransaction().commit();
     }
 
-    public static EntityManager getEntityManager() {
+    private static EntityManager getEntityManager() {
         return entityManagerFactory.createEntityManager();
+    }
+
+    private static Datastore getDatastore(){
+        MongoClientURI uri = new MongoClientURI(
+                "mongodb+srv://mongodb:0AnE83904LltBfkF@cluster0.8pqel.mongodb.net/operations_audit?retryWrites=true&w=majority");
+
+        MongoClient mongoClient = new MongoClient(uri);
+        MongoDatabase database = mongoClient.getDatabase("test");
+
+        Morphia morphia = new Morphia();
+        morphia.mapPackage("auditoria");
+
+        Datastore datastore = morphia.createDatastore(mongoClient, "operations_audit");
+        datastore.ensureIndexes();
+        return datastore;
     }
 }

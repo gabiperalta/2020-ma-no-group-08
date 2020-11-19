@@ -13,6 +13,7 @@ import dominio.utils.RestClientML;
 import servicio.abOperaciones.ServicioABOperaciones;
 import servicio.ServiceMercadoLibre;
 
+import servidor.Router;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -154,8 +155,10 @@ public class EgresoController extends Controller{
             return "No se puede eliminar";
         }
 
+        CuentaUsuario usuario = request.session().attribute("user");
+
         RepoOperacionesEgreso repoOperacionesEgreso = new RepoOperacionesEgreso(entityManager);
-        repoOperacionesEgreso.eliminarOperacionEgresoPorIdentificador(identificador);
+        repoOperacionesEgreso.eliminarOperacionEgresoPorIdentificador(identificador, usuario.getUserName(), Router.getDatastore());
         response.status(200);
 
         return "Eliminacion existosa";
@@ -264,7 +267,7 @@ public class EgresoController extends Controller{
 
             OperacionEgreso egreso = new OperacionEgreso(items,medioDePagoFinal , documento, parsed, entidadOrigen, entidadDestino, Integer.valueOf(presupuestosNecesarios));
             RepoOperacionesEgreso repoOperacionesEgreso = new RepoOperacionesEgreso(entityManager);
-            repoOperacionesEgreso.agregarOperacionEgreso(egreso);
+            repoOperacionesEgreso.agregarOperacionEgreso(egreso, usuario.getUserName(), Router.getDatastore());
 
 
         }
@@ -376,9 +379,10 @@ public class EgresoController extends Controller{
 
             Date parsed=new SimpleDateFormat("yyyy-MM-dd").parse(fecha);
 
-            // Modificar Egreso
-            egreso.modificarse(medioDePagoFinal , documento, parsed, entidadOrigen, entidadDestino);
+            CuentaUsuario usuario = req.session().attribute("user");
 
+            // Modificar Egreso
+            new RepoOperacionesEgreso(null).modificarEgreso(egreso, medioDePagoFinal , documento, parsed, entidadOrigen, entidadDestino, usuario.getUserName(), Router.getDatastore());
         }
         catch(NullPointerException e){
             mensajeError = "Null error: " + e.getMessage();

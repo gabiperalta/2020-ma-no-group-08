@@ -1,22 +1,29 @@
 package dominio.operaciones;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class EntidadOperacion {
 
-	@Id
-	String nombre;
-	String cuil;
-	String direccion;
+	@Id @GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+	@Column(unique = true)
+	private String nombre;
+	private String cuil;
+	private String direccion;
 
 	public EntidadOperacion(String nombre, String cuil, String direccion) {
 		this.nombre = nombre;
 		this.cuil = cuil;
 		this.direccion = direccion;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public EntidadOperacion() {

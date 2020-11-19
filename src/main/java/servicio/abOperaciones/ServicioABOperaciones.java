@@ -15,28 +15,28 @@ import java.util.stream.Collectors;
 
 public class ServicioABOperaciones {
 
-    public void altaOperacion(ArrayList<Item> items, MedioDePago medioDePago, DocumentoComercial documento, Date fecha, double valorOperacion, EntidadOperacion entidadOrigen, EntidadOperacion entidadDestino) throws Exception{
-        OperacionEgresoBuilder operacionEgresoBuilder = new OperacionEgresoBuilder();
-        operacionEgresoBuilder.agregarItems(items)
-                .agregarMedioDePago(medioDePago)
-                .agregarDocComercial(documento)
-                .agregarFecha(fecha)
-                .agregarEntidadOrigen(entidadOrigen)
-                .agregarEntidadDestino(entidadDestino);
-
-        RepoOperacionesEgreso repoOperacionesEgreso = new RepoOperacionesEgreso(getEntityManager());
-        repoOperacionesEgreso.agregarOperacionEgreso(operacionEgresoBuilder.build());
-    }
+//    public void altaOperacion(ArrayList<Item> items, MedioDePago medioDePago, DocumentoComercial documento, Date fecha, double valorOperacion, EntidadOperacion entidadOrigen, EntidadOperacion entidadDestino) throws Exception{
+//        OperacionEgresoBuilder operacionEgresoBuilder = new OperacionEgresoBuilder();
+//        operacionEgresoBuilder.agregarItems(items)
+//                .agregarMedioDePago(medioDePago)
+//                .agregarDocComercial(documento)
+//                .agregarFecha(fecha)
+//                .agregarEntidadOrigen(entidadOrigen)
+//                .agregarEntidadDestino(entidadDestino);
+//
+//        RepoOperacionesEgreso repoOperacionesEgreso = new RepoOperacionesEgreso(getEntityManager());
+//        repoOperacionesEgreso.agregarOperacionEgreso(operacionEgresoBuilder.build());
+//    }
 
 
     public ArrayList<OperacionIngreso> listarIngresosPorOrg(Organizacion organizacion){
         return new ArrayList<OperacionIngreso>(this.listarIngresos().stream().
                 filter(ingreso -> ingreso.esDeLaOrganizacion(organizacion)).collect(Collectors.toList()));    }
 
-    public void bajaOperacion(OperacionEgreso operacionEgreso){
-        RepoOperacionesEgreso repoOperacionesEgreso = new RepoOperacionesEgreso(getEntityManager());
-        repoOperacionesEgreso.eliminarOperacionEgreso(operacionEgreso);
-    }
+//    public void bajaOperacion(OperacionEgreso operacionEgreso){
+//        RepoOperacionesEgreso repoOperacionesEgreso = new RepoOperacionesEgreso(getEntityManager());
+//        repoOperacionesEgreso.eliminarOperacionEgreso(operacionEgreso);
+//    }
 
     public ArrayList<OperacionEgreso> listarOperaciones(){
         RepoOperacionesEgreso repoOperacionesEgreso = new RepoOperacionesEgreso(getEntityManager());

@@ -1,6 +1,7 @@
 package datos;
 
 import dominio.entidades.Organizacion;
+import dominio.operaciones.EntidadOperacion;
 import dominio.operaciones.OperacionEgreso;
 import dominio.operaciones.OperacionIngreso;
 
@@ -24,8 +25,16 @@ public class RepoOperacionesIngreso {
         entityManager = em;
     }
 
+    private void cargarEntidadOperacion(EntidadOperacion entidadOperacion) {
+        if (!entityManager.contains(entidadOperacion)) {
+            entityManager.persist(entidadOperacion);
+        }
+    }
+
     public void agregarIngreso(OperacionIngreso ingreso) throws Exception {
         if (!existeEgreso(ingreso)) {
+            cargarEntidadOperacion(ingreso.getEntidadDestino());
+            cargarEntidadOperacion(ingreso.getEntidadOrigen());
             entityManager.persist(ingreso);
         }
     }
