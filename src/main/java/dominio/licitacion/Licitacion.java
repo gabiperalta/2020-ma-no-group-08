@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import auditoria.RepoAuditorias;
+import dev.morphia.Datastore;
 import dominio.cuentasUsuarios.CuentaUsuario;
 import dominio.licitacion.criterioSeleccion.CriterioSeleccionDeProveedor;
 import dominio.notificador_suscriptores.NotificadorSuscriptores;
@@ -62,11 +64,15 @@ public class Licitacion{
 		return presupuestos;
 	}
 
-	public void agregarPresupuesto(Presupuesto presup) {
+	public void agregarPresupuesto(Presupuesto presup, String nombreUsuario, Datastore datastore) {
 		if(presup.esValido(compra)) {
 			presup.setEntidadOrigen(this.compra.getEntidadOrigen());
 			//presup.setIdentificador(Objects.toString(this.getIdentificador(),"") + "-P" + ultimoIdentificadorPresupuesto);
 			this.presupuestos.add(presup);
+
+			//Auditoria
+			new RepoAuditorias(datastore).registrarAlta(this.getIdentificadorConEtiqueta() + "-" + Integer.toString(ultimoIdentificadorPresupuesto), nombreUsuario);
+
 			ultimoIdentificadorPresupuesto++;
 		}
 	}

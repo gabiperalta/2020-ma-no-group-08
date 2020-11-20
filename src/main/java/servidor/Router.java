@@ -99,7 +99,7 @@ public class Router {
 		get("/vinculaciones",vinculacionesC::seleccionarOperaciones,engine);
 		post("/vinculaciones",vinculacionesC::vincular);
 
-		get("/auditoria/:entidad_auditada/:operacion", auditoriaController::showAuditorias);
+		get("/auditoria", auditoriaController::showAuditorias);
 
 		before("/*", (request, response) -> {
 			CuentaUsuario cuentaUsuario = request.session().attribute("user");

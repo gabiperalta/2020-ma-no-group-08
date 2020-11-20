@@ -444,9 +444,9 @@ public class ServerDataMock {
         presup3 = new Presupuesto(proveedor1, listaItems3);
 
         entityManager.getTransaction().begin();
-        licitacion1.agregarPresupuesto(presup1);
-        licitacion2.agregarPresupuesto(presup2);
-        licitacion2.agregarPresupuesto(presup3);
+        licitacion1.agregarPresupuesto(presup1, "ServerDataMock", getDatastore());
+        licitacion2.agregarPresupuesto(presup2, "ServerDataMock", getDatastore());
+        licitacion2.agregarPresupuesto(presup3, "ServerDataMock", getDatastore());
 
         repoLicitaciones.agregarLicitacion(licitacion1);
         repoLicitaciones.agregarLicitacion(licitacion2);

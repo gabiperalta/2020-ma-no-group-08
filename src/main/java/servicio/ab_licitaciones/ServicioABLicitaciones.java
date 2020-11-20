@@ -10,6 +10,7 @@ import dominio.operaciones.OperacionEgreso;
 import dominio.operaciones.OperacionIngreso;
 import seguridad.sesion.exceptions.PermisoDenegadoException;
 import datos.RepositorioUsuarios;
+import servidor.Router;
 
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
@@ -30,8 +31,8 @@ public class ServicioABLicitaciones {
 		return licitacion;
 	}
 
-	public void altaPresupuesto(Licitacion licitacion,Presupuesto presupuesto){
-		licitacion.agregarPresupuesto(presupuesto);
+	public void altaPresupuesto(Licitacion licitacion,Presupuesto presupuesto, String nombreUsuario){
+		licitacion.agregarPresupuesto(presupuesto, nombreUsuario, Router.getDatastore());
 	}
 
 	public void bajaPresupuesto(Licitacion licitacion,Presupuesto presupuesto) {

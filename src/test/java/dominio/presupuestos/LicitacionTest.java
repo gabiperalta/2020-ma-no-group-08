@@ -6,6 +6,11 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
+import com.mongodb.client.MongoDatabase;
+import dev.morphia.Datastore;
+import dev.morphia.Morphia;
 import dominio.cuentasUsuarios.CuentaUsuario;
 import dominio.cuentasUsuarios.Roles.Rol;
 import dominio.licitacion.criterioSeleccion.CriterioMenorPrecio;
@@ -35,7 +40,6 @@ public class LicitacionTest {
 	Presupuesto presup4;
 	EntidadOperacion proveedor1;
 	EntidadOperacion proveedor2;
-
 	
 	@Before
 	public void init() {
@@ -102,29 +106,29 @@ public class LicitacionTest {
 	
     @Test
     public void licitarExitoso() {    	
-		licitacion.agregarPresupuesto(presup1);
-		licitacion.agregarPresupuesto(presup3);
+		licitacion.agregarPresupuesto(presup1, null, null);
+		licitacion.agregarPresupuesto(presup3, null, null);
 		assertTrue(licitacion.puedeLicitar());
     }
     
     @Test
     public void licitarNoExitosoPorqueNoCumpleCriterioCantidadPresupuestos() {
-    	licitacion.agregarPresupuesto(presup1);
+    	licitacion.agregarPresupuesto(presup1, null, null);
 		assertFalse(licitacion.puedeLicitar());
     }
     
     @Test
     public void licitarNoExitosoPorqueNoCumpleCriterioCorrespondeYEsMenorPrecio() {
-    	licitacion.agregarPresupuesto(presup1);
-    	licitacion.agregarPresupuesto(presup4);
+    	licitacion.agregarPresupuesto(presup1, null, null);
+    	licitacion.agregarPresupuesto(presup4, null, null);
     	assertFalse(licitacion.puedeLicitar());
     }
 
     @Test
 	public void usuarioNoPuedeSuscribirse(){
 		CuentaUsuario usuario = new CuentaUsuario("Prueba","1234",new Rol("TESTER",null));
-		licitacion.agregarPresupuesto(presup1);
-		licitacion.agregarPresupuesto(presup3);
+		licitacion.agregarPresupuesto(presup1, null, null);
+		licitacion.agregarPresupuesto(presup3, null, null);
 		licitacion.licitar();
 		Assert.assertThrows(Exception.class,()->{licitacion.suscribir(usuario);});
 	}

@@ -94,7 +94,10 @@ public class LicitacionController{
             urlEgresos = urlEgresos.concat("?");
 
         if(!licitacion.estaFinalizada()) {
-            presupuestos.forEach(presupuesto -> servicioABLicitaciones.altaPresupuesto(finalLicitacion, presupuesto));
+
+            CuentaUsuario usuario = request.session().attribute("user");
+
+            presupuestos.forEach(presupuesto -> servicioABLicitaciones.altaPresupuesto(finalLicitacion, presupuesto, usuario.getUserName()));
             //response.redirect("/egresos");
             //if(cantidadPresupuestosAnterior == licitacion.getPresupuestos().size())
             //    response.redirect("/egresos?error=presupuestoNoAgregado"); // no se agrego el presupuesto por no coincidir con los items del egreso

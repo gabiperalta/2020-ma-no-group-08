@@ -14,8 +14,8 @@ import java.util.stream.Collectors;
 public class AuditoriaController {
 
     public Object showAuditorias(Request request, Response response){
-        String identificadorEntidadAuditada = request.params("entidad_auditada");
-        String operacionRealizada = request.params("operacion");
+        String identificadorEntidadAuditada = request.queryParams("entidad_auditada");
+        String operacionRealizada = request.queryParams("operacion");
 
         RepoAuditorias repoAuditorias = new RepoAuditorias(Router.getDatastore());
 
