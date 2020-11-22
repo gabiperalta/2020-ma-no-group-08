@@ -11,6 +11,7 @@ import javax.persistence.*;
 @Table(name = "criterios_de_categorizacion")
 public class CriterioDeCategorizacion {
 	@Id
+	@Column(length = 100)
 	private String nombre;
 
 	@OneToMany(cascade = CascadeType.ALL) @JoinColumn(name = "nombre_criterio")

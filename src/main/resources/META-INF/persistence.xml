@@ -20,22 +20,32 @@
 		<class>dominio.licitacion.Licitacion</class>
 		<class>dominio.licitacion.criterioSeleccion.CriterioSeleccionDeProveedor</class>
 		<class>dominio.licitacion.criterioSeleccion.CriterioMenorPrecio</class>
+		<class>dominio.operaciones.OperacionIngreso</class>
+		<class>dominio.categorizacion.Categoria</class>
 
 		<properties>
 			<property name="hibernate.archive.autodetection" value="class" />
 
 			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
+
 			<property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/dds3?serverTimezone=UTC" />
 			<property name="hibernate.connection.username" value="root" />
 			<property name="hibernate.connection.password" value="1234" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
 
+			<!-- configuracion para conectar con cleardb -->
+			<!--
+			<property name="hibernate.connection.url" value="jdbc:mysql://us-cdbr-east-02.cleardb.com:3306/heroku_9f67a14ee34e826?serverTimezone=UTC" />
+			<property name="hibernate.connection.username" value="b77f488abdbf1c" />
+			<property name="hibernate.connection.password" value="96008b53" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
+			-->
 
 
 			<property name="hibernate.show_sql" value="true" />
 			<property name="hibernate.format_sql" value="true" />
 			<property name="use_sql_comments" value="true" />
 			<property name="hibernate.hbm2ddl.auto" value="none" />
-			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
 		</properties>
 
 	</persistence-unit>

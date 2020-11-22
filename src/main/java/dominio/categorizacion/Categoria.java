@@ -8,6 +8,7 @@ import java.io.Serializable;
 @Table(name = "categorias")
 public class Categoria implements Serializable {
 	@Id
+	@Column(length = 100)
 	private String nombre;
 
 	@OneToOne(cascade = CascadeType.PERSIST)
