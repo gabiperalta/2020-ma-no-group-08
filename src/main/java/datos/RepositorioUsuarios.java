@@ -4,6 +4,14 @@ import java.util.ArrayList;
 
 import dominio.cuentasUsuarios.CuentaUsuario;
 import dominio.cuentasUsuarios.Roles.Privilegio;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.List;
+
+import dominio.cuentasUsuarios.perfil.*;
+
 import dominio.cuentasUsuarios.Roles.Rol;
 import dominio.entidades.Organizacion;
 import temporal.seguridad.repositorioUsuarios.exceptions.CredencialesNoValidasException;
@@ -76,13 +84,76 @@ public class RepositorioUsuarios {
 			}
 		}
 	}
-	
+
+
 	public CuentaUsuario buscarUsuario(String unNombreUsuario) {
-		return entityManager.find(CuentaUsuario.class, unNombreUsuario);
+
+		CriteriaBuilder cb = this.entityManager.getCriteriaBuilder();
+		CriteriaQuery<PerfilEstandar> consulta = cb.createQuery(PerfilEstandar.class);
+		Root<PerfilEstandar> perfiles = consulta.from(PerfilEstandar.class);
+		Predicate condicion = cb.equal(perfiles.get("nombre"), unNombreUsuario);
+
+		CriteriaQuery<PerfilEstandar> where = consulta.select(perfiles).where(condicion);
+
+		List<PerfilEstandar> listaPerfiles = this.entityManager.createQuery(where).getResultList();
+
+		Object perfilUsuario;
+
+		if(listaPerfiles.size() != 0) {
+			perfilUsuario = listaPerfiles.get(0);
+
+		}
+		else{
+
+			CriteriaBuilder cb2 = this.entityManager.getCriteriaBuilder();
+			CriteriaQuery<PerfilAdministrador> consulta2 = cb2.createQuery(PerfilAdministrador.class);
+			Root<PerfilAdministrador> perfilesA = consulta.from(PerfilAdministrador.class);
+			Predicate condicion2 = cb.equal(perfiles.get("nombre"), unNombreUsuario);
+
+			CriteriaQuery<PerfilAdministrador> where2 = consulta2.select(perfilesA).where(condicion2);
+
+			List<PerfilAdministrador> listaPerfiles2 = this.entityManager.createQuery(where2).getResultList();
+
+			if(listaPerfiles2.size() != 0) {
+				perfilUsuario = listaPerfiles2.get(0);
+			}
+			else {
+				return null;
+			}
+
+		}
+
+		CriteriaBuilder cb3 = this.entityManager.getCriteriaBuilder();
+		CriteriaQuery<CuentaUsuario> consulta3 = cb3.createQuery(CuentaUsuario.class);
+		Root<CuentaUsuario> cuentas = consulta3.from(CuentaUsuario.class);
+		Predicate condicion3 = cb.equal(cuentas.get("perfil"), perfilUsuario);
+		CriteriaQuery<CuentaUsuario> where3 = consulta3.select(cuentas).where(condicion3);
+
+		List<CuentaUsuario> listaCuentas = this.entityManager.createQuery(where3).getResultList();
+
+		if(listaCuentas.size() > 0)
+			return listaCuentas.get(0);
+		else
+			return null;
+
 	}
 	
 	public Rol buscarRol(String nombreRol) {
-		return entityManager.find(Rol.class, nombreRol);
+
+
+		CriteriaBuilder cb = this.entityManager.getCriteriaBuilder();
+		CriteriaQuery<Rol> consulta = cb.createQuery(Rol.class);
+		Root<Rol> roles = consulta.from(Rol.class);
+		Predicate condicion = cb.equal(roles.get("nombre"), nombreRol);
+		CriteriaQuery<Rol> where = consulta.select(roles).where(condicion);
+
+		List<Rol> listaRoles = this.entityManager.createQuery(where).getResultList();
+
+		if(listaRoles.size() > 0)
+			return listaRoles.get(0);
+		else
+			return null;
+
 	}
 
 }

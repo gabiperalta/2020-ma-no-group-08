@@ -17,7 +17,7 @@ public class OperacionIngreso implements Operacion {
 	private String descripcion;
 	private double montoTotal;
 
-	//@Convert(converter = Date.class)
+	@Temporal(TemporalType.DATE)
 	private Date fecha;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)

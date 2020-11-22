@@ -4,6 +4,7 @@ import com.google.gson.*;
 //import com.sun.org.apache.regexp.internal.RE;
 import datos.RepoOperacionesEgreso;
 import datos.RepositorioCategorizacion;
+import dominio.categorizacion.EntidadCategorizable;
 import dominio.cuentasUsuarios.CuentaUsuario;
 import dominio.licitacion.Licitacion;
 import dominio.licitacion.Presupuesto;
@@ -18,6 +19,7 @@ import spark.Request;
 import spark.Response;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Tuple;
 import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletException;
 import java.io.BufferedReader;
@@ -167,8 +169,10 @@ public class LicitacionController{
 
     public ModelAndView mostrarPresupuestos(Request request, Response response, EntityManager entityManager){
         RepositorioCategorizacion repositorioCategorizacion = new RepositorioCategorizacion(entityManager);
+        RepoLicitaciones repoLicitaciones = new RepoLicitaciones(entityManager);
 
         int presupuestosPorPagina = 3;
+        long cantidadPresupuestos;
         String href = "/presupuestos";
         Map<String, Object> map = new HashMap<>();
 
@@ -176,25 +180,21 @@ public class LicitacionController{
         String filtro = request.queryParams("filtro");
         CuentaUsuario usuario = request.session().attribute("user");
         ServicioABLicitaciones servicioABLicitaciones = new ServicioABLicitaciones(entityManager);
-        ArrayList<Licitacion> licitaciones = servicioABLicitaciones.listarLicitacionesOrg(usuario.getOrganizacion());
+        cantidadPresupuestos = repoLicitaciones.getCantidadPresupuestosPorOrg(usuario.getOrganizacion());
 
-        List<Presupuesto> presupuestos = licitaciones.stream().flatMap(licitacion -> licitacion.getPresupuestos().stream()).collect(Collectors.toList());
-        List<HashMap<String,Object>> presupuestosCompuestoInicial = licitaciones.stream().flatMap(licitacion -> licitacion.getPresupuestos().stream().map(presupuesto -> new HashMap<String,Object>(){{
-            put("presupuesto",presupuesto);
-            put("id_egreso",licitacion.getOperacionEgreso().getIdentificador());
-        }})).collect(Collectors.toList());
-        List<HashMap<String,Object>> presupuestosCompuesto = new ArrayList<>();
+        List<HashMap<String,Object>> presupuestosCompuesto = null;
 
         if(filtro != null){
             String[] nombreCategoriaCriterio= filtro.split("_");
 
             try{
-                presupuestos = repositorioCategorizacion.filtrarPresupuestosDeLaCategoria(nombreCategoriaCriterio[1],nombreCategoriaCriterio[0], usuario.getOrganizacion());
+                cantidadPresupuestos = repositorioCategorizacion.filtrarPresupuestosDeLaCategoriaCantidad(nombreCategoriaCriterio[1], nombreCategoriaCriterio[0], usuario.getOrganizacion());
                 map.put("infoFiltroActual","Filtrado por " + nombreCategoriaCriterio[0] + " - " + nombreCategoriaCriterio[1]);
             }catch (NullPointerException e){
-                presupuestos = null;
+                cantidadPresupuestos = 0;
             }catch (ArrayIndexOutOfBoundsException ignored){
-
+                response.redirect("/presupuestos");
+                return null;
             }
 
             href = href.concat("?filtro=" + filtro);
@@ -202,7 +202,7 @@ public class LicitacionController{
         }
 
         if(pagina == null){
-            if(presupuestos.size() > presupuestosPorPagina){
+            if(cantidadPresupuestos > presupuestosPorPagina){
                 if(href.equals("/presupuestos"))
                     href = href.concat("?pagina=1");
                 else
@@ -210,27 +210,42 @@ public class LicitacionController{
                 response.redirect(href); // redirecciona a la pagina 1
                 return null;
             }
-            //map.put("presupuestos",presupuestos);
 
-            for(HashMap<String,Object> presupuestoCompuestoInicial : presupuestosCompuestoInicial){
-                Presupuesto presupuestoInicial = (Presupuesto) presupuestoCompuestoInicial.get("presupuesto");
-                if(presupuestos.stream().anyMatch( presupuesto -> presupuesto.getIdentificador().equals(presupuestoInicial.getIdentificador())))
-                    presupuestosCompuesto.add(presupuestoCompuestoInicial);
+
+            if(filtro != null){
+                String[] nombreCategoriaCriterio= filtro.split("_");
+                try{
+                    presupuestosCompuesto = repositorioCategorizacion.filtrarPresupuestosDeLaCategoria(nombreCategoriaCriterio[1], nombreCategoriaCriterio[0], usuario.getOrganizacion(),presupuestosPorPagina,0);
+                }catch (NullPointerException e){
+                    presupuestosCompuesto = null;
+                }catch (ArrayIndexOutOfBoundsException ignored){
+
+                }
             }
+            else{
+                presupuestosCompuesto = repoLicitaciones.getPresupuestosPorOrg(usuario.getOrganizacion(),presupuestosPorPagina,0); // falta poner el limite y base
+            }
+
         }
         else{
             int numeroPagina = Integer.parseInt(pagina);
-            int indiceInicial = Math.min((numeroPagina - 1) * presupuestosPorPagina,presupuestos.size());
-            int indiceFinal = Math.min(numeroPagina * presupuestosPorPagina,presupuestos.size());
-            List<Presupuesto> presupuestosSubLista = presupuestos.subList(indiceInicial,indiceFinal);
+            int indiceInicial = Math.min((numeroPagina - 1) * presupuestosPorPagina,(int)cantidadPresupuestos);
 
-            for(HashMap<String,Object> presupuestoCompuestoInicial : presupuestosCompuestoInicial){
-                Presupuesto presupuestoInicial = (Presupuesto) presupuestoCompuestoInicial.get("presupuesto");
-                if(presupuestosSubLista.stream().anyMatch( presupuesto -> presupuesto.getIdentificador().equals(presupuestoInicial.getIdentificador())))
-                    presupuestosCompuesto.add(presupuestoCompuestoInicial);
+            if(filtro != null){
+                String[] nombreCategoriaCriterio= filtro.split("_");
+                try{
+                    presupuestosCompuesto = repositorioCategorizacion.filtrarPresupuestosDeLaCategoria(nombreCategoriaCriterio[1], nombreCategoriaCriterio[0], usuario.getOrganizacion(),presupuestosPorPagina,indiceInicial);
+                }catch (NullPointerException e){
+                    presupuestosCompuesto = null;
+                }catch (ArrayIndexOutOfBoundsException ignored){
+
+                }
+            }
+            else{
+                presupuestosCompuesto = repoLicitaciones.getPresupuestosPorOrg(usuario.getOrganizacion(),presupuestosPorPagina,indiceInicial);
             }
 
-            int cantidadPaginas = (int) Math.ceil((double)presupuestos.size()/presupuestosPorPagina);
+            int cantidadPaginas = (int) Math.ceil((double)cantidadPresupuestos/presupuestosPorPagina);
             ArrayList<Integer> listaCantidadPaginas = new ArrayList<>();
             for(int i = 1;i<=cantidadPaginas; i++){
                 listaCantidadPaginas.add(i);
@@ -238,14 +253,16 @@ public class LicitacionController{
             map.put("cantidad_paginas",listaCantidadPaginas);
             if(numeroPagina > 1)
                 map.put("pagina_anterior",numeroPagina - 1);
-            if(numeroPagina * presupuestosPorPagina < presupuestos.size())
+            if(numeroPagina * presupuestosPorPagina < cantidadPresupuestos)
                 map.put("pagina_siguiente",numeroPagina + 1);
 
         }
         map.put("presupuestos",presupuestosCompuesto);
         map.put("user", request.session().attribute("user"));
 
-        //map.put("criteriosDeCategorizacion",RepositorioCategorizacion.getInstance().getCriteriosDeCategorizacion());
+        map.put("criteriosDeCategorizacion",repositorioCategorizacion.getCriteriosDeCategorizacion());
+
+        System.out.println("Size presupuestos: " + repoLicitaciones.getCantidadPresupuestos());
         return new ModelAndView(map,"presupuestos.hbs");
     }
 

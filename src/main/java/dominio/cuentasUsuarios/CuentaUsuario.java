@@ -22,7 +22,8 @@ import javax.persistence.*;
 @Entity
 @Table(name = "cuentas_usuarios")
 public class CuentaUsuario implements Serializable {
-	@Id
+	@Id @GeneratedValue
+	private String id;
 	@OneToOne
 	private Perfil perfil;
 	private String passwordHash;

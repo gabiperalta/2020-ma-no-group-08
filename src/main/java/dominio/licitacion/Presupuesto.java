@@ -17,6 +17,9 @@ import javax.persistence.*;
 @Entity
 public class Presupuesto extends EntidadCategorizable {
 
+	@Id @GeneratedValue
+	private String id;
+
 	@OneToOne(cascade = CascadeType.ALL)
 	private EntidadOperacion proveedor;
 

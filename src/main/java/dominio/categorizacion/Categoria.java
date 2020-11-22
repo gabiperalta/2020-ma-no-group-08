@@ -7,13 +7,14 @@ import java.io.Serializable;
 @Entity
 @Table(name = "categorias")
 public class Categoria implements Serializable {
-	@Id
+	@Id @GeneratedValue
+	private String id;
+
 	private String nombre;
 
 	@OneToOne(cascade = CascadeType.PERSIST)
 	private Categoria categoriaPadre;
 
-	@Id
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	private CriterioDeCategorizacion criterioDeCategorizacion;
 

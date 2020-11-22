@@ -14,6 +14,9 @@ import java.util.List;
 @Table(name = "operaciones_egreso")
 public class OperacionEgreso extends EntidadCategorizable implements Operacion{
 
+	@Id @GeneratedValue
+	private String id;
+
 	@OneToMany(cascade = CascadeType.PERSIST) @JoinColumn(name = "identificadorOperacion")
 	private List<Item> items;
 
@@ -25,7 +28,7 @@ public class OperacionEgreso extends EntidadCategorizable implements Operacion{
 	@OneToOne(cascade = CascadeType.PERSIST)
 	private DocumentoComercial documento;
 
-	//@Convert(converter = Date.class)
+	@Temporal(TemporalType.DATE)
 	private Date fecha;
 
 	@ManyToOne

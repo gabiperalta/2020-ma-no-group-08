@@ -10,7 +10,9 @@ import javax.persistence.*;
 @Entity
 @Table(name = "criterios_de_categorizacion")
 public class CriterioDeCategorizacion {
-	@Id
+	@Id @GeneratedValue
+	private String id;
+
 	private String nombre;
 
 	@OneToMany(cascade = CascadeType.ALL) @JoinColumn(name = "nombre_criterio")
