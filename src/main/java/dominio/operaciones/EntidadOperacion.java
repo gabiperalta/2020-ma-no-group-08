@@ -9,7 +9,7 @@ import javax.persistence.Id;
 public class EntidadOperacion {
 
 	@Id @GeneratedValue
-	private String id;
+	private int id;
 
 	String nombre;
 	String cuil;
@@ -37,6 +37,14 @@ public class EntidadOperacion {
 	}
 	public boolean correspondeEntidad(EntidadOperacion entidad) {
 		return this.nombre.equals(entidad.getNombre()) && this.cuil.equals(entidad.getCuil()) && this.direccion.equals(entidad.getDireccion());
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public void setNombre(String nombre) {

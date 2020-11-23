@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Table(name = "criterios_de_categorizacion")
 public class CriterioDeCategorizacion {
 	@Id @GeneratedValue
-	private String id;
+	private int id;
 
 	private String nombre;
 

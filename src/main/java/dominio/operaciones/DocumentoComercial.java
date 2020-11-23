@@ -6,7 +6,7 @@ import javax.persistence.*;
 public class DocumentoComercial {
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    private int id;
 
     @Enumerated(EnumType.STRING)
     ETipoDoc tipo;

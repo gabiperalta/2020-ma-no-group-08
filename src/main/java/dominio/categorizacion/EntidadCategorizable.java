@@ -11,7 +11,7 @@ import dominio.categorizacion.exceptions.CategorizacionException;
 import javax.persistence.*;
 
 @Entity
-// todo determinar la estrategia de herencia
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class EntidadCategorizable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

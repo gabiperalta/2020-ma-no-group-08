@@ -51,7 +51,6 @@ public class RepoOperacionesEgreso {
     }
 
     public OperacionEgreso buscarOperacionEgresoPorIdenticadorOperacionEgreso(String identifacdorOperacionEgreso){
-
         String identificadorAcotado = identifacdorOperacionEgreso.substring(3);
         int identificador = Integer.parseInt(identificadorAcotado);
         return entityManager.find(OperacionEgreso.class, identificador);

@@ -19,10 +19,7 @@ import dominio.operaciones.OperacionEgreso;
 import dominio.operaciones.OperacionIngreso;
 import mock.ServerDataMock;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Persistence;
-import javax.persistence.Tuple;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import javax.persistence.criteria.*;
 
 public class RepositorioCategorizacion {
@@ -66,12 +63,13 @@ public class RepositorioCategorizacion {
 		CriteriaQuery<CriterioDeCategorizacion> consulta = cb.createQuery(CriterioDeCategorizacion.class);
 		Root<CriterioDeCategorizacion> criterios = consulta.from(CriterioDeCategorizacion.class);
 		Predicate condicion = cb.equal(criterios.get("nombre"), nombreCriterioDeCategorizacion);
-		CriteriaQuery<CriterioDeCategorizacion> where = consulta.select(criterios).where(condicion);
+		consulta.select(criterios).where(condicion);
 
-		List<CriterioDeCategorizacion> listacriterios = this.entityManager.createQuery(where).getResultList();
+		Query query = entityManager.createQuery(consulta);
+		List<CriterioDeCategorizacion> listaCriterios = query.getResultList();
 
-		if(listacriterios.size() > 0)
-			return listacriterios.get(0);
+		if(listaCriterios.size() > 0)
+			return listaCriterios.get(0);
 		else
 			return null;
 
@@ -161,7 +159,6 @@ public class RepositorioCategorizacion {
 		unCriterio.desasociarCategoriaAEntidadCategorizable(nombreCategoria, unaEntidad);
 	}
 
-	// TODO DEBUGGEAR
 	public ArrayList<EntidadCategorizable> filtrarEntidadesDeLaCategoria(String nombreCategoria, String nombreCriterioDeCategorizacion, Organizacion unaOrganizacion){
 		Categoria unaCategoria = this.buscarCriterioDeCategorizacion(nombreCriterioDeCategorizacion).buscarCategoria(nombreCategoria);
 

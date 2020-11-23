@@ -13,13 +13,6 @@ import java.util.ArrayList;
 public class RepoOperacionesIngreso {
     private EntityManager entityManager;
 
-    public ArrayList<OperacionIngreso> getIngresos() {
-        CriteriaBuilder cb = this.entityManager.getCriteriaBuilder();
-        CriteriaQuery<OperacionIngreso> consulta = cb.createQuery(OperacionIngreso.class);
-        Root<OperacionIngreso> operacionesIngresoC = consulta.from(OperacionIngreso.class);
-        return new ArrayList<>(this.entityManager.createQuery(consulta.select(operacionesIngresoC)).getResultList());
-    }
-
     public RepoOperacionesIngreso(EntityManager em){
         entityManager = em;
     }
@@ -28,6 +21,13 @@ public class RepoOperacionesIngreso {
         if (!existeEgreso(ingreso)) {
             entityManager.persist(ingreso);
         }
+    }
+
+    public ArrayList<OperacionIngreso> getIngresos() {
+        CriteriaBuilder cb = this.entityManager.getCriteriaBuilder();
+        CriteriaQuery<OperacionIngreso> consulta = cb.createQuery(OperacionIngreso.class);
+        Root<OperacionIngreso> operacionesIngresoC = consulta.from(OperacionIngreso.class);
+        return new ArrayList<>(this.entityManager.createQuery(consulta.select(operacionesIngresoC)).getResultList());
     }
 
     private boolean existeEgreso(OperacionIngreso operacionIngreso) {

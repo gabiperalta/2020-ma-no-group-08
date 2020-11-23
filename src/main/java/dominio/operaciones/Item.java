@@ -6,7 +6,7 @@ import javax.persistence.*;
 public class Item {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	int id;
+	private int id;
 
 	private int valor;
 
@@ -25,7 +25,27 @@ public class Item {
 
     }
 
-    public int getValor() {
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public ETipoItem getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(ETipoItem tipo) {
+		this.tipo = tipo;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	public int getValor() {
 		return valor;
 	}
 

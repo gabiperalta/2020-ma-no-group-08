@@ -6,6 +6,7 @@ import dominio.licitacion.Licitacion;
 
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -58,15 +59,15 @@ public class RepoEntidadesJuridicas {
         CriteriaQuery<Empresa> consulta = cb.createQuery(Empresa.class);
         Root<Empresa> empresas = consulta.from(Empresa.class);
         Predicate condicion = cb.equal(empresas.get("razonSocial"), razonSocial);
-        CriteriaQuery<Empresa> where = consulta.select(empresas).where(condicion);
+        consulta.select(empresas).where(condicion);
 
-        List<Empresa> listaEmpresas = this.entityManager.createQuery(where).getResultList();
+        Query query = entityManager.createQuery(consulta);
+        List<Empresa> listaEmpresas = query.getResultList();
 
         if(listaEmpresas.size() > 0)
             return listaEmpresas.get(0);
         else
             return null;
-
     }
 
 }

@@ -8,7 +8,7 @@ import java.io.Serializable;
 @Table(name = "categorias")
 public class Categoria implements Serializable {
 	@Id @GeneratedValue
-	private String id;
+	private int id;
 
 	private String nombre;
 

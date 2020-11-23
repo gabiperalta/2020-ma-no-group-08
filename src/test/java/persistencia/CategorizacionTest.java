@@ -28,26 +28,26 @@ public class CategorizacionTest {
     public void init(){
         entityManagerFactory = Persistence.createEntityManagerFactory("db");
     }
-    @Ignore
+
     @Test
-    public void testGetCategorias() {
+    public void testGetCriteriosDeCategorizacion() {
         this.entityManager = entityManagerFactory.createEntityManager();
 
         RepositorioCategorizacion repositorioCategorizacion = new RepositorioCategorizacion(entityManager);
 
         ArrayList<CriterioDeCategorizacion> criterios = repositorioCategorizacion.getCriteriosDeCategorizacion();
     }
-    @Ignore
+
     @Test
     public void testCategorizarEgreso() throws CategorizacionException {
         this.entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
         RepositorioCategorizacion repositorioCategorizacion = new RepositorioCategorizacion(entityManager);
 
-        repositorioCategorizacion.asociarCategoriaAEntidadCategorizable("OE-7", "Categoria-1", "CriterioDePrueba-1");
+        repositorioCategorizacion.asociarCategoriaAEntidadCategorizable("OE-80", "Categoria-1", "CriterioDePrueba-1");
         entityManager.getTransaction().commit();
     }
-    @Ignore
+
     @Test
     public void testCategorizarPresupuesto() throws CategorizacionException {
         this.entityManager = entityManagerFactory.createEntityManager();
@@ -55,11 +55,11 @@ public class CategorizacionTest {
 
         RepositorioCategorizacion repositorioCategorizacion = new RepositorioCategorizacion(entityManager);
 
-        repositorioCategorizacion.asociarCategoriaAEntidadCategorizable("L-20-22", "Categoria-1", "CriterioDePrueba-1");
+        repositorioCategorizacion.asociarCategoriaAEntidadCategorizable("L-84-86", "Categoria-1", "CriterioDePrueba-1");
 
         entityManager.getTransaction().commit();
     }
-    @Ignore
+
     @Test
     public void testCategorizarPresupuesto2() throws CategorizacionException {
         this.entityManager = entityManagerFactory.createEntityManager();
@@ -67,7 +67,7 @@ public class CategorizacionTest {
 
         RepositorioCategorizacion repositorioCategorizacion = new RepositorioCategorizacion(entityManager);
 
-        repositorioCategorizacion.asociarCategoriaAEntidadCategorizable("L-24-26", "Categoria-2", "CriterioDePrueba-1");
+        repositorioCategorizacion.asociarCategoriaAEntidadCategorizable("L-89-91", "Categoria-2", "CriterioDePrueba-1");
 
         entityManager.getTransaction().commit();
     }

@@ -15,7 +15,7 @@ import java.util.List;
 public class OperacionEgreso extends EntidadCategorizable implements Operacion{
 
 	@Id @GeneratedValue
-	private String id;
+	private int id;
 
 	@OneToMany(cascade = CascadeType.PERSIST) @JoinColumn(name = "identificadorOperacion")
 	private List<Item> items;
@@ -155,5 +155,15 @@ public class OperacionEgreso extends EntidadCategorizable implements Operacion{
 
 	public void setEntidadDestino(EntidadOperacion entidadDestino) {
 		this.entidadDestino = entidadDestino;
+	}
+
+	@Override
+	public int getId() {
+		return id;
+	}
+
+	@Override
+	public void setId(int id) {
+		this.id = id;
 	}
 }

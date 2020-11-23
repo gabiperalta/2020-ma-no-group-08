@@ -10,7 +10,7 @@ import javax.persistence.*;
 public class Empresa {
 
     @Id @GeneratedValue
-    private String id;
+    private int id;
 
     protected String razonSocial;
 

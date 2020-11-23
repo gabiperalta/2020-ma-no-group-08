@@ -11,7 +11,7 @@ import java.util.List;
 @Table(name = "Organizaciones")
 public class Organizacion {
     @Id @GeneratedValue
-    private String id;
+    private int id;
 
     private String nombre;
     @OneToMany (cascade = CascadeType.ALL)

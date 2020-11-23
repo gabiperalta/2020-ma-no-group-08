@@ -1,6 +1,8 @@
 package datos;
 
 import dominio.entidades.Empresa;
+
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -44,9 +46,10 @@ public class RepoOrganizaciones {
         CriteriaQuery<Organizacion> consulta = cb.createQuery(Organizacion.class);
         Root<Organizacion> organizaciones = consulta.from(Organizacion.class);
         Predicate condicion = cb.equal(organizaciones.get("nombre"), nombreOrganizacion);
-        CriteriaQuery<Organizacion> where = consulta.select(organizaciones).where(condicion);
+        consulta.select(organizaciones).where(condicion);
 
-        List<Organizacion> listaOrganizaciones = this.entityManager.createQuery(where).getResultList();
+        Query query = entityManager.createQuery(consulta);
+        List<Organizacion> listaOrganizaciones = query.getResultList();
 
         if(listaOrganizaciones.size() > 0)
             return listaOrganizaciones.get(0);

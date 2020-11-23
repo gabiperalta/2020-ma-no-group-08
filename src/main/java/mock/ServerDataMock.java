@@ -39,7 +39,7 @@ public class ServerDataMock {
         cargarCategorias();
         cargarIngresos();
         cargarEgregos();
-        cargarPresupuestos();
+        //cargarPresupuestos();
     }
 
     public ServerDataMock() {
@@ -329,7 +329,7 @@ public class ServerDataMock {
                 .agregarDocComercial(documento)
                 .agregarFecha(fecha)
                 .agregarEntidadOrigen(origen3)
-                .agregarEntidadDestino(destino4)
+                .agregarEntidadDestino(destino3)
                 .agregarPresupuestosNecesarios(presupuestosNecesarios).build();
 
         OperacionEgreso egreso4 = builderEgreso.agregarItems(items4)
@@ -375,9 +375,12 @@ public class ServerDataMock {
         repoEgresos.agregarOperacionEgreso(egreso6);
         repoEgresos.agregarOperacionEgreso(egreso7);
         em.getTransaction().commit();
+
+        cargarPresupuestos(egreso1, egreso5);
+
     }
 
-    private static void cargarPresupuestos() {
+    private static void cargarPresupuestos(OperacionEgreso egreso1, OperacionEgreso egreso5) {
         Licitacion licitacion1;
         Licitacion licitacion2;
         Presupuesto presup1;
@@ -392,9 +395,12 @@ public class ServerDataMock {
         listaItems.add(new Item(50, ETipoItem.ARTICULO, "Item1"));
         listaItems.add(new Item(100, ETipoItem.ARTICULO, "Item2"));
 
-        RepoOperacionesEgreso repoOperacionesEgreso = new RepoOperacionesEgreso(entityManager);
-        licitacion1 = new Licitacion(repoOperacionesEgreso.buscarOperacionEgresoPorIdenticadorOperacionEgreso("OE-46"), NotificadorSuscriptores.getInstance());
-        licitacion2 = new Licitacion(repoOperacionesEgreso.buscarOperacionEgresoPorIdenticadorOperacionEgreso("OE-62"), NotificadorSuscriptores.getInstance());
+//        RepoOperacionesEgreso repoOperacionesEgreso = new RepoOperacionesEgreso(entityManager);
+//        licitacion1 = new Licitacion(repoOperacionesEgreso.buscarOperacionEgresoPorIdenticadorOperacionEgreso("OE-46"), NotificadorSuscriptores.getInstance());
+//        licitacion2 = new Licitacion(repoOperacionesEgreso.buscarOperacionEgresoPorIdenticadorOperacionEgreso("OE-62"), NotificadorSuscriptores.getInstance());
+        licitacion1 = new Licitacion(egreso1, NotificadorSuscriptores.getInstance());
+        licitacion2 = new Licitacion(egreso5, NotificadorSuscriptores.getInstance());
+
 
         licitacion1.agregarCriterioSeleccionDeProveedor(new CriterioMenorPrecio());
         licitacion2.agregarCriterioSeleccionDeProveedor(new CriterioMenorPrecio());
