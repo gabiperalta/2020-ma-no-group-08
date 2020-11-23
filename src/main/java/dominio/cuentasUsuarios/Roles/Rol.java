@@ -7,7 +7,9 @@ import java.util.List;
 @Entity
 @Table(name="roles")
 public class Rol {
-	@Id
+	@Id @GeneratedValue
+	private String id;
+
 	private String nombre;
 
 	@OneToMany(cascade=CascadeType.ALL)

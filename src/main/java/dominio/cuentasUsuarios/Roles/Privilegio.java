@@ -1,13 +1,16 @@
 package dominio.cuentasUsuarios.Roles;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "privilegios")
 public class Privilegio {
-	@Id
+	@Id @GeneratedValue
+	private String id;
+
 	private String nombre;
 
 	public String getNombre() {
