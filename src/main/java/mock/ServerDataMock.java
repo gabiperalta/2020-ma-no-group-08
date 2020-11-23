@@ -39,7 +39,7 @@ public class ServerDataMock {
         cargarCategorias();
         cargarIngresos();
         cargarEgregos();
-        cargarPresupuestos();
+        //cargarPresupuestos();
     }
 
     public ServerDataMock() {
@@ -374,9 +374,11 @@ public class ServerDataMock {
         repoEgresos.agregarOperacionEgreso(egreso6);
         repoEgresos.agregarOperacionEgreso(egreso7);
         em.getTransaction().commit();
+
+        cargarPresupuestos(egreso1,egreso5);
     }
 
-    private static void cargarPresupuestos() {
+    private static void cargarPresupuestos(OperacionEgreso operacionEgreso1, OperacionEgreso operacionEgreso2) {
         Licitacion licitacion1;
         Licitacion licitacion2;
         Presupuesto presup1;
@@ -392,8 +394,8 @@ public class ServerDataMock {
         listaItems.add(new Item(100, ETipoItem.ARTICULO, "Item2"));
 
         RepoOperacionesEgreso repoOperacionesEgreso = new RepoOperacionesEgreso(entityManager);
-        licitacion1 = new Licitacion(repoOperacionesEgreso.buscarOperacionEgresoPorIdenticadorOperacionEgreso("OE-46"), NotificadorSuscriptores.getInstance());
-        licitacion2 = new Licitacion(repoOperacionesEgreso.buscarOperacionEgresoPorIdenticadorOperacionEgreso("OE-62"), NotificadorSuscriptores.getInstance());
+        licitacion1 = new Licitacion(repoOperacionesEgreso.buscarOperacionEgresoPorIdenticadorOperacionEgreso(operacionEgreso1.getIdentificador()), NotificadorSuscriptores.getInstance());
+        licitacion2 = new Licitacion(repoOperacionesEgreso.buscarOperacionEgresoPorIdenticadorOperacionEgreso(operacionEgreso2.getIdentificador()), NotificadorSuscriptores.getInstance());
 
         licitacion1.agregarCriterioSeleccionDeProveedor(new CriterioMenorPrecio());
         licitacion2.agregarCriterioSeleccionDeProveedor(new CriterioMenorPrecio());

@@ -189,6 +189,7 @@ public class RepositorioCategorizacion {
 
 	public List<HashMap<String,Object>> filtrarPresupuestosDeLaCategoria(String nombreCategoria, String nombreCriterioDeCategorizacion, Organizacion unaOrganizacion,int limite, int base){
 		Categoria unaCategoria = this.buscarCriterioDeCategorizacion(nombreCriterioDeCategorizacion).buscarCategoria(nombreCategoria);
+		List<String> razonSocialDeEntidades = unaOrganizacion.getEntidades().stream().map(Empresa::getRazonSocial).collect(Collectors.toList());
 
 		CriteriaBuilder cb = this.entityManager.getCriteriaBuilder();
 		CriteriaQuery<Tuple> tupla = cb.createTupleQuery();
@@ -197,12 +198,15 @@ public class RepositorioCategorizacion {
 		Join<Object,Object> criteriosDeCategorizacion = categorias.join("criterioDeCategorizacion",JoinType.INNER);
 		Root<Licitacion> licitaciones = tupla.from(Licitacion.class);
 		Join<Object,Object> presupuestos = licitaciones.join("presupuestos",JoinType.INNER);
+		Join<Object,Object> egresos = licitaciones.join("compra",JoinType.INNER);
+		Join<Object,Object> entidades = egresos.join("entidadOrigen",JoinType.INNER);
 
 		tupla.select(cb.tuple(licitaciones,presupuestos)).where(
 				cb.and(cb.equal(entidadCategorizableRoot.type(),cb.literal(Presupuesto.class)),
 						cb.equal(categorias.get("nombre"),unaCategoria.getNombre()),
 						cb.equal(criteriosDeCategorizacion.get("nombre"),unaCategoria.getCriterioDeCategorizacion().getNombre()),
-						cb.equal(presupuestos.get("id"),entidadCategorizableRoot.get("id"))));
+						cb.equal(presupuestos.get("id"),entidadCategorizableRoot.get("id")),
+						entidades.get("nombre").in(razonSocialDeEntidades)));
 
 		List<Tuple> resultadoTupla = this.entityManager.createQuery(tupla).setFirstResult(base).setMaxResults(limite).getResultList();
 		List<HashMap<String,Object>> resultadoHashMap = new ArrayList<>();
@@ -220,17 +224,24 @@ public class RepositorioCategorizacion {
 
 	public long filtrarPresupuestosDeLaCategoriaCantidad(String nombreCategoria, String nombreCriterioDeCategorizacion, Organizacion unaOrganizacion){
 		Categoria unaCategoria = this.buscarCriterioDeCategorizacion(nombreCriterioDeCategorizacion).buscarCategoria(nombreCategoria);
+		List<String> razonSocialDeEntidades = unaOrganizacion.getEntidades().stream().map(Empresa::getRazonSocial).collect(Collectors.toList());
 
 		CriteriaBuilder cb = this.entityManager.getCriteriaBuilder();
 		CriteriaQuery<Long> cantidadOperaciones = cb.createQuery(Long.class);
 		Root<EntidadCategorizable> entidadCategorizableRoot = cantidadOperaciones.from(EntidadCategorizable.class);
 		Join<Object,Object> categorias = entidadCategorizableRoot.join("categoriasAsociadas",JoinType.INNER);
 		Join<Object,Object> criteriosDeCategorizacion = categorias.join("criterioDeCategorizacion",JoinType.INNER);
+		Root<Licitacion> licitaciones = cantidadOperaciones.from(Licitacion.class);
+		Join<Object,Object> presupuestos = licitaciones.join("presupuestos",JoinType.INNER);
+		Join<Object,Object> egresos = licitaciones.join("compra",JoinType.INNER);
+		Join<Object,Object> entidades = egresos.join("entidadOrigen",JoinType.INNER);
 
 		cantidadOperaciones.select(cb.count(entidadCategorizableRoot)).where(
 				cb.and(cb.equal(entidadCategorizableRoot.type(),cb.literal(Presupuesto.class)),
 						cb.equal(categorias.get("nombre"),unaCategoria.getNombre()),
-						cb.equal(criteriosDeCategorizacion.get("nombre"),unaCategoria.getCriterioDeCategorizacion().getNombre())));
+						cb.equal(criteriosDeCategorizacion.get("nombre"),unaCategoria.getCriterioDeCategorizacion().getNombre()),
+						cb.equal(presupuestos.get("id"),entidadCategorizableRoot.get("id")),
+						entidades.get("nombre").in(razonSocialDeEntidades)));
 
 		return this.entityManager.createQuery(cantidadOperaciones).getSingleResult();
 	}
