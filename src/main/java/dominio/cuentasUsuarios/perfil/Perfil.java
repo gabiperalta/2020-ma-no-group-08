@@ -7,6 +7,7 @@ import javax.persistence.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "perfil")
 @Table(name = "perfiles")
 public abstract class Perfil {
 	@Id @GeneratedValue
