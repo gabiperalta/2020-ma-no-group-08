@@ -1,7 +1,5 @@
 package servidor;
 
-import mock.ServerDataMock;
-import spark.Spark;
 import spark.debug.DebugScreen;
 
 import static spark.Spark.port;
@@ -9,8 +7,8 @@ import static spark.Spark.port;
 public class Server {
 
 	public static void main(String[] args) throws Exception {
-		port(9000);
-		//port(getHerokuAssignedPort());
+		//port(9000);
+		port(getHerokuAssignedPort());
 
 		Router.init();
 		DebugScreen.enableDebugScreen();
