@@ -26,13 +26,13 @@ public class AuditoriaTest {
         morphia = new Morphia();
         morphia.mapPackage("auditoria");
 
-        datastore = morphia.createDatastore(mongoClient, "operations_audit");
+        datastore = morphia.createDatastore(mongoClient, "TESTS_BD");
         datastore.ensureIndexes();
     }
 
     @Test
     public void cargarAltaTest(){
-        RegistroDeAuditoria registro = new RegistroDeAuditoria("OE-00001", "Alta", "Usuario1");
+        RegistroDeAuditoria registro = new RegistroDeAuditoria("OE-00001", "Alta", "AUDITORIA_TEST");
 
         datastore.save(registro);
     }
@@ -40,7 +40,7 @@ public class AuditoriaTest {
     @Test
     public void cargarBajaTest(){
 
-        RegistroDeAuditoria registro = new RegistroDeAuditoria("OE-00001", "Baja", "Usuario1");
+        RegistroDeAuditoria registro = new RegistroDeAuditoria("OE-00001", "Baja", "AUDITORIA_TEST");
 
         datastore.save(registro);
     }
@@ -48,14 +48,14 @@ public class AuditoriaTest {
     @Test
     public void cargarModificacionTest(){
 
-        RegistroDeAuditoria registro = new RegistroDeAuditoria("OE-00001", "Modificacion", "Usuario1");
+        RegistroDeAuditoria registro = new RegistroDeAuditoria("OE-00001", "Modificacion", "AUDITORIA_TEST");
 
         datastore.save(registro);
     }
 
     @Test
     public void buscarRegistroTest(){
-        RegistroDeAuditoria registro = new RegistroDeAuditoria("OE-00002", "Modificacion", "Usuario1");
+        RegistroDeAuditoria registro = new RegistroDeAuditoria("OE-00002", "Modificacion", "AUDITORIA_TEST");
 
         datastore.save(registro);
 

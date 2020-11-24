@@ -52,7 +52,8 @@ public class RepositorioUsuarios {
 	}
 
 	public boolean existeElUsuario(String unNombreUsuario) {
-		return entityManager.contains(this.buscarUsuario(unNombreUsuario));
+		CuentaUsuario cuentaUsuario = this.buscarUsuario(unNombreUsuario);
+		return entityManager.contains(cuentaUsuario);
 	}
 	
 	public void eliminarUsuarioEstandar(String unNombreUsuario, String unaContrasenia) throws CredencialesNoValidasException{
