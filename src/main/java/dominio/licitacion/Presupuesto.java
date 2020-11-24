@@ -17,8 +17,8 @@ import javax.persistence.*;
 @Entity
 public class Presupuesto extends EntidadCategorizable {
 
-	@Id @GeneratedValue
-	private int id;
+//	@Id @GeneratedValue
+//	private int id;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	private EntidadOperacion proveedor;
@@ -108,16 +108,6 @@ public class Presupuesto extends EntidadCategorizable {
 
 	public boolean esValido(OperacionEgreso operacion) {
 		return this.esValido && this.items.size() == operacion.getItems().size() && this.items.stream().allMatch(i->i.esValido(operacion));
-	}
-
-	@Override
-	public int getId() {
-		return id;
-	}
-
-	@Override
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public boolean esCorrespondiente(OperacionEgreso operacion) {

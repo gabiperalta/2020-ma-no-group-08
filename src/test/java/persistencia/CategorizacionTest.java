@@ -9,6 +9,7 @@ import dominio.entidades.ETipoEmpresa;
 import dominio.entidades.Empresa;
 import dominio.entidades.Organizacion;
 import dominio.entidades.calculadorFiscal.ETipoActividad;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -19,7 +20,7 @@ import javax.persistence.Persistence;
 import java.util.ArrayList;
 
 public class CategorizacionTest {
-    EntityManagerFactory entityManagerFactory;
+    public static EntityManagerFactory entityManagerFactory;
     EntityManager entityManager = null;
 
 
@@ -76,6 +77,7 @@ public class CategorizacionTest {
     public void testEntidadesDeLaCategoria(){
         this.entityManager = entityManagerFactory.createEntityManager();
 
+        entityManager.getTransaction().begin();
         RepositorioCategorizacion repositorioCategorizacion = new RepositorioCategorizacion(entityManager);
         RepoOrganizaciones repoOrganizaciones = new RepoOrganizaciones(entityManager);
 
@@ -91,7 +93,22 @@ public class CategorizacionTest {
         ArrayList<EntidadCategorizable> entidadesCategorizables = repositorioCategorizacion.filtrarEntidadesDeLaCategoria("Categoria-1", "CriterioDePrueba-1", organizacion);
 
         System.out.println("hola");
+
+        entityManager.getTransaction().rollback();
     }
 
+    @AfterClass
+    public static void finalizarTest() throws CategorizacionException {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+
+        RepositorioCategorizacion repositorioCategorizacion = new RepositorioCategorizacion(entityManager);
+
+        repositorioCategorizacion.desasociarCategoriaAEntidadCategorizable("OE-80", "Categoria-1", "CriterioDePrueba-1");
+        repositorioCategorizacion.desasociarCategoriaAEntidadCategorizable("L-89-91", "Categoria-2", "CriterioDePrueba-1");
+        repositorioCategorizacion.desasociarCategoriaAEntidadCategorizable("L-84-86", "Categoria-1", "CriterioDePrueba-1");
+
+        entityManager.getTransaction().commit();
+    }
 
 }

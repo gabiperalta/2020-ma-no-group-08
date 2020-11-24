@@ -100,34 +100,34 @@ public class RepositorioCategorizacion {
 		return entityManager.contains(criterioDeCategorizacion);
 	}
 
-	private EntidadCategorizable buscarEntidadEntreLasYaCategorizadas(String identificadorEntidadCategorizable) throws CategorizacionException {
-		int identificadorInt;
-		if(identificadorEntidadCategorizable.startsWith("OE")){
-			identificadorInt = Integer.parseInt(identificadorEntidadCategorizable.substring(3));
-		}
-		else{
-			if(identificadorEntidadCategorizable.startsWith("L")){
-				identificadorInt = Integer.parseInt(identificadorEntidadCategorizable.split("-")[1]);
-			}
-			else{
-				throw new CategorizacionException("Identificador de Entidad Categorizable INVALIDO");
-			}
-		}
+//	private EntidadCategorizable buscarEntidadEntreLasYaCategorizadas(String identificadorEntidadCategorizable) throws CategorizacionException {
+//		int identificadorInt;
+//		if(identificadorEntidadCategorizable.startsWith("OE")){
+//			identificadorInt = Integer.parseInt(identificadorEntidadCategorizable.substring(3));
+//		}
+//		else{
+//			if(identificadorEntidadCategorizable.startsWith("L")){
+//				identificadorInt = Integer.parseInt(identificadorEntidadCategorizable.split("-")[1]);
+//			}
+//			else{
+//				throw new CategorizacionException("Identificador de Entidad Categorizable INVALIDO");
+//			}
+//		}
+//
+//		return entityManager.find(EntidadCategorizable.class, identificadorInt);
+//	}
 
-		return entityManager.find(EntidadCategorizable.class, identificadorInt);
-	}
-
-	private boolean existeEntidadEntreLasCategorizadas(String identificadorEntidadCategorizable) throws CategorizacionException {
-		return entityManager.contains(this.buscarEntidadEntreLasYaCategorizadas(identificadorEntidadCategorizable));
-	}
+//	private boolean existeEntidadEntreLasCategorizadas(String identificadorEntidadCategorizable) throws CategorizacionException {
+//		return entityManager.contains(this.buscarEntidadEntreLasYaCategorizadas(identificadorEntidadCategorizable));
+//	}
 	
 	// ENTIDADES CATEGORIZABLES
 	private EntidadCategorizable buscarEntidadCategorizable(String identificadorEntidadCategorizable) throws CategorizacionException {
 		EntidadCategorizable unaEntidadCategorizable;
-		if(existeEntidadEntreLasCategorizadas(identificadorEntidadCategorizable)){
-			unaEntidadCategorizable = buscarEntidadEntreLasYaCategorizadas(identificadorEntidadCategorizable);
-		}
-		else { // TODO, VERIFICAR, CREO QUE NUNCA ENTRARIA AQUI
+//		if(existeEntidadEntreLasCategorizadas(identificadorEntidadCategorizable)){
+//			unaEntidadCategorizable = buscarEntidadEntreLasYaCategorizadas(identificadorEntidadCategorizable);
+//		}
+//		else { // TODO, VERIFICAR, CREO QUE NUNCA ENTRARIA AQUI
 			if(identificadorEntidadCategorizable.startsWith("OE")) { // OE por Operacion Egreso
 				RepoOperacionesEgreso repoOperacionesEgreso = new RepoOperacionesEgreso(entityManager) ;
 				unaEntidadCategorizable = repoOperacionesEgreso.buscarOperacionEgresoPorIdenticadorOperacionEgreso(identificadorEntidadCategorizable);
@@ -138,12 +138,15 @@ public class RepositorioCategorizacion {
 					RepoLicitaciones repoLicitaciones = new RepoLicitaciones(entityManager);
 					String identificadorPresupuesto = identificadorEntidadCategorizable.split("-")[2];
 					Licitacion licitacion = repoLicitaciones.buscarLicitacionPorIdentificador(identificadorEntidadCategorizable);
+					List<Presupuesto> listaPresupuestos = licitacion.getPresupuestos();
+					String identificadorPresupuestoReal = listaPresupuestos.get(0).getIdentificador();
+					boolean condicion = identificadorPresupuestoReal.endsWith(identificadorPresupuesto);
 					unaEntidadCategorizable = licitacion.getPresupuestos().stream().filter(unPresupuesto -> unPresupuesto.getIdentificador().endsWith(identificadorPresupuesto)).
 							findFirst().get();
 				} else
 					throw new CategorizacionException("Identificador de Entidad Categorizable INVALIDO");
 			}
-		}
+		//}
 		return unaEntidadCategorizable;
 	}
 	
