@@ -37,8 +37,10 @@ public class EgresoController extends Controller{
 
     public ModelAndView mostrarEgresos(Request req, Response res, EntityManager entityManager) {
         String href = "/egresos";
+        long cantidadEgresos;
 
         RepositorioCategorizacion repositorioCategorizacion = new RepositorioCategorizacion(entityManager);
+        RepoOperacionesEgreso repoOperacionesEgreso = new RepoOperacionesEgreso(entityManager);
 
         Map<String, Object> parameters = new HashMap<>();
 
@@ -48,11 +50,7 @@ public class EgresoController extends Controller{
 
         Organizacion org = usuario.getOrganizacion();
 
-
-        ArrayList<OperacionEgreso> egresosPaginados = new ArrayList<>();
-
-        ArrayList<OperacionEgreso> egresos = servicioOperaciones.listarOperaciones(org);
-
+        List<OperacionEgreso> egresos = null;
 
         int egresosPorPagina = 3;
 
@@ -60,16 +58,19 @@ public class EgresoController extends Controller{
         String filtro = req.queryParams("filtro");
         String mensajeE = Objects.toString(req.queryParams("error"),"");
 
+        cantidadEgresos = repoOperacionesEgreso.getCantidadOperacionesEgresoPorOrg(org);
+
         if(filtro != null){
             String[] nombreCategoriaCriterio= filtro.split("_");
 
             try{
-                egresos = repositorioCategorizacion.filtrarEgresosDeLaCategoria(nombreCategoriaCriterio[1],nombreCategoriaCriterio[0], org);
+                cantidadEgresos = repositorioCategorizacion.filtrarEgresosDeLaCategoriaCantidad(nombreCategoriaCriterio[1],nombreCategoriaCriterio[0], org);
                 parameters.put("infoFiltroActual","Filtrado por " + nombreCategoriaCriterio[0] + " - " + nombreCategoriaCriterio[1]);
             }catch (NullPointerException e){
-                egresos = null;
+                cantidadEgresos = 0;
             }catch (ArrayIndexOutOfBoundsException e){
-                //egresos = servicioOperaciones.listarOperaciones();
+                res.redirect("/egresos");
+                return null;
             }
 
             href = href.concat("?filtro=" + filtro);
@@ -84,7 +85,7 @@ public class EgresoController extends Controller{
         }
 
         if(pagina == null){
-            if(egresos.size() > egresosPorPagina){ // 3 egresos por pagina
+            if(cantidadEgresos > egresosPorPagina){ // 3 egresos por pagina
                 if(href.equals("/egresos"))
                     href = href.concat("?pagina=1");
                 else
@@ -93,18 +94,39 @@ public class EgresoController extends Controller{
                 return null;
             }
 
-            parameters.put("egresos",egresos);
-            parameters.put("user", req.session().attribute("user"));
+            if(filtro != null){
+                String[] nombreCategoriaCriterio= filtro.split("_");
+
+                try{
+                    egresos = repositorioCategorizacion.filtrarEgresosDeLaCategoria(nombreCategoriaCriterio[1],nombreCategoriaCriterio[0], org,egresosPorPagina,0);
+                }catch (NullPointerException e){
+                    egresos = null;
+                }catch (ArrayIndexOutOfBoundsException e){
+                }
+            }
+            else{
+                egresos = repoOperacionesEgreso.getOperacionesEgresoPorOrg(org,egresosPorPagina,0);
+            }
         }
         else{
             int numeroPagina = Integer.parseInt(pagina);
-            int indiceInicial = Math.min((numeroPagina - 1) * egresosPorPagina,egresos.size());
-            int indiceFinal = Math.min(numeroPagina * egresosPorPagina,egresos.size());
-            List<OperacionEgreso> egresosSubLista = egresos.subList(indiceInicial,indiceFinal);
+            int indiceInicial = Math.min((numeroPagina - 1) * egresosPorPagina,(int)cantidadEgresos);
 
-            parameters.put("egresos",egresosSubLista);
+            if(filtro != null){
+                String[] nombreCategoriaCriterio= filtro.split("_");
 
-            int cantidadPaginas = (int) Math.ceil((double)egresos.size()/egresosPorPagina);
+                try{
+                    egresos = repositorioCategorizacion.filtrarEgresosDeLaCategoria(nombreCategoriaCriterio[1],nombreCategoriaCriterio[0], org,egresosPorPagina,indiceInicial);
+                }catch (NullPointerException e){
+                    egresos = null;
+                }catch (ArrayIndexOutOfBoundsException e){
+                }
+            }
+            else{
+                egresos = repoOperacionesEgreso.getOperacionesEgresoPorOrg(org,egresosPorPagina,indiceInicial);
+            }
+
+            int cantidadPaginas = (int) Math.ceil((double)cantidadEgresos/egresosPorPagina);
             ArrayList<Integer> listaCantidadPaginas = new ArrayList<>();
             for(int i = 1;i<=cantidadPaginas; i++){
                 listaCantidadPaginas.add(i);
@@ -112,11 +134,13 @@ public class EgresoController extends Controller{
             parameters.put("cantidad_paginas",listaCantidadPaginas);
             if(numeroPagina > 1)
                 parameters.put("pagina_anterior",numeroPagina - 1);
-            if(numeroPagina * egresosPorPagina < egresos.size())
+            if(numeroPagina * egresosPorPagina < cantidadEgresos)
                 parameters.put("pagina_siguiente",numeroPagina + 1);
 
-            parameters.put("user", req.session().attribute("user"));
         }
+
+        parameters.put("egresos",egresos);
+        parameters.put("user", req.session().attribute("user"));
 
         switch (mensajeE){
             case "licitacionFinalizada":

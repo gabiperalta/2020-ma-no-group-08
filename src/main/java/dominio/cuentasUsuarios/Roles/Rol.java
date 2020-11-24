@@ -7,7 +7,9 @@ import java.util.List;
 @Entity
 @Table(name="roles")
 public class Rol {
-	@Id
+	@Id @GeneratedValue
+	private int id;
+
 	private String nombre;
 
 	@OneToMany(cascade=CascadeType.ALL)
@@ -19,6 +21,18 @@ public class Rol {
 	public Rol(String unNombre, ArrayList<Privilegio> unosPrivilegios) {
 		nombre = unNombre;
 		privilegios = unosPrivilegios;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void setPrivilegios(List<Privilegio> privilegios) {
+		this.privilegios = privilegios;
 	}
 
 	public String getNombre() {

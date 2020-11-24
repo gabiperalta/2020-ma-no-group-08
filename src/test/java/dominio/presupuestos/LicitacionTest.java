@@ -40,6 +40,11 @@ public class LicitacionTest {
 	Presupuesto presup4;
 	EntidadOperacion proveedor1;
 	EntidadOperacion proveedor2;
+
+	// AUDITORIA
+	MongoClient mongoClient;
+	Morphia morphia;
+	Datastore datastore;
 	
 	@Before
 	public void init() {
@@ -92,6 +97,20 @@ public class LicitacionTest {
 		presup2 = new Presupuesto(proveedor2,listaItems2);
 		presup3 = new Presupuesto(proveedor1,listaItems3);
 		presup4 = new Presupuesto(proveedor2,listaItems4);
+
+		// AUDITORIA
+
+		MongoClientURI uri = new MongoClientURI(
+				"mongodb+srv://mongodb:0AnE83904LltBfkF@cluster0.8pqel.mongodb.net/operations_audit?retryWrites=true&w=majority");
+
+		mongoClient = new MongoClient(uri);
+		MongoDatabase database = mongoClient.getDatabase("test");
+
+		morphia = new Morphia();
+		morphia.mapPackage("auditoria");
+
+		datastore = morphia.createDatastore(mongoClient, "TESTS_BD");
+		datastore.ensureIndexes();
 	}
 	
 	@Test
@@ -106,29 +125,29 @@ public class LicitacionTest {
 	
     @Test
     public void licitarExitoso() {    	
-		licitacion.agregarPresupuesto(presup1, null, null);
-		licitacion.agregarPresupuesto(presup3, null, null);
+		licitacion.agregarPresupuesto(presup1, "LicitacionTest", datastore);
+		licitacion.agregarPresupuesto(presup3, "LicitacionTest", datastore);
 		assertTrue(licitacion.puedeLicitar());
     }
     
     @Test
     public void licitarNoExitosoPorqueNoCumpleCriterioCantidadPresupuestos() {
-    	licitacion.agregarPresupuesto(presup1, null, null);
+    	licitacion.agregarPresupuesto(presup1, "LicitacionTest", datastore);
 		assertFalse(licitacion.puedeLicitar());
     }
     
     @Test
     public void licitarNoExitosoPorqueNoCumpleCriterioCorrespondeYEsMenorPrecio() {
-    	licitacion.agregarPresupuesto(presup1, null, null);
-    	licitacion.agregarPresupuesto(presup4, null, null);
+    	licitacion.agregarPresupuesto(presup1, "LicitacionTest", datastore);
+    	licitacion.agregarPresupuesto(presup4, "LicitacionTest", datastore);
     	assertFalse(licitacion.puedeLicitar());
     }
 
     @Test
 	public void usuarioNoPuedeSuscribirse(){
 		CuentaUsuario usuario = new CuentaUsuario("Prueba","1234",new Rol("TESTER",null));
-		licitacion.agregarPresupuesto(presup1, null, null);
-		licitacion.agregarPresupuesto(presup3, null, null);
+		licitacion.agregarPresupuesto(presup1, "LicitacionTest", datastore);
+		licitacion.agregarPresupuesto(presup3, "LicitacionTest", datastore);
 		licitacion.licitar();
 		Assert.assertThrows(Exception.class,()->{licitacion.suscribir(usuario);});
 	}

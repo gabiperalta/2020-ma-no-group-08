@@ -23,14 +23,14 @@ import javax.persistence.*;
 @Table(name = "cuentas_usuarios")
 public class CuentaUsuario implements Serializable {
 	@Id
-	@OneToOne
+	@OneToOne( cascade = CascadeType.ALL)
 	private Perfil perfil;
 	private String passwordHash;
 	private String passwordPlana;
 	@Transient
 	private List<String> contraseniasPrevias;
 	private Integer intentosPendientes;
-	@ManyToMany(cascade=CascadeType.ALL)
+	@ManyToMany(cascade=CascadeType.DETACH)
 	private List<Rol> roles;
 
 	public CuentaUsuario() { }

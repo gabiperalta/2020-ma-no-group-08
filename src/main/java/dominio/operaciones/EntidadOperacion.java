@@ -6,7 +6,7 @@ import javax.persistence.*;
 public class EntidadOperacion {
 
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	private int id;
 	@Column(unique = true)
 	private String nombre;
 	private String cuil;
@@ -18,18 +18,17 @@ public class EntidadOperacion {
 		this.direccion = direccion;
 	}
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	public EntidadOperacion() {
 
 	}
 
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	public String getNombre() {
 		return nombre;
@@ -43,6 +42,7 @@ public class EntidadOperacion {
 	public boolean correspondeEntidad(EntidadOperacion entidad) {
 		return this.nombre.equals(entidad.getNombre()) && this.cuil.equals(entidad.getCuil()) && this.direccion.equals(entidad.getDireccion());
 	}
+
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;

@@ -11,7 +11,9 @@ import javax.persistence.*;
 @Table(name = "criterios_de_categorizacion")
 public class CriterioDeCategorizacion {
 	@Id
-	@Column(length = 100)
+	@GeneratedValue
+	private int id;
+
 	private String nombre;
 
 	@OneToMany(cascade = CascadeType.ALL) @JoinColumn(name = "nombre_criterio")
@@ -123,5 +125,20 @@ public class CriterioDeCategorizacion {
 	public boolean puedeBorrarse(){
 		return this.categorias.stream().allMatch( categoria -> !categoria.tieneEntidadesAsociadas());
 	}
-	
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public void setCategorias(List<Categoria> categorias) {
+		this.categorias = categorias;
+	}
 }

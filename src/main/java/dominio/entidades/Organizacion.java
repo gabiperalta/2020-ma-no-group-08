@@ -10,7 +10,9 @@ import java.util.List;
 @Entity
 @Table(name = "Organizaciones")
 public class Organizacion {
-    @Id
+    @Id @GeneratedValue
+    private int id;
+
     private String nombre;
     @OneToMany (cascade = CascadeType.ALL)
     @JoinColumn (name = "nombre_organizacion")

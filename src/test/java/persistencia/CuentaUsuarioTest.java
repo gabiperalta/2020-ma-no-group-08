@@ -42,24 +42,24 @@ public class CuentaUsuarioTest {
     public void testExisteElUsuario(){
         this.entityManager = entityManagerFactory.createEntityManager();
         RepositorioUsuarios repositorioUsuarios = new RepositorioUsuarios(entityManager);
-        Organizacion organizacion = new Organizacion("OrganizacionDePrueba", null);
-        ArrayList<String> listaDeRolesCliente = new ArrayList<String>();
-        listaDeRolesCliente.add("ROL_ESTANDAR");
-        repositorioUsuarios.agregarUsuarioEstandar("usuarioExistente", organizacion, listaDeRolesCliente, "1234");
+//        Organizacion organizacion = new Organizacion("OrganizacionDePrueba", null);
+//        ArrayList<String> listaDeRolesCliente = new ArrayList<String>();
+//        listaDeRolesCliente.add("ROL_ESTANDAR");
+//        repositorioUsuarios.agregarUsuarioEstandar("usuarioExistente", organizacion, listaDeRolesCliente, "1234");
 
-        Assert.assertTrue(repositorioUsuarios.existeElUsuario("usuarioExistente"));
+        Assert.assertTrue(repositorioUsuarios.existeElUsuario("UsuarioWeb1"));
     }
 
     @Test
     public void testBuscarUsuario(){
         this.entityManager = entityManagerFactory.createEntityManager();
         RepositorioUsuarios repositorioUsuarios = new RepositorioUsuarios(entityManager);
-        Organizacion organizacion = new Organizacion("OrganizacionDePrueba", null);
-        ArrayList<String> listaDeRolesCliente = new ArrayList<String>();
-        listaDeRolesCliente.add("ROL_ESTANDAR");
-        repositorioUsuarios.agregarUsuarioEstandar("usuarioABuscar", organizacion, listaDeRolesCliente, "1234");
+//        Organizacion organizacion = new Organizacion("OrganizacionDePrueba", null);
+//        ArrayList<String> listaDeRolesCliente = new ArrayList<String>();
+//        listaDeRolesCliente.add("ROL_ESTANDAR");
+//        repositorioUsuarios.agregarUsuarioEstandar("usuarioABuscar", organizacion, listaDeRolesCliente, "1234");
 
-        CuentaUsuario usuario = repositorioUsuarios.buscarUsuario("usuarioABuscar");
+        CuentaUsuario usuario = repositorioUsuarios.buscarUsuario("UsuarioWeb1");
 
         System.out.println("Nombre usuario buscado: " + usuario.getUserName());
     }
@@ -68,12 +68,19 @@ public class CuentaUsuarioTest {
     public void testEliminarUsuarioEstandar() throws CredencialesNoValidasException {
         this.entityManager = entityManagerFactory.createEntityManager();
         RepositorioUsuarios repositorioUsuarios = new RepositorioUsuarios(entityManager);
-        Organizacion organizacion = new Organizacion("OrganizacionDePrueba", null);
+
+        entityManager.getTransaction().begin();
+
+        Organizacion organizacion = new RepoOrganizaciones(entityManager).buscarOrganizacion("Organizacion1");
         ArrayList<String> listaDeRolesCliente = new ArrayList<String>();
         listaDeRolesCliente.add("ROL_ESTANDAR");
-        repositorioUsuarios.agregarUsuarioEstandar("usuarioAEliminar", organizacion, listaDeRolesCliente, "1234");
 
+        repositorioUsuarios.agregarUsuarioEstandar("usuarioAEliminar", organizacion, listaDeRolesCliente, "1234");
+        entityManager.getTransaction().commit();
+
+        entityManager.getTransaction().begin();
         repositorioUsuarios.eliminarUsuarioEstandar("usuarioAEliminar", "1234");
+        entityManager.getTransaction().commit();
 
         Assert.assertTrue(!repositorioUsuarios.existeElUsuario("usuarioAEliminar"));
     }

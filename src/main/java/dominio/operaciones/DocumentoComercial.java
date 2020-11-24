@@ -7,18 +7,18 @@ public class DocumentoComercial {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private int id;
 
     @Enumerated(EnumType.STRING)
     ETipoDoc tipo;
 
     int numero;
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
