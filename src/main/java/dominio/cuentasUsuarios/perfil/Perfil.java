@@ -7,12 +7,22 @@ import javax.persistence.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "perfil")
 @Table(name = "perfiles")
 public abstract class Perfil {
-	@Id
+	@Id @GeneratedValue
+	private int id;
 	private String nombre;
 
 	public Perfil(){}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	public Perfil(String unNombre){
 		nombre = unNombre;

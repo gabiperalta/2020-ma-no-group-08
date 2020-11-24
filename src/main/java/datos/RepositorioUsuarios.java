@@ -4,6 +4,13 @@ import java.util.ArrayList;
 
 import dominio.cuentasUsuarios.CuentaUsuario;
 import dominio.cuentasUsuarios.Roles.Privilegio;
+
+import javax.persistence.Query;
+import javax.persistence.criteria.*;
+import java.util.List;
+
+import dominio.cuentasUsuarios.perfil.*;
+
 import dominio.cuentasUsuarios.Roles.Rol;
 import dominio.entidades.Organizacion;
 import temporal.seguridad.repositorioUsuarios.exceptions.CredencialesNoValidasException;
@@ -13,27 +20,8 @@ import javax.persistence.EntityManager;
 
 public class RepositorioUsuarios {
 
-	//private ArrayList<CuentaUsuario> usuarios;
 	private EntityManager entityManager;
-	
-	
-	/*private static class RepositorioUsuariosHolder {
-        static final RepositorioUsuarios singleInstanceRepositorioUsuarios = new RepositorioUsuarios();
-    }
-	
-	public static RepositorioUsuarios getInstance() {
-        return RepositorioUsuariosHolder.singleInstanceRepositorioUsuarios;
-    }
-	
-	public RepositorioUsuarios() {
-		
-		// Inicializacion USUARIOS ADMINISTRADORES DE SISTEMA (Por defecto se crea con estos 3 admins)
-				usuarios = new ArrayList<CuentaUsuario>();
-				
-				usuarios.add(administrador1);
-				usuarios.add(administrador2);
-				usuarios.add(administrador3);
-	}*/
+
 	public RepositorioUsuarios(EntityManager em){
 		entityManager = em;
 	}
@@ -46,11 +34,13 @@ public class RepositorioUsuarios {
 	}
 	
 	public void agregarUsuarioEstandar(String unNombreUsuario, Organizacion unaOrganizacion, ArrayList<String> nombresRoles, String unaPassword) {
-		ArrayList<Rol> unosRoles = new ArrayList<>();
-		nombresRoles.forEach(nombreRol -> unosRoles.add(this.buscarRol(nombreRol)));
-		CuentaUsuario nuevoUsuario = new CuentaUsuario(unNombreUsuario, unaOrganizacion, unosRoles, unaPassword);
-		entityManager.persist(nuevoUsuario.getPerfil());
-		entityManager.persist(nuevoUsuario);
+		if(!this.existeElUsuario(unNombreUsuario)){
+			ArrayList<Rol> unosRoles = new ArrayList<>();
+			nombresRoles.forEach(nombreRol -> unosRoles.add(this.buscarRol(nombreRol)));
+			CuentaUsuario nuevoUsuario = new CuentaUsuario(unNombreUsuario, unaOrganizacion, unosRoles, unaPassword);
+			entityManager.persist(nuevoUsuario.getPerfil());
+			entityManager.persist(nuevoUsuario);
+		}
 	}
 
 	public void agregarUsuarioEstandar(String unNombreUsuario, Organizacion unaOrganizacion, ArrayList<String> nombresRoles) {
@@ -69,20 +59,50 @@ public class RepositorioUsuarios {
 		if(this.existeElUsuario(unNombreUsuario)){
 			CuentaUsuario usuarioABorrar = this.buscarUsuario(unNombreUsuario);
 			if(usuarioABorrar.verificarContrasenia(unaContrasenia)) {
+				Perfil perfilABorrar = usuarioABorrar.getPerfil();
 				entityManager.remove(usuarioABorrar);
+				entityManager.remove(perfilABorrar);
 			}
 			else {
 				throw new CredencialesNoValidasException();
 			}
 		}
 	}
-	
-	public CuentaUsuario buscarUsuario(String unNombreUsuario) {
-		return entityManager.find(CuentaUsuario.class, unNombreUsuario);
+
+	public CuentaUsuario buscarUsuario(String unNombreUsuario){
+		CriteriaBuilder cb = this.entityManager.getCriteriaBuilder();
+		CriteriaQuery<CuentaUsuario> consulta = cb.createQuery(CuentaUsuario.class);
+		Root<CuentaUsuario> cuentasUsuario = consulta.from(CuentaUsuario.class);
+		Join<Object,Object> perfil = cuentasUsuario.join("perfil",JoinType.INNER);
+		Predicate condicion = cb.equal(perfil.get("nombre"), unNombreUsuario);
+
+		consulta.select(cuentasUsuario).where(condicion);
+
+		Query query = entityManager.createQuery(consulta);
+		List<CuentaUsuario> listaCuentasUsuario = query.getResultList();
+
+		if(listaCuentasUsuario.size() > 0)
+			return listaCuentasUsuario.get(0);
+		else
+			return null;
 	}
 	
 	public Rol buscarRol(String nombreRol) {
-		return entityManager.find(Rol.class, nombreRol);
+
+
+		CriteriaBuilder cb = this.entityManager.getCriteriaBuilder();
+		CriteriaQuery<Rol> consulta = cb.createQuery(Rol.class);
+		Root<Rol> roles = consulta.from(Rol.class);
+		Predicate condicion = cb.equal(roles.get("nombre"), nombreRol);
+		CriteriaQuery<Rol> where = consulta.select(roles).where(condicion);
+
+		List<Rol> listaRoles = this.entityManager.createQuery(where).getResultList();
+
+		if(listaRoles.size() > 0)
+			return listaRoles.get(0);
+		else
+			return null;
+
 	}
 
 }

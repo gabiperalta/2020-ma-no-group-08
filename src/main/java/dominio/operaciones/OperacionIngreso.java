@@ -17,15 +17,7 @@ public class OperacionIngreso implements Operacion {
 	private String descripcion;
 	private double montoTotal;
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	//@Convert(converter = Date.class)
+	@Temporal(TemporalType.DATE)
 	private Date fecha;
 
 	@ManyToOne(cascade = CascadeType.REMOVE)
@@ -102,5 +94,13 @@ public class OperacionIngreso implements Operacion {
 
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 }

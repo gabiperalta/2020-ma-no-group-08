@@ -8,7 +8,6 @@ import dev.morphia.Datastore;
 import dev.morphia.Morphia;
 import dominio.categorizacion.CriterioDeCategorizacion;
 import dominio.categorizacion.exceptions.CategorizacionException;
-import dominio.cuentasUsuarios.CuentaUsuario;
 import dominio.cuentasUsuarios.Roles.Privilegio;
 import dominio.cuentasUsuarios.Roles.Rol;
 import dominio.entidades.*;
@@ -25,26 +24,14 @@ import datos.RepositorioUsuarios;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class ServerDataMock {
     private static EntityManagerFactory entityManagerFactory;
-//    private static MongoClient mongoClient;
-//    private static Morphia morphia;
 
     public static void main(String[] args) throws Exception {
         entityManagerFactory = Persistence.createEntityManagerFactory("db");
-
-//        MongoClientURI uri = new MongoClientURI(
-//                "mongodb+srv://mongodb:0AnE83904LltBfkF@cluster0.8pqel.mongodb.net/operations_audit?retryWrites=true&w=majority");
-//
-//        mongoClient = new MongoClient(uri);
-//        MongoDatabase database = mongoClient.getDatabase("test");
-//
-//        morphia = new Morphia();
-//        morphia.mapPackage("auditoria");
 
         cargarMock();
     }
@@ -56,7 +43,6 @@ public class ServerDataMock {
         cargarCategorias();
         cargarIngresos();
         cargarEgregos();
-        //cargarPresupuestos();
     }
 
     public ServerDataMock() {
@@ -349,7 +335,7 @@ public class ServerDataMock {
                 .agregarDocComercial(documento)
                 .agregarFecha(fecha)
                 .agregarEntidadOrigen(origen3)
-                .agregarEntidadDestino(destino4)
+                .agregarEntidadDestino(destino3)
                 .agregarPresupuestosNecesarios(presupuestosNecesarios).build();
 
         OperacionEgreso egreso4 = builderEgreso.agregarItems(items4)
@@ -401,6 +387,7 @@ public class ServerDataMock {
     }
 
     private static void cargarPresupuestos(OperacionEgreso egreso1, OperacionEgreso egreso5) {
+
         Licitacion licitacion1;
         Licitacion licitacion2;
         Presupuesto presup1;
@@ -415,11 +402,6 @@ public class ServerDataMock {
         listaItems.add(new Item(50, ETipoItem.ARTICULO, "Item1"));
         listaItems.add(new Item(100, ETipoItem.ARTICULO, "Item2"));
 
-        RepoOperacionesEgreso repoOperacionesEgreso = new RepoOperacionesEgreso(entityManager);
-//        licitacion1 = new Licitacion(repoOperacionesEgreso.buscarOperacionEgresoPorIdenticadorOperacionEgreso("OE-7"), NotificadorSuscriptores.getInstance());
-//        licitacion2 = new Licitacion(repoOperacionesEgreso.buscarOperacionEgresoPorIdenticadorOperacionEgreso("OE-16"), NotificadorSuscriptores.getInstance());
-
-        // Tuve que modificarlo porque no usan los mismos identificadores
         licitacion1 = new Licitacion(egreso1, NotificadorSuscriptores.getInstance());
         licitacion2 = new Licitacion(egreso5, NotificadorSuscriptores.getInstance());
 

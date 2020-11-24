@@ -8,13 +8,14 @@ import java.io.Serializable;
 @Table(name = "categorias")
 public class Categoria implements Serializable {
 	@Id
-	@Column(length = 100)
+	@GeneratedValue
+	private int id;
+
 	private String nombre;
 
 	@OneToOne(cascade = CascadeType.PERSIST)
 	private Categoria categoriaPadre;
 
-	@Id
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	private CriterioDeCategorizacion criterioDeCategorizacion;
 
@@ -66,5 +67,32 @@ public class Categoria implements Serializable {
 	public void seDesasociaUnaEntidad() {
 		this.cantidadEntidadesCategorizablesAsociadas --;
 	}
-	
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public void setCategoriaPadre(Categoria categoriaPadre) {
+		this.categoriaPadre = categoriaPadre;
+	}
+
+	public void setCriterioDeCategorizacion(CriterioDeCategorizacion criterioDeCategorizacion) {
+		this.criterioDeCategorizacion = criterioDeCategorizacion;
+	}
+
+	public int getCantidadEntidadesCategorizablesAsociadas() {
+		return cantidadEntidadesCategorizablesAsociadas;
+	}
+
+	public void setCantidadEntidadesCategorizablesAsociadas(int cantidadEntidadesCategorizablesAsociadas) {
+		this.cantidadEntidadesCategorizablesAsociadas = cantidadEntidadesCategorizablesAsociadas;
+	}
 }

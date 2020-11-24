@@ -16,6 +16,10 @@ import javax.persistence.*;
 
 @Entity
 public class Licitacion{
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private int identificadorLicitacion;
+
 	@OneToOne
 	private OperacionEgreso compra;
 
@@ -36,10 +40,6 @@ public class Licitacion{
 
 	@Transient
 	private ArrayList<CuentaUsuario> suscriptores;
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	public int identificadorLicitacion;
 
 	@Transient
 	private int ultimoIdentificadorPresupuesto;
@@ -169,6 +169,14 @@ public class Licitacion{
 		//			presupuesto.setIdentificador(this.getIdentificador() + presupuesto.getIdentificador());
 		//	});
 		//}
+	}
+
+	public int getIdentificadorLicitacion() {
+		return identificadorLicitacion;
+	}
+
+	public void setIdentificadorLicitacion(int identificadorLicitacion) {
+		this.identificadorLicitacion = identificadorLicitacion;
 	}
 
 	public String getIdentificadorConEtiqueta() {

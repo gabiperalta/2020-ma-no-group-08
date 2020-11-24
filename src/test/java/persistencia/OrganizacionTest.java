@@ -39,9 +39,9 @@ public class OrganizacionTest {
         this.entityManager = entityManagerFactory.createEntityManager();
         RepoOrganizaciones repoOrganizaciones = new RepoOrganizaciones(entityManager);
 
-        repoOrganizaciones.agregarOrganizacion("unaOrganizacionDePrueba", null);
+        //repoOrganizaciones.agregarOrganizacion("unaOrganizacionDePrueba", null);
 
-        Organizacion unaOrganizacion = repoOrganizaciones.buscarOrganizacion("unaOrganizacionDePrueba");
+        Organizacion unaOrganizacion = repoOrganizaciones.buscarOrganizacion("Organizacion2");
 
         System.out.println("Nombre irganizacion buscada: " + unaOrganizacion.getNombre());
     }
@@ -51,9 +51,9 @@ public class OrganizacionTest {
         this.entityManager = entityManagerFactory.createEntityManager();
         RepoOrganizaciones repoOrganizaciones = new RepoOrganizaciones(entityManager);
 
-        repoOrganizaciones.agregarOrganizacion("unaOrganizacionExistente", null);
+        //repoOrganizaciones.agregarOrganizacion("unaOrganizacionExistente", null);
 
-        Assert.assertTrue(repoOrganizaciones.existeLaOrganizacion("unaOrganizacionExistente"));
+        Assert.assertTrue(repoOrganizaciones.existeLaOrganizacion("Organizacion2"));
     }
 
     @Test

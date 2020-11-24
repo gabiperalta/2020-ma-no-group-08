@@ -9,7 +9,9 @@ import javax.persistence.*;
 @Entity
 public class Empresa {
 
-    @Id
+    @Id @GeneratedValue
+    private int id;
+
     protected String razonSocial;
 
     @Enumerated(EnumType.STRING)
