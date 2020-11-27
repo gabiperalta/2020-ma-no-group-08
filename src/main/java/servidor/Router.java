@@ -34,9 +34,17 @@ public class Router {
 		Router.initAudit();
 		Router.initEngine();
 		Router.initPersistence();
-		String projectDir = System.getProperty("user.dir");
-		String staticDir = "/src/main/resources/public";
-		Spark.externalStaticFileLocation(projectDir + staticDir);
+
+		boolean localhost = false;
+		if(localhost){
+			String projectDir = System.getProperty("user.dir");
+			String staticDir = "/src/main/resources/public";
+			Spark.externalStaticFileLocation(projectDir + staticDir);
+		}
+		else{
+			Spark.staticFileLocation("/public");
+		}
+
 		Router.configure();
 	}
 
