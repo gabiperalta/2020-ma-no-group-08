@@ -29,6 +29,8 @@ import java.util.Date;
 
 public class ServerDataMock {
     private static EntityManagerFactory entityManagerFactory;
+    static MongoClient mongoClient;
+    static Datastore datastore;
 
     public static void main(String[] args) throws Exception {
         entityManagerFactory = Persistence.createEntityManagerFactory("db");
@@ -37,12 +39,26 @@ public class ServerDataMock {
     }
 
     public static void cargarMock() throws Exception {
+        initAudit();
         cargarOrganizaciones();
         cargarRoles();
         cargarUsuarios();
         cargarCategorias();
         cargarIngresos();
         cargarEgregos();
+    }
+
+    private static void initAudit() {
+        MongoClientURI uri = new MongoClientURI(
+                "mongodb+srv://mongodb:0AnE83904LltBfkF@cluster0.8pqel.mongodb.net/operations_audit?retryWrites=true&w=majority");
+
+        mongoClient = new MongoClient(uri);
+
+        Morphia morphia = new Morphia();
+        morphia.mapPackage("auditoria");
+
+        datastore = morphia.createDatastore(mongoClient, "operations_audit");
+        datastore.ensureIndexes();
     }
 
     public ServerDataMock() {
@@ -440,17 +456,6 @@ public class ServerDataMock {
     }
 
     private static Datastore getDatastore(){
-        MongoClientURI uri = new MongoClientURI(
-                "mongodb+srv://mongodb:0AnE83904LltBfkF@cluster0.8pqel.mongodb.net/operations_audit?retryWrites=true&w=majority");
-
-        MongoClient mongoClient = new MongoClient(uri);
-        MongoDatabase database = mongoClient.getDatabase("test");
-
-        Morphia morphia = new Morphia();
-        morphia.mapPackage("auditoria");
-
-        Datastore datastore = morphia.createDatastore(mongoClient, "operations_audit");
-        datastore.ensureIndexes();
         return datastore;
     }
 }

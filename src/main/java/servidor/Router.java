@@ -27,8 +27,8 @@ public class Router {
 
 	private static HandlebarsTemplateEngine engine;
 	private static EntityManagerFactory entityManagerFactory;
-//	private static Morphia m
-
+	static MongoClient mongoClient;
+	static Datastore datastore;
 
 	public static void init() throws Exception {
 		Router.initAudit();
@@ -59,7 +59,16 @@ public class Router {
 	private static void initPersistence(){ entityManagerFactory = Persistence.createEntityManagerFactory("db"); }
 
 	private static void initAudit(){
+		MongoClientURI uri = new MongoClientURI(
+				"mongodb+srv://mongodb:0AnE83904LltBfkF@cluster0.8pqel.mongodb.net/operations_audit?retryWrites=true&w=majority");
 
+		mongoClient = new MongoClient(uri);
+
+		Morphia morphia = new Morphia();
+		morphia.mapPackage("auditoria");
+
+		datastore = morphia.createDatastore(mongoClient, "operations_audit");
+		datastore.ensureIndexes();
 	}
 
 	public static void configure() throws Exception {
@@ -177,18 +186,7 @@ public class Router {
 	}
 
 	public static Datastore getDatastore(){
-		MongoClientURI uri = new MongoClientURI(
-				"mongodb+srv://mongodb:0AnE83904LltBfkF@cluster0.8pqel.mongodb.net/operations_audit?retryWrites=true&w=majority");
-
-		MongoClient mongoClient = new MongoClient(uri);
-		MongoDatabase database = mongoClient.getDatabase("test");
-
-		Morphia morphia = new Morphia();
-		morphia.mapPackage("auditoria");
-
-		Datastore datastore = morphia.createDatastore(mongoClient, "operations_audit");
-		datastore.ensureIndexes();
-        return datastore;
+		return datastore;
     }
 
 }

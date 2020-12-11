@@ -6,24 +6,23 @@ import com.mongodb.client.MongoDatabase;
 import dev.morphia.Datastore;
 import dev.morphia.Morphia;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.List;
 
 public class AuditoriaTest {
-    MongoClient mongoClient;
-    Morphia morphia;
-    Datastore datastore;
+    static MongoClient mongoClient;
+    static Datastore datastore;
 
-    @Before
-    public void setUp(){
+    @BeforeClass
+    static public void setUp(){
         MongoClientURI uri = new MongoClientURI(
                 "mongodb+srv://mongodb:0AnE83904LltBfkF@cluster0.8pqel.mongodb.net/operations_audit?retryWrites=true&w=majority");
 
         mongoClient = new MongoClient(uri);
-        MongoDatabase database = mongoClient.getDatabase("test");
 
-        morphia = new Morphia();
+        Morphia morphia = new Morphia();
         morphia.mapPackage("auditoria");
 
         datastore = morphia.createDatastore(mongoClient, "TESTS_BD");

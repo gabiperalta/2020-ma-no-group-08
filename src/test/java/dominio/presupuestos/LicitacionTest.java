@@ -17,6 +17,7 @@ import dominio.licitacion.criterioSeleccion.CriterioMenorPrecio;
 import dominio.notificador_suscriptores.NotificadorSuscriptores;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import dominio.licitacion.Licitacion;
@@ -42,34 +43,33 @@ public class LicitacionTest {
 	EntidadOperacion proveedor2;
 
 	// AUDITORIA
-	MongoClient mongoClient;
-	Morphia morphia;
-	Datastore datastore;
+	static MongoClient mongoClient;
+	static Datastore datastore;
 	
 	@Before
 	public void init() {
-		
-		Efectivo pesos = new Efectivo(200000,"Rapipago", "Efectivo","ticket");
+
+		Efectivo pesos = new Efectivo(200000, "Rapipago", "Efectivo", "ticket");
 		DocumentoComercial documento = new DocumentoComercial(ETipoDoc.FACTURA, 2000);
 		Date fecha = new Date();
-		EntidadOperacion origen = new EntidadOperacion("Operacion compra 1","20-40678950-4","Av.Libertador 800");
-        EntidadOperacion destino = new EntidadOperacion("Operacion compra 1", "20-40678950-4", "Av.Corrientes 550");
-		
-        ArrayList<Item> listaItemsCompra = new ArrayList<Item>();
+		EntidadOperacion origen = new EntidadOperacion("Operacion compra 1", "20-40678950-4", "Av.Libertador 800");
+		EntidadOperacion destino = new EntidadOperacion("Operacion compra 1", "20-40678950-4", "Av.Corrientes 550");
+
+		ArrayList<Item> listaItemsCompra = new ArrayList<Item>();
 		listaItemsCompra.add(new Item(50, ETipoItem.ARTICULO, "Item1"));
 		listaItemsCompra.add(new Item(100, ETipoItem.ARTICULO, "Item2"));
-		
+
 		builderCompra = new OperacionEgresoBuilder();
-		
+
 		compra = builderCompra.agregarItems(listaItemsCompra)
-         	.agregarMedioDePago(pesos)
-         	.agregarDocComercial(documento)
-         	.agregarFecha(fecha)
-         	.agregarEntidadOrigen(origen)
-         	.agregarEntidadDestino(destino)
-         	.agregarPresupuestosNecesarios(2)
-         	.build();
-		
+				.agregarMedioDePago(pesos)
+				.agregarDocComercial(documento)
+				.agregarFecha(fecha)
+				.agregarEntidadOrigen(origen)
+				.agregarEntidadDestino(destino)
+				.agregarPresupuestosNecesarios(2)
+				.build();
+
 		licitacion = new Licitacion(compra, NotificadorSuscriptores.getInstance());
 
 		licitacion.agregarCriterioSeleccionDeProveedor(new CriterioMenorPrecio());
@@ -85,28 +85,29 @@ public class LicitacionTest {
 		ArrayList<Item> listaItems3 = new ArrayList<Item>();
 		listaItems3.add(new Item(500, ETipoItem.ARTICULO, "Item1"));
 		listaItems3.add(new Item(1020, ETipoItem.ARTICULO, "Item2"));
-		
+
 		ArrayList<Item> listaItems4 = new ArrayList<Item>();
 		listaItems4.add(new Item(10, ETipoItem.ARTICULO, "Item1"));
 		listaItems4.add(new Item(30, ETipoItem.ARTICULO, "Item2"));
-		
-		proveedor1 = new EntidadOperacion("Operacion compra 1","20-40678950-4","Av.Libertador 800");
-		proveedor2 = new EntidadOperacion("Operacion compra 2","20-40678950-3","Av.Libertador 100");
-		
-		presup1 = new Presupuesto(proveedor1,listaItems1);
-		presup2 = new Presupuesto(proveedor2,listaItems2);
-		presup3 = new Presupuesto(proveedor1,listaItems3);
-		presup4 = new Presupuesto(proveedor2,listaItems4);
 
-		// AUDITORIA
+		proveedor1 = new EntidadOperacion("Operacion compra 1", "20-40678950-4", "Av.Libertador 800");
+		proveedor2 = new EntidadOperacion("Operacion compra 2", "20-40678950-3", "Av.Libertador 100");
 
+		presup1 = new Presupuesto(proveedor1, listaItems1);
+		presup2 = new Presupuesto(proveedor2, listaItems2);
+		presup3 = new Presupuesto(proveedor1, listaItems3);
+		presup4 = new Presupuesto(proveedor2, listaItems4);
+	}
+
+	@BeforeClass
+	static public void initAudit() {
 		MongoClientURI uri = new MongoClientURI(
 				"mongodb+srv://mongodb:0AnE83904LltBfkF@cluster0.8pqel.mongodb.net/operations_audit?retryWrites=true&w=majority");
 
 		mongoClient = new MongoClient(uri);
 		MongoDatabase database = mongoClient.getDatabase("test");
 
-		morphia = new Morphia();
+		Morphia morphia = new Morphia();
 		morphia.mapPackage("auditoria");
 
 		datastore = morphia.createDatastore(mongoClient, "TESTS_BD");
