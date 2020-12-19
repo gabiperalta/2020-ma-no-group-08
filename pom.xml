@@ -231,7 +231,7 @@
         <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
         <dependency>
             <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
+            <artifactId>hibernate-hikaricp</artifactId>
             <version>5.4.22.Final</version>
         </dependency>
 
@@ -245,6 +245,12 @@
             <groupId>dev.morphia.morphia</groupId>
             <artifactId>core</artifactId>
             <version>1.5.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>3.4.5</version>
         </dependency>
     </dependencies>
 </project>

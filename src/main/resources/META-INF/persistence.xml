@@ -46,6 +46,11 @@
 			<property name="hibernate.format_sql" value="true" />
 			<property name="use_sql_comments" value="true" />
 			<property name="hibernate.hbm2ddl.auto" value="none" />
+
+			<property name="hibernate.hikari.minimumIdle" value="5" />
+			<property name="hibernate.hikari.maximumPoolSize" value="10" />
+			<property name="hibernate.hikari.idleTimeout" value="30000" />
+			<property name="hibernate.connection.provider_class" value="org.hibernate.hikaricp.internal.HikariCPConnectionProvider" />
 		</properties>
 
 	</persistence-unit>
