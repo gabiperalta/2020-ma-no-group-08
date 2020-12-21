@@ -28,8 +28,6 @@ import java.util.stream.Collectors;
 
 public class EgresoController extends Controller{
 
-    ServicioABOperaciones servicioOperaciones = new ServicioABOperaciones();
-
     ServiceMercadoLibre serviceMeli = ServiceMercadoLibre.INSTANCE;
 
 
@@ -311,9 +309,11 @@ public class EgresoController extends Controller{
 
     }
 
-    public ModelAndView showModificarEgreso(Request req, Response res) throws Exception{
+    public ModelAndView showModificarEgreso(Request req, Response res, EntityManager em) throws Exception{
+        ServicioABOperaciones servicioABOperaciones = new ServicioABOperaciones(em);
+
         Map<String, Object> parameters = new HashMap<>();
-        OperacionEgreso egreso = servicioOperaciones.buscarEgreso(req.params("id"));
+        OperacionEgreso egreso = servicioABOperaciones.buscarEgreso(req.params("id"));
         Date fecha = egreso.getFecha();
         SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd");
         String fechaFormateada = formateador.format(fecha);
@@ -327,9 +327,10 @@ public class EgresoController extends Controller{
         return new ModelAndView(parameters, "egreso.hbs");
     }
 
-    public ModelAndView modificarEgreso(Request req, Response res){
+    public ModelAndView modificarEgreso(Request req, Response res, EntityManager em){
 
         try {
+            ServicioABOperaciones servicioABOperaciones = new ServicioABOperaciones(em);
 
             MedioDePago medioDePagoFinal;
             String monto;
@@ -399,7 +400,7 @@ public class EgresoController extends Controller{
 
             EntidadOperacion entidadDestino = new EntidadOperacion(EDNombre, EDCuil, EDDireccion);
 
-            OperacionEgreso egreso = servicioOperaciones.buscarEgreso(req.params("id"));
+            OperacionEgreso egreso = servicioABOperaciones.buscarEgreso(req.params("id"));
 
             Date parsed=new SimpleDateFormat("yyyy-MM-dd").parse(fecha);
 

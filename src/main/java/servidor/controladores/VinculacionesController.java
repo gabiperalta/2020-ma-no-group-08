@@ -22,11 +22,10 @@ import java.util.*;
 
 public class VinculacionesController {
 
-    public ModelAndView seleccionarOperaciones(Request request, Response response) {
+    public ModelAndView seleccionarOperaciones(Request request, Response response, EntityManager entityManager) {
+        ServicioABOperaciones servicioABOperaciones = new ServicioABOperaciones(entityManager);
 
         CuentaUsuario usuario = request.session().attribute("user");
-
-        ServicioABOperaciones servicioABOperaciones = new ServicioABOperaciones();
         ArrayList<OperacionIngreso> ingresos = servicioABOperaciones.listarIngresosPorOrg(usuario.getOrganizacion());
         ArrayList<OperacionEgreso> egresos = servicioABOperaciones.listarOperaciones(usuario.getOrganizacion());
         Map<String, Object> parameters = new HashMap<>();

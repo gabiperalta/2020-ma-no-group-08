@@ -1,11 +1,9 @@
 package servidor;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
-import com.mongodb.client.MongoDatabase;
 import dev.morphia.Datastore;
 import dev.morphia.Morphia;
 import dominio.cuentasUsuarios.CuentaUsuario;
-import mock.ServerDataMock;
 import servidor.controladores.*;
 import servicio.*;
 
@@ -96,8 +94,8 @@ public class Router {
 		get("/licitacion/:licitacion_id",RouteWithTransaction(licitacionc::resultadoLicitacion),licitacionc.getGson()::toJson);
 		get("/egreso", egresoC::showEgreso, engine);
 		post("/egreso", TemplWithTransaction(egresoC::crearEgreso), engine);
-		get("/egreso/:id", egresoC::showModificarEgreso, engine);
-		post("/egreso/:id", egresoC::modificarEgreso, engine);
+		get("/egreso/:id", TemplWithTransaction(egresoC::showModificarEgreso), engine);
+		post("/egreso/:id", TemplWithTransaction(egresoC::modificarEgreso), engine);
 		get("/egresos/:egreso", egresoC::showEgreso, engine);
 		delete("/egreso/:identificador", RouteWithTransaction(egresoC::deleteEgreso));
 
@@ -113,7 +111,7 @@ public class Router {
 		get("/descategorizar", TemplWithTransaction(categorizacionesC::showDescategorizacionesPage), engine);
 		post("/descategorizar", TemplWithTransaction(categorizacionesC::descategorizar), engine);
 		
-		get("/vinculaciones",vinculacionesC::seleccionarOperaciones,engine);
+		get("/vinculaciones",TemplWithTransaction(vinculacionesC::seleccionarOperaciones),engine);
 		post("/vinculaciones",vinculacionesC::vincular);
 
 		get("/auditoria", auditoriaController::showAuditorias);

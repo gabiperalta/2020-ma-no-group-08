@@ -16,10 +16,9 @@ import java.util.stream.Collectors;
 
 public class IngresoController extends Controller{
 
-    ServicioABOperaciones servicioOperaciones = new ServicioABOperaciones();
-
     public ModelAndView mostrarIngresos(Request req, Response res, EntityManager entityManager) {
         RepositorioCategorizacion repositorioCategorizacion = new RepositorioCategorizacion(entityManager);
+        ServicioABOperaciones servicioABOperaciones = new ServicioABOperaciones(entityManager);
 
         String href = "/ingresos";
         Map<String, Object> parameters = new HashMap<>();
@@ -30,7 +29,7 @@ public class IngresoController extends Controller{
 
         Organizacion org = usuario.getOrganizacion();
 
-        ArrayList<OperacionIngreso> ingresos = servicioOperaciones.listarIngresosPorOrg(org);
+        ArrayList<OperacionIngreso> ingresos = servicioABOperaciones.listarIngresosPorOrg(org);
 
         int ingresosPorPagina = 3;
 
