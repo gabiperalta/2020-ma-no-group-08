@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>GesOc</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="/css/login.css" />
+</head>
+
+<body style="height: 100%">
+  <div style="background-color:#871801">
+  <div class="container login-container d-flex align-items-center min-vh-100" style="width: 100%; height: 100%;">
+    <div class="m-auto bg-light rounded-lg shadow-lg p-sm-4">
+      <h1 class="m-3 p-3 indigo-text lighten-1">GesOc</h1>
+      {{#if firstTime}}
+      <p> Bienvenido a <b>GesOc</b>, ingrese por primera vez </p>
+      {{/if}}
+      <form class="rounded mx-3 my-4" method="POST" action="/login">
+        <div class="form-group m-3">
+          <label class="ml-auto" for="username">Usuario</label>
+          <input type="text" name="username" class="form-control" id="username" placeholder="Usuario" {{#if username}} value="{{username}}" {{/if}} >
+        </div>
+        <div class="form-group m-3">
+          <label class="ml-auto" for="password">Contraseña</label>
+          <input type="password" name="password" class="form-control" id="password" placeholder="Contraseña" {{#if password}} value="{{password}}" {{/if}}>
+        </div>
+        <div>
+            <input type="checkbox" id="remember-credentials" name="remember-credentials" value="true" {{#if remember-credentials-checked}} checked {{/if}}>
+          <label for="scales">Recordar mis credenciales</label>
+        </div>
+        <div class="mx-3 my-4">
+          <button class="btn btn-primary px-3 rounded" type="submit">Ingresar</button>
+        </div>
+      </form>
+      {{#if CredencialesNoValidas }}
+        <p class="text-danger mx-auto"> Usuario y/o contraseña incorrectos. </p>
+      {{/if}}
+
+      {{#if CuentaBloqueada}}
+        <p class="text-danger mx-auto"> Usuario bloqueado. Comuniquese con los administradores. </p>
+      {{/if}}
+
+    </div>
+  </div>
+  </div>
+</body>
+
+</html>

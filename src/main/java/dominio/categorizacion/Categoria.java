@@ -1,30 +1,34 @@
 package dominio.categorizacion;
 
-import java.util.ArrayList;
+import javax.persistence.*;
+import java.io.Serializable;
 
-import dominio.categorizacion.exceptions.CategorizacionException;
 
-public class Categoria {
-	
+@Entity
+@Table(name = "categorias")
+public class Categoria implements Serializable {
+	@Id
+	@GeneratedValue
+	private int id;
+
 	private String nombre;
+
+	@OneToOne(cascade = CascadeType.PERSIST)
 	private Categoria categoriaPadre;
-	private ArrayList<Categoria> subCategorias;
+
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	private CriterioDeCategorizacion criterioDeCategorizacion;
+
+	private int cantidadEntidadesCategorizablesAsociadas;
+
+	public Categoria() {}
 	
-	public Categoria(String nombreCategoria, CriterioDeCategorizacion criterioDeCategorizacion){
-		this.nombre = nombreCategoria;
-		this.categoriaPadre = null;
-		this.subCategorias = new ArrayList<Categoria>();
-		this.criterioDeCategorizacion = criterioDeCategorizacion;
-	}
-	
-	public Categoria(String nombreCategoria, Categoria categoriaPadre, CriterioDeCategorizacion criterioDeCategorizacion){
+	public Categoria(String nombreCategoria, CriterioDeCategorizacion criterioDeCategorizacion, Categoria categoriaPadre){
 		this.nombre = nombreCategoria;
 		this.categoriaPadre = categoriaPadre;
-		this.subCategorias = new ArrayList<Categoria>();
 		this.criterioDeCategorizacion = criterioDeCategorizacion;
 	}
-	
+
 	public String getNombre() {
 		return this.nombre;
 	}
@@ -37,37 +41,58 @@ public class Categoria {
 		return criterioDeCategorizacion;
 	}
 	
-	public Categoria agregarSubCategoria(String nombreSubCriterio) throws CategorizacionException {
-		if(!this.existeLaCategoria(nombreSubCriterio)) {
-			Categoria unaCategoria = new Categoria(nombreSubCriterio, this, this.criterioDeCategorizacion);
-			this.subCategorias.add(unaCategoria);
-			return unaCategoria;
-		}
-		else {
-			throw new CategorizacionException("Esta categoria ya existe a este nivel de categorizacion.");
-		}
+	public boolean esDelCriterio(String nombreCriterioDeCategorizacion) {
+		return this.criterioDeCategorizacion.getNombre().contentEquals(nombreCriterioDeCategorizacion);
 	}
 	
-	public void quitarSubCategoria(String nombreCategoria) {
-		Categoria categoriaAEliminar = this.buscarSubCategoria(nombreCategoria);
-		this.subCategorias.remove(categoriaAEliminar);
+	public boolean esDescendienteDe(Categoria unaCategoriaPadre) { // En caso de que no funcione, debo poner un if porque aparentemente no tiene lazy evaluation
+		if(this.categoriaPadre != null)
+			return this.categoriaPadre.equals(unaCategoriaPadre) || this.categoriaPadre.esDescendienteDe(unaCategoriaPadre);
+		else
+			return false;
 	}
 	
-	public boolean existeLaCategoria(String nombreCategoria) {
-		boolean existiaLaCategoria;
-		try {
-			this.buscarSubCategoria(nombreCategoria);
-			existiaLaCategoria = true;
-		}
-		catch (Exception NoSuchElementException){
-			existiaLaCategoria = false;
-		}
-		return existiaLaCategoria;
+	public boolean tieneEntidadesAsociadas(){
+		return this.cantidadEntidadesCategorizablesAsociadas > 0;
 	}
 	
-	public Categoria buscarSubCategoria(String nombreCategoria) {
-		Categoria unaCategoria = this.subCategorias.stream().filter(categoria -> categoria.getNombre().equals(nombreCategoria)).findFirst().get();
-		return unaCategoria;
+	public void desasociarseDelPadre(){
+			this.categoriaPadre = null;
 	}
 	
+	public void seAsociaUnaEntidad() {
+		this.cantidadEntidadesCategorizablesAsociadas ++;
+	}
+	
+	public void seDesasociaUnaEntidad() {
+		this.cantidadEntidadesCategorizablesAsociadas --;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public void setCategoriaPadre(Categoria categoriaPadre) {
+		this.categoriaPadre = categoriaPadre;
+	}
+
+	public void setCriterioDeCategorizacion(CriterioDeCategorizacion criterioDeCategorizacion) {
+		this.criterioDeCategorizacion = criterioDeCategorizacion;
+	}
+
+	public int getCantidadEntidadesCategorizablesAsociadas() {
+		return cantidadEntidadesCategorizablesAsociadas;
+	}
+
+	public void setCantidadEntidadesCategorizablesAsociadas(int cantidadEntidadesCategorizablesAsociadas) {
+		this.cantidadEntidadesCategorizablesAsociadas = cantidadEntidadesCategorizablesAsociadas;
+	}
 }

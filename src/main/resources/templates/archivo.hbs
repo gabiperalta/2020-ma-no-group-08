@@ -1,0 +1,39 @@
+{{> home.hbs}}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test page</title>
+
+    <style>
+body {
+  padding-top: 5rem;
+}
+.starter-template {
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+</style>
+
+
+</head>
+<body>
+
+
+<main role="main" class="container">
+
+    <form method="post" action="/subirArchivo" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="exampleFormControlFile1">Example file input</label>
+            <input type="file" name="archivojson" class="form-control-file" id="exampleFormControlFile1">
+        </div>
+
+        <button type="submit" class="btn btn-default">Subir archivo</button>
+    </form>
+
+</main><!-- /.container -->
+
+
+</body>
+</html>

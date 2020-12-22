@@ -1,31 +1,42 @@
 package dominio.cuentasUsuarios;
 
+import java.io.Serializable;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.List;
 
 import dominio.cuentasUsuarios.Roles.Rol;
 import dominio.cuentasUsuarios.perfil.Perfil;
 import dominio.cuentasUsuarios.perfil.PerfilAdministrador;
 import dominio.cuentasUsuarios.perfil.PerfilEstandar;
 import dominio.entidades.Organizacion;
-import dominio.operaciones.EntidadOperacion;
+import org.hibernate.annotations.Cascade;
 import seguridad.HashPassword;
 import seguridad.ValidadorContrasenia;
-import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;
+import datos.RepositorioUsuarios;
 import temporal.seguridad.repositorioUsuarios.exceptions.CredencialesNoValidasException;
 import temporal.seguridad.repositorioUsuarios.exceptions.UsuarioYaExistenteException;
 
+import javax.persistence.*;
 
-public class CuentaUsuario {
-
+@Entity
+@Table(name = "cuentas_usuarios")
+public class CuentaUsuario implements Serializable {
+	@Id
+	@OneToOne( cascade = CascadeType.ALL)
 	private Perfil perfil;
 	private String passwordHash;
-	private String passwordPlana; // TODO. este atributo sera usado unicamente para testeo, posteriormente sera eliminado para quedar solo el hash
-	private ArrayList<String> contraseniasPrevias;
+	private String passwordPlana;
+	@Transient
+	private List<String> contraseniasPrevias;
 	private Integer intentosPendientes;
-	private ArrayList<Rol> roles;
+	@ManyToMany(cascade=CascadeType.DETACH)
+	private List<Rol> roles;
 
-	public CuentaUsuario(String unNombreUsuario, String unaPassword, Rol rolAdmin) { // CONSTRUCTOR USUARIOS ADMINISTRADOR
+	public CuentaUsuario() { }
+
+	// CONSTRUCTOR USUARIOS ADMINISTRADOR
+	public CuentaUsuario(String unNombreUsuario, String unaPassword, Rol rolAdmin) {
 		perfil = new PerfilAdministrador(unNombreUsuario);
 		passwordHash = HashPassword.calcular(unaPassword);
 		passwordPlana = unaPassword;
@@ -34,8 +45,19 @@ public class CuentaUsuario {
 		roles = new ArrayList<Rol>();
 		roles.add(rolAdmin);
 	}
-	
-	public CuentaUsuario(String unNombreUsuario, EntidadOperacion unaOrganizacion, ArrayList<String> nombresRoles) { // CONSTRUCTOR USUARIOS ESTANDAR
+
+	// CONSTRUCTOR PARA USUARIOS ESTANDAR CON PASSWORD SETEADA
+	public CuentaUsuario(String unNombreUsuario, Organizacion unaOrganizacion, ArrayList<Rol> unosRoles, String unaPassword){
+		perfil = new PerfilEstandar(unNombreUsuario, unaOrganizacion);
+		passwordPlana = unaPassword;
+		passwordHash = HashPassword.calcular(passwordPlana);
+		contraseniasPrevias = new ArrayList<String>();
+		intentosPendientes = 3;
+		roles = unosRoles;
+	}
+
+	// CONSTRUCTOR USUARIOS ESTANDAR
+	public CuentaUsuario(String unNombreUsuario, Organizacion unaOrganizacion, ArrayList<Rol> unosRoles) {
 		perfil = new PerfilEstandar(unNombreUsuario, unaOrganizacion);
 		
 		String unaPassword = this.generarContrasenia();
@@ -43,11 +65,7 @@ public class CuentaUsuario {
 		passwordHash = HashPassword.calcular(passwordPlana);
 		contraseniasPrevias = new ArrayList<String>();
 		intentosPendientes = 3;
-		roles = new ArrayList<Rol>();
-		
-		nombresRoles.forEach(nombreRol -> this.addRol(RepositorioUsuarios.getInstance().buscarRol(nombreRol)));
-		
-		RepositorioUsuarios.getInstance().agregarUsuarioEstandar(this);
+		roles = unosRoles;
 	}
 	
 	public boolean verificarContrasenia(String contrasenia) {
@@ -66,8 +84,8 @@ public class CuentaUsuario {
 		return intentosPendientes == 0; //return intentosPendientes > 0;
 	}
 	
-	public void cambiarNombre(String unNombreUsuario) throws UsuarioYaExistenteException {
-		if(!RepositorioUsuarios.getInstance().existeElUsuario(unNombreUsuario)) {
+	public void cambiarNombre(String unNombreUsuario, RepositorioUsuarios repositorioUsuarios) throws UsuarioYaExistenteException {
+		if(!repositorioUsuarios.existeElUsuario(unNombreUsuario)) {
 			perfil.setNombre(unNombreUsuario);
 		}
 		else {
@@ -80,14 +98,18 @@ public class CuentaUsuario {
 	}
 
 	public ArrayList<String> getContraseniasPrevias() {
-		return contraseniasPrevias;
+		return new ArrayList<>(contraseniasPrevias);
 	}
 
 	public boolean esAdministrador() {
 		return perfil.esUsuarioAdministrador();
 	}
+
+	public boolean getEsAdministrador() {
+		return perfil.esUsuarioAdministrador();
+	}
 	
-	public EntidadOperacion getOrganizacion() {
+	public Organizacion getOrganizacion() {
 		return perfil.getOrganizacion();
 	}
 	
@@ -111,18 +133,45 @@ public class CuentaUsuario {
 	}
 
 	public boolean puedeRecategorizar() {
-		//		TODO: definir roles
-		return true;
+		return tieneElPrivilegio("PRIVILEGIO_RECATEGORIZADOR");
 	}
-	
-	public ArrayList<Rol> getRoles(){
-		return this.roles;
+
+	public boolean puedeVincular() {
+		return tieneElPrivilegio("PRIVILEGIO_VINCULADOR");
+	}
+
+	public boolean puedeLicitar() {
+		return tieneElPrivilegio("PRIVILEGIO_AB_LICITACIONES");
+	}
+
+	public boolean puedeSerRevisor() {
+		return tieneElPrivilegio("PRIVILEGIO_REVISOR");
+	}
+
+	public boolean puedeAdministarEntidadesJuridicas() {
+		return tieneElPrivilegio("PRIVILEGIO_ABM_ENTIDADES_JURIDICAS");
+	}
+
+	public boolean puedeAdministarEntidadesBase() {
+		return tieneElPrivilegio("PRIVILEGIO_ABM_ENTIDADES_BASE");
+	}
+
+	public boolean puedeAdministrarOperaciones() {
+		return tieneElPrivilegio("PRIVILEGIO_AB_OPERACIONES");
+	}
+
+	public boolean puedeAdministrarOrganizaciones() {
+		return tieneElPrivilegio("PRIVILEGIO_AB_ORGANIZACIONES");
+	}
+
+	public boolean puedeAdministrarUsuarios() {
+		return tieneElPrivilegio("PRIVILEGIO_ABM_USUARIOS");
 	}
 	
 	public boolean tieneElPrivilegio(String nombrePrivilegio) {
 		return roles.stream().anyMatch(rol -> rol.tieneElPrivilegio(nombrePrivilegio));
 	}
-	
+
 	private String generarContrasenia() {
 		
 		int longitudContrasenia = 14;
@@ -134,13 +183,57 @@ public class CuentaUsuario {
 		
 		String generatedString = new String(arrayAux);
 
-		// Esta contraseña autogenerada deberia ser enviada al usuario final de forma segura
+		// Esta contraseï¿½a autogenerada deberia ser enviada al usuario final de forma segura
 		
 		return generatedString;
 	}
 	
 	private void addRol(Rol unRol) {
 		this.roles.add(unRol);
+	}
+
+	public ArrayList<Rol> getRoles(){
+		return new ArrayList<>(this.roles);
+	}
+
+	public Perfil getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(Perfil perfil) {
+		this.perfil = perfil;
+	}
+
+	public String getPasswordHash() {
+		return passwordHash;
+	}
+
+	public void setPasswordHash(String passwordHash) {
+		this.passwordHash = passwordHash;
+	}
+
+	public void setContraseniasPrevias(List<String> contraseniasPrevias) {
+		this.contraseniasPrevias = contraseniasPrevias;
+	}
+
+	public String getPasswordPlana() {
+		return passwordPlana;
+	}
+
+	public void setPasswordPlana(String passwordPlana) {
+		this.passwordPlana = passwordPlana;
+	}
+
+	public Integer getIntentosPendientes() {
+		return intentosPendientes;
+	}
+
+	public void setIntentosPendientes(Integer intentosPendientes) {
+		this.intentosPendientes = intentosPendientes;
+	}
+
+	public void setRoles(List<Rol> roles) {
+		this.roles = roles;
 	}
 	
 }

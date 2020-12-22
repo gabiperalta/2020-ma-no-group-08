@@ -1,0 +1,257 @@
+{{> home.hbs}}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test page</title>
+    <!--
+    <script src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script>
+    <script type="text/javascript" src="/public/handlebars.min-v4.7.6.js"></script>
+    <script src="https://s3.amazonaws.com/builds.handlebarsjs.com/handlebars.min-v4.7.6.js"></script>
+    -->
+
+    <style>
+body {
+  padding-top: 5rem;
+}
+.starter-template {
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+.invisible{
+    opacity: 0;
+    display: none;
+}
+</style>
+
+
+</head>
+<body>
+
+{{#if error}}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>ERROR</strong> {{error}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+{{/if}}
+
+
+<main role="main" class="container" >
+
+    <div class="form-group">
+        <div class="row">
+            <select id="selectCategorias" class="custom-select" name="categoria-elegida" style="max-width: 300px">
+                <option selected value="_">Seleccione una categoria</option>
+                {{#each criteriosDeCategorizacion}}
+                    {{#each this.categorias}}
+                        <option value="{{../nombre}}_{{nombre}}"> {{../nombre}} - {{nombre}} </option>
+                    {{/each}}
+                {{/each}}
+            </select>
+            <div class="mx-3">
+                <button type="button" class="btn btn-primary px-3 rounded" onclick="obtenerCategoria()">Filtrar</button>
+            </div>
+            <p class="font-italic my-auto">{{infoFiltroActual}}</p>
+        </div>
+    </div>
+
+    <div id="accordion">
+
+        {{#each egresos}}
+            <div class="card">
+                <div class="card-header" id="headingEgresos{{identificador}}">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" data-target="#collapseEgreso{{identificador}}" data-toggle="collapse" aria-expanded="false" aria-controls="collapseEgreso{{identificador}}">
+                            Egreso {{ identificador}}
+                        </button>
+                    </h5>
+                </div>
+
+                <div id="collapseEgreso{{identificador}}" class="collapse" aria-labelledby="headingEgreso{{identificador}}" data-parent="#accordion">
+                    <div class="container">
+                        <div class="row">
+                            <div class="card-body col-10">
+                                Items:
+                                <ul>
+                                    {{#each this.items}}
+                                        <li>{{ descripcion }} - ${{valor}}</li>
+                                    {{/each}}
+                                </ul>
+                                Entidad origen:
+                                <ul>
+                                    <li>{{ this.entidadOrigen.nombre }} </li>
+                                </ul>
+                                Entidad destino:
+                                <ul>
+                                    <li>{{ this.entidadDestino.nombre }} </li>
+                                </ul>
+                                Presupuestos necesarios:
+                                <ul>
+                                    <li>{{ this.presupuestosNecesarios }} </li>
+                                 </ul>
+                                Medio de pago:
+                                <ul>
+                                <div class="entry">
+                                {{#if this.medioDePago.esEfectivo}}
+                                <li>Efectivo</li>
+                                {{/if}}
+                                {{#if this.medioDePago.esTarjetaDeCredito}}
+                                <li>Tarjeta de Credito</li>
+                                {{/if}}
+                                {{#if this.medioDePago.esTarjetaDeDebito}}
+                                <li>Tarjeta de Debito</li>
+                                {{/if}}
+                                {{#if this.medioDePago.esDineroEnCuenta}}
+                                <li>Dinero en Cuenta</li>
+                                {{/if}}
+                                </div>
+                                </ul>
+
+                                Documento Comercial:
+                                <ul>
+                                    <li> <font style="text-transform: lowercase;"> {{ this.documento.tipo }} </font></li>
+                                </ul>
+                                Fecha:
+                                <ul>
+                                   <li>{{this.fechaString}}</li>
+                                </ul>
+
+
+                            </div>
+                            <div class="card-body d-flex justify-content-between align-items-center">
+                                
+                                <button style="margin-left: 10px" type="button" class="btn btn-outline-danger" onclick="confirmarEliminacion('{{identificador}}')">Eliminar </button>
+                                
+                                &nbsp
+                                &nbsp
+                                <form id="modificarEgreso" action="/egreso/{{identificador}}" method="PUT">
+                                    <button type="submit" class="btn btn-outline-primary" href="/egreso/:id">Modificar </button>
+                                </form>
+                                &nbsp
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalAgregarPresupuesto" onclick="obtenerEgreso('{{identificador}}')">Agregar presupuesto </button>
+                               &nbsp
+                               <form action="/categorizar" method="GET">
+                                    <input class="invisible" name="id-entidad-categorizable" value={{identificador}} >
+                                    <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Categorizar</button>
+                               </form>
+
+                                <form action="/descategorizar" method="GET">
+                                    <input class="invisible" name="id-entidad-categorizable" value={{identificador}} >
+                                    <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Descategorizar</button>
+                                </form>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {{/each}}
+    </div>
+        <div class="mx-3 my-4 text-center" >
+            <form action="/egreso" method="GET">
+                <button type="submit" class="btn btn-dark float-sm-center">Nuevo egreso</button>
+            </form>
+        </div>
+
+
+    <div class="mt-5">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+
+                {{#if pagina_anterior}}
+                    <li class="page-item">
+                {{else}}
+                    <li class="page-item disabled">
+                {{/if}}
+                    <a class="page-link" href="/egresos?pagina={{pagina_anterior}}{{filtroPaginado}}" tabindex="-1">Anterior</a>
+                </li>
+
+                {{#each cantidad_paginas}}
+                    <li class="page-item"><a class="page-link" href="/egresos?pagina={{this}}{{filtroPaginado}}">{{this}}</a></li>
+                {{/each}}
+
+                {{#if pagina_siguiente}}
+                    <li class="page-item">
+                {{else}}
+                    <li class="page-item disabled">
+                {{/if}}
+                    <a class="page-link" href="/egresos?pagina={{pagina_siguiente}}{{filtroPaginado}}">Siguiente</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+</main><!-- /.container -->
+
+<!-- Modal -->
+<div class="modal fade" id="modalAgregarPresupuesto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalAgregarPresupuestoTitulo">Modal title</h5>
+            </div>
+            <div class="modal-body">
+                <form id="formAgregarPresupuesto" method="post" action="/presupuesto" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <input type="file" name="archivojson" class="form-control-file" id="exampleFormControlFile1">
+                        <input type="text" name="identificador_egreso" class="d-none" id="inputIdentificadorEgreso">
+                        <input type="text" name="url_egresos" class="d-none" id="inputUrlEgreso">
+                    </div>
+                </form>
+                <p id="pIdLicitacion" class="font-italic"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button form="formAgregarPresupuesto" type="submit" class="btn btn-primary">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+<script type="text/javascript">
+    function obtenerEgreso(identificadorEgreso) {
+        $('#modalAgregarPresupuestoTitulo').text("Agregar presupuesto al egreso " + identificadorEgreso);
+        $('#inputIdentificadorEgreso').val(identificadorEgreso);
+        $('#inputUrlEgreso').val(window.location.href);
+
+        $.get("/licitacion?idEgreso=" + identificadorEgreso, function (data) {
+            if(data.length > 0)
+                $("#pIdLicitacion").text("Los presupuestos se agregaran a la licitacion " + data);
+            }
+        );
+    }
+
+    function obtenerCategoria(){
+        window.location.href = "/egresos?filtro=" + $("#selectCategorias").val()
+    }
+    
+    function confirmarEliminacion(identificadorEgreso){
+        //console.log("Se esta eliminando un egreso");
+
+        var r = confirm("¿Esta seguro que desea eliminar el egreso " + identificadorEgreso + "?");
+        if (r) {
+            $.ajax({
+                url: "/egreso/" + identificadorEgreso,
+                //url: "/egreso/" + identificadorEgreso + "?paginaActual=" + window.location.pathname + window.location.search,
+                type: "DELETE",
+                success: function () {
+                    location.reload();
+                },
+                error: function () {
+                    if(window.location.search.length > 0)
+                        window.location.href = window.location.pathname + window.location.search + "&error=egresoNoBorrado"
+                    else
+                        window.location.href = window.location.pathname + "?error=egresoNoBorrado"
+                }
+            });
+        }
+    }
+</script>
+
+</html>

@@ -1,4 +1,4 @@
-package servicio.Sesiones;
+/*package servicio.Sesiones;
 
 import java.util.UUID;
 
@@ -13,8 +13,8 @@ import servicio.ab_organizaciones.ServicioABOrganizaciones;
 import servicio.abm_entidades.ServicioABMEntidadesBase;
 import servicio.abm_entidades.ServicioABMEntidadesJuridicas;
 import servicio.abm_usuarios.ServicioABMUsuarios;
-import temporal.dominio.repositorioSesiones.RepositorioSesiones;
-import temporal.seguridad.repositorioUsuarios.RepositorioUsuarios;
+import datos.RepositorioSesiones;
+import datos.RepositorioUsuarios;
 
 public class ServicioSesiones {
 
@@ -70,4 +70,4 @@ public class ServicioSesiones {
 	public ServicioABLicitaciones abLicitaciones() throws PermisoDenegadoException {
 		return RepositorioSesiones.getInstance().buscarSesion(identificadorSesion).abLicitaciones();
 	}
-}
+}*/

@@ -1,0 +1,388 @@
+{{> home.hbs}}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test page</title>
+
+    <style>
+        body {
+
+            padding-top: 5rem;
+        }
+    </style>
+
+</head>
+<body>
+
+
+<main role="main" class="container" >
+    <form class="rounded mx-3 my-4" method="POST" {{#if egreso}} action="/egreso/{{egreso.identificador}}" {{else}} action="/egreso" {{/if}}>
+        {{#if egreso}}
+        <div class="container">
+            <h4>Modificando egreso {{egreso.identificador}}</h4>
+            <div class="row">
+                <div class="list-group" style="max-height: 200px;overflow: scroll" id="lista_items">
+                    {{#each egreso.items}}
+                        <h5>Descripcion: {{this.descripcion}}   Valor:{{this.valor}}</h5>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+        {{else}}
+            <div class="container">
+                <h4>1 - Agregar items</h4>
+                <div class="row">
+
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="item_monto">Valor</label>
+                            <input type="number" min="0" class="form-control" id="item_monto" placeholder="Ingrese un monto">
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text" for="item_tipo">Tipo item</label>
+                            </div>
+                            <select class="custom-select" id="item_tipo">
+                                <option value="none" selected disabled hidden>Elegir...</option>
+                                <option value="articulo">Atículo</option>
+                                <option value="servicio">Servicio</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="item_descripcion">Descripcion</label>
+                            <input type="text" class="form-control" id="item_descripcion" placeholder="Ingrese una descripcion">
+                        </div>
+                        <button type="button" onclick="agregarItem()" class="btn btn-primary">Agregar item</button>
+                    </div>
+                    <div class="col-6">
+                        <div class="list-group" style="max-height: 200px;overflow: scroll" id="lista_items">
+                            <div class="d-none">
+                                <input name="cantidad-items" id="cantidad-items">
+                            </div>
+                        </div>
+                        <!--<button type="submit" class="btn btn-primary mt-2">Eliminar</button>
+                        <button type="submit" class="btn btn-primary mt-2">Modificar</button>-->
+                    </div>
+                </div>
+
+            </div>
+        {{/if}}
+
+        <div class="container mt-4">
+            {{#if egreso}}
+                <h4>1 - Seleccionar medio de pago</h4>
+            {{else}}
+                <h4>2 - Seleccionar medio de pago</h4>
+            {{/if}}
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a {{#if egreso.medioDePago.esTarjedaDeCredito}} class="nav-item nav-link active" {{else}} class="nav-item nav-link" {{/if}}
+                            id="nav-tarjeta-credito-tab" data-toggle="tab" href="#nav-tarjeta-credito" role="tab" aria-controls="nav-home" aria-selected="true">Tarjeta crédito</a>
+                    <a {{#if egreso.medioDePago.esTarjetaDeDebito}} class="nav-item nav-link active" {{else}} class="nav-item nav-link" {{/if}}
+                            id="nav-tarjeta-debito-tab" data-toggle="tab" href="#nav-tarjeta-debito" role="tab" aria-controls="nav-profile" aria-selected="false">Tarjeta débito</a>
+                    <a {{#if egreso.medioDePago.esEfectivo}} class="nav-item nav-link active" {{else}} class="nav-item nav-link" {{/if}}
+                            id="nav-efectivo-tab" data-toggle="tab" href="#nav-efectivo" role="tab" aria-controls="nav-contact" aria-selected="false">Efectivo</a>
+                    <a {{#if egreso.medioDePago.esDineroEnCuenta}} class="nav-item nav-link active" {{else}} class="nav-item nav-link" {{/if}}
+                            id="nav-dinero-cuenta-tab" data-toggle="tab" href="#nav-dinero-cuenta" role="tab" aria
+                       -controls="nav-contact" aria-selected="false">Dinero en cuenta</a>
+                </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                <div {{#if egreso.medioDePago.esTarjedaDeCredito}} class="tab-pane fade show active" {{else}} class="tab-pane fade" {{/if}}
+                        id="nav-tarjeta-credito" role="tabpanel" aria-labelledby="nav-tarjeta-credito-tab">
+                    <div class="col-6">
+                        <label >Entidad de Pago:</label>
+
+
+                        <div id="thumbs3">
+                            {{#each medioDePagoMeli}}
+                                {{#if this.esTarjetaDeCredito}}
+                                    {{#if this.esImagenGrande}}
+                                            <img id="{{this.name}}" src="{{this.thumbnail}}" width="35" height="20" >
+                                    {{else}}
+                                        <img id="{{this.name}}" src="{{this.thumbnail}}" >
+                                    {{/if}}
+                                {{/if}}
+                            {{/each}}
+                        </div>
+
+                        <select id="selectBanco" class="custom-select" name="banco-elegido" style="max-width: 300px">
+                            <option selected value="_">Seleccione una entidad de pago</option>
+
+                            {{#each medioDePagoMeli}}
+                                {{#if this.esTarjetaDeCredito}}
+                                    <option value="{{this.name}}"> {{this.name}} </option>
+                                {{/if}}
+                            {{/each}}
+
+                        </select>
+
+
+
+                        <div class="form-group">
+                            <label for="tarjeta-credito-num">Número de tarjeta</label>
+                            <input type="text" class="form-control" name="tarjeta-credito-num" id="tarjeta-credito-num" placeholder="Ingrese el numero"
+                                {{#if egreso.medioDePago.esTarjedaDeCredito}} value="{{egreso.medioDePago.numero}}" {{/if}}>
+                        </div>
+                        <div class="form-group">
+                            <label for="tarjeta-credito-nombre-apellido">Nombre del titular</label>
+                            <input type="text" class="form-control" name="tarjeta-credito-nombre-apellido" id="tarjeta-credito-nombre-apellido" placeholder="Ingrese nombre y apellido"
+                                {{#if egreso.medioDePago.esTarjedaDeCredito}} value="{{egreso.medioDePago.nombre}}" {{/if}}>
+                        </div>
+                        <div class="form-group">
+                            <label for="tarjeta-credito-cantidad">Cuotas</label>
+                            <input type="number" min="0" class="form-control" name="tarjeta-credito-cantidad" id="tarjeta-credito-cantidad" placeholder="Ingrese una cantidad"
+                                {{#if egreso.medioDePago.esTarjedaDeCredito}} value="{{egreso.medioDePago.cuotas}}" {{/if}}>
+                        </div>
+                    </div>
+                </div>
+                <div {{#if egreso.medioDePago.esTarjetaDeDebito}} class="tab-pane fade show active" {{else}} class="tab-pane fade" {{/if}}
+                        id="nav-tarjeta-debito" role="tabpanel" aria-labelledby="nav-tarjeta-debito-tab">
+                    <div class="col-6">
+                        <label >Entidad de Pago:</label>
+
+                        <div id="thumbs2">
+                            {{#each medioDePagoMeli}}
+                                {{#if this.esTarjetaDeDebito}}
+                                    <img id="{{this.name}}" src="{{this.thumbnail}}">
+                                {{/if}}
+                            {{/each}}
+                        </div>
+
+                        <select id="selectBanco" class="custom-select" name="banco-elegido" style="max-width: 300px">
+                            <option selected value="_">Seleccione una entidad de pago</option>
+
+                            {{#each medioDePagoMeli}}
+                                {{#if this.esTarjetaDeDebito}}
+                                    <option value="{{this.name}}"> {{this.name}} </option>
+                                {{/if}}
+                            {{/each}}
+
+                        </select>
+
+                        <div class="form-group">
+                            <label for="tarjeta-debito-num">Número de tarjeta</label>
+                            <input type="text" class="form-control" name="tarjeta-debito-num" id="tarjeta-debito-num" placeholder="Ingrese el numero"
+                                {{#if egreso.medioDePago.esTarjetaDeDebito}} value="{{egreso.medioDePago.numero}}" {{/if}}>
+                        </div>
+                        <div class="form-group">
+                            <label for="tarjeta-debito-nombre-apellido">Nombre del titular</label>
+                            <input type="text" class="form-control" name="tarjeta-debito-nombre-apellido" id="tarjeta-debito-nombre-apellido" placeholder="Ingrese nombre y apellido"
+                                {{#if egreso.medioDePago.esTarjetaDeDebito}} value="{{egreso.medioDePago.nombre}}" {{/if}}>
+                        </div>
+                    </div>
+                </div>
+                <div {{#if egreso.medioDePago.esEfectivo}} class="tab-pane fade show active" {{else}} class="tab-pane fade" {{/if}}
+                        id="nav-efectivo" role="tabpanel" aria-labelledby="nav-efectivo-tab">
+
+                    <div class="col-6">
+                        <label >Entidad de Pago:</label>
+
+                         <div id="thumbs">
+                                {{#each medioDePagoMeli}}
+                                    {{#if this.esEfectivo}}
+                                        <img id="{{this.name}}" src="{{this.thumbnail}}">
+                                    {{/if}}
+                                {{/each}}
+                            </div>
+
+                        <div class="form-group">
+
+                        <select id="selectBanco" class="custom-select" name="banco-elegido" style="max-width: 300px">
+                            <option selected value="_">Seleccione una entidad de pago</option>
+
+                            {{#each medioDePagoMeli}}
+                                {{#if this.esEfectivo}}
+                                    <option value="{{this.name}}"> {{this.name}} </option>
+                                {{/if}}
+                            {{/each}}
+
+                        </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="efectivo-monto">Monto</label>
+                            <input type="number" min="0" class="form-control" name="efectivo-monto" id="efectivo-monto" placeholder="Ingrese un número"
+                                {{#if egreso.medioDePago.esEfectivo}} value="{{egreso.medioDePago.monto}}" {{/if}}>
+                        </div>
+                        <div class="form-group">
+                            <label for="efectivo-punto-de-pago">Punto de pago</label>
+                            <input type="text" class="form-control" name="efectivo-punto-de-pago" id="efectivo-punto-de-pago" placeholder="Ingrese un punto de pago"
+                                {{#if egreso.medioDePago.esEfectivo}} value="{{egreso.medioDePago.puntoDePago}}" {{/if}}>
+                        </div>
+                    </div>
+                </div>
+                <div {{#if egreso.medioDePago.esDineroEnCuenta}} class="tab-pane fade show active" {{else}} class="tab-pane fade" {{/if}}
+                        id="nav-dinero-cuenta" role="tabpanel" aria-labelledby="nav-dinero-cuenta-tab">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="dinero-cuenta-monto">Monto</label>
+                            <input type="number" min="0" class="form-control" name="dinero-cuenta-monto" id="dinero-cuenta-monto" placeholder="Ingrese un número"
+                                {{#if egreso.medioDePago.esDineroEnCuenta}} value="{{egreso.medioDePago.monto}}" {{/if}}>
+                        </div>
+                        <div class="form-group">
+                            <label for="dinero-cuenta-nombre-apellido">Nombre</label>
+                            <input type="text" class="form-control" name="dinero-cuenta-nombre-apellido" id="dinero-cuenta-nombre-apellido" placeholder="Ingrese nombre y apellido"
+                                {{#if egreso.medioDePago.esDineroEnCuenta}} value="{{egreso.medioDePago.nombre}}" {{/if}}>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container mt-4">
+            {{#if egreso}}
+                <h4>2 - Seleccionar documento comercial</h4>
+            {{else}}
+                <h4>3 - Seleccionar documento comercial</h4>
+            {{/if}}
+            <div class="row">
+                <div class="form-group">
+                    <label for="tipo-documento-select">Tipo documento comercial:</label>
+                    <select class="custom-select" name="tipo-documento" id="tipo-documento-select">
+                        {{#if egreso}}
+                            <option value="{{egreso.documento.tipo}}" selected hidden>{{egreso.documento.tipo}}</option>
+                        {{else}}
+                            <option value="none" selected disabled hidden>--Tipo--</option>
+                        {{/if}}
+                        <option value="ticket">TICKET</option>
+                        <option value="factura">FACTURA</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="documento-num">Numero Documento:</label>
+                    <input type="number" class="form-control" id="documento-num" name="documento-num" {{#if egreso}} value="{{egreso.documento.numero}}" {{/if}}>
+                </div>
+            </div>
+        </div>
+
+        <div class="container mt-4">
+            {{#if egreso}}
+                <h4>3 - Ingresar entidades</h4>
+            {{else}}
+                <h4>4 - Ingresar entidades</h4>
+            {{/if}}
+            <div class="row">
+                <div class="form-group">
+                    <label for="query_ED_nombre">Nombre destino:  </label>
+                    <input type="text" class="form-control" id="query_ED_nombre" name="query_ED_nombre" {{#if egreso}} value="{{egreso.entidadDestino.nombre}}" {{/if}}>
+
+                </div>
+                <div class="form-group">
+                    <label for="query_ED_cuil">Cuil destino:    </label>
+                    <input type="text" class="form-control" id="query_ED_cuil" name="query_ED_cuil" placeholder="11-11111111-1"
+                        {{#if egreso}} value="{{egreso.entidadDestino.cuil}}" {{/if}}>
+                </div>
+                &nbsp
+                <div class="form-group">
+                    <label for="query_ED_direccion">Direccion destino:   </label>
+                    <input type="text" class="form-control" id="query_ED_direccion" name="query_ED_direccion"
+                        {{#if egreso}} value="{{egreso.entidadDestino.direccion}}" {{/if}}>
+                </div>
+                   <div class="form-group">
+                       {{#each user.organizacion.entidades}}
+                          <label for="query_EO_nombre">Entidad de origen:</label>
+                            <select class="custom-select" name="query_EO_nombre" id="query_EO_nombre">
+                               {{#if egreso}}
+                                   <option value="{{egreso.entidadOrigen.nombre}}" selected hidden>{{egreso.entidadOrigen.nombre}}</option>
+                               {{else}}
+                                   <option value="none" selected disabled hidden>--Entidad Origen--</option>
+                               {{/if}}
+                               <option value="{{this.razonSocial}}">{{this.razonSocial}}</option>
+                          </select>
+                       {{/each}}
+                   </div>
+            </div>
+        </div>
+
+        <div class="container mt-4">
+            {{#if egreso}}
+                <h4>4 - Agregar datos finales</h4>
+            {{else}}
+                <h4>5 - Agregar datos finales</h4>
+            {{/if}}
+            <div class="row">
+                <div class="form-group">
+                    <label for="presupuestos-necesarios-num">Numero presupuestos necesarios:</label>
+                    <input type="number" class="form-control" id="presupuestos-necesarios-num" name="presupuestos-necesarios-num"
+                           min="0" max="100" {{#if egreso}} value="{{egreso.presupuestosNecesarios}}" disabled {{/if}}>
+                </div>
+                <br>
+                <div class="form-group">
+                    <label for="operacion-egreso-date">Fecha operacion egreso:</label>
+                    <input type="date" class="form-control" id="operacion-egreso-date" name="operacion-egreso-date"
+                           min="1990-01-01" max="2020-10-3" {{#if egreso}} value="{{fecha}}" {{/if}} >
+                </div>
+            </div>
+        </div>
+        {{#if egreso}}
+            <div class="mx-3 my-4">
+                <button type="submit" class="btn btn-primary px-3 rounded" >Modificar egreso</button>
+            </div>
+        {{else}}
+            <div class="mx-3 my-4">
+                <button type="submit" class="btn btn-primary px-3 rounded" >Crear egreso</button>
+            </div>
+        {{/if}}
+    </form>
+
+</main><!-- /.container -->
+
+</body>
+
+<script type="text/javascript">
+    var ultimoItem = 0;
+
+    function agregarItem(){
+
+        //var item = $("<div></div>").attr("id","item" + ultimoItem);
+        var item = $("<button type=\"button\" class=\"list-group-item list-group-item-action\"></button>").text("Item " + ultimoItem);
+        var monto = $("<input>").attr("id","item_monto" + ultimoItem).addClass("d-none").attr("name", "item_monto" + ultimoItem);
+        var tipo = $("<input>").attr("id","item_tipo" + ultimoItem).addClass("d-none").attr("name", "item_tipo" + ultimoItem);
+        var descripcion = $("<input>").attr("id","item_descripcion" + ultimoItem).addClass("d-none").attr("name", "item_descripcion" + ultimoItem);
+
+        monto.val($('#item_monto').val());
+        tipo.val($('#item_tipo').val());
+        descripcion.val($('#item_descripcion').val());
+
+        item.append(monto);
+        item.append(tipo);
+        item.append(descripcion);
+
+        $("#lista_items").append(item);
+
+        ultimoItem++;
+
+        $("#cantidad-items").val(ultimoItem);
+    }
+
+    $('#thumbs').delegate('img', 'click', function() {
+
+        var $this = $(this);
+
+
+        // Changes the value of the form field "prod" to the value of img.id
+        $('[name="banco-elegido"]').val($this.attr('id')) });
+
+
+    $('#thumbs2').delegate('img', 'click', function() {
+
+        var $this = $(this);
+
+
+        // Changes the value of the form field "prod" to the value of img.id
+        $('[name="banco-elegido"]').val($this.attr('id')) });
+
+
+    $('#thumbs3').delegate('img', 'click', function() {
+
+        var $this = $(this);
+
+        // Changes the value of the form field "prod" to the value of img.id
+        $('[name="banco-elegido"]').val($this.attr('id')) });
+
+</script>
+
+
+
+</html>

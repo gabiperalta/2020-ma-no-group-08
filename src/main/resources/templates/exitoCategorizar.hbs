@@ -1,0 +1,27 @@
+<head>
+    <title>GesOc</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/exitoCategorizar.css" />
+</head>
+
+    <div class="alert alert-success center_alert" role="alert">
+        <h4 class="alert-heading">Categorizado correctamente</h4>
+        <p></p>
+        <hr>
+        <button class="btn btn-primary" onclick="goBack()">Regresar al listado</button>
+    </div>
+
+    <script>
+        function goBack() {
+        window.history.back();
+        window.history.back();
+        }
+    </script>
+
+
+{{>home.hbs}}

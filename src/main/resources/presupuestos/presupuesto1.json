@@ -1,0 +1,14 @@
+{
+    "entidadOperacion":{
+        "nombre":"Operacion compra 1",
+        "cuil":"20-40678950-4",
+        "direccion":"Av.Libertador 800"
+    },
+    "item":[
+        {
+            "valor":350,
+            "tipo":"ARTICULO",
+            "descripcion":"Resma de hojas"
+        }
+    ]
+}

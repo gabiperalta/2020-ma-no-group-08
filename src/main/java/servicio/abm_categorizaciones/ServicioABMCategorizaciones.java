@@ -1,84 +1,65 @@
 package servicio.abm_categorizaciones;
 
+import java.util.ArrayList;
+
 import dominio.categorizacion.Categoria;
 import dominio.categorizacion.CriterioDeCategorizacion;
-import dominio.categorizacion.RepositorioCategorizacion;
+import dominio.categorizacion.EntidadCategorizable;
+import datos.RepositorioCategorizacion;
 import dominio.categorizacion.exceptions.CategorizacionException;
+import dominio.entidades.Organizacion;
+
+import javax.persistence.EntityManager;
 
 public class ServicioABMCategorizaciones {
-	private Categoria categoriaActual;
-	private CriterioDeCategorizacion criterioDeCategorizacionActual;
-	
+
+	RepositorioCategorizacion repositorioCategorizacion;
+	public ServicioABMCategorizaciones(EntityManager entityManager){
+		this.repositorioCategorizacion = new RepositorioCategorizacion(entityManager);
+	}
+
 	public void altaCriterioCategorizacion(String nombreCriterioDeCategorizacion) throws CategorizacionException {
-		this.criterioDeCategorizacionActual = new CriterioDeCategorizacion(nombreCriterioDeCategorizacion);
+		repositorioCategorizacion.agregarCriterioDeCategorizacion(new CriterioDeCategorizacion(nombreCriterioDeCategorizacion));
 	}
 	
-	public void bajaCriterioCategorizacion(String nombreCriterioDeCategorizacion) {
-		this.criterioDeCategorizacionActual = null;
-		RepositorioCategorizacion.getInstance().quitarCriterioDeCategorizacion(nombreCriterioDeCategorizacion);
+	public void bajaCriterioCategorizacion(String nombreCriterioDeCategorizacion) throws CategorizacionException {
+		repositorioCategorizacion.quitarCriterioDeCategorizacion(nombreCriterioDeCategorizacion);
 	}
 	
-	public void buscarCriterioDeCategorizacion(String nombreCriterioDeCategorizacion) {
-		this.criterioDeCategorizacionActual = RepositorioCategorizacion.getInstance().buscarCriterioDeCategorizacion(nombreCriterioDeCategorizacion);
-		this.categoriaActual = null;
+	public CriterioDeCategorizacion buscarCriterioDeCategorizacion(String nombreCriterioDeCategorizacion) {
+		return repositorioCategorizacion.buscarCriterioDeCategorizacion(nombreCriterioDeCategorizacion);
 	}
 	
-	public void asociarCategoriaAEntidadCategorizable(String identificadorEntidadCategorizable) throws CategorizacionException {
-		RepositorioCategorizacion.getInstance().asociarCriterioAEntidadCategorizable(identificadorEntidadCategorizable, this.categoriaActual);
+	public void agregarCategoria(String nombreCategoria, String nombreCriterioDeCategorizacion) throws CategorizacionException {
+		this.buscarCriterioDeCategorizacion(nombreCriterioDeCategorizacion).agregarCategoria(nombreCategoria);
 	}
 	
-	public void desasociarCategoriaAEntidadCategorizable(String identificadorEntidadCategorizable) throws CategorizacionException {
-		RepositorioCategorizacion.getInstance().desasociarCriterioAEntidadCategorizable(identificadorEntidadCategorizable, this.categoriaActual);
+	public void agregarCategoria(String nombreCategoria, String nombreCriterioDeCategorizacion, String nombreCategoriaPadre) throws CategorizacionException {
+		this.buscarCriterioDeCategorizacion(nombreCriterioDeCategorizacion).agregarCategoria(nombreCategoria, nombreCategoriaPadre);
 	}
 	
-	public void agregarCategoria(String nombreCategoria) throws CategorizacionException {
-		if(this.criterioDeCategorizacionActual != null)
-			this.categoriaActual = criterioDeCategorizacionActual.agregarCategoria(nombreCategoria);
-		else
-			throw new CategorizacionException("No hay ningun Criterio de Categorizacion referenciado, debes buscar o crear uno");
+	public Categoria buscarCategoria(String nombreCategoria, String nombreCriterioDeCategorizacion) throws CategorizacionException {
+		return this.buscarCriterioDeCategorizacion(nombreCriterioDeCategorizacion).buscarCategoria(nombreCategoria);
 	}
 	
-	public void agregarSubCategoria(String nombreCategoria) throws CategorizacionException {
-		if(this.categoriaActual != null)
-			this.categoriaActual.agregarSubCategoria(nombreCategoria);
-		else
-			throw new CategorizacionException("No hay ninguna Categoria referenciada, debes buscar una");
+	public void eliminarCategoria(String nombreCategoria, String nombreCriterioDeCategorizacion) throws CategorizacionException {
+		this.buscarCriterioDeCategorizacion(nombreCriterioDeCategorizacion).quitarCategoria(nombreCategoria);
 	}
 	
-	public void buscarCategoria(String nombreCategoria) throws CategorizacionException {
-		if(this.criterioDeCategorizacionActual != null)
-			this.categoriaActual = this.criterioDeCategorizacionActual.buscarCategoria(nombreCategoria);
-		else
-			throw new CategorizacionException("No hay ningun Criterio de Categorizacion referenciado, debes buscar o crear uno");
+	public void asociarCategoriaAEntidadCategorizable(String identificadorEntidadCategorizable, String nombreCategoria, String nombreCriterioDeCategorizacion) throws CategorizacionException {
+		repositorioCategorizacion.asociarCategoriaAEntidadCategorizable(identificadorEntidadCategorizable, nombreCategoria,nombreCriterioDeCategorizacion);
 	}
 	
-	public void buscarSubCategoria(String nombreCategoria) throws CategorizacionException {
-		if(this.categoriaActual != null)
-			this.categoriaActual = this.categoriaActual.buscarSubCategoria(nombreCategoria);
-		else
-			throw new CategorizacionException("No hay ninguna Categoria referenciada, debes buscar una");
+	public void desasociarCategoriaAEntidadCategorizable(String identificadorEntidadCategorizable, String nombreCategoria, String nombreCriterioDeCategorizacion) throws CategorizacionException {
+		repositorioCategorizacion.desasociarCategoriaAEntidadCategorizable(identificadorEntidadCategorizable, nombreCategoria, nombreCriterioDeCategorizacion);
 	}
 	
-	public void eliminarCategoria(String nombreCategoria) throws CategorizacionException {
-		if(this.criterioDeCategorizacionActual != null)
-			this.criterioDeCategorizacionActual.quitarCategoria(nombreCategoria);
-		else
-			throw new CategorizacionException("No hay ninguna Categoria referenciada, debes buscar una");
+	public ArrayList<EntidadCategorizable> filtrarEntidadesDeLaCategoria(String nombreCategoria, String nombreCriterioDeCategorizacion, Organizacion unaOrganizacion){
+		return repositorioCategorizacion.filtrarEntidadesDeLaCategoria( nombreCategoria, nombreCriterioDeCategorizacion, unaOrganizacion);
 	}
-	
-	public void eliminarSubCategoria(String nombreCategoria) throws CategorizacionException {
-		if(this.categoriaActual != null)
-			this.categoriaActual.quitarSubCategoria(nombreCategoria);
-		else
-			throw new CategorizacionException("No hay ninguna Categoria referenciada, debes buscar una");
-	}
-	
-	public Categoria getCategoriaActual() {
-		return this.categoriaActual;
-	}
-	
-	public CriterioDeCategorizacion getCriterioDeCategorizacionActual() {
-		return this.criterioDeCategorizacionActual;
+
+	public ArrayList<CriterioDeCategorizacion> listarCriteriosDeCategorizacion(){
+		return repositorioCategorizacion.getCriteriosDeCategorizacion();
 	}
 	
 }

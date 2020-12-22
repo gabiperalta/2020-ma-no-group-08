@@ -1,0 +1,131 @@
+{{> home.hbs}}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test page</title>
+    <!--
+    <script src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script>
+    <script type="text/javascript" src="/public/handlebars.min-v4.7.6.js"></script>
+    <script src="https://s3.amazonaws.com/builds.handlebarsjs.com/handlebars.min-v4.7.6.js"></script>
+    -->
+
+    <style>
+body {
+  padding-top: 5rem;
+}
+.starter-template {
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+.invisible{
+    opacity: 0;
+    display: none;
+}
+</style>
+
+
+</head>
+<body>
+
+{{#if error}}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>ERROR</strong> {{error}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+{{/if}}
+
+<main role="main" class="container" >
+
+    <div id="accordion">
+
+        {{#each ingresos}}
+            <div class="card">
+                <div class="card-header" id="headingIngresos{{identificador}}">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" data-target="#collapseIngreso{{identificador}}" data-toggle="collapse" aria-expanded="false" aria-controls="collapseIngreso{{identificador}}">
+                            Ingreso {{ identificador}}
+                        </button>
+                    </h5>
+                </div>
+
+                <div id="collapseIngreso{{identificador}}" class="collapse" aria-labelledby="headingIngreso{{identificador}}" data-parent="#accordion">
+                    <div class="container">
+                        <div class="row">
+                            <div class="card-body col-10">
+                                Entidad origen:
+                                <ul>
+                                    <li>{{ this.entidadOrigen.nombre }} </li>
+                                </ul>
+                                Entidad destino:
+                                <ul>
+                                    <li>{{ this.entidadDestino.nombre }} </li>
+                                </ul>
+                                Monto total:
+                                <ul>
+                                    <li>{{ this.montoTotal }} </li>
+                                 </ul>
+                                Fecha:
+                                <ul>
+                                   <li>{{fechaString}}</li>
+                                </ul>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {{/each}}
+    </div>
+
+
+
+    <div class="mt-5">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+
+                {{#if pagina_anterior}}
+                    <li class="page-item">
+                {{else}}
+                    <li class="page-item disabled">
+                {{/if}}
+                    <a class="page-link" href="/ingresos?pagina={{pagina_anterior}}{{filtroPaginado}}" tabindex="-1">Anterior</a>
+                </li>
+
+                {{#each cantidad_paginas}}
+                    <li class="page-item"><a class="page-link" href="/ingresos?pagina={{this}}{{filtroPaginado}}">{{this}}</a></li>
+                {{/each}}
+
+                {{#if pagina_siguiente}}
+                    <li class="page-item">
+                {{else}}
+                    <li class="page-item disabled">
+                {{/if}}
+                    <a class="page-link" href="/ingresos?pagina={{pagina_siguiente}}{{filtroPaginado}}">Siguiente</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</main>
+</body>
+
+<script type="text/javascript">
+    /*
+    Handlebars.registerHelper('times', function(n, block) {
+        var accum = '';
+        for(var i = 0; i < n; ++i)
+            accum += block.fn(i);
+        return accum;
+    });
+    */
+
+    function obtenerCategoria(){
+        window.location.href = "/ingresos?filtro=" + $("#selectCategorias").val()
+    }
+
+</script>
+
+</html>

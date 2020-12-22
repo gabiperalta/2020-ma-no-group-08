@@ -1,0 +1,84 @@
+{{> home.hbs}}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>GesOc</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>-->
+    <link rel="stylesheet" href="/css/vinculaciones.css" />
+
+</head>
+
+<body style="height: 90%">
+
+    <form method="POST" action="/vinculaciones">
+        <div class="tablas-vinculacion">
+            <div>
+                <label for="ingresos-id">Ingrese los id de los ingresos separados por espacios. EJ: 1 2 3 4 5</label>
+            </div>
+
+            <div>
+                <input  name="ingresosIds" id="ingresosIds" value={{value}}>
+            </div>
+
+            <div>
+                <label for="egresos-id">Ingrese los id de los egresos separados por espacios. EJ: 1 2 3 4 5</label>
+            </div>
+
+            <div>
+                <input  name="egresosIds" id="egresosIds" value={{value}}>
+            </div>
+
+            <label for="seleccion-criterios">Elige tu criterio:</label>
+
+            <select name="criterio" id="seleccion-criterios">
+                <option value="Fecha_Egreso">Fecha Egreso</option>
+                <option value="Valor_Ingreso">Valor Ingreso</option>
+                <option value="Valor_Egreso">Valor Egreso</option>
+            </select>
+
+            <div>
+                <label for="rangoDias">Rango de dias</label>
+                <input type="number" name="rangoDias" min="0" id="rangoDias" value="0">
+            </div>
+
+            <div class="d-none">
+                <input name="ingresosId" id="ingresosId">
+            </div>
+            <div class="d-none">
+                <input name="egresosId" id="egresosId">
+            </div>
+            <div>
+                <button class="btn btn-primary px-3 rounded" type="submit">Vincular</button>
+            </div>
+        </div>
+
+    </form>
+
+    <script type="text/javascript">
+        var ingresosId = [];
+        var egresosId = [];
+        function updateIngresos(identificador) {
+            if (!ingresosId.includes(identificador)) {
+                ingresosId.push(identificador);
+            }
+            $("#ingresosId").val(ingresosId);
+
+        }
+
+        function updateEgresos(identificador) {
+            if (!egresosId.includes(identificador)) {
+                egresosId.push(identificador);
+            }
+            $("#egresosId").val(egresosId);
+
+        }
+    </script>
+</body>
+</html>

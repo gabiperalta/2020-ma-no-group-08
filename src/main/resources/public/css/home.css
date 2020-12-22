@@ -1,0 +1,20 @@
+html,
+body {
+    width: 100%;
+    height: 100%;
+    font-family: "Roboto", sans-serif;
+    font-weight: 200;
+}
+
+.navbar-properties{
+    background:#871801;
+}
+
+.account-container{
+    right: 3%;
+    width: 200px;
+}
+
+.account-font{
+    color: azure;
+}

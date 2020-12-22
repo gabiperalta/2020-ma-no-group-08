@@ -1,6 +1,7 @@
 package componenteVinculador.criterio;
 
 import componenteVinculador.criterio.ResultadoVinculado.Vinculacion;
+import componenteVinculador.criterio.vinculacion.OrdenFechaPrimerEgreso;
 import componenteVinculador.criterio.vinculacion.OrdenValorPrimerEgreso;
 import componenteVinculador.vinculable.ETipoOperacionVinculable;
 import componenteVinculador.vinculable.OperacionVinculable;
@@ -14,7 +15,7 @@ import java.util.Date;
 import static org.junit.Assert.*;
 
 public class OrdenFechaPrimerEgresoTest {
-    private OrdenValorPrimerEgreso target;
+    private OrdenFechaPrimerEgreso target;
     private OperacionVinculable ingreso1;
     private OperacionVinculable ingreso2;
     private OperacionVinculable egreso1;
@@ -25,8 +26,8 @@ public class OrdenFechaPrimerEgresoTest {
     private ArrayList<OperacionVinculable> egresos;
 
     @Before
-    public void setUp() {
-        target = new OrdenValorPrimerEgreso(5);
+    public void setUp() throws Exception {
+        target = (OrdenFechaPrimerEgreso) GeneradorCriterio.generarCriterio("Fecha_Egreso",5);
         ingresos = new ArrayList<>();
         egresos = new ArrayList<>();
 

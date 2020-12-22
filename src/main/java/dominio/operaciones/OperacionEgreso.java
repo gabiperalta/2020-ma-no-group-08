@@ -1,22 +1,49 @@
 package dominio.operaciones;
 
+import dominio.categorizacion.EntidadCategorizable;
+import dominio.entidades.Organizacion;
 import dominio.operaciones.medioDePago.MedioDePago;
 
+import javax.persistence.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-public class OperacionEgreso implements Operacion {
-	private String identificadorOperacion;
-	private ArrayList<Item> items;
+@Entity
+@Table(name = "operaciones_egreso")
+public class OperacionEgreso extends EntidadCategorizable implements Operacion{
+
+//	@Id @GeneratedValue
+//	private int id;
+
+	@OneToMany(cascade = CascadeType.PERSIST) @JoinColumn(name = "identificadorOperacion")
+	private List<Item> items;
+
+	//@Convert(converter = MedioDePago.class)
+	//@OneToOne
+	@Transient
 	private MedioDePago medioDePago;
+
+	@OneToOne(cascade = CascadeType.PERSIST)
 	private DocumentoComercial documento;
+
+	@Temporal(TemporalType.DATE)
 	private Date fecha;
+
+	@ManyToOne
 	private EntidadOperacion entidadOrigen;
+
+	@ManyToOne
 	private EntidadOperacion entidadDestino;
+
 	private int presupuestosNecesarios;
+
+	public OperacionEgreso(){}
 	
 	public OperacionEgreso(ArrayList<Item> items2, MedioDePago medioDePago2, DocumentoComercial documento2, Date fecha2,
 						   EntidadOperacion entidadOrigen2, EntidadOperacion entidadDestino2, int presupuestosNecesarios) {
+		super();
 		this.items = items2;
 		this.medioDePago = medioDePago2;
 		this.documento = documento2;
@@ -24,14 +51,14 @@ public class OperacionEgreso implements Operacion {
 		this.entidadOrigen = entidadOrigen2;
 		this.entidadDestino = entidadDestino2;
 		this.presupuestosNecesarios = presupuestosNecesarios;
-		this.identificadorOperacion = null;
 	}
-	
+
 	public void agregarItem(Item item) {
 		this.items.add(item);
 	}
+
 	public ArrayList<Item> getItems() {
-		return items;
+		return new ArrayList<>(items);
 	}
 
 	public void setItems(ArrayList<Item> items) {
@@ -58,21 +85,13 @@ public class OperacionEgreso implements Operacion {
 		return entidadDestino;
 	}
 	
-	public void setIdentificador(String identificadorOperacionEgreso) throws Exception {
-		if(this.identificadorOperacion == null) {
-			this.identificadorOperacion = identificadorOperacionEgreso;
-		}
-		else {
-			throw new Exception("Esta operacion ya tiene un identificador.");
-		}
-	}
-	
 	public String getIdentificador() {
-		return this.identificadorOperacion;
+		return "OE-" + super.getIdentificador();
 	}
 
+	@Override
 	public boolean esLaOperacion(String identificadorOperacionEgreso) {
-		return this.identificadorOperacion.contentEquals(identificadorOperacionEgreso);
+		return this.getIdentificador().contentEquals(identificadorOperacionEgreso);
 	}
 	
 	public MedioDePago getMedioDePago() {
@@ -87,14 +106,54 @@ public class OperacionEgreso implements Operacion {
 	public double getMontoTotal() {
 		return getValorOperacion();
 	}
+	public String getFechaString() {
+		SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yy");
 
+		return formateador.format(fecha);
+	}
+	@Override
 	public Date getFecha() {
 		return fecha;
 	}
 
-	@Override
 	public boolean esIngreso() {
 		return false;
 	}
 
+	@Override
+	public boolean esDeLaOrganizacion(Organizacion unaOrganizacion) {
+		return unaOrganizacion.existeLaEntidad(this.entidadOrigen.getNombre());
+	}
+
+	public void modificarse(MedioDePago medioDePagoFinal, DocumentoComercial unDocumento, Date unaFecha, EntidadOperacion unaEntidadOrigen, EntidadOperacion unaEntidadDestino){
+		medioDePago = medioDePagoFinal;
+		documento = unDocumento;
+		fecha = unaFecha;
+		entidadOrigen = unaEntidadOrigen;
+		entidadDestino = unaEntidadDestino;
+	}
+
+	public void setItems(List<Item> items) {
+		this.items = items;
+	}
+
+	public void setMedioDePago(MedioDePago medioDePago) {
+		this.medioDePago = medioDePago;
+	}
+
+	public void setDocumento(DocumentoComercial documento) {
+		this.documento = documento;
+	}
+
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
+
+	public void setEntidadOrigen(EntidadOperacion entidadOrigen) {
+		this.entidadOrigen = entidadOrigen;
+	}
+
+	public void setEntidadDestino(EntidadOperacion entidadDestino) {
+		this.entidadDestino = entidadDestino;
+	}
 }

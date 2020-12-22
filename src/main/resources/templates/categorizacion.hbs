@@ -1,0 +1,86 @@
+{{> home.hbs}}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test page</title>
+
+    <style>
+        body {
+            padding-top: 5rem;
+        }
+
+        .invisible{
+            opacity: 0;
+            display: none;
+        }
+
+        .visible{
+            opacity: 1;
+            display: block;
+        }
+    </style>
+
+</head>
+<body>
+<form class="rounded mx-3 my-4" method="POST" {{#if esDescategorizacion}} action="/descategorizar" {{else}} action="/categorizar" {{/if}}>
+        <div class="container">
+            <input class="invisible" name="id-entidad-categorizable" id="id-entidad-categorizable" value="{{id-entidad-categorizable}}">
+            <h4>{{id-entidad-categorizable}}</h4>
+            <div class="row">
+                <div class="form-group">
+                    <label for="criterio-select">Criterio de categorización:</label>
+                    <select class="custom-select" name="criterio" id="criterio-select" onchange="unfade(this.value)">
+                        <option value="">--Criterio--</option>
+                        {{#each criterios-de-categorizacion}}
+                            <option value="{{this.nombre}}">{{this.nombre}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                <div class="form-group">
+                    {{#each criterios-de-categorizacion}}
+                        <div class="invisible" id="nav-{{this.nombre}}">
+                            <label for="categoria-select">Categoría:</label>
+                            <select class="custom-select" name="categoria" id="categoria-select">
+                                <option value="">--Categoría--</option>
+                                {{#each categorias}}
+                                    <option value="{{this.nombre}}">{{this.nombre}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                    {{/each}}
+                </div>
+            </div>
+            <div class="mx-3 my-4">
+                <button type="submit" class="btn btn-primary px-3 rounded" >{{#if esDescategorizacion}} Descategorizar {{else}} Categorizar {{/if}}</button>
+            </div>
+        </div>
+    </form>
+</body>
+
+<script type="text/javascript">
+    var elementToFade;
+    var prefijo = "nav-";
+
+    function unfade(element) {
+        // Desapareciendo el elemento previo
+        if(elementToFade != null) {
+            elementToFade.classList.remove('visible');
+            elementToFade.classList.add('invisible');
+            //elementToFade.style.display = 'none';
+            //elementToFade.style.opacity = 0;
+        }
+
+        // Apareciendo al nuevo elemento
+        var elementToShow = document.getElementById(prefijo.concat(element));
+        elementToShow.classList.remove('invisible');
+        elementToShow.classList.add('visible');
+
+        //elementToShow.style.display = 'block';
+        //elementToShow.style.opacity = 1;
+
+        elementToFade = elementToShow;
+    }
+</script>
+</html>
