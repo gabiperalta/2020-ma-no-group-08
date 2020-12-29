@@ -2,8 +2,12 @@ package dominio.operaciones.medioDePago;
 
 import javax.persistence.*;
 
-//@Entity
-//@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(
+        name="tipo",
+        discriminatorType=DiscriminatorType.STRING
+)
 public abstract class MedioDePago {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
