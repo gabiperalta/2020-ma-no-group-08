@@ -1,8 +1,10 @@
 package dominio.operaciones.medioDePago;
 
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
-//@Entity
+@Entity
+@DiscriminatorValue("Efectivo")
 public class Efectivo extends MedioDePago {
     double monto;
     String puntoDePago;

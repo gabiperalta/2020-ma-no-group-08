@@ -1,10 +1,10 @@
 package dominio.operaciones.medioDePago;
 
-import dominio.operaciones.medioDePago.MedioDePago;
-
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
-//@Entity
+@Entity
+@DiscriminatorValue("Tarjeta_credito")
 public class TarjetaDeCredito extends MedioDePago {
     int cuotas;
     String nombre;

@@ -1,8 +1,10 @@
 package dominio.operaciones.medioDePago;
 
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
-//@Entity
+@Entity
+@DiscriminatorValue("Dinero_en_cuenta")
 public class DineroEnCuenta extends MedioDePago {
     double monto;
     String nombre;
