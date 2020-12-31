@@ -28,8 +28,8 @@ public class RepoOperacionesEgreso {
 
     public void agregarOperacionEgreso(OperacionEgreso operacionEgreso, String nombreUsuario, Datastore datastore) throws Exception {
         if (!existeEgreso(operacionEgreso)) {
-            cargarEntidadOperacion(operacionEgreso.getEntidadOrigen());
-            cargarEntidadOperacion(operacionEgreso.getEntidadDestino());
+//            cargarEntidadOperacion(operacionEgreso.getEntidadOrigen());
+//            cargarEntidadOperacion(operacionEgreso.getEntidadDestino());
             entityManager.persist(operacionEgreso);
             new RepoAuditorias(datastore).registrarAlta(operacionEgreso.getIdentificador(), nombreUsuario);
         }

@@ -29,7 +29,7 @@ public class Empresa {
     protected String codigoIGJ;
     protected String direccionPostal;
 
-    @OneToOne
+    @OneToOne (cascade = CascadeType.ALL)
     private EntidadOperacion entidadOperacion;
 
     public Empresa(ETipoEmpresa tipo, Integer cantidadPersonal, ETipoActividad actividad, Double promedioVentas, String razonSocial,

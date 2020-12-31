@@ -109,16 +109,6 @@ public class ServerDataMock {
         entidades1.add(entidad1);
         entidades2.add(entidad2);
 
-        EntityManager emEmpresa = getEntityManager();
-        RepoEntidadesJuridicas repoEmpresas = new RepoEntidadesJuridicas(emEmpresa);
-
-        emEmpresa.getTransaction().begin();
-        repoEmpresas.agregarEntidadEmpresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa 10", "Empresa 1", "20-40678950-3", "200", "Av.Libertador 801", false);
-        repoEmpresas.agregarEntidadEmpresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa 9", "Empresa 2", "20-40678950-4", "203", "Av.Libertador 200", false);
-        repoEmpresas.agregarEntidadEmpresa(ETipoEmpresa.MEDIANA_T2, 5, ETipoActividad.COMERCIO, 3000.54, "Empresa 3", "Empresa 3", "20-57678950-4", "205", "Av.Maipu 200", false);
-
-        emEmpresa.getTransaction().commit();
-
         EntityManager em = getEntityManager();
         RepoOrganizaciones repoOrganizaciones = new RepoOrganizaciones(em);
 

@@ -22,7 +22,7 @@ public class OperacionEgreso extends EntidadCategorizable implements Operacion{
 
 	//@Convert(converter = MedioDePago.class)
 	//@OneToOne
-	@OneToOne
+	@OneToOne (cascade = CascadeType.ALL)
 	private MedioDePago medioDePago;
 
 	@OneToOne(cascade = CascadeType.PERSIST)
