@@ -14,10 +14,10 @@ import java.util.List;
 @Table(name = "operaciones_egreso")
 public class OperacionEgreso extends EntidadCategorizable implements Operacion{
 
-//	@Id @GeneratedValue
-//	private int id;
+	@Id @GeneratedValue(strategy = GenerationType.AUTO)
+	private int id;
 
-	@OneToMany(cascade = CascadeType.PERSIST) @JoinColumn(name = "identificadorOperacion")
+	@OneToMany(cascade = CascadeType.PERSIST) @JoinColumn(name = "item_id")
 	private List<Item> items;
 
 
