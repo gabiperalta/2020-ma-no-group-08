@@ -20,9 +20,8 @@ public class OperacionEgreso extends EntidadCategorizable implements Operacion{
 	@OneToMany(cascade = CascadeType.PERSIST) @JoinColumn(name = "identificadorOperacion")
 	private List<Item> items;
 
-	//@Convert(converter = MedioDePago.class)
-	//@OneToOne
-	@OneToOne
+
+	@OneToOne(cascade = CascadeType.PERSIST)
 	private MedioDePago medioDePago;
 
 	@OneToOne(cascade = CascadeType.PERSIST)
