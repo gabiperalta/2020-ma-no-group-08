@@ -45,6 +45,8 @@ public class Empresa {
         this.codigoIGJ = codigoIGJ;
         this.direccionPostal = direccionPostal;
         this.esComisionista = esComisionista;
+
+        this.entidadOperacion = new EntidadOperacion(razonSocial, cuit, direccionPostal);
     }
 
     public Empresa() {
@@ -70,4 +72,7 @@ public class Empresa {
         return direccionPostal;
     }
 
+    public EntidadOperacion getEntidadOperacion() {
+        return entidadOperacion;
+    }
 }

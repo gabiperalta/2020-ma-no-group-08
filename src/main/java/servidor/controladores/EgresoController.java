@@ -1,5 +1,6 @@
 package servidor.controladores;
 
+import datos.RepoEntidadesJuridicas;
 import datos.RepoLicitaciones;
 import datos.RepoOperacionesEgreso;
 import datos.RepositorioCategorizacion;
@@ -274,14 +275,16 @@ public class EgresoController extends Controller{
             String EOCuil = entidadJuridica.getCuit();
             String EODireccion = entidadJuridica.getDireccionPostal();
 
-            EntidadOperacion entidadOrigen = new EntidadOperacion(EONombre, EOCuil, EODireccion);
+            RepoEntidadesJuridicas repoEntidades = new RepoEntidadesJuridicas(entityManager);
+
+            EntidadOperacion entidadOrigen = repoEntidades.buscarEntidadJuridica(EONombre).getEntidadOperacion();
 
 
             String EDNombre = req.queryParams("query_ED_nombre");
             String EDCuil = req.queryParams("query_ED_cuil");
             String EDDireccion = req.queryParams("query_ED_direccion");
 
-            EntidadOperacion entidadDestino = new EntidadOperacion(EDNombre, EDCuil, EDDireccion);
+            EntidadOperacion entidadDestino = repoEntidades.buscarEntidadJuridica(EDNombre).getEntidadOperacion();
 
             String presupuestosNecesarios = req.queryParams("presupuestos-necesarios-num");
 

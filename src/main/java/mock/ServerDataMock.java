@@ -72,6 +72,7 @@ public class ServerDataMock {
 
         Empresa entidad1 = new Empresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa 1", "Empresa 1", "20-40678950-3", "200", "Av.Libertador 801", false);
         Empresa entidad2 = new Empresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa 2", "Empresa 2", "20-40678950-4", "203", "Av.Libertador 200", false);
+        Empresa entidad3 = new Empresa(ETipoEmpresa.MEDIANA_T2, 5, ETipoActividad.COMERCIO, 3000.54, "Empresa 3", "Empresa 3", "20-57678950-4", "205", "Av.Maipu 200", false);
 
         Empresa entidadO1 = new Empresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa Origen 1", "Empresa 1", "20-40678950-3", "200", "Av.Libertador 801", false);
         Empresa entidadO2 = new Empresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa Origen 2", "Empresa 1", "20-40678950-3", "200", "Av.Libertador 801", false);
@@ -114,6 +115,8 @@ public class ServerDataMock {
         emEmpresa.getTransaction().begin();
         repoEmpresas.agregarEntidadEmpresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa 10", "Empresa 1", "20-40678950-3", "200", "Av.Libertador 801", false);
         repoEmpresas.agregarEntidadEmpresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa 9", "Empresa 2", "20-40678950-4", "203", "Av.Libertador 200", false);
+        repoEmpresas.agregarEntidadEmpresa(ETipoEmpresa.MEDIANA_T2, 5, ETipoActividad.COMERCIO, 3000.54, "Empresa 3", "Empresa 3", "20-57678950-4", "205", "Av.Maipu 200", false);
+
         emEmpresa.getTransaction().commit();
 
         EntityManager em = getEntityManager();
@@ -249,8 +252,11 @@ public class ServerDataMock {
         ingreso6.setMontoTotal(565.3);
         ingreso6.setDescripcion("ingreso6");
 
-        EntidadOperacion origen = new EntidadOperacion("Empresa 1", "20-40678950-3", "Av.Libertador 801");
-        EntidadOperacion destino = new EntidadOperacion("Empresa 2", "20-40678950-3", "Av.Corrientes 550");
+        EntityManager em = getEntityManager();
+        RepoEntidadesJuridicas repoEntidadesJuridicas = new RepoEntidadesJuridicas(em);
+
+        EntidadOperacion origen = repoEntidadesJuridicas.buscarEntidadJuridica("Empresa Origen 1").getEntidadOperacion();
+        EntidadOperacion destino = repoEntidadesJuridicas.buscarEntidadJuridica("Empresa Destino 1").getEntidadOperacion();
 
         ingreso1.setEntidadOrigen(origen);
         ingreso1.setEntidadDestino(destino);
@@ -270,7 +276,6 @@ public class ServerDataMock {
         ingreso6.setEntidadOrigen(destino);
         ingreso6.setEntidadDestino(origen);
 
-        EntityManager em = getEntityManager();
         RepoOperacionesIngreso repoIngreso = new RepoOperacionesIngreso(em);
         em.getTransaction().begin();
         repoIngreso.agregarIngreso(ingreso1);
@@ -311,22 +316,26 @@ public class ServerDataMock {
         Efectivo pesos = new Efectivo(200000,"Rapipago", "Efectivo", "ticket");
         DocumentoComercial documento = new DocumentoComercial(ETipoDoc.FACTURA, 2000);
         Date fecha = new Date();
-        EntidadOperacion origen1 = new EntidadOperacion("Empresa Origen 1", "20-40678950-3", "Av.Libertador 801");
-        EntidadOperacion origen2 = new EntidadOperacion("Empresa Origen 2", "20-40678950-3", "Av.Libertador 801");
-        EntidadOperacion origen3 = new EntidadOperacion("Empresa Origen 3", "20-40678950-3", "Av.Libertador 801");
-        EntidadOperacion origen4 = new EntidadOperacion("Empresa Origen 4", "20-40678950-3", "Av.Libertador 801");
-        EntidadOperacion origen5 = new EntidadOperacion("Empresa Origen 5", "20-40678950-3", "Av.Libertador 801");
-        EntidadOperacion origen6 = new EntidadOperacion("Empresa Origen 6", "20-40678950-3", "Av.Libertador 801");
-        EntidadOperacion origen7 = new EntidadOperacion("Empresa Origen 7", "20-40678950-3", "Av.Libertador 801");
+
+        EntityManager em = getEntityManager();
+        RepoEntidadesJuridicas repoEntidadesJuridicas = new RepoEntidadesJuridicas(em);
+
+        EntidadOperacion origen1 = repoEntidadesJuridicas.buscarEntidadJuridica("Empresa Origen 1").getEntidadOperacion();
+        EntidadOperacion origen2 = repoEntidadesJuridicas.buscarEntidadJuridica("Empresa Origen 2").getEntidadOperacion();
+        EntidadOperacion origen3 = repoEntidadesJuridicas.buscarEntidadJuridica("Empresa Origen 3").getEntidadOperacion();
+        EntidadOperacion origen4 = repoEntidadesJuridicas.buscarEntidadJuridica("Empresa Origen 4").getEntidadOperacion();
+        EntidadOperacion origen5 = repoEntidadesJuridicas.buscarEntidadJuridica("Empresa Origen 5").getEntidadOperacion();
+        EntidadOperacion origen6 = repoEntidadesJuridicas.buscarEntidadJuridica("Empresa Origen 6").getEntidadOperacion();
+        EntidadOperacion origen7 = repoEntidadesJuridicas.buscarEntidadJuridica("Empresa Origen 7").getEntidadOperacion();
 
 
-        EntidadOperacion destino1 = new EntidadOperacion("Empresa Destino 1", "27-40678950-5", "Av.Cordoba 550");
-        EntidadOperacion destino2 = new EntidadOperacion("Empresa Destino 2", "27-40678950-5", "Av.Cordoba 550");
-        EntidadOperacion destino3 = new EntidadOperacion("Empresa Destino 3", "27-40678950-5", "Av.Cordoba 550");
-        EntidadOperacion destino4 = new EntidadOperacion("Empresa Destino 4", "27-40678950-5", "Av.Cordoba 550");
-        EntidadOperacion destino5 = new EntidadOperacion("Empresa Destino 5", "27-40678950-5", "Av.Cordoba 550");
-        EntidadOperacion destino6 = new EntidadOperacion("Empresa Destino 6", "27-40678950-5", "Av.Cordoba 550");
-        EntidadOperacion destino7 = new EntidadOperacion("Empresa Destino 7", "27-40678950-5", "Av.Cordoba 550");
+        EntidadOperacion destino1 = repoEntidadesJuridicas.buscarEntidadJuridica("Empresa Destino 1").getEntidadOperacion();
+        EntidadOperacion destino2 = repoEntidadesJuridicas.buscarEntidadJuridica("Empresa Destino 2").getEntidadOperacion();
+        EntidadOperacion destino3 = repoEntidadesJuridicas.buscarEntidadJuridica("Empresa Destino 3").getEntidadOperacion();
+        EntidadOperacion destino4 = repoEntidadesJuridicas.buscarEntidadJuridica("Empresa Destino 4").getEntidadOperacion();
+        EntidadOperacion destino5 = repoEntidadesJuridicas.buscarEntidadJuridica("Empresa Destino 5").getEntidadOperacion();
+        EntidadOperacion destino6 = repoEntidadesJuridicas.buscarEntidadJuridica("Empresa Destino 6").getEntidadOperacion();
+        EntidadOperacion destino7 = repoEntidadesJuridicas.buscarEntidadJuridica("Empresa Destino 7").getEntidadOperacion();
 
         int presupuestosNecesarios = 2;
 
@@ -387,7 +396,6 @@ public class ServerDataMock {
                 .agregarPresupuestosNecesarios(presupuestosNecesarios).build();
 
 
-        EntityManager em = getEntityManager();
         RepoOperacionesEgreso repoEgresos = new RepoOperacionesEgreso(em);
         em.getTransaction().begin();
         repoEgresos.agregarOperacionEgreso(egreso1, "ServerDataMock", getDatastore());
@@ -435,7 +443,10 @@ public class ServerDataMock {
         listaItems3.add(new Item(456454, ETipoItem.ARTICULO, "Escritorio"));
         listaItems3.add(new Item(50000, ETipoItem.ARTICULO, "computadora"));
 
-        proveedor1 = new EntidadOperacion("Empresa 3", "20-40678950-3", "Av.Libertador 801");
+        RepoEntidadesJuridicas repoEntidadesJuridicas = new RepoEntidadesJuridicas(entityManager);
+
+        proveedor1 = repoEntidadesJuridicas.buscarEntidadJuridica("Empresa Origen 1").getEntidadOperacion();
+
 
         presup1 = new Presupuesto(proveedor1, listaItems1);
         presup2 = new Presupuesto(proveedor1, listaItems2);
