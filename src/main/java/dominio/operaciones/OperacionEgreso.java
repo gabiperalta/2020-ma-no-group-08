@@ -17,7 +17,7 @@ public class OperacionEgreso extends EntidadCategorizable implements Operacion{
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 
-	@OneToMany(cascade = CascadeType.PERSIST) @JoinColumn(name = "item_id")
+	@OneToMany(cascade = CascadeType.PERSIST) @JoinColumn(name = "identificadorOperacion")
 	private List<Item> items;
 
 
