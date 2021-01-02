@@ -4,7 +4,7 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 @Entity
-@DiscriminatorValue("Tarjeta_credito")
+@DiscriminatorValue("TarjetaC")
 public class TarjetaDeCredito extends MedioDePago {
     int cuotas;
     String nombre;
