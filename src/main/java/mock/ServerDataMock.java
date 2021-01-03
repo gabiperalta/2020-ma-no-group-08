@@ -20,6 +20,7 @@ import dominio.notificador_suscriptores.NotificadorSuscriptores;
 import dominio.operaciones.*;
 import dominio.operaciones.medioDePago.Efectivo;
 import datos.RepositorioUsuarios;
+import dominio.operaciones.medioDePago.TarjetaDeCredito;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -287,24 +288,44 @@ public class ServerDataMock {
         ArrayList<Item> items3 = new ArrayList<>();
         ArrayList<Item> items4 = new ArrayList<>();
         ArrayList<Item> items5 = new ArrayList<>();
+        ArrayList<Item> items6 = new ArrayList<>();
+        ArrayList<Item> items7 = new ArrayList<>();
 
 
         Item resma = new Item(300, ETipoItem.ARTICULO, "Resma de hojas");
         Item flete = new Item(350, ETipoItem.SERVICIO, "Servicio de transporte de productos");
         Item tinta = new Item(500, ETipoItem.ARTICULO, "Cartucho de tinta");
-        Item pc = new Item(50000, ETipoItem.ARTICULO, "computadora");
+        Item pc1 = new Item(50000, ETipoItem.ARTICULO, "computadora");
+        Item pc2 = new Item(50050, ETipoItem.ARTICULO, "computadora");
         Item escritorio = new Item(456454, ETipoItem.ARTICULO, "Escritorio");
+        Item impresora = new Item(490, ETipoItem.ARTICULO, "Impresora");
+        Item router = new Item(550, ETipoItem.ARTICULO, "Router");
 
         items1.add(resma);
         items2.add(flete);
         items3.add(tinta);
-        items4.add(pc);
+        items4.add(pc1);
         items5.add(escritorio);
-        items5.add(pc);
+        items5.add(pc2);
+        items6.add(impresora);
+        items7.add(router);
 
         //Efectivo pesos = new Efectivo(200000, "Rapipago", "Efectivo");
-        Efectivo pesos = new Efectivo(200000,"Rapipago", "Efectivo", "ticket");
-        DocumentoComercial documento = new DocumentoComercial(ETipoDoc.FACTURA, 2000);
+        Efectivo pesos1 = new Efectivo(200000,"Rapipago", "Efectivo", "ticket");
+        Efectivo pesos2 = new Efectivo(200000,"Rapipago", "Efectivo", "ticket");
+        Efectivo pesos3 = new Efectivo(200000,"Rapipago", "Efectivo", "ticket");
+        Efectivo pesos4 = new Efectivo(200000,"Rapipago", "Efectivo", "ticket");
+        Efectivo pesos5 = new Efectivo(200000,"Rapipago", "Efectivo", "ticket");
+        Efectivo pesos6 = new Efectivo(200000,"Rapipago", "Efectivo", "ticket");
+        Efectivo pesos7 = new Efectivo(200000,"Rapipago", "Efectivo", "ticket");
+        DocumentoComercial documento1 = new DocumentoComercial(ETipoDoc.FACTURA, 2000);
+        DocumentoComercial documento2 = new DocumentoComercial(ETipoDoc.FACTURA, 2000);
+        DocumentoComercial documento3 = new DocumentoComercial(ETipoDoc.FACTURA, 2000);
+        DocumentoComercial documento4 = new DocumentoComercial(ETipoDoc.FACTURA, 2000);
+        DocumentoComercial documento5 = new DocumentoComercial(ETipoDoc.FACTURA, 2000);
+        DocumentoComercial documento6 = new DocumentoComercial(ETipoDoc.FACTURA, 2000);
+        DocumentoComercial documento7 = new DocumentoComercial(ETipoDoc.FACTURA, 2000);
+
         Date fecha = new Date();
 
         EntityManager em = getEntityManager();
@@ -330,56 +351,56 @@ public class ServerDataMock {
         int presupuestosNecesarios = 2;
 
         OperacionEgreso egreso1 = builderEgreso.agregarItems(items1)
-                .agregarMedioDePago(pesos)
-                .agregarDocComercial(documento)
+                .agregarMedioDePago(pesos1)
+                .agregarDocComercial(documento1)
                 .agregarFecha(fecha)
                 .agregarEntidadOrigen(origen1)
                 .agregarEntidadDestino(destino1)
                 .agregarPresupuestosNecesarios(presupuestosNecesarios).build();
 
         OperacionEgreso egreso2 = builderEgreso.agregarItems(items2)
-                .agregarMedioDePago(pesos)
-                .agregarDocComercial(documento)
+                .agregarMedioDePago(pesos2)
+                .agregarDocComercial(documento2)
                 .agregarFecha(fecha)
                 .agregarEntidadOrigen(origen2)
                 .agregarEntidadDestino(destino2)
                 .agregarPresupuestosNecesarios(presupuestosNecesarios).build();
 
         OperacionEgreso egreso3 = builderEgreso.agregarItems(items3)
-                .agregarMedioDePago(pesos)
-                .agregarDocComercial(documento)
+                .agregarMedioDePago(pesos3)
+                .agregarDocComercial(documento3)
                 .agregarFecha(fecha)
                 .agregarEntidadOrigen(origen3)
                 .agregarEntidadDestino(destino3)
                 .agregarPresupuestosNecesarios(presupuestosNecesarios).build();
 
         OperacionEgreso egreso4 = builderEgreso.agregarItems(items4)
-                .agregarMedioDePago(pesos)
-                .agregarDocComercial(documento)
+                .agregarMedioDePago(pesos4)
+                .agregarDocComercial(documento4)
                 .agregarFecha(fecha)
                 .agregarEntidadOrigen(origen4)
                 .agregarEntidadDestino(destino4)
                 .agregarPresupuestosNecesarios(presupuestosNecesarios).build();
 
         OperacionEgreso egreso5 = builderEgreso.agregarItems(items5)
-                .agregarMedioDePago(pesos)
-                .agregarDocComercial(documento)
+                .agregarMedioDePago(pesos5)
+                .agregarDocComercial(documento5)
                 .agregarFecha(fecha)
                 .agregarEntidadOrigen(origen5)
                 .agregarEntidadDestino(destino5)
                 .agregarPresupuestosNecesarios(presupuestosNecesarios).build();
 
-        OperacionEgreso egreso6 = builderEgreso.agregarItems(items2)
-                .agregarMedioDePago(pesos)
-                .agregarDocComercial(documento)
+        OperacionEgreso egreso6 = builderEgreso.agregarItems(items6)
+                .agregarMedioDePago(pesos6)
+                .agregarDocComercial(documento6)
                 .agregarFecha(fecha)
                 .agregarEntidadOrigen(destino6)
                 .agregarEntidadDestino(origen6)
                 .agregarPresupuestosNecesarios(presupuestosNecesarios).build();
 
-        OperacionEgreso egreso7 = builderEgreso.agregarItems(items3)
-                .agregarMedioDePago(pesos)
-                .agregarDocComercial(documento)
+        OperacionEgreso egreso7 = builderEgreso.agregarItems(items7)
+                .agregarMedioDePago(pesos7)
+                .agregarDocComercial(documento7)
                 .agregarFecha(fecha)
                 .agregarEntidadOrigen(destino7)
                 .agregarEntidadDestino(origen7)
