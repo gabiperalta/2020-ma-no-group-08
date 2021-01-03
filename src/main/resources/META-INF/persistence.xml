@@ -33,6 +33,7 @@
 			<property name="hibernate.connection.username" value="root" />
 			<property name="hibernate.connection.password" value="1234" />
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
+			-->
 
 			<!-- configuracion para conectar con cleardb -->
 			<property name="hibernate.connection.url" value="jdbc:mysql://us-cdbr-east-02.cleardb.com:3306/heroku_9f67a14ee34e826?serverTimezone=UTC" />
@@ -40,10 +41,9 @@
 			<property name="hibernate.connection.password" value="96008b53" />
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
 
-
-			<property name="hibernate.show_sql" value="true" />
-			<property name="hibernate.format_sql" value="true" />
-			<property name="use_sql_comments" value="true" />
+			<property name="hibernate.show_sql" value="false" />
+			<property name="hibernate.format_sql" value="false" />
+			<property name="use_sql_comments" value="false" />
 			<property name="hibernate.hbm2ddl.auto" value="none" />
 
 			<property name="hibernate.hikari.maximumPoolSize" value="10" />
