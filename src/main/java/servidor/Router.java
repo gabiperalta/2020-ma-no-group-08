@@ -163,7 +163,7 @@ public class Router {
 				em.getTransaction().rollback();
 				throw ex;
 			} finally {
-				em.clear();
+				em.close();
 			}
 		};
 		return r;
@@ -181,7 +181,7 @@ public class Router {
 				em.getTransaction().rollback();
 				throw ex;
 			} finally {
-				em.clear();
+				em.close();
 			}
 		};
 		return r;
