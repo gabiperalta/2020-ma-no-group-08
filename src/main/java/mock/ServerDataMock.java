@@ -2,7 +2,6 @@ package mock;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
-import com.mongodb.client.MongoDatabase;
 import datos.*;
 import dev.morphia.Datastore;
 import dev.morphia.Morphia;
@@ -10,17 +9,16 @@ import dominio.categorizacion.CriterioDeCategorizacion;
 import dominio.categorizacion.exceptions.CategorizacionException;
 import dominio.cuentasUsuarios.Roles.Privilegio;
 import dominio.cuentasUsuarios.Roles.Rol;
-import dominio.entidades.*;
+import dominio.entidades.ETipoEmpresa;
+import dominio.entidades.Empresa;
+import dominio.entidades.Organizacion;
 import dominio.entidades.calculadorFiscal.ETipoActividad;
 import dominio.licitacion.Licitacion;
 import dominio.licitacion.Presupuesto;
-import datos.RepoLicitaciones;
 import dominio.licitacion.criterioSeleccion.CriterioMenorPrecio;
 import dominio.notificador_suscriptores.NotificadorSuscriptores;
 import dominio.operaciones.*;
 import dominio.operaciones.medioDePago.Efectivo;
-import datos.RepositorioUsuarios;
-import dominio.operaciones.medioDePago.TarjetaDeCredito;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -95,13 +93,13 @@ public class ServerDataMock {
         entidades1.add(entidadO2);
         entidades1.add(entidadO3);
         entidades1.add(entidadO4);
-        entidades1.add(entidadD1);
-        entidades1.add(entidadD2);
-        entidades1.add(entidadD3);
+        entidades1.add(entidadO5);
+        entidades1.add(entidadO6);
+        entidades1.add(entidadO7);
 
-        entidades2.add(entidadO5);
-        entidades2.add(entidadO6);
-        entidades2.add(entidadO7);
+        entidades2.add(entidadD1);
+        entidades2.add(entidadD2);
+        entidades2.add(entidadD3);
         entidades2.add(entidadD4);
         entidades2.add(entidadD5);
         entidades2.add(entidadD6);
