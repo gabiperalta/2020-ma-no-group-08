@@ -7,6 +7,7 @@ import componenteVinculador.vinculable.utils.FechaUtils;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -21,7 +22,7 @@ public class CriterioOrdenFechaTest {
     private ArrayList<OperacionVinculable> ingresos;
 
     @Before
-    public void setUp() {
+    public void setUp() throws ParseException {
         target = new CriterioOrdenFecha();
 //        INGRESOS
         ingreso1 = new OperacionVinculable(1000,new Date(), ETipoOperacionVinculable.INGRESO);

@@ -8,6 +8,7 @@ import componenteVinculador.vinculable.utils.FechaUtils;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -39,7 +40,7 @@ public class OrdenValorPrimerIngresoTest {
         egreso4 = new OperacionVinculable(2100,new Date(), ETipoOperacionVinculable.EGRESO);
     }
     @Test
-    public void vinculacionConDosResultadosOk() {
+    public void vinculacionConDosResultadosOk() throws ParseException {
         ingresos.add(ingreso1);
         ingresos.add(ingreso2);
 
@@ -60,7 +61,7 @@ public class OrdenValorPrimerIngresoTest {
     }
 
     @Test
-    public void vinculacionConEgresoSinVincularPorMontoOk() {
+    public void vinculacionConEgresoSinVincularPorMontoOk() throws ParseException {
         ingresos.add(ingreso1);
         ingresos.add(ingreso2);
 
@@ -71,7 +72,7 @@ public class OrdenValorPrimerIngresoTest {
     }
 
     @Test
-    public void vinculacionSinIngresos() {
+    public void vinculacionSinIngresos() throws ParseException {
         egresos.add(egreso1);
         egresos.add(egreso2);
         egresos.add(egreso3);
@@ -81,7 +82,7 @@ public class OrdenValorPrimerIngresoTest {
     }
 
     @Test
-    public void vinculacionSinEgresos() {
+    public void vinculacionSinEgresos() throws ParseException {
         ingresos.add(ingreso1);
         ingresos.add(ingreso2);
 
