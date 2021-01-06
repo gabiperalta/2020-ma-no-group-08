@@ -2,6 +2,7 @@ package servidor.controladores;
 
 import com.google.gson.*;
 //import com.sun.org.apache.regexp.internal.RE;
+import datos.RepoEntidadesJuridicas;
 import datos.RepoOperacionesEgreso;
 import datos.RepositorioCategorizacion;
 import dominio.categorizacion.EntidadCategorizable;
@@ -72,10 +73,10 @@ public class LicitacionController{
         ArrayList<Presupuesto> presupuestos = new ArrayList<>();
 
         if(jsonArrayArchivo != null){
-            jsonArrayArchivo.forEach(jsonElement -> presupuestos.add(jsonAPresupuesto(jsonElement.getAsJsonObject())));
+            jsonArrayArchivo.forEach(jsonElement -> presupuestos.add(jsonAPresupuesto(jsonElement.getAsJsonObject(),entityManager)));
         }
         else if (jsonObjectArchivo != null){
-            presupuestos.add(jsonAPresupuesto(jsonObjectArchivo));
+            presupuestos.add(jsonAPresupuesto(jsonObjectArchivo,entityManager));
         }
 
         Licitacion licitacion = repoLicitaciones.buscarLicitacionPorOperacionEgreso(egresoId);
@@ -279,8 +280,10 @@ public class LicitacionController{
             return licitacionEncontrada.getIdentificadorConEtiqueta();
     }
 
-    public static Presupuesto jsonAPresupuesto(JsonObject jsonPresupuesto){
-        EntidadOperacion entidadOperacion = gson.fromJson(jsonPresupuesto.get("entidadOperacion"),EntidadOperacion.class);
+    public static Presupuesto jsonAPresupuesto(JsonObject jsonPresupuesto, EntityManager entityManager){
+        RepoEntidadesJuridicas repoEntidadesJuridicas = new RepoEntidadesJuridicas(entityManager);
+        EntidadOperacion entidadOperacionJson = gson.fromJson(jsonPresupuesto.get("entidadOperacion"),EntidadOperacion.class);
+        EntidadOperacion entidadOperacion = repoEntidadesJuridicas.buscarEntidadJuridica(entidadOperacionJson.getNombre()).getEntidadOperacion();
         JsonArray jsonArrayItems = jsonPresupuesto.get("item").getAsJsonArray();
         ArrayList<Item> items = new ArrayList<>();
         jsonArrayItems.forEach(jsonElement -> items.add(gson.fromJson(jsonElement,Item.class)));

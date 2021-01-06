@@ -1,0 +1,14 @@
+{
+    "entidadOperacion":{
+        "nombre":"Empresa Origen 2",
+        "cuil":"20-40678950-4",
+        "direccion":"Av.Libertador 801"
+    },
+    "item":[
+        {
+            "valor":230,
+            "tipo":"SERVICIO",
+            "descripcion":"Servicio de transporte de productos"
+        }
+    ]
+}
