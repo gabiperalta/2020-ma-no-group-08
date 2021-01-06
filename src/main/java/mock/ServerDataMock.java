@@ -233,12 +233,12 @@ public class ServerDataMock {
 
         OperacionIngreso ingreso5 = new OperacionIngreso();
         ingreso5.setFecha(new Date());
-        ingreso5.setMontoTotal(565.3);
+        ingreso5.setMontoTotal(1100);
         ingreso5.setDescripcion("ingreso5");
 
         OperacionIngreso ingreso6 = new OperacionIngreso();
         ingreso6.setFecha(new Date());
-        ingreso6.setMontoTotal(565.3);
+        ingreso6.setMontoTotal(1200);
         ingreso6.setDescripcion("ingreso6");
 
         EntityManager em = getEntityManager();
