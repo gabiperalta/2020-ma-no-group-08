@@ -162,6 +162,8 @@ public class Router {
 			} catch (Exception ex) {
 				em.getTransaction().rollback();
 				throw ex;
+			} finally {
+				em.close();
 			}
 		};
 		return r;
@@ -178,6 +180,8 @@ public class Router {
 			} catch (Exception ex) {
 				em.getTransaction().rollback();
 				throw ex;
+			} finally {
+				em.close();
 			}
 		};
 		return r;

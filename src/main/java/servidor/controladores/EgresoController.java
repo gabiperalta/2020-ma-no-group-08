@@ -1,5 +1,6 @@
 package servidor.controladores;
 
+import datos.RepoEntidadesJuridicas;
 import datos.RepoLicitaciones;
 import datos.RepoOperacionesEgreso;
 import datos.RepositorioCategorizacion;
@@ -264,24 +265,15 @@ public class EgresoController extends Controller{
 
             CuentaUsuario usuario = req.session().attribute("user");
 
-            Organizacion org = usuario.getOrganizacion();
-
-
             String EONombre = req.queryParams("query_EO_nombre");
 
-            Empresa entidadJuridica = org.buscarEntidad(EONombre);
+            RepoEntidadesJuridicas repoEntidades = new RepoEntidadesJuridicas(entityManager);
 
-            String EOCuil = entidadJuridica.getCuit();
-            String EODireccion = entidadJuridica.getDireccionPostal();
-
-            EntidadOperacion entidadOrigen = new EntidadOperacion(EONombre, EOCuil, EODireccion);
-
+            EntidadOperacion entidadOrigen = repoEntidades.buscarEntidadJuridica(EONombre).getEntidadOperacion();
 
             String EDNombre = req.queryParams("query_ED_nombre");
-            String EDCuil = req.queryParams("query_ED_cuil");
-            String EDDireccion = req.queryParams("query_ED_direccion");
 
-            EntidadOperacion entidadDestino = new EntidadOperacion(EDNombre, EDCuil, EDDireccion);
+            EntidadOperacion entidadDestino = repoEntidades.buscarEntidadJuridica(EDNombre).getEntidadOperacion();
 
             String presupuestosNecesarios = req.queryParams("presupuestos-necesarios-num");
 
@@ -376,29 +368,22 @@ public class EgresoController extends Controller{
 
             String documentoComercialNumero = req.queryParams("documento-num");
 
-            String tipoDocumento = req.queryParams("tipo-documento");
-
             ETipoDoc Etipo =  tipoDeDocumento.get(req.queryParams("tipo-documento"));
 
-
             DocumentoComercial documento = new DocumentoComercial(Etipo, Integer.valueOf(documentoComercialNumero));
-
 
             String fecha = req.queryParams("operacion-egreso-date");
 
             String EONombre = req.queryParams("query_EO_nombre");
-            String EOCuil = req.queryParams("query_EO_cuil");
-            String EODireccion = req.queryParams("query_EO_direccion");
+            RepoEntidadesJuridicas repoEntidades = new RepoEntidadesJuridicas(em);
 
-            EntidadOperacion entidadOrigen = new EntidadOperacion(EONombre, EOCuil, EODireccion);
+            EntidadOperacion entidadOrigen = repoEntidades.buscarEntidadJuridica(EONombre).getEntidadOperacion();
 
             // TODO, debe verificarse que la entidad origen sea perteneciente a la org del usuario
 
             String EDNombre = req.queryParams("query_ED_nombre");
-            String EDCuil = req.queryParams("query_ED_cuil");
-            String EDDireccion = req.queryParams("query_ED_direccion");
 
-            EntidadOperacion entidadDestino = new EntidadOperacion(EDNombre, EDCuil, EDDireccion);
+            EntidadOperacion entidadDestino = repoEntidades.buscarEntidadJuridica(EDNombre).getEntidadOperacion();
 
             OperacionEgreso egreso = servicioABOperaciones.buscarEgreso(req.params("id"));
 

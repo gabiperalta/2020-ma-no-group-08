@@ -46,7 +46,7 @@
                             </div>
                             <select class="custom-select" id="item_tipo">
                                 <option value="none" selected disabled hidden>Elegir...</option>
-                                <option value="articulo">Atículo</option>
+                                <option value="articulo">Artículo</option>
                                 <option value="servicio">Servicio</option>
                             </select>
                         </div>
@@ -269,29 +269,18 @@
 
                 </div>
                 <div class="form-group">
-                    <label for="query_ED_cuil">Cuil destino:    </label>
-                    <input type="text" class="form-control" id="query_ED_cuil" name="query_ED_cuil" placeholder="11-11111111-1"
-                        {{#if egreso}} value="{{egreso.entidadDestino.cuil}}" {{/if}}>
+                    <label for="query_EO_nombre">Entidad de origen:</label>
+                    <select class="custom-select" name="query_EO_nombre" id="query_EO_nombre">
+                        {{#each user.organizacion.entidades}}
+                        {{#if egreso}}
+                        <option value="{{egreso.entidadOrigen.nombre}}" selected hidden>{{egreso.entidadOrigen.nombre}}</option>
+                        {{else}}
+                        <option value="none" selected disabled hidden>--Entidad Origen--</option>
+                        {{/if}}
+                        <option value="{{this.razonSocial}}">{{this.razonSocial}}</option>
+                        {{/each}}
+                    </select>
                 </div>
-                &nbsp
-                <div class="form-group">
-                    <label for="query_ED_direccion">Direccion destino:   </label>
-                    <input type="text" class="form-control" id="query_ED_direccion" name="query_ED_direccion"
-                        {{#if egreso}} value="{{egreso.entidadDestino.direccion}}" {{/if}}>
-                </div>
-                   <div class="form-group">
-                       {{#each user.organizacion.entidades}}
-                          <label for="query_EO_nombre">Entidad de origen:</label>
-                            <select class="custom-select" name="query_EO_nombre" id="query_EO_nombre">
-                               {{#if egreso}}
-                                   <option value="{{egreso.entidadOrigen.nombre}}" selected hidden>{{egreso.entidadOrigen.nombre}}</option>
-                               {{else}}
-                                   <option value="none" selected disabled hidden>--Entidad Origen--</option>
-                               {{/if}}
-                               <option value="{{this.razonSocial}}">{{this.razonSocial}}</option>
-                          </select>
-                       {{/each}}
-                   </div>
             </div>
         </div>
 

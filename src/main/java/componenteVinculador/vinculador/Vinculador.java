@@ -6,6 +6,7 @@ import componenteVinculador.criterio.ResultadoVinculado.Vinculacion;
 import componenteVinculador.criterio.vinculacion.CriterioVinculacion;
 import componenteVinculador.vinculable.OperacionVinculable;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 
 public class Vinculador {
@@ -24,7 +25,7 @@ public class Vinculador {
     public Vinculador(){}
 
     public ResultadoVinculado vincular(ArrayList<OperacionVinculable> unosIngresos, ArrayList<OperacionVinculable> unosEgresos,
-                                       ArrayList<CriterioVinculacion> unosCriterios) {
+                                       ArrayList<CriterioVinculacion> unosCriterios) throws ParseException {
 
         ResultadoVinculado resultado = new ResultadoVinculado();
 

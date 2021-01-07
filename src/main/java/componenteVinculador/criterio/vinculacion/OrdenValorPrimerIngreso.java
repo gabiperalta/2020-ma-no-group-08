@@ -6,6 +6,7 @@ import componenteVinculador.criterio.orden.CriterioOrdenValor;
 import componenteVinculador.vinculable.OperacionVinculable;
 import dominio.operaciones.Operacion;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 
 public class OrdenValorPrimerIngreso extends CriterioVinculacion {
@@ -26,7 +27,7 @@ public class OrdenValorPrimerIngreso extends CriterioVinculacion {
     }
 
     @Override
-    protected ArrayList<Vinculacion> vincular(ArrayList<OperacionVinculable> ingresos, ArrayList<OperacionVinculable> egresos) {
+    protected ArrayList<Vinculacion> vincular(ArrayList<OperacionVinculable> ingresos, ArrayList<OperacionVinculable> egresos) throws ParseException {
         ArrayList<Vinculacion> vinculaciones = new ArrayList<>();
         ArrayList<OperacionVinculable> egresosDescartados = new ArrayList<>();
 

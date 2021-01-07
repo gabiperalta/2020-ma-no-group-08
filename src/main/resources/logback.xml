@@ -8,6 +8,8 @@
         </encoder>
     </appender>
 
+    <logger name="org.mongodb.driver" level="WARNING"></logger>
+
     <root level="debug">
         <appender-ref ref="STDOUT" />
     </root>

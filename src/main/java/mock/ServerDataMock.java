@@ -2,7 +2,6 @@ package mock;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
-import com.mongodb.client.MongoDatabase;
 import datos.*;
 import dev.morphia.Datastore;
 import dev.morphia.Morphia;
@@ -10,16 +9,16 @@ import dominio.categorizacion.CriterioDeCategorizacion;
 import dominio.categorizacion.exceptions.CategorizacionException;
 import dominio.cuentasUsuarios.Roles.Privilegio;
 import dominio.cuentasUsuarios.Roles.Rol;
-import dominio.entidades.*;
+import dominio.entidades.ETipoEmpresa;
+import dominio.entidades.Empresa;
+import dominio.entidades.Organizacion;
 import dominio.entidades.calculadorFiscal.ETipoActividad;
 import dominio.licitacion.Licitacion;
 import dominio.licitacion.Presupuesto;
-import datos.RepoLicitaciones;
 import dominio.licitacion.criterioSeleccion.CriterioMenorPrecio;
 import dominio.notificador_suscriptores.NotificadorSuscriptores;
 import dominio.operaciones.*;
 import dominio.operaciones.medioDePago.Efectivo;
-import datos.RepositorioUsuarios;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -72,6 +71,7 @@ public class ServerDataMock {
 
         Empresa entidad1 = new Empresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa 1", "Empresa 1", "20-40678950-3", "200", "Av.Libertador 801", false);
         Empresa entidad2 = new Empresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa 2", "Empresa 2", "20-40678950-4", "203", "Av.Libertador 200", false);
+        Empresa entidad3 = new Empresa(ETipoEmpresa.MEDIANA_T2, 5, ETipoActividad.COMERCIO, 3000.54, "Empresa 3", "Empresa 3", "20-57678950-4", "205", "Av.Maipu 200", false);
 
         Empresa entidadO1 = new Empresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa Origen 1", "Empresa 1", "20-40678950-3", "200", "Av.Libertador 801", false);
         Empresa entidadO2 = new Empresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa Origen 2", "Empresa 1", "20-40678950-3", "200", "Av.Libertador 801", false);
@@ -93,13 +93,13 @@ public class ServerDataMock {
         entidades1.add(entidadO2);
         entidades1.add(entidadO3);
         entidades1.add(entidadO4);
-        entidades1.add(entidadD1);
-        entidades1.add(entidadD2);
-        entidades1.add(entidadD3);
+        entidades1.add(entidadO5);
+        entidades1.add(entidadO6);
+        entidades1.add(entidadO7);
 
-        entidades2.add(entidadO5);
-        entidades2.add(entidadO6);
-        entidades2.add(entidadO7);
+        entidades2.add(entidadD1);
+        entidades2.add(entidadD2);
+        entidades2.add(entidadD3);
         entidades2.add(entidadD4);
         entidades2.add(entidadD5);
         entidades2.add(entidadD6);
@@ -107,14 +107,6 @@ public class ServerDataMock {
 
         entidades1.add(entidad1);
         entidades2.add(entidad2);
-
-        EntityManager emEmpresa = getEntityManager();
-        RepoEntidadesJuridicas repoEmpresas = new RepoEntidadesJuridicas(emEmpresa);
-
-        emEmpresa.getTransaction().begin();
-        repoEmpresas.agregarEntidadEmpresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa 10", "Empresa 1", "20-40678950-3", "200", "Av.Libertador 801", false);
-        repoEmpresas.agregarEntidadEmpresa(ETipoEmpresa.MEDIANA_T1, 3, ETipoActividad.COMERCIO, 2000.54, "Empresa 9", "Empresa 2", "20-40678950-4", "203", "Av.Libertador 200", false);
-        emEmpresa.getTransaction().commit();
 
         EntityManager em = getEntityManager();
         RepoOrganizaciones repoOrganizaciones = new RepoOrganizaciones(em);
@@ -241,16 +233,19 @@ public class ServerDataMock {
 
         OperacionIngreso ingreso5 = new OperacionIngreso();
         ingreso5.setFecha(new Date());
-        ingreso5.setMontoTotal(565.3);
+        ingreso5.setMontoTotal(1100);
         ingreso5.setDescripcion("ingreso5");
 
         OperacionIngreso ingreso6 = new OperacionIngreso();
         ingreso6.setFecha(new Date());
-        ingreso6.setMontoTotal(565.3);
+        ingreso6.setMontoTotal(1200);
         ingreso6.setDescripcion("ingreso6");
 
-        EntidadOperacion origen = new EntidadOperacion("Empresa 1", "20-40678950-3", "Av.Libertador 801");
-        EntidadOperacion destino = new EntidadOperacion("Empresa 2", "20-40678950-3", "Av.Corrientes 550");
+        EntityManager em = getEntityManager();
+        RepoEntidadesJuridicas repoEntidadesJuridicas = new RepoEntidadesJuridicas(em);
+
+        EntidadOperacion origen = repoEntidadesJuridicas.buscarEntidadJuridica("Empresa Origen 1").getEntidadOperacion();
+        EntidadOperacion destino = repoEntidadesJuridicas.buscarEntidadJuridica("Empresa Destino 1").getEntidadOperacion();
 
         ingreso1.setEntidadOrigen(origen);
         ingreso1.setEntidadDestino(destino);
@@ -270,7 +265,6 @@ public class ServerDataMock {
         ingreso6.setEntidadOrigen(destino);
         ingreso6.setEntidadDestino(origen);
 
-        EntityManager em = getEntityManager();
         RepoOperacionesIngreso repoIngreso = new RepoOperacionesIngreso(em);
         em.getTransaction().begin();
         repoIngreso.agregarIngreso(ingreso1);
@@ -292,102 +286,125 @@ public class ServerDataMock {
         ArrayList<Item> items3 = new ArrayList<>();
         ArrayList<Item> items4 = new ArrayList<>();
         ArrayList<Item> items5 = new ArrayList<>();
+        ArrayList<Item> items6 = new ArrayList<>();
+        ArrayList<Item> items7 = new ArrayList<>();
 
 
         Item resma = new Item(300, ETipoItem.ARTICULO, "Resma de hojas");
         Item flete = new Item(350, ETipoItem.SERVICIO, "Servicio de transporte de productos");
         Item tinta = new Item(500, ETipoItem.ARTICULO, "Cartucho de tinta");
-        Item pc = new Item(50000, ETipoItem.ARTICULO, "computadora");
+        Item pc1 = new Item(50000, ETipoItem.ARTICULO, "computadora");
+        Item pc2 = new Item(50050, ETipoItem.ARTICULO, "computadora");
         Item escritorio = new Item(456454, ETipoItem.ARTICULO, "Escritorio");
+        Item impresora = new Item(490, ETipoItem.ARTICULO, "Impresora");
+        Item router = new Item(550, ETipoItem.ARTICULO, "Router");
 
         items1.add(resma);
         items2.add(flete);
         items3.add(tinta);
-        items4.add(pc);
+        items4.add(pc1);
         items5.add(escritorio);
-        items5.add(pc);
+        items5.add(pc2);
+        items6.add(impresora);
+        items7.add(router);
 
         //Efectivo pesos = new Efectivo(200000, "Rapipago", "Efectivo");
-        Efectivo pesos = new Efectivo(200000,"Rapipago", "Efectivo", "ticket");
-        DocumentoComercial documento = new DocumentoComercial(ETipoDoc.FACTURA, 2000);
+        Efectivo pesos1 = new Efectivo(200000,"Rapipago", "Efectivo", "ticket");
+        Efectivo pesos2 = new Efectivo(200000,"Rapipago", "Efectivo", "ticket");
+        Efectivo pesos3 = new Efectivo(200000,"Rapipago", "Efectivo", "ticket");
+        Efectivo pesos4 = new Efectivo(200000,"Rapipago", "Efectivo", "ticket");
+        Efectivo pesos5 = new Efectivo(200000,"Rapipago", "Efectivo", "ticket");
+        Efectivo pesos6 = new Efectivo(200000,"Rapipago", "Efectivo", "ticket");
+        Efectivo pesos7 = new Efectivo(200000,"Rapipago", "Efectivo", "ticket");
+        DocumentoComercial documento1 = new DocumentoComercial(ETipoDoc.FACTURA, 2000);
+        DocumentoComercial documento2 = new DocumentoComercial(ETipoDoc.FACTURA, 2000);
+        DocumentoComercial documento3 = new DocumentoComercial(ETipoDoc.FACTURA, 2000);
+        DocumentoComercial documento4 = new DocumentoComercial(ETipoDoc.FACTURA, 2000);
+        DocumentoComercial documento5 = new DocumentoComercial(ETipoDoc.FACTURA, 2000);
+        DocumentoComercial documento6 = new DocumentoComercial(ETipoDoc.FACTURA, 2000);
+        DocumentoComercial documento7 = new DocumentoComercial(ETipoDoc.FACTURA, 2000);
+
         Date fecha = new Date();
-        EntidadOperacion origen1 = new EntidadOperacion("Empresa Origen 1", "20-40678950-3", "Av.Libertador 801");
-        EntidadOperacion origen2 = new EntidadOperacion("Empresa Origen 2", "20-40678950-3", "Av.Libertador 801");
-        EntidadOperacion origen3 = new EntidadOperacion("Empresa Origen 3", "20-40678950-3", "Av.Libertador 801");
-        EntidadOperacion origen4 = new EntidadOperacion("Empresa Origen 4", "20-40678950-3", "Av.Libertador 801");
-        EntidadOperacion origen5 = new EntidadOperacion("Empresa Origen 5", "20-40678950-3", "Av.Libertador 801");
-        EntidadOperacion origen6 = new EntidadOperacion("Empresa Origen 6", "20-40678950-3", "Av.Libertador 801");
-        EntidadOperacion origen7 = new EntidadOperacion("Empresa Origen 7", "20-40678950-3", "Av.Libertador 801");
+
+        EntityManager em = getEntityManager();
+        RepoEntidadesJuridicas repoEntidadesJuridicas = new RepoEntidadesJuridicas(em);
+
+        EntidadOperacion origen1 = repoEntidadesJuridicas.buscarEntidadJuridica("Empresa Origen 1").getEntidadOperacion();
+        EntidadOperacion origen2 = repoEntidadesJuridicas.buscarEntidadJuridica("Empresa Origen 2").getEntidadOperacion();
+        EntidadOperacion origen3 = repoEntidadesJuridicas.buscarEntidadJuridica("Empresa Origen 3").getEntidadOperacion();
+        EntidadOperacion origen4 = repoEntidadesJuridicas.buscarEntidadJuridica("Empresa Origen 4").getEntidadOperacion();
+        EntidadOperacion origen5 = repoEntidadesJuridicas.buscarEntidadJuridica("Empresa Origen 5").getEntidadOperacion();
+        EntidadOperacion origen6 = repoEntidadesJuridicas.buscarEntidadJuridica("Empresa Origen 6").getEntidadOperacion();
+        EntidadOperacion origen7 = repoEntidadesJuridicas.buscarEntidadJuridica("Empresa Origen 7").getEntidadOperacion();
 
 
-        EntidadOperacion destino1 = new EntidadOperacion("Empresa Destino 1", "27-40678950-5", "Av.Cordoba 550");
-        EntidadOperacion destino2 = new EntidadOperacion("Empresa Destino 2", "27-40678950-5", "Av.Cordoba 550");
-        EntidadOperacion destino3 = new EntidadOperacion("Empresa Destino 3", "27-40678950-5", "Av.Cordoba 550");
-        EntidadOperacion destino4 = new EntidadOperacion("Empresa Destino 4", "27-40678950-5", "Av.Cordoba 550");
-        EntidadOperacion destino5 = new EntidadOperacion("Empresa Destino 5", "27-40678950-5", "Av.Cordoba 550");
-        EntidadOperacion destino6 = new EntidadOperacion("Empresa Destino 6", "27-40678950-5", "Av.Cordoba 550");
-        EntidadOperacion destino7 = new EntidadOperacion("Empresa Destino 7", "27-40678950-5", "Av.Cordoba 550");
+        EntidadOperacion destino1 = repoEntidadesJuridicas.buscarEntidadJuridica("Empresa Destino 1").getEntidadOperacion();
+        EntidadOperacion destino2 = repoEntidadesJuridicas.buscarEntidadJuridica("Empresa Destino 2").getEntidadOperacion();
+        EntidadOperacion destino3 = repoEntidadesJuridicas.buscarEntidadJuridica("Empresa Destino 3").getEntidadOperacion();
+        EntidadOperacion destino4 = repoEntidadesJuridicas.buscarEntidadJuridica("Empresa Destino 4").getEntidadOperacion();
+        EntidadOperacion destino5 = repoEntidadesJuridicas.buscarEntidadJuridica("Empresa Destino 5").getEntidadOperacion();
+        EntidadOperacion destino6 = repoEntidadesJuridicas.buscarEntidadJuridica("Empresa Destino 6").getEntidadOperacion();
+        EntidadOperacion destino7 = repoEntidadesJuridicas.buscarEntidadJuridica("Empresa Destino 7").getEntidadOperacion();
 
         int presupuestosNecesarios = 2;
 
         OperacionEgreso egreso1 = builderEgreso.agregarItems(items1)
-                .agregarMedioDePago(pesos)
-                .agregarDocComercial(documento)
+                .agregarMedioDePago(pesos1)
+                .agregarDocComercial(documento1)
                 .agregarFecha(fecha)
                 .agregarEntidadOrigen(origen1)
                 .agregarEntidadDestino(destino1)
                 .agregarPresupuestosNecesarios(presupuestosNecesarios).build();
 
         OperacionEgreso egreso2 = builderEgreso.agregarItems(items2)
-                .agregarMedioDePago(pesos)
-                .agregarDocComercial(documento)
+                .agregarMedioDePago(pesos2)
+                .agregarDocComercial(documento2)
                 .agregarFecha(fecha)
                 .agregarEntidadOrigen(origen2)
                 .agregarEntidadDestino(destino2)
                 .agregarPresupuestosNecesarios(presupuestosNecesarios).build();
 
         OperacionEgreso egreso3 = builderEgreso.agregarItems(items3)
-                .agregarMedioDePago(pesos)
-                .agregarDocComercial(documento)
+                .agregarMedioDePago(pesos3)
+                .agregarDocComercial(documento3)
                 .agregarFecha(fecha)
                 .agregarEntidadOrigen(origen3)
                 .agregarEntidadDestino(destino3)
                 .agregarPresupuestosNecesarios(presupuestosNecesarios).build();
 
         OperacionEgreso egreso4 = builderEgreso.agregarItems(items4)
-                .agregarMedioDePago(pesos)
-                .agregarDocComercial(documento)
+                .agregarMedioDePago(pesos4)
+                .agregarDocComercial(documento4)
                 .agregarFecha(fecha)
                 .agregarEntidadOrigen(origen4)
                 .agregarEntidadDestino(destino4)
                 .agregarPresupuestosNecesarios(presupuestosNecesarios).build();
 
         OperacionEgreso egreso5 = builderEgreso.agregarItems(items5)
-                .agregarMedioDePago(pesos)
-                .agregarDocComercial(documento)
+                .agregarMedioDePago(pesos5)
+                .agregarDocComercial(documento5)
                 .agregarFecha(fecha)
                 .agregarEntidadOrigen(origen5)
                 .agregarEntidadDestino(destino5)
                 .agregarPresupuestosNecesarios(presupuestosNecesarios).build();
 
-        OperacionEgreso egreso6 = builderEgreso.agregarItems(items2)
-                .agregarMedioDePago(pesos)
-                .agregarDocComercial(documento)
+        OperacionEgreso egreso6 = builderEgreso.agregarItems(items6)
+                .agregarMedioDePago(pesos6)
+                .agregarDocComercial(documento6)
                 .agregarFecha(fecha)
                 .agregarEntidadOrigen(destino6)
                 .agregarEntidadDestino(origen6)
                 .agregarPresupuestosNecesarios(presupuestosNecesarios).build();
 
-        OperacionEgreso egreso7 = builderEgreso.agregarItems(items3)
-                .agregarMedioDePago(pesos)
-                .agregarDocComercial(documento)
+        OperacionEgreso egreso7 = builderEgreso.agregarItems(items7)
+                .agregarMedioDePago(pesos7)
+                .agregarDocComercial(documento7)
                 .agregarFecha(fecha)
                 .agregarEntidadOrigen(destino7)
                 .agregarEntidadDestino(origen7)
                 .agregarPresupuestosNecesarios(presupuestosNecesarios).build();
 
 
-        EntityManager em = getEntityManager();
         RepoOperacionesEgreso repoEgresos = new RepoOperacionesEgreso(em);
         em.getTransaction().begin();
         repoEgresos.agregarOperacionEgreso(egreso1, "ServerDataMock", getDatastore());
@@ -435,7 +452,10 @@ public class ServerDataMock {
         listaItems3.add(new Item(456454, ETipoItem.ARTICULO, "Escritorio"));
         listaItems3.add(new Item(50000, ETipoItem.ARTICULO, "computadora"));
 
-        proveedor1 = new EntidadOperacion("Empresa 3", "20-40678950-3", "Av.Libertador 801");
+        RepoEntidadesJuridicas repoEntidadesJuridicas = new RepoEntidadesJuridicas(entityManager);
+
+        proveedor1 = repoEntidadesJuridicas.buscarEntidadJuridica("Empresa Origen 1").getEntidadOperacion();
+
 
         presup1 = new Presupuesto(proveedor1, listaItems1);
         presup2 = new Presupuesto(proveedor1, listaItems2);

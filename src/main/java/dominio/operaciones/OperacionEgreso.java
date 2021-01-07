@@ -21,7 +21,9 @@ public class OperacionEgreso extends EntidadCategorizable implements Operacion{
 	private List<Item> items;
 
 
-	
+	//@Convert(converter = MedioDePago.class)
+	//@OneToOne
+	@OneToOne (cascade = CascadeType.ALL)
 	private MedioDePago medioDePago;
 
 	@OneToOne(cascade = CascadeType.PERSIST)

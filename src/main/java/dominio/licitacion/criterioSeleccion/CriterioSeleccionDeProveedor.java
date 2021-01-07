@@ -4,13 +4,14 @@ import dominio.licitacion.Presupuesto;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "CriterioSeleccionDeProveedor")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "criterio")
 public abstract class CriterioSeleccionDeProveedor {
-    public Presupuesto presupuestoElegido(ArrayList<Presupuesto> presupuestos) {
+    public Presupuesto presupuestoElegido(List<Presupuesto> presupuestos) {
         return null;
     }
 

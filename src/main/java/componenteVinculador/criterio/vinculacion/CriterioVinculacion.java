@@ -5,6 +5,7 @@ import componenteVinculador.criterio.orden.CriterioOrden;
 import componenteVinculador.vinculable.OperacionVinculable;
 import componenteVinculador.vinculable.utils.FechaUtils;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -16,12 +17,12 @@ public class CriterioVinculacion {
         parametro = parametroCondicion;
     }
 
-    public ArrayList<Vinculacion> ejecutar(ArrayList<OperacionVinculable> ingresos,ArrayList<OperacionVinculable> egresos) {
+    public ArrayList<Vinculacion> ejecutar(ArrayList<OperacionVinculable> ingresos,ArrayList<OperacionVinculable> egresos) throws ParseException {
         ordenar(ingresos,egresos, getCriterioOrden());
         return vincular(ingresos,egresos);
     }
 
-    protected ArrayList<Vinculacion> vincular(ArrayList<OperacionVinculable> ingresos, ArrayList<OperacionVinculable> egresos) {
+    protected ArrayList<Vinculacion> vincular(ArrayList<OperacionVinculable> ingresos, ArrayList<OperacionVinculable> egresos) throws ParseException {
         ArrayList<Vinculacion> vinculaciones = new ArrayList<>();
 
         for (OperacionVinculable egreso : egresos) {
@@ -40,7 +41,7 @@ public class CriterioVinculacion {
         return vinculaciones;
     }
 
-    protected boolean cumpleCondicion(Object parametro1, Object parametro2) {
+    protected boolean cumpleCondicion(Object parametro1, Object parametro2) throws ParseException {
         return  FechaUtils.estaDentroDelRango((Date) parametro1,(Date) parametro2,(int)parametro);
     }
 

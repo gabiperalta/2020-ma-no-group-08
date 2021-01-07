@@ -108,7 +108,7 @@ public class Licitacion{
 
 		resultadoPresupCorresp = presupuestoCorrespondiente!=null;
 		if(presupuestoCorrespondiente != null)
-			resultadoSeleccionDeProveedor = criterioSeleccionDeProveedor.presupuestoElegido((ArrayList<Presupuesto>)getPresupuestos()) == presupuestoCorrespondiente;
+			resultadoSeleccionDeProveedor = criterioSeleccionDeProveedor.presupuestoElegido(getPresupuestos()) == presupuestoCorrespondiente;
 		else
 			resultadoSeleccionDeProveedor = false;
 		return resultadoPresupCorresp && resultadoSeleccionDeProveedor;

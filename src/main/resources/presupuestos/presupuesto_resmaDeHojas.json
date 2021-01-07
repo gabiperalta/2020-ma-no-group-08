@@ -1,12 +1,12 @@
 {
     "entidadOperacion":{
-        "nombre":"Operacion compra 1",
+        "nombre":"Empresa Origen 1",
         "cuil":"20-40678950-4",
-        "direccion":"Av.Libertador 800"
+        "direccion":"Av.Libertador 801"
     },
     "item":[
         {
-            "valor":350,
+            "valor":50,
             "tipo":"ARTICULO",
             "descripcion":"Resma de hojas"
         }
