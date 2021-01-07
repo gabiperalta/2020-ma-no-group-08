@@ -1,0 +1,14 @@
+{
+    "entidadOperacion":{
+        "nombre":"Empresa Origen 3",
+        "cuil":"20-40678950-4",
+        "direccion":"Av.Libertador 801"
+    },
+    "item":[
+        {
+            "valor":500,
+            "tipo":"ARTICULO",
+            "descripcion":"Cartucho de tinta"
+        }
+    ]
+}

@@ -6,6 +6,7 @@ import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @DiscriminatorValue("menor_precio")
@@ -23,7 +24,7 @@ public class CriterioMenorPrecio extends CriterioSeleccionDeProveedor {
     }
 
     @Override
-    public Presupuesto presupuestoElegido(ArrayList<Presupuesto> presupuestos) {
+    public Presupuesto presupuestoElegido(List<Presupuesto> presupuestos) {
         return presupuestos.stream().min(new OrdenarPorPrecio()).get();
     }
 }
